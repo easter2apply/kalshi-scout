@@ -2,15 +2,15 @@
  "chat_id": "7590441188",
  "council_intro": true,
  "council_record": {
-  "right": 7,
-  "total": 17
+  "right": 10,
+  "total": 27
  },
  "days": {
   "2026-10-12": {
-   "buys": 10,
+   "buys": 15,
    "lines": 0,
    "news": 0,
-   "rejected": 7,
+   "rejected": 9,
    "sl": 5,
    "tp": 0
   }
@@ -64,40 +64,112 @@
    "shadow": false,
    "t": 1791829821.9609513,
    "won": true
+  },
+  {
+   "cat": "Crypto",
+   "pnl": -0.15,
+   "right": false,
+   "shadow": false,
+   "t": 1791831827.677936,
+   "won": false
+  },
+  {
+   "cat": "Crypto",
+   "pnl": -0.17,
+   "right": false,
+   "shadow": false,
+   "t": 1791831827.8079154,
+   "won": false
+  },
+  {
+   "cat": "Crypto",
+   "pnl": -0.06,
+   "right": false,
+   "shadow": false,
+   "t": 1791831827.9415843,
+   "won": false
+  },
+  {
+   "cat": "Crypto",
+   "pnl": -0.21,
+   "right": false,
+   "shadow": false,
+   "t": 1791831828.1439836,
+   "won": false
+  },
+  {
+   "cat": "Crypto",
+   "pnl": -0.05,
+   "right": false,
+   "shadow": false,
+   "t": 1791831828.2788284,
+   "won": false
+  },
+  {
+   "cat": "Crypto",
+   "right": true,
+   "shadow": true,
+   "t": 1791831828.415215,
+   "won": false
+  },
+  {
+   "cat": "Crypto",
+   "right": false,
+   "shadow": true,
+   "t": 1791831828.5521815,
+   "won": true
+  },
+  {
+   "cat": "Crypto",
+   "right": false,
+   "shadow": true,
+   "t": 1791831828.688724,
+   "won": true
+  },
+  {
+   "cat": "Crypto",
+   "right": true,
+   "shadow": true,
+   "t": 1791831828.890194,
+   "won": false
+  },
+  {
+   "cat": "Crypto",
+   "right": true,
+   "shadow": true,
+   "t": 1791831829.0227017,
+   "won": false
   }
  ],
  "last_px": {
-  "KXBTC-26OCT1215-B82150:YES": 0.05,
-  "KXBTC-26OCT1215-B82350:NO": 0.68,
-  "KXBTC-26OCT1215-B82450:NO": 0.71,
-  "KXBTC-26OCT1215-B82650:YES": 0.05,
-  "KXBTC-26OCT1217-B82375:NO": 0.69,
-  "KXBTCD-26OCT1215-T82199.99:NO": 0.06,
-  "KXBTCD-26OCT1215-T82299.99:NO": 0.21,
-  "KXBTCD-26OCT1215-T82499.99:YES": 0.17,
-  "KXBTCD-26OCT1215-T82599.99:YES": 0.05,
-  "KXBTCD-26OCT1217-T81999.99:NO": 0.12,
-  "KXBTCD-26OCT1217-T82249.99:NO": 0.32,
-  "KXBTCD-26OCT1217-T82749.99:YES": 0.14,
-  "KXBTCD-26OCT1217-T82999.99:YES": 0.05,
-  "KXETH-26OCT1215-B2502:YES": 0.13,
-  "KXETH-26OCT1215-B2507:NO": 0.63,
-  "KXETH-26OCT1215-B2512:NO": 0.7,
-  "KXETH-26OCT1215-B2517:YES": 0.12,
-  "KXETH-26OCT1217-B2470:YES": 0.09,
-  "KXETH-26OCT1217-B2510:NO": 0.17,
-  "KXETHD-26OCT1215-T2499.99:NO": 0.05,
-  "KXETHD-26OCT1215-T2504.99:NO": 0.15,
-  "KXETHD-26OCT1215-T2514.99:YES": 0.16,
-  "KXETHD-26OCT1217-T2489.99:NO": 0.07,
-  "KXETHD-26OCT1217-T2529.99:YES": 0.07
+  "KXBTC-26OCT1216-B82350:NO": 0.79,
+  "KXBTC-26OCT1216-B82450:NO": 0.79,
+  "KXBTC-26OCT1217-B81875:YES": 0.06,
+  "KXBTC-26OCT1217-B82375:NO": 0.66,
+  "KXBTCD-26OCT1216-T82099.99:NO": 0.07,
+  "KXBTCD-26OCT1216-T82199.99:NO": 0.14,
+  "KXBTCD-26OCT1216-T82299.99:NO": 0.28,
+  "KXBTCD-26OCT1216-T82499.99:YES": 0.32,
+  "KXBTCD-26OCT1216-T82599.99:YES": 0.16,
+  "KXBTCD-26OCT1216-T82699.99:YES": 0.08,
+  "KXBTCD-26OCT1217-T81999.99:NO": 0.1,
+  "KXBTCD-26OCT1217-T82249.99:NO": 0.26,
+  "KXBTCD-26OCT1217-T82749.99:YES": 0.13,
+  "KXETH-26OCT1216-B2512:NO": 0.73,
+  "KXETH-26OCT1217-B2510:NO": 0.15,
+  "KXETHD-26OCT1216-T2499.99:NO": 0.06,
+  "KXETHD-26OCT1216-T2504.99:NO": 0.13,
+  "KXETHD-26OCT1216-T2509.99:NO": 0.31,
+  "KXETHD-26OCT1216-T2519.99:YES": 0.18,
+  "KXETHD-26OCT1216-T2524.99:YES": 0.07,
+  "KXETHD-26OCT1217-T2529.99:YES": 0.09
  },
- "last_run": 1791829821.9615736,
+ "last_run": 1791831829.0232916,
  "last_vote": {
   "approved": true,
-  "ask": 0.15,
-  "edge": 0.11425320446861913,
-  "label": "Ethereum price at Oct 12, 2026 at 3pm EDT? \u2014 $2,505 or above",
+  "ask": 0.13,
+  "edge": 0.07842914944375558,
+  "label": "Ethereum price at Oct 12, 2026 at 4pm EDT? \u2014 $2,505 or above",
   "side": "NO",
   "url": "https://kalshi.com/markets/kxethd",
   "votes": {
@@ -111,18 +183,18 @@
    ],
    "Risk": [
     true,
-    "spread 1\u00a2, volume 845"
+    "spread 1\u00a2, volume 1,199"
    ],
    "The Quant": [
     true,
-    "71% expected return on cost"
+    "56% expected return on cost"
    ],
    "Time": [
-    false,
-    "closes in 30m"
+    true,
+    "closes in 56m"
    ]
   },
-  "when": 1791829820.0900025
+  "when": 1791831826.620819
  },
  "learn": {
   "window": {
@@ -132,7 +204,12 @@
     -0.08,
     -0.15000000000000002,
     0.51,
-    0.41000000000000003
+    0.41000000000000003,
+    -0.15,
+    -0.17,
+    -0.06,
+    -0.21,
+    -0.05
    ]
   }
  },
@@ -296,7 +373,7 @@
    "fair": 0.2104585904889109,
    "key": "KXBTCD-26OCT1217-T82749.99:YES",
    "label": "Bitcoin price on Oct 12, 2026? \u2014 $82,750 or above",
-   "last_bid": 0.13,
+   "last_bid": 0.12,
    "opened": 1791826908.3388233,
    "side": "YES",
    "sl": 0.07,
@@ -313,117 +390,117 @@
   },
   {
    "cat": "Crypto",
-   "contracts": 42,
-   "entry": 0.15,
-   "event": "KXETHD-26OCT1215",
-   "fair": 0.2742532044686191,
-   "key": "KXETHD-26OCT1215-T2504.99:NO",
-   "label": "Ethereum price at Oct 12, 2026 at 3pm EDT? \u2014 $2,505 or above",
+   "contracts": 32,
+   "entry": 0.13,
+   "event": "KXETHD-26OCT1216",
+   "fair": 0.21842914944375558,
+   "key": "KXETHD-26OCT1216-T2504.99:NO",
+   "label": "Ethereum price at Oct 12, 2026 at 4pm EDT? \u2014 $2,505 or above",
    "last_bid": null,
-   "opened": 1791829820.0900025,
+   "opened": 1791831826.620819,
    "side": "NO",
    "sl": 0.01,
-   "ticker": "KXETHD-26OCT1215-T2504.99",
-   "tp": 0.27,
+   "ticker": "KXETHD-26OCT1216-T2504.99",
+   "tp": 0.22,
    "url": "https://kalshi.com/markets/kxethd",
    "votes": {
     "Doubt": true,
     "Momentum": null,
     "Risk": true,
     "The Quant": true,
-    "Time": false
+    "Time": true
    }
   },
   {
    "cat": "Crypto",
-   "contracts": 35,
-   "entry": 0.17,
-   "event": "KXBTCD-26OCT1215",
-   "fair": 0.28385925216625707,
-   "key": "KXBTCD-26OCT1215-T82499.99:YES",
-   "label": "Bitcoin price on Oct 12, 2026? \u2014 $82,500 or above",
-   "last_bid": null,
-   "opened": 1791829820.0900025,
-   "side": "YES",
-   "sl": 0.02,
-   "ticker": "KXBTCD-26OCT1215-T82499.99",
-   "tp": 0.28,
-   "url": "https://kalshi.com/markets/kxbtcd",
-   "votes": {
-    "Doubt": true,
-    "Momentum": null,
-    "Risk": true,
-    "The Quant": true,
-    "Time": false
-   }
-  },
-  {
-   "cat": "Crypto",
-   "contracts": 77,
-   "entry": 0.06,
-   "event": "KXBTCD-26OCT1215",
-   "fair": 0.17101706057145571,
-   "key": "KXBTCD-26OCT1215-T82199.99:NO",
+   "contracts": 29,
+   "entry": 0.14,
+   "event": "KXBTCD-26OCT1216",
+   "fair": 0.22527356351088712,
+   "key": "KXBTCD-26OCT1216-T82199.99:NO",
    "label": "Bitcoin price on Oct 12, 2026? \u2014 $82,200 or above",
    "last_bid": null,
-   "opened": 1791829820.0900025,
+   "opened": 1791831826.620819,
    "side": "NO",
-   "sl": 0.01,
-   "ticker": "KXBTCD-26OCT1215-T82199.99",
-   "tp": 0.17,
+   "sl": 0.03,
+   "ticker": "KXBTCD-26OCT1216-T82199.99",
+   "tp": 0.23,
    "url": "https://kalshi.com/markets/kxbtcd",
    "votes": {
     "Doubt": true,
     "Momentum": null,
     "Risk": true,
     "The Quant": true,
-    "Time": false
+    "Time": true
    }
   },
   {
    "cat": "Crypto",
-   "contracts": 27,
-   "entry": 0.21,
-   "event": "KXBTCD-26OCT1215",
-   "fair": 0.3291186554053267,
-   "key": "KXBTCD-26OCT1215-T82299.99:NO",
-   "label": "Bitcoin price on Oct 12, 2026? \u2014 $82,300 or above",
+   "contracts": 14,
+   "entry": 0.66,
+   "event": "KXBTC-26OCT1217",
+   "fair": 0.7493423645371483,
+   "key": "KXBTC-26OCT1217-B82375:NO",
+   "label": "Bitcoin price range on Oct 12, 2026? \u2014 $82,250 to 82,499.99",
    "last_bid": null,
-   "opened": 1791829820.0900025,
+   "opened": 1791831826.620819,
    "side": "NO",
-   "sl": 0.06,
-   "ticker": "KXBTCD-26OCT1215-T82299.99",
-   "tp": 0.33,
-   "url": "https://kalshi.com/markets/kxbtcd",
+   "sl": 0.56,
+   "ticker": "KXBTC-26OCT1217-B82375",
+   "tp": 0.75,
+   "url": "https://kalshi.com/markets/kxbtc",
    "votes": {
     "Doubt": true,
-    "Momentum": null,
+    "Momentum": false,
     "Risk": true,
-    "The Quant": true,
-    "Time": false
+    "The Quant": false,
+    "Time": true
    }
   },
   {
    "cat": "Crypto",
-   "contracts": 71,
-   "entry": 0.05,
-   "event": "KXBTCD-26OCT1215",
-   "fair": 0.14065637654894914,
-   "key": "KXBTCD-26OCT1215-T82599.99:YES",
+   "contracts": 23,
+   "entry": 0.16,
+   "event": "KXBTCD-26OCT1216",
+   "fair": 0.23611792113591368,
+   "key": "KXBTCD-26OCT1216-T82599.99:YES",
    "label": "Bitcoin price on Oct 12, 2026? \u2014 $82,600 or above",
    "last_bid": null,
-   "opened": 1791829820.0900025,
+   "opened": 1791831826.620819,
    "side": "YES",
-   "sl": 0.01,
-   "ticker": "KXBTCD-26OCT1215-T82599.99",
-   "tp": 0.14,
+   "sl": 0.06,
+   "ticker": "KXBTCD-26OCT1216-T82599.99",
+   "tp": 0.24,
    "url": "https://kalshi.com/markets/kxbtcd",
    "votes": {
     "Doubt": true,
     "Momentum": null,
     "Risk": true,
     "The Quant": true,
-    "Time": false
+    "Time": true
+   }
+  },
+  {
+   "cat": "Crypto",
+   "contracts": 17,
+   "entry": 0.18,
+   "event": "KXETHD-26OCT1216",
+   "fair": 0.255550735784583,
+   "key": "KXETHD-26OCT1216-T2519.99:YES",
+   "label": "Ethereum price at Oct 12, 2026 at 4pm EDT? \u2014 $2,520 or above",
+   "last_bid": null,
+   "opened": 1791831826.620819,
+   "side": "YES",
+   "sl": 0.1,
+   "ticker": "KXETHD-26OCT1216-T2519.99",
+   "tp": 0.26,
+   "url": "https://kalshi.com/markets/kxethd",
+   "votes": {
+    "Doubt": true,
+    "Momentum": null,
+    "Risk": true,
+    "The Quant": true,
+    "Time": true
    }
   }
  ],
@@ -431,168 +508,106 @@
   "KXBTC-26OCT1213-B82650:NO": 1791826306.0916116,
   "KXBTC-26OCT1213-B82750:NO": 1791826306.0916116,
   "KXBTC-26OCT1214-B82350:NO": 1791829820.0900025,
+  "KXBTC-26OCT1215-B82350:NO": 1791831826.620819,
+  "KXBTC-26OCT1215-B82450:NO": 1791831826.620819,
   "KXBTCD-26OCT1213-T82599.99:NO": 1791826306.0916116,
   "KXBTCD-26OCT1213-T82699.99:NO": 1791826306.0916116,
   "KXBTCD-26OCT1213-T82799.99:YES": 1791826306.0916116,
   "KXBTCD-26OCT1213-T82999.99:YES": 1791826306.0916116,
   "KXBTCD-26OCT1214-T82199.99:NO": 1791829820.0900025,
   "KXBTCD-26OCT1214-T82299.99:NO": 1791829820.0900025,
+  "KXBTCD-26OCT1215-T82199.99:NO": 1791831826.620819,
+  "KXBTCD-26OCT1215-T82299.99:NO": 1791831826.620819,
+  "KXBTCD-26OCT1215-T82499.99:YES": 1791831826.620819,
+  "KXBTCD-26OCT1215-T82599.99:YES": 1791831826.620819,
   "KXETH-26OCT1213-B2517:YES": 1791826306.0916116,
   "KXETH-26OCT1213-B2527:NO": 1791826306.0916116,
   "KXETH-26OCT1214-B2502:NO": 1791829820.0900025,
+  "KXETH-26OCT1215-B2507:NO": 1791831826.620819,
+  "KXETH-26OCT1215-B2512:NO": 1791831826.620819,
   "KXETHD-26OCT1213-T2519.99:NO": 1791826306.0916116,
   "KXETHD-26OCT1213-T2524.99:NO": 1791826306.0916116,
   "KXETHD-26OCT1213-T2529.99:YES": 1791826306.0916116,
   "KXETHD-26OCT1213-T2539.99:YES": 1791821651.4920948,
   "KXETHD-26OCT1214-T2499.99:NO": 1791829820.0900025,
-  "KXETHD-26OCT1214-T2509.99:YES": 1791829820.0900025
+  "KXETHD-26OCT1214-T2509.99:YES": 1791829820.0900025,
+  "KXETHD-26OCT1215-T2499.99:NO": 1791831826.620819,
+  "KXETHD-26OCT1215-T2504.99:NO": 1791831826.620819
  },
  "record": {
-  "losses": 7,
-  "pnl": 2.29,
+  "losses": 12,
+  "pnl": 1.65,
   "wins": 6
  },
  "scoreboard": {
   "Doubt": {
-   "right": 9,
-   "total": 17
+   "right": 13,
+   "total": 27
   },
   "Momentum": {
    "right": 1,
    "total": 4
   },
   "Risk": {
-   "right": 9,
-   "total": 17
+   "right": 11,
+   "total": 27
   },
   "The Quant": {
-   "right": 7,
-   "total": 17
+   "right": 10,
+   "total": 27
   },
   "Time": {
-   "right": 12,
-   "total": 17
+   "right": 20,
+   "total": 27
   }
  },
  "shadow": [
   {
    "cat": "Crypto",
-   "contracts": 14,
-   "entry": 0.68,
-   "event": "KXBTC-26OCT1215",
-   "fair": 0.8032679066761708,
-   "key": "KXBTC-26OCT1215-B82350:NO",
-   "label": "Bitcoin price range on Oct 12, 2026? \u2014 $82,300 to 82,399.99",
+   "contracts": 13,
+   "entry": 0.73,
+   "event": "KXETH-26OCT1216",
+   "fair": 0.8117054989241015,
+   "key": "KXETH-26OCT1216-B2512:NO",
+   "label": "Ethereum price at Oct 12, 2026 at 4pm EDT? \u2014 $2,510 to 2,514.99",
    "last_bid": null,
-   "opened": 1791829820.0900025,
+   "opened": 1791831826.620819,
    "shadow": true,
    "side": "NO",
-   "sl": 0.53,
-   "ticker": "KXBTC-26OCT1215-B82350",
-   "tp": 0.8,
-   "url": "https://kalshi.com/markets/kxbtc",
-   "votes": {
-    "Doubt": true,
-    "Momentum": null,
-    "Risk": true,
-    "The Quant": false,
-    "Time": false
-   }
-  },
-  {
-   "cat": "Crypto",
-   "contracts": 15,
-   "entry": 0.63,
-   "event": "KXETH-26OCT1215",
-   "fair": 0.7509499130212347,
-   "key": "KXETH-26OCT1215-B2507:NO",
-   "label": "Ethereum price at Oct 12, 2026 at 3pm EDT? \u2014 $2,505 to 2,509.99",
-   "last_bid": null,
-   "opened": 1791829820.0900025,
-   "shadow": true,
-   "side": "NO",
-   "sl": 0.48,
-   "ticker": "KXETH-26OCT1215-B2507",
-   "tp": 0.75,
+   "sl": 0.64,
+   "ticker": "KXETH-26OCT1216-B2512",
+   "tp": 0.81,
    "url": "https://kalshi.com/markets/kxeth",
    "votes": {
     "Doubt": true,
     "Momentum": null,
     "Risk": false,
-    "The Quant": true,
-    "Time": false
-   }
-  },
-  {
-   "cat": "Crypto",
-   "contracts": 13,
-   "entry": 0.71,
-   "event": "KXBTC-26OCT1215",
-   "fair": 0.8097115105549852,
-   "key": "KXBTC-26OCT1215-B82450:NO",
-   "label": "Bitcoin price range on Oct 12, 2026? \u2014 $82,400 to 82,499.99",
-   "last_bid": null,
-   "opened": 1791829820.0900025,
-   "shadow": true,
-   "side": "NO",
-   "sl": 0.59,
-   "ticker": "KXBTC-26OCT1215-B82450",
-   "tp": 0.81,
-   "url": "https://kalshi.com/markets/kxbtc",
-   "votes": {
-    "Doubt": true,
-    "Momentum": null,
-    "Risk": true,
     "The Quant": false,
-    "Time": false
+    "Time": true
    }
   },
   {
    "cat": "Crypto",
-   "contracts": 38,
-   "entry": 0.05,
-   "event": "KXETHD-26OCT1215",
-   "fair": 0.1036883519242392,
-   "key": "KXETHD-26OCT1215-T2499.99:NO",
-   "label": "Ethereum price at Oct 12, 2026 at 3pm EDT? \u2014 $2,500 or above",
+   "contracts": 32,
+   "entry": 0.07,
+   "event": "KXETHD-26OCT1216",
+   "fair": 0.1285152865953687,
+   "key": "KXETHD-26OCT1216-T2524.99:YES",
+   "label": "Ethereum price at Oct 12, 2026 at 4pm EDT? \u2014 $2,525 or above",
    "last_bid": null,
-   "opened": 1791829820.0900025,
+   "opened": 1791831826.620819,
    "shadow": true,
-   "side": "NO",
+   "side": "YES",
    "sl": 0.01,
-   "ticker": "KXETHD-26OCT1215-T2499.99",
-   "tp": 0.1,
+   "ticker": "KXETHD-26OCT1216-T2524.99",
+   "tp": 0.13,
    "url": "https://kalshi.com/markets/kxethd",
    "votes": {
     "Doubt": false,
     "Momentum": null,
-    "Risk": true,
-    "The Quant": true,
-    "Time": false
-   }
-  },
-  {
-   "cat": "Crypto",
-   "contracts": 10,
-   "entry": 0.7,
-   "event": "KXETH-26OCT1215",
-   "fair": 0.7607041124772185,
-   "key": "KXETH-26OCT1215-B2512:NO",
-   "label": "Ethereum price at Oct 12, 2026 at 3pm EDT? \u2014 $2,510 to 2,514.99",
-   "last_bid": null,
-   "opened": 1791829820.0900025,
-   "shadow": true,
-   "side": "NO",
-   "sl": 0.64,
-   "ticker": "KXETH-26OCT1215-B2512",
-   "tp": 0.76,
-   "url": "https://kalshi.com/markets/kxeth",
-   "votes": {
-    "Doubt": false,
-    "Momentum": null,
     "Risk": false,
-    "The Quant": false,
-    "Time": false
+    "The Quant": true,
+    "Time": true
    }
   }
  ],
