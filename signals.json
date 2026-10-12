@@ -1,19 +1,23 @@
 {
+ "chat_id": "7590441188",
  "open": [
   {
-   "contracts": 15,
-   "entry": 0.15,
-   "fair": 0.20073021406164177,
-   "key": "KXETHD-26OCT1213-T2539.99:YES",
-   "label": "Ethereum price at Oct 12, 2026 at 1pm EDT? \u2014 $2,540 or above",
+   "contracts": 20,
+   "entry": 0.13,
+   "fair": 0.18960346918446314,
+   "key": "KXBTCD-26OCT1217-T82249.99:NO",
+   "label": "Bitcoin price on Oct 12, 2026? \u2014 $82,250 or above",
    "last_bid": null,
-   "opened": 1791821289.1521442,
-   "side": "YES",
-   "sl": 0.09,
-   "ticker": "KXETHD-26OCT1213-T2539.99",
-   "tp": 0.2,
-   "url": "https://kalshi.com/markets/kxethd"
+   "opened": 1791821651.4920948,
+   "side": "NO",
+   "sl": 0.06,
+   "ticker": "KXBTCD-26OCT1217-T82249.99",
+   "tp": 0.19,
+   "url": "https://kalshi.com/markets/kxbtcd"
   }
  ],
- "recent": {}
+ "recent": {
+  "KXETHD-26OCT1213-T2539.99:YES": 1791821651.4920948
+ },
+ "welcomed": true
 }
