@@ -235,49 +235,49 @@
   }
  ],
  "last_px": {
-  "KXBTC-26OCT1217-B82625:YES": 0.07,
-  "KXBTC-26OCT1217-B82875:NO": 0.53,
-  "KXBTC-26OCT1217-B83125:NO": 0.59,
-  "KXBTC-26OCT1217-B83375:YES": 0.06,
-  "KXBTCD-26OCT1217-T82749.99:NO": 0.07,
-  "KXBTCD-26OCT1217-T83249.99:YES": 0.07,
+  "KXBTC-26OCT1217-B82625:YES": 0.06,
+  "KXBTC-26OCT1217-B82875:NO": 0.48,
+  "KXBTC-26OCT1217-B83375:YES": 0.05,
+  "KXBTCD-26OCT1217-T82749.99:NO": 0.06,
+  "KXBTCD-26OCT1217-T82999.99:YES": 0.39,
   "KXBTCD-26OCT1317-T81499.99:NO": 0.11,
+  "KXBTCD-26OCT1317-T81749.99:NO": 0.16,
   "KXBTCD-26OCT1317-T84249.99:YES": 0.15,
-  "KXBTCD-26OCT1317-T84499.99:YES": 0.11,
   "KXETH-26OCT1217-B2510:NO": 0.05,
-  "KXETH-26OCT1217-B2550:YES": 0.06
+  "KXETH-26OCT1217-B2550:YES": 0.06,
+  "KXETHD-26OCT1217-T2529.99:YES": 0.05
  },
- "last_run": 1791836771.1161566,
+ "last_run": 1791837023.7009134,
  "last_vote": {
-  "approved": true,
-  "ask": 0.05,
-  "edge": 0.07951324647345032,
-  "label": "Ethereum price at Oct 12, 2026 at 5pm EDT? \u2014 $2,490 to 2,529.99",
+  "approved": false,
+  "ask": 0.48,
+  "edge": 0.08044781398450708,
+  "label": "Bitcoin price range on Oct 12, 2026? \u2014 $82,750 to 82,999.99",
   "side": "NO",
-  "url": "https://kalshi.com/markets/kxeth",
+  "url": "https://kalshi.com/markets/kxbtc",
   "votes": {
    "Doubt": [
     true,
     "edge holds if volatility is \u00b120%"
    ],
    "Momentum": [
-    null,
-    "first look at this market"
+    false,
+    "price \u22125\u00a2 since last scan"
    ],
    "Risk": [
     true,
-    "spread 1\u00a2, volume 14,184"
+    "spread 3\u00a2, volume 10,225"
    ],
    "The Quant": [
     true,
-    "133% expected return on cost"
+    "16% expected return on cost"
    ],
    "Time": [
-    true,
-    "closes in 34m"
+    false,
+    "closes in 30m"
    ]
   },
-  "when": 1791836767.474337
+  "when": 1791837021.7524757
  },
  "learn": {
   "edge": {
@@ -578,7 +578,7 @@
    "fair": 0.13918214403177231,
    "key": "KXETH-26OCT1217-B2550:YES",
    "label": "Ethereum price at Oct 12, 2026 at 5pm EDT? \u2014 $2,530 to 2,569.99",
-   "last_bid": null,
+   "last_bid": 0.02,
    "opened": 1791836767.474337,
    "reasons": [
     "99% expected return on cost",
@@ -609,7 +609,7 @@
    "fair": 0.6110051829381853,
    "key": "KXBTC-26OCT1217-B82875:NO",
    "label": "Bitcoin price range on Oct 12, 2026? \u2014 $82,750 to 82,999.99",
-   "last_bid": null,
+   "last_bid": 0.48,
    "opened": 1791836767.474337,
    "reasons": [
     "spread 2\u00a2, volume 10,225",
