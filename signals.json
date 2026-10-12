@@ -11,7 +11,7 @@
    "lines": 0,
    "news": 0,
    "rejected": 11,
-   "sl": 10,
+   "sl": 12,
    "tp": 7
   }
  },
@@ -235,19 +235,13 @@
   }
  ],
  "last_px": {
-  "KXBTC-26OCT1217-B82625:YES": 0.06,
-  "KXBTC-26OCT1217-B82875:NO": 0.48,
-  "KXBTC-26OCT1217-B83375:YES": 0.05,
-  "KXBTCD-26OCT1217-T82749.99:NO": 0.06,
-  "KXBTCD-26OCT1217-T82999.99:YES": 0.39,
-  "KXBTCD-26OCT1317-T81499.99:NO": 0.11,
-  "KXBTCD-26OCT1317-T81749.99:NO": 0.16,
+  "KXBTC-26OCT1217-B83125:NO": 0.46,
+  "KXBTCD-26OCT1317-T81749.99:NO": 0.15,
+  "KXBTCD-26OCT1317-T81999.99:NO": 0.19,
   "KXBTCD-26OCT1317-T84249.99:YES": 0.15,
-  "KXETH-26OCT1217-B2510:NO": 0.05,
-  "KXETH-26OCT1217-B2550:YES": 0.06,
-  "KXETHD-26OCT1217-T2529.99:YES": 0.05
+  "KXBTCD-26OCT1317-T84499.99:YES": 0.11
  },
- "last_run": 1791837023.7009134,
+ "last_run": 1791837922.067754,
  "last_vote": {
   "approved": false,
   "ask": 0.48,
@@ -544,10 +538,13 @@
    "edge": 0.051524355625071495,
    "entry": 0.1,
    "event": "KXETHD-26OCT1217",
+   "exit_px": 0.01,
+   "exit_reason": "stop loss",
+   "exit_t": 1791837920.086339,
    "fair": 0.1615243556250715,
    "key": "KXETHD-26OCT1217-T2529.99:YES",
    "label": "Ethereum price at Oct 12, 2026 at 5pm EDT? \u2014 $2,530 or above",
-   "last_bid": 0.03,
+   "last_bid": 0.01,
    "opened": 1791833672.5018115,
    "reasons": [
     "47% expected return on cost",
@@ -575,10 +572,13 @@
    "edge": 0.06918214403177232,
    "entry": 0.06,
    "event": "KXETH-26OCT1217",
+   "exit_px": 0.0,
+   "exit_reason": "stop loss",
+   "exit_t": 1791837920.086339,
    "fair": 0.13918214403177231,
    "key": "KXETH-26OCT1217-B2550:YES",
    "label": "Ethereum price at Oct 12, 2026 at 5pm EDT? \u2014 $2,530 to 2,569.99",
-   "last_bid": 0.02,
+   "last_bid": 0.0,
    "opened": 1791836767.474337,
    "reasons": [
     "99% expected return on cost",
@@ -609,7 +609,7 @@
    "fair": 0.6110051829381853,
    "key": "KXBTC-26OCT1217-B82875:NO",
    "label": "Bitcoin price range on Oct 12, 2026? \u2014 $82,750 to 82,999.99",
-   "last_bid": 0.48,
+   "last_bid": 0.46,
    "opened": 1791836767.474337,
    "reasons": [
     "spread 2\u00a2, volume 10,225",
@@ -733,5 +733,6 @@
    }
   }
  ],
+ "sports_on": false,
  "welcomed": true
 }
