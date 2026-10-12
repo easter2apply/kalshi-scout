@@ -6,14 +6,6 @@
  },
  "errors": [
   {
-   "t": 1791840547.681159,
-   "text": "Clock unavailable (401: <html>\r\n<head><title>401 Authorization Required</title></head>\r\n<body>\r\n<center><h1>401 Authorization Required</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n)"
-  },
-  {
-   "t": 1791840547.6811628,
-   "text": "Run failed: 401: {\"message\": \"unauthorized.\"}\n"
-  },
-  {
    "t": 1791840615.571134,
    "text": "Clock unavailable (401: <html>\r\n<head><title>401 Authorization Required</title></head>\r\n<body>\r\n<center><h1>401 Authorization Required</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n)"
   },
@@ -84,10 +76,18 @@
   {
    "t": 1791843011.8583791,
    "text": "Run failed: 401: {\"message\": \"unauthorized.\"}\n"
+  },
+  {
+   "t": 1791843312.455314,
+   "text": "Clock unavailable (401: <html>\r\n<head><title>401 Authorization Required</title></head>\r\n<body>\r\n<center><h1>401 Authorization Required</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n)"
+  },
+  {
+   "t": 1791843312.4553175,
+   "text": "Run failed: 401: {\"message\": \"unauthorized.\"}\n"
   }
  ],
  "last_bar": {},
- "last_deploy": 1791842419.2979314,
+ "last_deploy": 1791843312.4573946,
  "pairs": {},
  "record": {
   "losses": 0,
