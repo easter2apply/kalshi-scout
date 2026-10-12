@@ -757,6 +757,8 @@ def manage_signals(results, log, st=None):
     st["last_px"] = {f"{r['ticker']}:{r['side']}": r["ask"] for r in results
                      if r["edge"] is not None and r["edge"] >= MIN_EDGE / 2}
 
+    st["last_run"] = time.time()               # heartbeat for the watchdog
+
     # 3) Daily / weekly reports
     msgs += due_reports(st)
 
@@ -794,8 +796,21 @@ def manage_signals(results, log, st=None):
     else:
         log.append("Telegram: nothing new to send")
 
+    record_errors(log, st)
     save_state(st)
     return st
+
+
+ERROR_MARKERS = ("failed", "rejected (", "unavailable", "skipped (", "not filled", "couldn't", "no chat", "OANDA: add")
+
+
+def record_errors(log, st):
+    """Keep the last 20 problems from the run log so the watchdog can report them."""
+    errs = st.setdefault("errors", [])
+    for line in log:
+        if any(m in line for m in ERROR_MARKERS) and "council rejected" not in line and not line.startswith("Council:"):
+            errs.append({"t": time.time(), "text": line[:300]})
+    del errs[:-20]
 
 
 # ───────────────────────────── Reports ───────────────────────────────────────
@@ -976,7 +991,8 @@ def council_room(state):
     else:
         docket = "<span>No trade on the table yet.</span><small>The council votes when a market clears your minimum edge.</small>"
         stamp = ""
-    data = json.dumps({"voters": voters, "verdict": verdict, "approved": bool(lv and lv["approved"])})
+    data = json.dumps({"voters": voters, "verdict": verdict, "approved": bool(lv and lv["approved"]),
+                       "title": (lv or {}).get("label")})
     script = ROOM_JS.replace("__DATA__", data.replace("</", "<\\/"))
     return f"""<section class="room" id="room3d" aria-label="Council room">
   <div class="roomhead">
@@ -988,7 +1004,7 @@ def council_room(state):
     <div class="table"><div class="gavel" aria-hidden="true"></div>{stamp}</div>
     <div class="seats">{"".join(seats)}</div>
   </div>
-  <p class="hint">Tap a council member to see why they voted that way. Drag to turn the room.</p>
+  <p class="hint">Each member takes the lectern to cast a vote, then The Chair rules. Tap a member to read their reasoning. Drag to look around.</p>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>{script}</script>
 </section>"""
@@ -1006,16 +1022,17 @@ ROOM_JS = r"""
   room.classList.add('is3d');
   var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
-  renderer.outputEncoding = THREE.sRGBEncoding;
   stage.insertBefore(renderer.domElement, stage.firstChild);
 
   var scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x120d24, 9, 18);
-  var cam = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-  scene.add(new THREE.HemisphereLight(0x8f86c9, 0x0c0818, 0.55));
-  var key = new THREE.DirectionalLight(0xdcd6ff, 0.9); key.position.set(-3, 7, 5); scene.add(key);
-  var rimL = new THREE.DirectionalLight(0x6a5cff, 0.7); rimL.position.set(4, 3, -6); scene.add(rimL);
-  var core = new THREE.PointLight(0xf4c84a, 1.2, 6); core.position.set(0, 1.0, 0); scene.add(core);
+  scene.fog = new THREE.Fog(0x140f22, 12, 22);
+  var cam = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
+  scene.add(new THREE.HemisphereLight(0xffe6c4, 0x1a1020, 0.7));
+  var key = new THREE.DirectionalLight(0xfff0d8, 0.85); key.position.set(-4, 9, 6); scene.add(key);
+  var rimL = new THREE.DirectionalLight(0x8a7cff, 0.45); rimL.position.set(5, 4, -6); scene.add(rimL);
+  var benchLight = new THREE.SpotLight(0xffd79a, 1.4, 14, 0.5, 0.6); benchLight.position.set(0, 6.5, 1.5);
+  benchLight.target.position.set(0, 1.2, -3.6); scene.add(benchLight); scene.add(benchLight.target);
+  var core = new THREE.PointLight(0xf4c84a, 0.0, 7); core.position.set(0, 2.2, 0.4); scene.add(core);
   var world = new THREE.Group(); scene.add(world);
 
   var METAL = new THREE.MeshStandardMaterial({ color: 0x2a2838, metalness: 0.85, roughness: 0.32 });
@@ -1023,18 +1040,122 @@ ROOM_JS = r"""
   function glowMat(c) { return new THREE.MeshBasicMaterial({ color: c }); }
   function basic(c, o) { return new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: o === undefined ? 1 : o, depthWrite: false }); }
   function M(g, m) { return new THREE.Mesh(g, m); }
+  function at(m, x, y, z) { m.position.set(x, y, z); world.add(m); return m; }
 
-  // ── floor + holo table
-  var grid = new THREE.GridHelper(14, 28, 0x4a3a85, 0x2a2150); grid.material.transparent = true; grid.material.opacity = 0.35; world.add(grid);
-  var plinth = M(new THREE.CylinderGeometry(1.15, 1.3, 0.5, 6), METAL2); plinth.position.y = 0.25; world.add(plinth);
-  var ringA = M(new THREE.TorusGeometry(1.2, 0.02, 6, 80), basic(0xf4c84a, 0.9)); ringA.rotation.x = Math.PI / 2; ringA.position.y = 0.52; world.add(ringA);
-  var ringB = M(new THREE.TorusGeometry(0.85, 0.015, 6, 60, Math.PI * 1.4), basic(0xf4c84a, 0.6)); ringB.rotation.x = Math.PI / 2; ringB.position.y = 0.56; world.add(ringB);
-  var beam = M(new THREE.CylinderGeometry(0.32, 0.5, 2.4, 32, 1, true), basic(0xf4c84a, 0.12)); beam.position.y = 1.75; world.add(beam);
-  var orb = M(new THREE.IcosahedronGeometry(0.26, 1), new THREE.MeshBasicMaterial({ color: 0xf4c84a, wireframe: true, transparent: true, opacity: 0.85 }));
-  orb.position.y = 1.25; world.add(orb);
-  var orbCore = M(new THREE.SphereGeometry(0.1, 16, 12), basic(0xfff1c2)); orbCore.position.y = 1.25; world.add(orbCore);
+  // ── materials: wood, brass, wall
+  function woodTex(base, dark, planks, vertical) {
+    var c = document.createElement('canvas'); c.width = 256; c.height = 256; var x = c.getContext('2d');
+    x.fillStyle = base; x.fillRect(0, 0, 256, 256);
+    for (var i = 0; i < planks; i++) {
+      var p = i * 256 / planks;
+      x.fillStyle = 'rgba(0,0,0,' + (0.06 + (i * 37 % 9) / 90) + ')';
+      if (vertical) x.fillRect(p, 0, 256 / planks, 256); else x.fillRect(0, p, 256, 256 / planks);
+      x.strokeStyle = dark; x.lineWidth = 2; x.beginPath();
+      if (vertical) { x.moveTo(p, 0); x.lineTo(p, 256); } else { x.moveTo(0, p); x.lineTo(256, p); }
+      x.stroke();
+      for (var k = 0; k < 14; k++) {             // grain
+        x.strokeStyle = 'rgba(0,0,0,0.07)'; x.lineWidth = 1; x.beginPath();
+        var o = p + (k * 53 % (256 / planks));
+        if (vertical) { x.moveTo(o, 0); x.bezierCurveTo(o + 3, 80, o - 3, 170, o, 256); }
+        else { x.moveTo(0, o); x.bezierCurveTo(80, o + 3, 170, o - 3, 256, o); }
+        x.stroke();
+      }
+    }
+    var t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 4; return t;
+  }
+  var floorTex = woodTex('#5a3a22', '#2e1c10', 8, false); floorTex.repeat.set(3, 3);
+  var WOOD = new THREE.MeshStandardMaterial({ color: 0x8a5a33, roughness: 0.6, map: woodTex('#7a4e2c', '#3a2414', 4, true) });
+  var DARKWOOD = new THREE.MeshStandardMaterial({ color: 0x5a3820, roughness: 0.65, map: woodTex('#4a2e1a', '#22140a', 6, true) });
+  var BRASS = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.9, roughness: 0.3 });
+  var LEATHER = new THREE.MeshStandardMaterial({ color: 0x3b1f2b, roughness: 0.8 });
+  var WALL = new THREE.MeshStandardMaterial({ color: 0x241c38, roughness: 0.9 });
 
-  // ── agents
+  // ── room
+  var floor = M(new THREE.PlaneGeometry(16, 14), new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.75 }));
+  floor.rotation.x = -Math.PI / 2; at(floor, 0, 0, 0);
+  var rug = M(new THREE.PlaneGeometry(2.4, 5.0), new THREE.MeshStandardMaterial({ color: 0x4a1020, roughness: 0.95 }));
+  rug.rotation.x = -Math.PI / 2; at(rug, 0, 0.005, 0.4);
+  var wall = M(new THREE.PlaneGeometry(16, 7), WALL); at(wall, 0, 3.5, -5.2);
+  for (var i = 0; i < 7; i++) {                       // wainscot panels + columns
+    var px = -6 + i * 2;
+    at(M(new THREE.BoxGeometry(1.7, 1.6, 0.06), DARKWOOD), px, 0.8, -5.15);
+    var col = at(M(new THREE.CylinderGeometry(0.16, 0.18, 6.2, 16), WOOD), px - 1, 3.1, -5.0);
+  }
+  at(M(new THREE.BoxGeometry(16, 0.12, 0.2), BRASS), 0, 1.65, -5.1);
+  // seal behind the bench
+  var seal = new THREE.Group(); seal.position.set(0, 4.9, -5.05); world.add(seal);
+  seal.add(M(new THREE.CylinderGeometry(0.95, 0.95, 0.06, 48), new THREE.MeshStandardMaterial({ color: 0x1b1530, roughness: 0.6 })));
+  seal.children[0].rotation.x = Math.PI / 2;
+  var sealRing = M(new THREE.TorusGeometry(0.95, 0.06, 10, 64), BRASS); seal.add(sealRing);
+  var sealRing2 = M(new THREE.TorusGeometry(0.75, 0.02, 8, 64), BRASS); seal.add(sealRing2);
+  (function () {
+    var c = document.createElement('canvas'); c.width = 256; c.height = 256; var x = c.getContext('2d');
+    x.fillStyle = '#d4af37'; x.font = '700 150px Georgia, serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('V', 128, 136);
+    x.font = '600 22px Georgia, serif'; x.fillText('THE COUNCIL', 128, 36);
+    var m = M(new THREE.PlaneGeometry(1.5, 1.5), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(c), transparent: true }));
+    m.position.z = 0.05; seal.add(m);
+  })();
+
+  // ── judge's bench (raised) and The Chair
+  var dais = at(M(new THREE.BoxGeometry(5.2, 0.5, 2.0), DARKWOOD), 0, 0.25, -4.0);
+  var bench = at(M(new THREE.BoxGeometry(4.2, 1.35, 0.7), WOOD), 0, 1.15, -3.25);
+  at(M(new THREE.BoxGeometry(4.4, 0.08, 0.85), DARKWOOD), 0, 1.86, -3.25);
+  at(M(new THREE.BoxGeometry(4.25, 0.05, 0.05), BRASS), 0, 1.45, -2.89);
+  var plate = (function () {
+    var c = document.createElement('canvas'); c.width = 512; c.height = 64; var x = c.getContext('2d');
+    x.fillStyle = '#2a1a0c'; x.fillRect(0, 0, 512, 64); x.strokeStyle = '#d4af37'; x.lineWidth = 4; x.strokeRect(4, 4, 504, 56);
+    x.fillStyle = '#d4af37'; x.font = '600 30px Georgia, serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('THE CHAIR', 256, 34);
+    return M(new THREE.PlaneGeometry(1.3, 0.16), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(c) }));
+  })(); at(plate, 0, 1.2, -2.89);
+  var throne = at(M(new THREE.BoxGeometry(0.9, 2.0, 0.18), LEATHER), 0, 1.9, -4.45);
+  at(M(new THREE.BoxGeometry(1.0, 0.1, 0.24), BRASS), 0, 2.92, -4.45);
+
+  var judge = new THREE.Group(); judge.position.set(0, 0.5, -3.95); world.add(judge);
+  var ROBE = new THREE.MeshStandardMaterial({ color: 0x14101f, roughness: 0.7 });
+  var robe = M(new THREE.ConeGeometry(0.42, 1.5, 24), ROBE); robe.position.y = 0.95; judge.add(robe);
+  var collar = M(new THREE.TorusGeometry(0.17, 0.035, 8, 24), BRASS); collar.rotation.x = Math.PI / 2; collar.position.y = 1.62; judge.add(collar);
+  var jhead = new THREE.Group(); jhead.position.y = 1.85; judge.add(jhead);
+  jhead.add(M(new THREE.SphereGeometry(0.2, 24, 16), METAL));
+  var jvisor = M(new THREE.BoxGeometry(0.26, 0.05, 0.06), glowMat(0xf4c84a)); jvisor.position.set(0, 0.02, 0.17); jhead.add(jvisor);
+  var cap = M(new THREE.BoxGeometry(0.34, 0.04, 0.34), new THREE.MeshStandardMaterial({ color: 0x0c0a14 })); cap.position.y = 0.2; jhead.add(cap);
+  var tassel = M(new THREE.CylinderGeometry(0.01, 0.01, 0.16, 6), BRASS); tassel.position.set(0.15, 0.13, 0.1); jhead.add(tassel);
+  var arm = new THREE.Group(); arm.position.set(0.3, 1.45, 0.1); judge.add(arm);
+  var fore = M(new THREE.CylinderGeometry(0.05, 0.045, 0.5, 10), ROBE); fore.rotation.x = Math.PI / 2; fore.position.z = 0.25; arm.add(fore);
+  var gavel = new THREE.Group(); gavel.position.set(0, 0, 0.5); arm.add(gavel);
+  var handle = M(new THREE.CylinderGeometry(0.022, 0.022, 0.42, 8), WOOD); handle.rotation.x = Math.PI / 2; handle.position.z = 0.15; gavel.add(handle);
+  var ghead = M(new THREE.CylinderGeometry(0.075, 0.075, 0.24, 16), WOOD); ghead.rotation.z = Math.PI / 2; ghead.position.z = 0.36; gavel.add(ghead);
+  var block = at(M(new THREE.CylinderGeometry(0.13, 0.15, 0.07, 20), WOOD), 0.3, 1.93, -2.95);
+
+  // ── lectern (where each member addresses the court) + docket hologram
+  var lectern = new THREE.Group(); lectern.position.set(0, 0, 0.95); world.add(lectern);
+  lectern.add((function () { var m = M(new THREE.BoxGeometry(0.62, 1.05, 0.42), WOOD); m.position.y = 0.53; return m; })());
+  var top = M(new THREE.BoxGeometry(0.76, 0.06, 0.5), DARKWOOD); top.position.y = 1.08; top.rotation.x = -0.2; lectern.add(top);
+  var mic = M(new THREE.CylinderGeometry(0.01, 0.01, 0.3, 6), METAL); mic.position.set(0.18, 1.25, 0.05); mic.rotation.x = 0.4; lectern.add(mic);
+  function textSprite(lines, w, h, color, size) {
+    var c = document.createElement('canvas'); c.width = 512; c.height = Math.round(512 * h / w); var x = c.getContext('2d');
+    x.fillStyle = 'rgba(12,10,26,0.78)'; x.fillRect(0, 0, c.width, c.height);
+    x.strokeStyle = color; x.lineWidth = 4; x.strokeRect(3, 3, c.width - 6, c.height - 6);
+    x.fillStyle = color; x.textAlign = 'center'; x.textBaseline = 'middle';
+    lines.forEach(function (ln, i) { x.font = (i ? '500 ' : '700 ') + (i ? size * 0.7 : size) + 'px ui-monospace, Menlo, monospace';
+      x.fillText(ln, c.width / 2, c.height * (lines.length === 1 ? 0.5 : (i ? 0.7 : 0.38))); });
+    var sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false }));
+    sp.scale.set(w, h, 1); return sp;
+  }
+  function short(s, n) { s = String(s || ''); return s.length > n ? s.slice(0, n - 1) + '…' : s; }
+  var docket = textSprite(D.title ? ['ON THE DOCKET', short(D.title, 30)] : ['COURT IN RECESS', 'no trade on the table'], 2.0, 0.45, '#f4c84a', 46);
+  docket.position.set(0, 3.45, -2.6); world.add(docket);
+
+  // railing (the bar) and gallery benches for depth
+  var railZ = 2.75;
+  at(M(new THREE.BoxGeometry(8.4, 0.08, 0.12), WOOD), 0, 0.95, railZ);
+  for (var r = -4; r <= 4; r += 0.6) { if (Math.abs(r) < 0.5) continue; at(M(new THREE.CylinderGeometry(0.03, 0.03, 0.9, 8), WOOD), r, 0.47, railZ); }
+  [-2.7, 2.7].forEach(function (x0) {
+    for (var row = 0; row < 2; row++) {
+      at(M(new THREE.BoxGeometry(2.6, 0.1, 0.45), DARKWOOD), x0, 0.48, 3.5 + row * 0.95);
+      at(M(new THREE.BoxGeometry(2.6, 0.6, 0.08), DARKWOOD), x0, 0.78, 3.72 + row * 0.95);
+    }
+  });
+
   var COLORS = { 'The Quant': 0x3ee6a1, 'Risk': 0xff5468, 'Momentum': 0xffb03b, 'Time': 0x4cb7ff, 'Doubt': 0xc9a7ff };
   function limb(g, x, y, len, r, mat) {
     var piv = new THREE.Group(); piv.position.set(x, y, 0);
@@ -1128,10 +1249,24 @@ ROOM_JS = r"""
     return g;
   }
 
-  var people = [], signs = [], N = D.voters.length, SEAT_R = 2.25;
+
+  // ── council seats: an arc between the lectern and the bench
+  var people = [], signs = [], lamps = [], N = D.voters.length;
+  var PODIUM = new THREE.Vector3(0, 0, 0.55);
+  function seatPos(i) {
+    var a = (-168 + i * (156 / Math.max(1, N - 1))) * Math.PI / 180;
+    return new THREE.Vector3(Math.cos(a) * 2.75, 0, -0.55 + Math.sin(a) * 1.75);
+  }
+  function plateTex(name, col) {
+    var c = document.createElement('canvas'); c.width = 256; c.height = 48; var x = c.getContext('2d');
+    x.fillStyle = '#1a1208'; x.fillRect(0, 0, 256, 48); x.fillStyle = '#' + col.toString(16).padStart(6, '0');
+    x.fillRect(0, 44, 256, 4);
+    x.fillStyle = '#e8d29a'; x.font = '600 24px Georgia, serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(name.toUpperCase(), 128, 22);
+    return new THREE.CanvasTexture(c);
+  }
   function signTex(text, color) {
     var c = document.createElement('canvas'); c.width = 256; c.height = 112; var x = c.getContext('2d');
-    x.fillStyle = 'rgba(14,10,30,0.82)'; x.fillRect(0, 0, 256, 112);
+    x.fillStyle = 'rgba(14,10,30,0.85)'; x.fillRect(0, 0, 256, 112);
     x.strokeStyle = color; x.lineWidth = 4; x.strokeRect(4, 4, 248, 104);
     x.fillStyle = color; x.fillRect(4, 4, 248, 6);
     x.font = '700 50px ui-monospace, SFMono-Regular, Menlo, monospace'; x.textAlign = 'center'; x.textBaseline = 'middle';
@@ -1139,11 +1274,28 @@ ROOM_JS = r"""
     return new THREE.CanvasTexture(c);
   }
   D.voters.forEach(function (v, i) {
-    var g = agent(v.name);
-    var seatA = (-150 + i * (120 / Math.max(1, N - 1))) * Math.PI / 180;
-    g.userData.i = i; g.userData.seatA = seatA; g.userData.phase = i * 1.37;
-    g.userData.yaw = 0; g.userData.prev = new THREE.Vector3();
-    world.add(g); people.push(g);
+    var seat = seatPos(i);
+    var face = Math.atan2(PODIUM.x - seat.x, PODIUM.z - seat.z);
+    var g = agent(v.name), u = g.userData;
+    u.i = i; u.seat = seat; u.faceSeat = face; u.yaw = face; u.sit = 1; u.phase = i * 1.37;
+    u.hip = u.legL ? u.legL.position.y : 0.6; u.prev = seat.clone();
+    g.position.copy(seat); world.add(g); people.push(g);
+    // chair (behind the member) + side pedestal with nameplate and vote lamp
+    var chair = new THREE.Group(); chair.position.copy(seat); chair.rotation.y = face; world.add(chair);
+    var seatTop = 0.5;
+    var cs = M(new THREE.BoxGeometry(0.62, 0.1, 0.56), LEATHER); cs.position.set(0, seatTop - 0.05, -0.04); chair.add(cs);
+    var cb = M(new THREE.BoxGeometry(0.66, 1.35, 0.1), LEATHER); cb.position.set(0, seatTop + 0.6, -0.33); chair.add(cb);
+    var cf = M(new THREE.BoxGeometry(0.72, 0.08, 0.14), WOOD); cf.position.set(0, seatTop + 1.3, -0.33); chair.add(cf);
+    [-0.3, 0.3].forEach(function (sx) { [-0.28, 0.2].forEach(function (sz) {
+      var leg = M(new THREE.CylinderGeometry(0.025, 0.025, seatTop - 0.1, 8), WOOD); leg.position.set(sx, (seatTop - 0.1) / 2, sz); chair.add(leg); }); });
+    var stand = new THREE.Group(); stand.position.set(0.62, 0, 0.25); chair.add(stand);
+    var post = M(new THREE.CylinderGeometry(0.035, 0.05, 0.85, 10), WOOD); post.position.y = 0.42; stand.add(post);
+    var namep = M(new THREE.PlaneGeometry(0.62, 0.12), new THREE.MeshBasicMaterial({ map: plateTex(v.name, u.col) }));
+    namep.position.set(0, 0.9, 0.06); stand.add(namep);
+    var lampMat = new THREE.MeshBasicMaterial({ color: 0x2a2440 });
+    var lamp = M(new THREE.SphereGeometry(0.075, 16, 12), lampMat); lamp.position.y = 1.05; stand.add(lamp);
+    var halo = M(new THREE.SphereGeometry(0.16, 16, 12), basic(0xffffff, 0)); halo.position.y = 1.05; stand.add(halo);
+    lamps.push({ mat: lampMat, halo: halo, vote: v.vote });
     var word = v.vote === true ? 'YES' : v.vote === false ? 'NO' : 'PASS';
     var color = v.vote === true ? '#53f0a6' : v.vote === false ? '#ff6b7c' : '#a99fc9';
     var sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: signTex(word, color), transparent: true, depthWrite: false }));
@@ -1152,19 +1304,20 @@ ROOM_JS = r"""
 
   // ── layout
   function size() {
-    var w = stage.clientWidth || 360, h = Math.round(Math.min(440, Math.max(270, w * 0.66)));
+    var w = stage.clientWidth || 360, h = Math.round(Math.min(500, Math.max(300, w * 0.78)));
     renderer.setSize(w, h); cam.aspect = w / h;
-    var d = w < 520 ? 8.2 : 7.4; cam.position.set(0, 3.3, d); cam.lookAt(0, 0.95, 0);
+    var narrow = w < 520;
+    cam.position.set(0, narrow ? 4.4 : 3.9, narrow ? 10.2 : 8.8); cam.lookAt(0, 1.15, -0.9);
     cam.updateProjectionMatrix();
   }
   size(); window.addEventListener('resize', size);
 
-  // ── interaction
+  // ── interaction: drag to look around, tap a member to read their reason
   var ray = new THREE.Raycaster(), ptr = new THREE.Vector2(), drag = null, turn = 0, picked = -1, canvas = renderer.domElement;
   canvas.addEventListener('pointerdown', function (e) { drag = { x: e.clientX, t: turn, moved: 0 }; canvas.setPointerCapture(e.pointerId); });
   canvas.addEventListener('pointermove', function (e) {
     if (!drag) return; var dx = e.clientX - drag.x; drag.moved = Math.max(drag.moved, Math.abs(dx));
-    turn = Math.max(-0.9, Math.min(0.9, drag.t + dx * 0.006));
+    turn = Math.max(-0.75, Math.min(0.75, drag.t + dx * 0.005));
   });
   canvas.addEventListener('pointerup', function (e) {
     var tap = drag && drag.moved < 6; drag = null; if (!tap) return;
@@ -1189,65 +1342,89 @@ ROOM_JS = r"""
     btn.addEventListener('click', function () { show(+btn.getAttribute('data-i')); });
   });
 
-  // ── choreography: pace & mingle → regroup → vote → verdict → hold → repeat
-  var CYCLE = 16, VERDICT_COL = D.approved ? 0x53f0a6 : 0xff6b7c, GOLD = new THREE.Color(0xf4c84a);
+  // ── choreography
+  // each member: stand → walk to the lectern → face the court and vote → walk back → sit.
+  // then The Chair brings the gavel down and the verdict lights the room.
+  var STAGGER = 3.2, START = 1.6, TURN = 5.6;
+  var VERDICT_AT = START + (N - 1) * STAGGER + TURN + 0.4, CYCLE = VERDICT_AT + 6.5;
+  var VERDICT_COL = new THREE.Color(D.approved ? 0x53f0a6 : 0xff6b7c), WARM = new THREE.Color(0xf4c84a);
   function clamp(x) { return Math.max(0, Math.min(1, x)); }
   function smooth(x) { x = clamp(x); return x * x * (3 - 2 * x); }
   function pop(x) { x = clamp(x); var c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); }
+  var tmp = new THREE.Vector3();
+  function plan(i, c) {
+    // returns {pos, sit, atPodium, spoke}
+    var u = people[i].userData, tau = c - (START + i * STAGGER);
+    var stand = PODIUM.clone().add(new THREE.Vector3(0, 0, -0.42));
+    if (!D.verdict || tau < 0) return { pos: u.seat, sit: 1, at: false, spoke: false };
+    if (tau < 0.5) return { pos: u.seat, sit: 1 - smooth(tau / 0.5), at: false, spoke: false };
+    if (tau < 2.1) return { pos: tmp.copy(u.seat).lerp(stand, smooth((tau - 0.5) / 1.6)).clone(), sit: 0, at: false, spoke: false };
+    if (tau < 3.5) return { pos: stand, sit: 0, at: true, k: tau - 2.1, spoke: tau > 2.35 };
+    if (tau < 5.1) return { pos: tmp.copy(stand).lerp(u.seat, smooth((tau - 3.5) / 1.6)).clone(), sit: 0, at: false, spoke: true };
+    return { pos: u.seat, sit: smooth((tau - 5.1) / 0.5), at: false, spoke: true };
+  }
   var t0 = performance.now(), lastT = 0;
-
   function frame(now) {
     var t = (now - t0) / 1000, dt = Math.min(0.05, t - lastT); lastT = t;
-    var c = D.verdict ? (t % CYCLE) : 0;
-    // roam envelope: 1 while mingling, 0 while seated for the vote
-    var roam = still ? 0 : (D.verdict ? (c < 5.5 ? 1 : c < 7 ? 1 - smooth((c - 5.5) / 1.5) : c < 14.5 ? 0 : smooth((c - 14.5) / 1.5)) : 1);
-    var voting = D.verdict && c >= 7.2 && c < 14.5;
-    var verdictOn = D.verdict && (still || (c >= 9.3 && c < 14.5));
+    var c = still ? CYCLE - 3 : (D.verdict ? t % CYCLE : 0);
+    var deliberating = D.verdict && c < CYCLE - 0.6;
+    var verdictOn = D.verdict && c >= VERDICT_AT + 0.45 && c < CYCLE - 0.6;
     if (stampEl) stampEl.classList.toggle('show', !!verdictOn);
-
     world.rotation.y += (turn - world.rotation.y) * 0.08;
 
     people.forEach(function (g, i) {
-      var u = g.userData, ph = u.phase;
-      var a = u.seatA + roam * (0.55 * Math.sin(t * 0.42 + ph) + 0.25 * Math.sin(t * 0.17 + ph * 2));
-      var r = SEAT_R + roam * (0.45 * Math.sin(t * 0.33 + ph * 1.7));
-      var x = Math.cos(a) * r, z = Math.sin(a) * r;
+      var u = g.userData, p = plan(i, c);
       u.prev.copy(g.position);
-      g.position.set(x, 0, z);
-      var vx = (x - u.prev.x) / Math.max(dt, 1e-3), vz = (z - u.prev.z) / Math.max(dt, 1e-3), speed = Math.hypot(vx, vz);
-      // face where you walk; when still, face the table; when voting, face the viewer
-      var target = voting ? Math.atan2(cam.position.x - x, cam.position.z - z) - world.rotation.y
-                 : speed > 0.12 ? Math.atan2(vx, vz) : Math.atan2(-x, -z);
-      var d = Math.atan2(Math.sin(target - u.yaw), Math.cos(target - u.yaw)); u.yaw += d * 0.08; g.rotation.y = u.yaw;
-      var stride = Math.min(1, speed / 0.6), sw = Math.sin(t * 7 + ph) * 0.55 * stride;
-      u.legL.rotation.x = sw; u.legR.rotation.x = -sw;
-      u.armL.rotation.x = -sw * 0.7;
-      var raise = voting ? pop((c - 7.4 - i * 0.28) / 0.5) : 0;
-      u.armR.rotation.x = sw * 0.7 * (1 - raise) - raise * 2.6;
-      g.position.y = Math.abs(Math.sin(t * 7 + ph)) * 0.03 * stride + (voting ? 0 : Math.sin(t * 1.3 + ph) * 0.015);
-      u.head.rotation.y = voting ? 0 : 0.35 * Math.sin(t * 0.6 + ph * 3);
+      var drop = (u.hip - 0.52) * p.sit;
+      g.position.set(p.pos.x, -drop, p.pos.z);
+      var vx = (g.position.x - u.prev.x) / Math.max(dt, 1e-3), vz = (g.position.z - u.prev.z) / Math.max(dt, 1e-3);
+      var speed = Math.hypot(vx, vz);
+      var target = p.at ? Math.atan2(cam.position.x - g.position.x, cam.position.z - g.position.z) - world.rotation.y
+                 : speed > 0.15 ? Math.atan2(vx, vz) : u.faceSeat;
+      var d = Math.atan2(Math.sin(target - u.yaw), Math.cos(target - u.yaw)); u.yaw += d * 0.12; g.rotation.y = u.yaw;
+      var stride = Math.min(1, speed / 0.9), sw = Math.sin(t * 8 + u.phase) * 0.55 * stride;
+      if (u.legL) { u.legL.rotation.x = sw - 1.2 * p.sit; u.legR.rotation.x = -sw - 1.2 * p.sit; }
+      var raise = p.at ? pop((p.k - 0.15) / 0.45) * (1 - smooth((p.k - 1.1) / 0.3)) : 0;
+      if (u.armL) u.armL.rotation.x = -sw * 0.7 - 0.55 * p.sit;
+      if (u.armR) u.armR.rotation.x = sw * 0.7 * (1 - raise) - raise * 2.7 - 0.55 * p.sit;
+      g.position.y += Math.abs(Math.sin(t * 8 + u.phase)) * 0.03 * stride;
+      if (u.head) u.head.rotation.y = p.at ? 0 : (still ? 0 : 0.4 * Math.sin(t * 0.5 + u.phase * 3)) * (p.sit > 0.5 ? 1 : 0.3);
       if (u.spin) u.spin.rotation.z = t * 1.8;
       if (u.gyro) { u.gyro.rotation.y = t * 1.4; u.gyro.rotation.x = t * 0.7; }
       if (u.hands) u.hands.rotation.z = -t * 1.2;
       if (u.trail) u.trail.forEach(function (tp, k) {
-        var back = 0.25 + k * 0.16, yy = 1.2 - k * 0.05;
-        tp.position.set(x - Math.sin(u.yaw) * back * (0.3 + stride), yy, z - Math.cos(u.yaw) * back * (0.3 + stride));
-        tp.visible = stride > 0.15;
+        var back = 0.25 + k * 0.16;
+        tp.position.set(g.position.x - Math.sin(u.yaw) * back * (0.3 + stride), 1.2 - k * 0.05, g.position.z - Math.cos(u.yaw) * back * (0.3 + stride));
+        tp.visible = stride > 0.2;
       });
-      var sel = picked === i ? 1.1 : 1; g.scale.setScalar(g.scale.x + (sel - g.scale.x) * 0.2);
-      u.halo.material.opacity = picked === i ? 0.95 : 0.45;
-      var sp = signs[i], k = voting ? pop((c - 7.4 - i * 0.28) / 0.5) * (1 - smooth((c - 14) / 0.5)) : (still && D.verdict ? 1 : 0);
-      sp.position.set(x, 2.15 + g.position.y, z); sp.scale.set(0.82 * k + 0.001, 0.36 * k + 0.001, 1);
+      u.halo.visible = p.sit < 0.5;
+      var sel = picked === i ? 1.08 : 1; g.scale.setScalar(g.scale.x + (sel - g.scale.x) * 0.2);
+      u.halo.material.opacity = picked === i ? 0.95 : 0.4;
+      // vote sign: big at the lectern, then rides above their seat until the verdict clears
+      var sp = signs[i], showSign = deliberating && (p.spoke || (still && D.verdict));
+      var k = showSign ? (p.at ? pop((p.k - 0.25) / 0.4) : 0.75) : 0;
+      sp.position.set(g.position.x, (p.at ? 2.3 : 2.05) + g.position.y + (p.sit ? -0.1 : 0), g.position.z);
+      sp.scale.set(0.8 * k + 0.001, 0.35 * k + 0.001, 1);
+      // lamp on their stand
+      var L = lamps[i], lit = showSign && L.vote !== null && L.vote !== undefined;
+      var lc = L.vote === true ? 0x53f0a6 : 0xff6b7c;
+      L.mat.color.setHex(lit ? lc : 0x2a2440);
+      L.halo.material.color.setHex(lc); L.halo.material.opacity = lit ? 0.35 + 0.1 * Math.sin(t * 4) : 0;
     });
 
-    // table, beam, orb
-    orb.rotation.y = t * 0.5; orb.rotation.x = t * 0.2; ringB.rotation.z = -t * 0.6;
-    var pulse = verdictOn ? (still ? 0 : Math.max(0, 1 - (c - 9.3) / 1.2)) : 0;
-    var col = verdictOn ? new THREE.Color(VERDICT_COL) : GOLD;
-    [ringA.material, ringB.material, beam.material, orb.material].forEach(function (m) { m.color.lerp(col, 0.12); });
-    beam.material.opacity = 0.1 + pulse * 0.35; beam.scale.set(1 + pulse * 0.5, 1, 1 + pulse * 0.5);
-    core.color.lerp(col, 0.12); core.intensity = 1.1 + pulse * 2.5;
-
+    // The Chair: watches whoever is speaking, then the gavel
+    var speaker = -1;
+    people.forEach(function (g, i) { if (plan(i, c).at) speaker = i; });
+    var look = speaker >= 0 ? Math.atan2(people[speaker].position.x - judge.position.x, people[speaker].position.z - judge.position.z) * 0.6
+             : (still ? 0 : 0.25 * Math.sin(t * 0.35));
+    jhead.rotation.y += (look - jhead.rotation.y) * 0.08;
+    var gt = D.verdict ? (c - VERDICT_AT) : -1;
+    var swing = gt < 0 ? 0 : gt < 0.35 ? -smooth(gt / 0.35) * 1.1 : gt < 0.5 ? -1.1 + smooth((gt - 0.35) / 0.15) * 1.5 : 0.4 - smooth((gt - 0.5) / 0.6) * 0.4;
+    arm.rotation.x = still ? 0 : swing;
+    var flash = verdictOn ? Math.max(0, 1 - (c - VERDICT_AT - 0.45) / 1.6) : 0;
+    core.color.copy(verdictOn ? VERDICT_COL : WARM); core.intensity = verdictOn ? 0.8 + flash * 3 : 0;
+    benchLight.intensity = 1.4 + flash * 1.2;
+    docket.position.y = 3.45 + (still ? 0 : Math.sin(t * 1.2) * 0.04);
     renderer.render(scene, cam);
     requestAnimationFrame(frame);
   }
@@ -1486,6 +1663,10 @@ def main():
         except Exception as e:
             print(f"Scan failed: {e}", file=sys.stderr)
             results, log, state = [], [f"Scan failed: {e}"], {}
+            try:
+                st = load_state(); record_errors(log, st); save_state(st); state = st
+            except Exception:
+                pass
         for line in log:
             print("  " + line)
         path = os.path.abspath(args.out)
