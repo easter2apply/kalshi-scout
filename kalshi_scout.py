@@ -44,7 +44,8 @@ MIN_PRICE, MAX_PRICE = 0.05, 0.95   # skip near-certain longshots/locks
 MAX_HOURS_TO_CLOSE = 72    # ignore markets closing further out than this
 STOP_LOSS_MIN = 0.05       # stop loss sits at least 5¢ below your entry
 STOP_LOSS_MAX = 0.15       # ...and at most 15¢ below it
-MAX_NEW_SIGNALS = 5        # most BUY alerts sent per scan
+MAX_NEW_SIGNALS = 4        # most BUY alerts sent per scan
+TOP_N = 4                  # never more than 4 open signals; the dashboard shows only the best 4
 SIGNAL_COOLDOWN_HOURS = 6  # don't re-alert the same market for this long after it exits
 STATE_FILE = "signals.json"  # remembers open signals between scans
 COUNCIL_MIN_YES = 3        # a BUY alert needs at least this many council YES votes
@@ -173,7 +174,10 @@ def volume(m):
 
 
 def market_url(m):
-    return f"https://kalshi.com/markets/{(m.get('event_ticker') or '').split('-')[0].lower()}"
+    ev = (m.get("event_ticker") or "").lower()
+    series = ev.split("-")[0]
+    slug = re.sub(r"[^a-z0-9]+", "-", (m.get("_ev_title") or m.get("title") or series).lower()).strip("-")[:60] or series
+    return f"https://kalshi.com/markets/{series}/{slug}/{ev}" if ev else "https://kalshi.com/markets"
 
 
 # ───────────────────────────── Crypto model ──────────────────────────────────
@@ -356,6 +360,21 @@ def evaluate(m, fair, category, label, note, alt_fairs=None, books=None):
     return rows
 
 
+def quality(r):
+    """Ranking score: edge, discounted when the edge is fragile or the market is thin."""
+    e = r.get("edge") or 0
+    sure = 1.0
+    if r.get("robust_edge") is not None and r["robust_edge"] <= 0:
+        sure *= 0.5                                   # disappears if volatility is a bit off
+    if r.get("books") is not None and r["books"] < 3:
+        sure *= 0.6
+    vol = r.get("volume") or 0
+    sure *= 0.5 + 0.5 * min(1, vol / 500)              # thin markets are harder to fill at that price
+    if r.get("approved"):
+        sure *= 1.25
+    return e * sure
+
+
 def scan(st=None):
     st = st if st is not None else {}
     results, log = [], []
@@ -376,6 +395,7 @@ def scan(st=None):
         n = 0
         for ev in events:
             for m in ev.get("markets", []) or []:
+                m["_ev_title"] = ev.get("title", "")
                 h = hours_left(m)
                 if h is None or h <= 0 or h > MAX_HOURS_TO_CLOSE:
                     continue
@@ -399,6 +419,7 @@ def scan(st=None):
 
     # Sports
     key = os.environ.get("ODDS_API_KEY", "").strip()
+    st["sports_on"] = bool(key)
     for series, sport in SPORTS_SERIES.items():
         try:
             events = kalshi_events(series)
@@ -411,6 +432,8 @@ def scan(st=None):
         games, fetched = sports_odds(st, sport, key, log) if key else ([], 0)
         matched = 0
         for ev in events:
+            for m in ev.get("markets", []) or []:
+                m["_ev_title"] = ev.get("title", "")
             mkts = [m for m in ev.get("markets", []) or []
                     if (hours_left(m) or -1) > 0 and hours_left(m) <= MAX_HOURS_TO_CLOSE * 3]
             teams = [m.get("yes_sub_title") or "" for m in mkts]
@@ -429,20 +452,7 @@ def scan(st=None):
                         row["line_move"] = g.get("move", 0)
                         row["starts_in"] = (g["commence"] - now) / 3600 if g.get("commence") else None
                     results += rows
-                else:
-                    # No fair value: show the market so you can judge it yourself
-                    ya = price(m, "yes_ask")
-                    if ya is None:
-                        continue
-                    results.append({
-                        "category": "Sports (no model)", "label": ev.get("title", "") + f" — {team}",
-                        "side": "—", "ticker": m.get("ticker", ""), "url": market_url(m),
-                        "ask": ya, "fair": None, "fee": taker_fee(ya), "edge": None,
-                        "contracts": 0, "stake": 0, "hours": hours_left(m),
-                        "volume": volume(m),
-                        "note": ("Game started, so the sportsbook line is stale" if live else "Add ODDS_API_KEY for a fair value"),
-                        "tp": None, "sl": None,
-                    })
+                # no sportsbook price (no key, no match, or game started): nothing to compare, so skip it
         log.append(f"{series}: {len(events)} games" + (f", {matched} sides matched to sportsbook odds" if key else ""))
         time.sleep(0.25)
 
@@ -706,10 +716,12 @@ def manage_signals(results, log, st=None):
     shadow_by_ticker = {s["ticker"]: s for s in st["shadow"]}
     weights = voter_weights(st)
     candidates = sorted([r for r in results if r["edge"] is not None and r["edge"] >= min_edge(st, r["category"])
-                         and r["contracts"] > 0], key=lambda r: -r["edge"])
+                         and r["contracts"] > 0], key=lambda r: -quality(r))
+    active = [s for s in st["open"] if s.get("exit_px") is None]
+    slots = max(0, TOP_N - len(active))
     new = rejected = 0
     today = day_stats(st)
-    taken_events = {s.get("event") for s in st["open"] if s.get("cat") == "Sports"}
+    taken_events = {s.get("event") for s in st["open"] if s.get("exit_px") is None}
     for r in candidates:
         key = f"{r['ticker']}:{r['side']}"
         votes = council(r, st["last_px"])
@@ -718,8 +730,8 @@ def manage_signals(results, log, st=None):
         r["approved"] = approved(votes, weights) and not veto     # news and line moves are hard vetoes
         if r["ticker"] in tracked or key in st["recent"]:
             continue
-        if r["category"] == "Sports" and r.get("event") in taken_events:
-            continue                            # one bet per game: YES on one team ≈ NO on the other
+        if r.get("event") in taken_events:
+            continue                            # one bet per event: strikes on the same Bitcoin hour (or both sides of a game) move together
         prior = shadow_by_ticker.get(r["ticker"])
         if prior and not r["approved"]:
             continue                            # still rejected; keep tracking the original pick
@@ -732,14 +744,13 @@ def manage_signals(results, log, st=None):
                "edge": r["edge"], "stake": r["stake"], "close_ts": now + (r.get("hours") or 0) * 3600,
                "reasons": [why for ok, why in votes.values() if ok][:3]}
         if r["approved"]:
-            if new >= MAX_NEW_SIGNALS:
-                continue
+            if new >= min(MAX_NEW_SIGNALS, slots):
+                continue                        # only the best 4 at a time
             st["open"].append(sig)
             msgs.append(buy_message(r, votes))
             new += 1
             today["buys"] += 1
-            if r["category"] == "Sports":
-                taken_events.add(r.get("event"))
+            taken_events.add(r.get("event"))
         elif len(st["shadow"]) < 60:
             sig["shadow"] = True                # rejected: tracked quietly so the scoreboard learns
             st["shadow"].append(sig)
@@ -997,7 +1008,7 @@ def council_room(state):
         stamp = ""
     data = json.dumps({"voters": voters, "verdict": verdict, "approved": bool(lv and lv["approved"]),
                        "title": (lv or {}).get("label"), "chart": (lv or {}).get("chart"),
-                       "ticker": state.get("ticker", [])})
+                       "ticker": state.get("ticker", []), "recess": state.get("recess")})
     script = ROOM_JS.replace("__DATA__", data.replace("</", "<\\/"))
     return f"""<section class="room" id="room3d" aria-label="Council room">
   <div class="roomhead">
@@ -1019,6 +1030,7 @@ def council_room(state):
 ROOM_JS = r"""
 (function () {
   var D = __DATA__;
+  if (D.recess) D.verdict = null;          // court adjourned: everyone stays seated
   var room = document.getElementById('room3d'), stage = document.getElementById('stage3d'), tip = document.getElementById('tip3d');
   var stampEl = stage.querySelector('.stamp3d');
   if (!window.THREE) return;
@@ -1112,18 +1124,17 @@ ROOM_JS = r"""
     new THREE.MeshBasicMaterial({ map: wallTex, side: THREE.BackSide }));
   at(wall, 0, 2.6, 1.5);
   var tickerText = (D.ticker && D.ticker.length) ? D.ticker.map(function (t) {
-    return t.s + ' ' + t.p + ' ' + (t.c >= 0 ? '▲' : '▼') + Math.abs(t.c).toFixed(2) + '%'; }).join('     ') : 'THE COUNCIL  ·  IN SESSION';
+    return t.s + ' ' + t.p + ' ' + (t.c >= 0 ? '▲' : '▼') + Math.abs(t.c).toFixed(2) + '%'; }).join('     ') : (D.recess ? 'COURT ADJOURNED  ·  ' + D.recess.toUpperCase() : 'THE COUNCIL  ·  IN SESSION');
   var tickCanvas = document.createElement('canvas'); tickCanvas.width = 2048; tickCanvas.height = 64;
   (function () {
     var x = tickCanvas.getContext('2d'); x.fillStyle = '#0b1022'; x.fillRect(0, 0, 2048, 64);
     x.fillStyle = 'rgba(56,225,255,0.9)'; x.fillRect(0, 0, 2048, 2); x.fillRect(0, 62, 2048, 2);
     x.font = '600 30px ui-monospace, Menlo, monospace'; x.textBaseline = 'middle';
-    var s = tickerText + '          ', w = x.measureText(s).width, pos = 0;
-    while (pos < 2048) {
-      var parts = s.split(/(▲[\d.]+%|▼[\d.]+%)/);
-      parts.forEach(function (pt) { if (!pt) return; x.fillStyle = pt[0] === '▲' ? '#53f0a6' : pt[0] === '▼' ? '#ff6b7c' : '#cfe3ff';
+    var s = tickerText + '     ·     ', w = x.measureText(s).width, n = Math.max(1, Math.floor(2048 / w)), step = 2048 / n;
+    for (var rep = 0; rep < n; rep++) {
+      var pos = rep * step;
+      s.split(/(▲[\d.]+%|▼[\d.]+%)/).forEach(function (pt) { if (!pt) return; x.fillStyle = pt[0] === '▲' ? '#53f0a6' : pt[0] === '▼' ? '#ff6b7c' : '#cfe3ff';
         x.fillText(pt, pos, 34); pos += x.measureText(pt).width; });
-      if (w <= 0) break;
     }
   })();
   var tickTex = new THREE.CanvasTexture(tickCanvas); tickTex.wrapS = THREE.RepeatWrapping; tickTex.repeat.set(-2, 1);
@@ -1155,9 +1166,15 @@ ROOM_JS = r"""
     x.strokeStyle = 'rgba(56,225,255,0.9)'; x.lineWidth = 4; x.strokeRect(6, 6, W - 12, H - 12);
     for (var gy = 1; gy < 5; gy++) { x.strokeStyle = 'rgba(56,225,255,0.12)'; x.lineWidth = 1; x.beginPath(); x.moveTo(30, 90 + gy * 88); x.lineTo(W - 30, 90 + gy * 88); x.stroke(); }
     x.fillStyle = '#cff6ff'; x.font = '700 46px ui-monospace, Menlo, monospace'; x.textBaseline = 'middle';
-    x.fillText(D.title ? String(D.title).slice(0, 34) : 'COURT IN RECESS', 34, 50);
+    x.fillText(D.recess ? 'THE COUNCIL' : D.title ? String(D.title).slice(0, 34) : 'COURT IN RECESS', 34, 50);
     var ch = D.chart;
-    if (ch && ch.closes && ch.closes.length > 2) {
+    if (D.recess) {
+      x.fillStyle = 'rgba(8,30,48,0.6)'; x.fillRect(12, 80, W - 24, H - 92);
+      x.fillStyle = '#f4c84a'; x.font = '800 64px ui-monospace, Menlo, monospace'; x.textAlign = 'center';
+      x.fillText('COURT ADJOURNED', W / 2, H / 2 - 10);
+      x.fillStyle = '#cff6ff'; x.font = '500 38px ui-monospace, Menlo, monospace'; x.fillText(String(D.recess), W / 2, H / 2 + 60);
+      x.textAlign = 'left';
+    } else if (ch && ch.closes && ch.closes.length > 2) {
       var vals = ch.closes.slice(), lv = [ch.entry, ch.sl, ch.tp].filter(function (v) { return v != null; });
       var lo = Math.min.apply(null, vals.concat(lv)), hi = Math.max.apply(null, vals.concat(lv)), pad = (hi - lo) * 0.08 || 1e-4;
       lo -= pad; hi += pad;
@@ -1197,14 +1214,20 @@ ROOM_JS = r"""
   at(M(new THREE.PlaneGeometry(1.3, 0.16), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(plateC) })), 0, 1.45, -4.79);
 
   var judge = new THREE.Group(); judge.position.set(0, 0.8, -5.75); world.add(judge);
-  var ROBE = new THREE.MeshStandardMaterial({ color: 0x0d0f1c, roughness: 0.55, metalness: 0.3 });
+  var ROBE = new THREE.MeshStandardMaterial({ color: 0x1b2433, roughness: 0.7, metalness: 0.1 });
   judge.add(shadowy(M(new THREE.ConeGeometry(0.46, 1.6, 24), ROBE), true, false)).position.y = 1.0;
   var trim = M(new THREE.TorusGeometry(0.2, 0.025, 8, 24), glowMat(0xf4c84a)); trim.rotation.x = Math.PI / 2; trim.position.y = 1.72; judge.add(trim);
   var jhead = new THREE.Group(); jhead.position.y = 1.96; judge.add(jhead);
-  jhead.add(shadowy(M(new THREE.SphereGeometry(0.21, 24, 16), METAL), true, false));
-  var jvisor = M(new THREE.BoxGeometry(0.28, 0.05, 0.06), glowMat(0xf4c84a)); jvisor.position.set(0, 0.02, 0.18); jhead.add(jvisor);
-  jhead.add(glow(0xf4c84a, 0.6, 0.6)).position.set(0, 0.02, 0.22);
-  var halo = M(new THREE.TorusGeometry(0.3, 0.012, 6, 48), addv(0xf4c84a, 0.9)); halo.rotation.x = Math.PI / 2; halo.position.y = 0.36; jhead.add(halo);
+  var JSKIN = new THREE.MeshStandardMaterial({ color: 0xa86b45, roughness: 0.65 });
+  jhead.add(shadowy(M(new THREE.SphereGeometry(0.24, 24, 16), JSKIN), true, false));
+  [-1, 1].forEach(function (sd) { var e = M(new THREE.SphereGeometry(0.03, 8, 6), new THREE.MeshBasicMaterial({ color: 0x111111 })); e.position.set(sd * 0.085, 0.02, 0.215); jhead.add(e);
+    var br = M(new THREE.BoxGeometry(0.1, 0.025, 0.02), new THREE.MeshStandardMaterial({ color: 0xdddddd })); br.position.set(sd * 0.085, 0.09, 0.22); jhead.add(br); });
+  var jcap = M(new THREE.CylinderGeometry(0.28, 0.23, 0.13, 28), new THREE.MeshStandardMaterial({ color: 0x1b2433, roughness: 0.6 })); jcap.position.y = 0.21; jhead.add(jcap);
+  var braid = M(new THREE.CylinderGeometry(0.235, 0.235, 0.05, 28), new THREE.MeshStandardMaterial({ color: 0xd9b44a, metalness: 0.85, roughness: 0.3 })); braid.position.y = 0.16; jhead.add(braid);
+  var jpeak = M(new THREE.CylinderGeometry(0.18, 0.18, 0.015, 24, 1, false, -Math.PI / 2, Math.PI), new THREE.MeshStandardMaterial({ color: 0x0b0b0e })); jpeak.position.set(0, 0.14, 0.13); jpeak.rotation.x = 0.25; jhead.add(jpeak);
+  var halo = new THREE.Group(); jhead.add(halo);
+  [-1, 1].forEach(function (sd) { for (var k = 0; k < 4; k++) { var star = M(new THREE.OctahedronGeometry(0.025, 0), new THREE.MeshBasicMaterial({ color: 0xf4c84a }));
+    star.position.set(sd * (0.36 + k * 0.0) , 1.62 + 0, 0.05 - k * 0.06); judge.add(star); } });
   var arm = new THREE.Group(); arm.position.set(0.32, 1.55, 0.12); judge.add(arm);
   var fore = M(new THREE.CylinderGeometry(0.05, 0.045, 0.5, 10), ROBE); fore.rotation.x = Math.PI / 2; fore.position.z = 0.25; arm.add(fore);
   var gavel = new THREE.Group(); gavel.position.set(0, 0, 0.5); arm.add(gavel);
@@ -1224,112 +1247,121 @@ ROOM_JS = r"""
     depthWrite: false, blending: THREE.AdditiveBlending }));
   world.add(dust);
 
+  // ── the council as little military officers: big heads, uniforms, unique headgear and insignia
   var COLORS = { 'The Quant': 0x3ee6a1, 'Risk': 0xff5468, 'Momentum': 0xffb03b, 'Time': 0x4cb7ff, 'Doubt': 0xc9a7ff };
-  function limb(g, x, y, len, r, mat) {
+  function std(c, r, m) { return new THREE.MeshStandardMaterial({ color: c, roughness: r === undefined ? 0.75 : r, metalness: m || 0 }); }
+  var BOOT = std(0x15130f, 0.45, 0.2), GOLD = std(0xd9b44a, 0.3, 0.85), BLACK = std(0x0b0b0e, 0.6), WHITE = std(0xf2f2ee, 0.5);
+  var EYE = new THREE.MeshBasicMaterial({ color: 0x111111 });
+  function bar(parent, w, h, x, y, z, rz, mat) { var b = M(new THREE.BoxGeometry(w, h, 0.03), mat); b.position.set(x, y, z); b.rotation.z = rz || 0; parent.add(b); return b; }
+  // two-part limb: shoulder/hip → elbow/knee → hand/boot
+  function limb(g, x, y, len, r, mat, endMat) {
     var piv = new THREE.Group(); piv.position.set(x, y, 0);
-    var seg = M(new THREE.CylinderGeometry(r, r * 0.8, len, 10), mat || METAL2); seg.position.y = -len / 2; piv.add(seg);
-    var end = M(new THREE.SphereGeometry(r * 1.15, 10, 8), METAL); end.position.y = -len; piv.add(end);
+    var half = len / 2, leg = y < 1.0;
+    var up = M(new THREE.CylinderGeometry(r * 1.08, r * 0.95, half, 12), mat); up.position.y = -half / 2; piv.add(up);
+    var joint = new THREE.Group(); joint.position.y = -half; piv.add(joint);
+    joint.add(M(new THREE.SphereGeometry(r * 1.0, 10, 8), mat));
+    var lo = M(new THREE.CylinderGeometry(r * 0.95, r * 0.85, half, 12), leg ? BOOT : mat); lo.position.y = -half / 2; joint.add(lo);
+    if (leg) { var boot = M(new THREE.BoxGeometry(r * 2.3, r * 1.3, r * 3.8), BOOT); boot.position.set(0, -half - r * 0.25, r * 0.9); joint.add(boot); }
+    else { var hand = M(new THREE.SphereGeometry(r * 1.15, 10, 8), endMat); hand.position.y = -half - r * 0.3; joint.add(hand); }
+    piv.userData.joint = joint;
     g.add(piv); return piv;
   }
-  function bar(parent, w, h, x, y, z, rz, mat) { var b = M(new THREE.BoxGeometry(w, h, 0.03), mat); b.position.set(x, y, z); b.rotation.z = rz || 0; parent.add(b); return b; }
-
+  // shared body: boots, trousers, tunic, belt, collar, big head with eyes/brows/mouth
+  function soldier(g, u, o) {
+    var TUNIC = std(o.tunic, 0.8), PANTS = std(o.pants || o.tunic, 0.8), SKIN = std(o.skin, 0.65);
+    var w = o.wide || 1;
+    u.legL = limb(g, -0.1 * w, 0.62, 0.6, 0.065 * w, PANTS); u.legR = limb(g, 0.1 * w, 0.62, 0.6, 0.065 * w, PANTS);
+    var torso = M(new THREE.BoxGeometry(0.44 * w, 0.58, 0.28 * Math.max(1, w * 0.9)), TUNIC); torso.position.y = 0.93; g.add(torso);
+    var belly = M(new THREE.BoxGeometry(0.46 * w, 0.08, 0.3 * Math.max(1, w * 0.9)), BLACK); belly.position.y = 0.72; g.add(belly);
+    var buckle = M(new THREE.BoxGeometry(0.07, 0.06, 0.02), GOLD); buckle.position.set(0, 0.72, 0.16 * Math.max(1, w * 0.9)); g.add(buckle);
+    for (var b = 0; b < 3; b++) { var btn = M(new THREE.SphereGeometry(0.018, 8, 6), GOLD); btn.position.set(0, 0.84 + b * 0.1, 0.145 * Math.max(1, w * 0.9)); g.add(btn); }
+    [-1, 1].forEach(function (sd) {                                   // epaulettes
+      var ep = M(new THREE.BoxGeometry(0.13, 0.03, 0.2), o.epaulette ? GOLD : TUNIC); ep.position.set(sd * 0.2 * w, 1.23, 0); g.add(ep);
+    });
+    var badge = M(new THREE.BoxGeometry(0.08, 0.06, 0.02), new THREE.MeshBasicMaterial({ color: u.col }));   // unit patch in their color
+    badge.position.set(-0.12 * w, 1.06, 0.145 * Math.max(1, w * 0.9)); g.add(badge); u.patch = badge;
+    if (o.medals) for (var m = 0; m < o.medals; m++) {
+      var md = M(new THREE.BoxGeometry(0.035, 0.05, 0.02), [GOLD, std(0xb03a2e), std(0x2e5cb0)][m % 3]);
+      md.position.set(0.07 * w + m * 0.045, 1.07, 0.145 * Math.max(1, w * 0.9)); g.add(md);
+    }
+    u.armL = limb(g, -0.27 * w, 1.2, 0.56, 0.055 * w, TUNIC, SKIN); u.armR = limb(g, 0.27 * w, 1.2, 0.56, 0.055 * w, TUNIC, SKIN);
+    var neck = M(new THREE.CylinderGeometry(0.07, 0.08, 0.08, 12), SKIN); neck.position.y = 1.27; g.add(neck);
+    var head = new THREE.Group(); head.position.y = 1.5; g.add(head); u.head = head;
+    var skull = M(new THREE.SphereGeometry(0.235, 28, 20), SKIN); skull.scale.set(1, 1.05, 0.98); head.add(skull);
+    [-1, 1].forEach(function (sd) { var ear = M(new THREE.SphereGeometry(0.05, 10, 8), SKIN); ear.position.set(sd * 0.235, 0, 0); ear.scale.set(0.5, 1, 0.8); head.add(ear); });
+    u.glows = [];
+    [-1, 1].forEach(function (sd) {
+      var e = M(new THREE.SphereGeometry(0.03, 10, 8), EYE); e.position.set(sd * 0.085, 0.02, 0.215); head.add(e); u.glows.push(e);
+      var br = bar(head, 0.09, 0.022, sd * 0.085, 0.09 + (o.browUp && sd > 0 ? 0.03 : 0), 0.22, sd * (o.browTilt || 0), BLACK);
+    });
+    var mouth = M(new THREE.BoxGeometry(o.mouthW || 0.08, 0.018, 0.02), std(0x5a2a22)); mouth.position.set(o.mouthX || 0, -0.1, 0.22); mouth.rotation.z = o.mouthTilt || 0; head.add(mouth); u.mouth = mouth;
+    var nose = M(new THREE.SphereGeometry(0.028, 8, 6), SKIN); nose.position.set(0, -0.03, 0.235); head.add(nose);
+    return { head: head, TUNIC: TUNIC, SKIN: SKIN };
+  }
   var BUILD = {
-    // tall and precise: slab body, square head, terminal-style face
+    // intelligence officer: olive uniform, beret, round glasses, tablet
     'The Quant': function (g, u, col) {
-      var G = glowMat(col);
-      var torso = M(new THREE.BoxGeometry(0.42, 0.78, 0.26), METAL); torso.position.y = 1.0; g.add(torso);
-      bar(g, 0.3, 0.025, 0, 1.22, 0.135, 0, G); bar(g, 0.3, 0.025, 0, 1.15, 0.135, 0, G); bar(g, 0.18, 0.025, -0.06, 1.08, 0.135, 0, G);
-      u.legL = limb(g, -0.11, 0.62, 0.58, 0.05); u.legR = limb(g, 0.11, 0.62, 0.58, 0.05);
-      u.armL = limb(g, -0.27, 1.35, 0.6, 0.04); u.armR = limb(g, 0.27, 1.35, 0.6, 0.04);
-      var head = new THREE.Group(); head.position.y = 1.68; g.add(head); u.head = head;
-      head.add(M(new THREE.BoxGeometry(0.36, 0.32, 0.3), METAL));
-      var screen = M(new THREE.BoxGeometry(0.3, 0.22, 0.01), new THREE.MeshBasicMaterial({ color: 0x07140f })); screen.position.z = 0.152; head.add(screen);
-      bar(head, 0.06, 0.06, -0.07, 0.03, 0.16, 0, G); bar(head, 0.06, 0.06, 0.07, 0.03, 0.16, 0, G);   // square eyes
-      bar(head, 0.12, 0.015, 0, -0.06, 0.16, 0, G);                                                   // flat line mouth
-      var ring = M(new THREE.TorusGeometry(0.34, 0.01, 6, 48), basic(col, 0.85)); ring.rotation.x = Math.PI / 2.3; head.add(ring); u.spin = ring;
+      var s = soldier(g, u, { tunic: 0x4b5a3a, skin: 0xe0ac69, medals: 1 }), h = s.head;
+      var beret = M(new THREE.SphereGeometry(0.25, 20, 12, 0, Math.PI * 2, 0, Math.PI / 2), std(0x1f5e3a)); beret.scale.set(1.05, 0.45, 1.05);
+      beret.position.set(0.03, 0.12, -0.01); beret.rotation.z = -0.25; h.add(beret);
+      var flash = M(new THREE.BoxGeometry(0.05, 0.05, 0.02), GOLD); flash.position.set(-0.11, 0.18, 0.18); h.add(flash);
+      [-1, 1].forEach(function (sd) { var lens = M(new THREE.TorusGeometry(0.05, 0.008, 6, 20), BLACK); lens.position.set(sd * 0.085, 0.02, 0.23); h.add(lens); });
+      var tab = M(new THREE.BoxGeometry(0.2, 0.26, 0.02), BLACK); tab.position.set(0, -0.06, 0.08); tab.rotation.x = -0.8;
+      var scr = M(new THREE.PlaneGeometry(0.17, 0.22), new THREE.MeshBasicMaterial({ color: col })); scr.position.z = 0.012; tab.add(scr);
+      u.armL.userData.joint.add(tab);
     },
-    // heavy guardian: broad armored chest, shoulder spikes, angular head, angry V visor
+    // military police / drill sergeant: broad, campaign hat, red armband, scowl
     'Risk': function (g, u, col) {
-      var G = glowMat(col);
-      var chest = M(new THREE.CylinderGeometry(0.42, 0.26, 0.7, 6), METAL); chest.position.y = 1.0; g.add(chest);
-      [-1, 1].forEach(function (sd) {
-        var pad = M(new THREE.SphereGeometry(0.17, 12, 8), METAL2); pad.position.set(0.42 * sd, 1.3, 0); g.add(pad);
-        for (var k = 0; k < 2; k++) { var sp = M(new THREE.ConeGeometry(0.05, 0.2, 8), G); sp.position.set((0.42 + k * 0.08) * sd, 1.45, -0.03 + k * 0.06); sp.rotation.z = -0.5 * sd; g.add(sp); }
-      });
-      u.legL = limb(g, -0.15, 0.64, 0.6, 0.075); u.legR = limb(g, 0.15, 0.64, 0.6, 0.075);
-      u.armL = limb(g, -0.46, 1.25, 0.6, 0.065); u.armR = limb(g, 0.46, 1.25, 0.6, 0.065);
-      var head = new THREE.Group(); head.position.y = 1.6; g.add(head); u.head = head;
-      var skull = M(new THREE.OctahedronGeometry(0.24, 0), METAL); skull.scale.set(1.1, 1.0, 0.95); head.add(skull);
-      bar(head, 0.17, 0.04, -0.075, 0.03, 0.2, -0.38, G); bar(head, 0.17, 0.04, 0.075, 0.03, 0.2, 0.38, G);  // angry V
-      bar(head, 0.1, 0.02, 0, -0.08, 0.19, 0, G);
+      var s = soldier(g, u, { tunic: 0x6b5a3e, pants: 0x4a3f2c, skin: 0x8d5524, wide: 1.22, browTilt: 0.35, mouthW: 0.1, medals: 2 }), h = s.head;
+      var brim = M(new THREE.CylinderGeometry(0.4, 0.4, 0.02, 32), std(0x8a6a3a)); brim.position.y = 0.14; h.add(brim);
+      var crown = M(new THREE.ConeGeometry(0.2, 0.22, 4), std(0x8a6a3a)); crown.position.y = 0.26; crown.rotation.y = Math.PI / 4; h.add(crown);
+      var band = M(new THREE.CylinderGeometry(0.21, 0.21, 0.04, 20), BLACK); band.position.y = 0.17; h.add(band);
+      var arm = M(new THREE.CylinderGeometry(0.075, 0.075, 0.1, 12), new THREE.MeshStandardMaterial({ color: 0xc0262e, roughness: 0.7 }));
+      arm.position.y = -0.1; u.armL.add(arm);
+      var mp = M(new THREE.BoxGeometry(0.05, 0.04, 0.005), WHITE); mp.position.set(0, -0.1, 0.078); u.armL.add(mp);
+      var whistle = M(new THREE.CylinderGeometry(0.012, 0.012, 0.05, 8), GOLD); whistle.position.set(0.1, 1.12, 0.17); whistle.rotation.z = 1.2; g.add(whistle);
     },
-    // lean sprinter: forward-leaning, teardrop head, wraparound visor, swept fins
+    // paratrooper: lean, helmet with goggles, forward-leaning, speed lines when walking
     'Momentum': function (g, u, col) {
-      var G = glowMat(col);
-      var lean = new THREE.Group(); lean.rotation.x = 0.16; g.add(lean);
-      var torso = M(new THREE.CylinderGeometry(0.17, 0.2, 0.74, 16), METAL); torso.position.y = 1.0; lean.add(torso);
-      bar(lean, 0.04, 0.5, 0, 1.0, 0.18, 0, G);
-      u.legL = limb(g, -0.09, 0.62, 0.6, 0.045); u.legR = limb(g, 0.09, 0.62, 0.6, 0.045);
-      u.armL = limb(lean, -0.24, 1.32, 0.58, 0.038); u.armR = limb(lean, 0.24, 1.32, 0.58, 0.038);
-      var head = new THREE.Group(); head.position.set(0, 1.62, 0.1); lean.add(head); u.head = head;
-      var skull = M(new THREE.SphereGeometry(0.19, 24, 16), METAL); skull.scale.set(0.95, 0.95, 1.45); skull.position.z = -0.05; head.add(skull);
-      var visor = M(new THREE.TorusGeometry(0.19, 0.03, 8, 30, Math.PI * 0.9), G); visor.rotation.set(Math.PI / 2, 0, Math.PI * 0.05); visor.position.set(0, 0.02, 0); head.add(visor);
-      [-1, 1].forEach(function (sd) { var fin = M(new THREE.BoxGeometry(0.02, 0.1, 0.28), METAL2); fin.position.set(0.14 * sd, 0.1, -0.2); fin.rotation.x = -0.5; head.add(fin); });
+      var s = soldier(g, u, { tunic: 0x5a4a32, pants: 0x4d4030, skin: 0xc68642, mouthW: 0.1, mouthTilt: -0.15, browUp: true }), h = s.head;
+      var helm = M(new THREE.SphereGeometry(0.27, 24, 14, 0, Math.PI * 2, 0, Math.PI / 2), std(0x4f5a34, 0.85)); helm.position.y = 0.04; h.add(helm);
+      var rim = M(new THREE.TorusGeometry(0.27, 0.02, 6, 32), std(0x4f5a34, 0.85)); rim.rotation.x = Math.PI / 2; rim.position.y = 0.04; h.add(rim);
+      var strap = M(new THREE.BoxGeometry(0.5, 0.035, 0.02), BLACK); strap.position.set(0, 0.17, 0.2); h.add(strap);
+      [-1, 1].forEach(function (sd) { var gg = M(new THREE.CylinderGeometry(0.055, 0.055, 0.04, 16), new THREE.MeshBasicMaterial({ color: col })); gg.rotation.x = Math.PI / 2; gg.position.set(sd * 0.08, 0.17, 0.22); h.add(gg); });
+      var pack = M(new THREE.BoxGeometry(0.34, 0.4, 0.14), std(0x3d4529)); pack.position.set(0, 0.95, -0.21); g.add(pack);
       u.trail = [];
       for (var i = 0; i < 4; i++) { var tp = M(new THREE.SphereGeometry(0.045 - i * 0.008, 8, 6), basic(col, 0.7 - i * 0.15)); world.add(tp); u.trail.push(tp); }
     },
-    // stout and steady: round body, the face IS a clock
+    // navy officer / timekeeper: white peaked cap, navy tunic, glowing wristwatch, stout
     'Time': function (g, u, col) {
-      var G = glowMat(col);
-      var body = M(new THREE.SphereGeometry(0.34, 24, 18), METAL); body.scale.set(1, 1.1, 0.9); body.position.y = 0.95; g.add(body);
-      var belt = M(new THREE.TorusGeometry(0.33, 0.02, 6, 40), G); belt.rotation.x = Math.PI / 2; belt.position.y = 0.92; g.add(belt);
-      u.legL = limb(g, -0.13, 0.62, 0.55, 0.06); u.legR = limb(g, 0.13, 0.62, 0.55, 0.06);
-      u.armL = limb(g, -0.36, 1.12, 0.5, 0.05); u.armR = limb(g, 0.36, 1.12, 0.5, 0.05);
-      var head = new THREE.Group(); head.position.y = 1.6; g.add(head); u.head = head;
-      var rim = M(new THREE.CylinderGeometry(0.27, 0.27, 0.12, 36), METAL); rim.rotation.x = Math.PI / 2; head.add(rim);
-      var face = M(new THREE.CylinderGeometry(0.23, 0.23, 0.02, 36), new THREE.MeshBasicMaterial({ color: 0x0a1424 })); face.rotation.x = Math.PI / 2; face.position.z = 0.06; head.add(face);
-      for (var k = 0; k < 12; k++) { var a = k / 12 * Math.PI * 2, tk = bar(head, 0.012, k % 3 ? 0.03 : 0.06, Math.sin(a) * 0.19, Math.cos(a) * 0.19, 0.075, -a, G); }
-      var hands = new THREE.Group(); hands.position.z = 0.08; head.add(hands); u.hands = hands;
-      bar(hands, 0.018, 0.17, 0, 0.075, 0, 0, G); var hr = bar(hands, 0.12, 0.022, 0.05, 0, 0, 0, G);
-      var gy = M(new THREE.TorusGeometry(0.36, 0.01, 6, 48), basic(col, 0.8)); head.add(gy); u.gyro = gy;
+      var s = soldier(g, u, { tunic: 0x1c2a4a, skin: 0xf1c27d, wide: 1.12, epaulette: true, medals: 2 }), h = s.head;
+      var cap = M(new THREE.CylinderGeometry(0.26, 0.22, 0.12, 28), WHITE); cap.position.y = 0.2; h.add(cap);
+      var band = M(new THREE.CylinderGeometry(0.225, 0.225, 0.05, 28), BLACK); band.position.y = 0.15; h.add(band);
+      var peak = M(new THREE.CylinderGeometry(0.17, 0.17, 0.015, 24, 1, false, -Math.PI / 2, Math.PI), BLACK); peak.position.set(0, 0.13, 0.12); peak.rotation.x = 0.25; h.add(peak);
+      var crest = M(new THREE.SphereGeometry(0.035, 10, 8), GOLD); crest.position.set(0, 0.17, 0.225); h.add(crest);
+      var watch = M(new THREE.CylinderGeometry(0.06, 0.06, 0.03, 16), new THREE.MeshBasicMaterial({ color: col })); watch.rotation.z = Math.PI / 2;
+      watch.position.set(0.06, -0.2, 0); u.armL.userData.joint.add(watch);
+      var hands = new THREE.Group(); hands.position.set(0.078, -0.2, 0); hands.rotation.y = Math.PI / 2; u.armL.userData.joint.add(hands); u.hands = hands;
+      bar(hands, 0.008, 0.045, 0, 0.02, 0, 0, BLACK);
     },
-    // the skeptic: slight hunch, egg head, one glowing monocle eye, one dim squint, raised brow
+    // grizzled colonel: garrison cap tilted, grey mustache, monocle, lots of medals
     'Doubt': function (g, u, col) {
-      var G = glowMat(col), DIM = basic(col, 0.35);
-      var torso = M(new THREE.CylinderGeometry(0.16, 0.24, 0.68, 16), METAL); torso.position.y = 0.95; torso.rotation.x = 0.1; g.add(torso);
-      var coat = M(new THREE.ConeGeometry(0.3, 0.45, 16, 1, true), METAL2); coat.position.y = 0.72; g.add(coat);
-      u.legL = limb(g, -0.09, 0.58, 0.55, 0.045); u.legR = limb(g, 0.09, 0.58, 0.55, 0.045);
-      u.armL = limb(g, -0.22, 1.25, 0.55, 0.038); u.armR = limb(g, 0.22, 1.25, 0.55, 0.038);
-      var head = new THREE.Group(); head.position.set(0, 1.55, 0.05); head.rotation.z = 0.2; g.add(head); u.head = head;
-      var egg = M(new THREE.SphereGeometry(0.2, 24, 18), METAL); egg.scale.set(0.9, 1.3, 0.9); head.add(egg);
-      var mono = M(new THREE.TorusGeometry(0.06, 0.014, 8, 24), G); mono.position.set(0.075, 0.04, 0.17); head.add(mono);
-      var pupil = M(new THREE.SphereGeometry(0.028, 10, 8), G); pupil.position.set(0.075, 0.04, 0.17); head.add(pupil);
-      bar(head, 0.08, 0.015, -0.075, 0.03, 0.175, 0.05, DIM);                    // squinting eye
-      bar(head, 0.1, 0.018, 0.08, 0.14, 0.16, -0.35, G);                       // raised brow
-      bar(head, 0.08, 0.015, 0.0, -0.1, 0.17, -0.15, DIM);                      // crooked mouth
+      var s = soldier(g, u, { tunic: 0x3a3f4a, skin: 0x5c3a21, medals: 4, browUp: true, mouthX: 0.03, mouthTilt: -0.2, epaulette: true }), h = s.head;
+      var cap = M(new THREE.BoxGeometry(0.3, 0.1, 0.4), std(0x2c313b)); cap.position.set(0.04, 0.24, 0); cap.rotation.z = -0.3; h.add(cap);
+      var pip = M(new THREE.BoxGeometry(0.04, 0.04, 0.02), GOLD); pip.position.set(-0.08, 0.27, 0.19); h.add(pip);
+      var stache = M(new THREE.BoxGeometry(0.16, 0.035, 0.04), std(0x9a9a9a)); stache.position.set(0, -0.065, 0.225); h.add(stache);
+      var mono = M(new THREE.TorusGeometry(0.05, 0.01, 6, 20), GOLD); mono.position.set(0.085, 0.02, 0.235); h.add(mono);
+      var chain = M(new THREE.CylinderGeometry(0.004, 0.004, 0.25, 4), GOLD); chain.position.set(0.12, -0.1, 0.22); chain.rotation.z = 0.3; h.add(chain);
+      head_tilt = h; h.rotation.z = 0.12;
     }
   };
+  var head_tilt;
   function agent(name) {
     var col = COLORS[name] || 0xffffff, g = new THREE.Group(), u = g.userData;
+    u.col = col;
     (BUILD[name] || BUILD['Doubt'])(g, u, col);
     var halo = M(new THREE.RingGeometry(0.34, 0.42, 40), basic(col, 0.45)); halo.rotation.x = -Math.PI / 2; halo.position.y = 0.02; g.add(halo); u.halo = halo;
-    u.col = col;
     return g;
-  }
-
-
-  // ── upgraded limbs: shoulder/hip → elbow/knee → hand/foot (overrides the simple one above)
-  function limb(g, x, y, len, r, mat) {
-    var piv = new THREE.Group(); piv.position.set(x, y, 0);
-    var half = len / 2;
-    var up = M(new THREE.CylinderGeometry(r * 1.05, r * 0.9, half, 10), mat || METAL2); up.position.y = -half / 2; piv.add(up);
-    var joint = new THREE.Group(); joint.position.y = -half; piv.add(joint);
-    joint.add(M(new THREE.SphereGeometry(r * 1.2, 10, 8), METAL));
-    var lo = M(new THREE.CylinderGeometry(r * 0.9, r * 0.75, half, 10), mat || METAL2); lo.position.y = -half / 2; joint.add(lo);
-    var end = M(new THREE.SphereGeometry(r * 1.1, 10, 8), METAL); end.position.y = -half; joint.add(end);
-    if (y < 1.0) { var foot = M(new THREE.BoxGeometry(r * 2.4, r * 1.1, r * 3.6), METAL); foot.position.set(0, -half - r * 0.3, r * 0.9); joint.add(foot); }
-    piv.userData.joint = joint;
-    g.add(piv); return piv;
   }
 
   // ── member stations in an arc behind the holotable
@@ -1364,9 +1396,8 @@ ROOM_JS = r"""
     u.i = i; u.seat = seat; u.faceSeat = face; u.yaw = face; u.phase = i * 1.37;
     u.hip = u.legL ? u.legL.position.y : 0.6; u.prev = seat.clone(); u.blinkAt = 1 + i * 0.9;
     // glow parts: the colored visor/face meshes, plus a halo sprite in front of the face
-    u.glows = [];
-    if (u.head) u.head.traverse(function (k) { if (k.isMesh && k.material && k.material.type === 'MeshBasicMaterial' && !k.material.transparent) u.glows.push(k); });
-    var fg = glow(u.col, 0.7, 0.55); fg.position.set(0, 0.02, 0.24); if (u.head) u.head.add(fg); u.faceGlow = fg;
+    u.glows = u.glows || [];
+    var fg = glow(u.col, 0.35, 0.4); if (u.patch) { fg.position.copy(u.patch.position); fg.position.z += 0.03; g.add(fg); } u.faceGlow = fg;
     shadowy(g, true, false);
     g.position.copy(seat); world.add(g); people.push(g);
     // station: sleek chair + console with a screen and a floor ring that lights with the vote
@@ -1513,7 +1544,8 @@ ROOM_JS = r"""
       var blink = (!still && u.blinkEnd && t < u.blinkEnd) ? 0.15 : 1;
       var talk = p.at && p.k > 0.25 && p.k < 1.3 ? 0.5 + 0.5 * Math.sin(t * 22) : 0;
       u.glows.forEach(function (m) { m.scale.y = blink; });
-      u.faceGlow.material.opacity = 0.35 + talk * 0.6; u.faceGlow.scale.setScalar(0.6 + talk * 0.5);
+      u.faceGlow.material.opacity = 0.25 + talk * 0.6; u.faceGlow.scale.setScalar(0.3 + talk * 0.3);
+      if (u.mouth) u.mouth.scale.y = 1 + talk * 3.5;
       u.halo.visible = p.sit < 0.5;
       var sel = picked === i ? 1.08 : 1; g.scale.setScalar(g.scale.x + (sel - g.scale.x) * 0.2);
       u.halo.material.opacity = picked === i ? 0.95 : 0.4;
@@ -1571,10 +1603,17 @@ def fmt_hours(h):
     return f"{h * 60:.0f}m" if h < 1 else f"{h:.0f}h" if h < 48 else f"{h / 24:.1f}d"
 
 
-def action_center(state, flagged_count):
+def action_center(state, flagged_count, results=()):
     now = time.time()
     cards, counts = [], {"buy": 0, "hold": 0, "sell": 0}
-    for g in sorted(state.get("open", []), key=lambda g: -g.get("opened", 0)):
+    def prio(g):
+        if g.get("exit_px") is not None:
+            return 0                                   # sell alerts first
+        return 1 if now - g.get("opened", now) < 3600 else 2
+    shown = 0
+    for g in sorted(state.get("open", []), key=lambda g: (prio(g), -g.get("opened", 0))):
+        if shown >= TOP_N:
+            break
         side, label = g["side"], g["label"]
         strike = label.split(" — ")[-1]
         url = html.escape(g.get("url", "#"))
@@ -1622,9 +1661,36 @@ def action_center(state, flagged_count):
             body = (f"<p class='big'>Bought around <b>{c(entry)}</b>. Sell if it reaches <b>{c(tp)}</b> or drops to <b>{c(sl)}</b>. "
                     "You'll get a text either way.</p>" + track + f"<p class='muted'>{close_txt}. If you didn't buy it, ignore this.</p>")
         why_html = ("<p class='why'>Why: " + html.escape("; ".join(why)) + "</p>") if why else ""
-        cards.append(f"""<article class="act {kind}"><div class="ah"><span class="badge {kind}">{badge}</span>
+        cards.append(f"""<article class="act {kind}"><div class="ah"><span class="rank">#{shown + 1}</span><span class="badge {kind}">{badge}</span>
           <b>{head}</b></div><p class="mk">{html.escape(label)}</p>{body}{why_html}
           <a class="go" href="{url}" target="_blank" rel="noopener">Open on Kalshi ↗</a></article>""")
+        shown += 1
+    # fill the rest of the top 4 with the closest calls, clearly marked "not yet"
+    held = {g["ticker"] for g in state.get("open", [])}
+    watch = sorted([r for r in results if r.get("edge") is not None and r["edge"] > 0 and r["ticker"] not in held],
+                   key=lambda r: -quality(r))
+    seen_events = {g.get("event") for g in state.get("open", [])}
+    for r in watch:
+        if shown >= TOP_N:
+            break
+        if r.get("event") in seen_events:
+            continue
+        seen_events.add(r.get("event"))
+        strike = r["label"].split(" — ")[-1]
+        need = min_edge(state, r["category"])
+        if r["edge"] < need:
+            why_not = f"Edge is {c(r['edge'])}; it needs {round(need * 100)}¢ to be worth the risk."
+        elif r.get("votes") and not r.get("approved"):
+            noes = [w for ok, w in r["votes"].values() if ok is False]
+            why_not = "The council said no: " + "; ".join(noes[:2]) + "."
+        else:
+            why_not = "Close. It may turn into a BUY on the next scan."
+        cards.append(f"""<article class="act watch"><div class="ah"><span class="rank">#{shown + 1}</span><span class="badge watch">WATCHING</span>
+          <b>{r['side']} on {html.escape(strike)} at {c(r['ask'])}</b></div><p class="mk">{html.escape(r['label'])}</p>
+          <p class="big">Not a buy yet. {html.escape(why_not)}</p>
+          <p class="muted">Fair value {c(r['fair'])} · {r['category']} · {('closes in ' + fmt_hours(r['hours'])) if r.get('hours') else ''}</p>
+          <a class="go" href="{html.escape(r['url'])}" target="_blank" rel="noopener">Look on Kalshi ↗</a></article>""")
+        shown += 1
     summary = " · ".join(x for x in (f"🟢 {counts['buy']} to buy" if counts["buy"] else "",
                                        f"🔴 {counts['sell']} to sell" if counts["sell"] else "",
                                        f"🟡 {counts['hold']} holding" if counts["hold"] else "") if x)
@@ -1633,7 +1699,9 @@ def action_center(state, flagged_count):
           <p class="big">Kalshi Scout checks every 15 minutes and texts you the moment there's a trade worth taking.</p>
           <p class="muted">""" + (f"{flagged_count} market(s) cleared the edge but the council said no. See “Close calls” below." if flagged_count else
                                    "No market has a big enough edge right now. That's normal; most scans find nothing.") + "</p></article>")
-    return f"""<section class="actions"><div class="ach"><h2>What to do now</h2><span>{summary or 'all clear'}</span></div>{''.join(cards)}</section>"""
+    sports = "" if state.get("sports_on") else (
+        '<p class="note">🏈 Sports is off. Add a free key from the-odds-api.com as the <b>ODDS_API_KEY</b> secret to turn it on.</p>')
+    return f"""<section class="actions"><div class="ach"><h2>Top {TOP_N} right now</h2><span>{summary or 'nothing to act on'}</span></div>{''.join(cards)}{sports}</section>"""
 
 
 def build_html(results, log, refresh_min, state=None):
@@ -1746,6 +1814,9 @@ details {{ color:var(--muted) }} details li {{ margin:2px 0 }}
 .act.buy {{ border-left-color:var(--yes) }} .act.sell {{ border-left-color:var(--no) }} .act.hold {{ border-left-color:#c9a227 }} .act.idle {{ border-left-color:var(--line) }}
 .ah {{ display:flex; gap:10px; align-items:center; flex-wrap:wrap }} .ah b {{ font-size:17px }}
 .badge {{ font:800 11px/1 ui-monospace,Menlo,monospace; letter-spacing:.08em; padding:5px 8px; border-radius:5px; color:#fff }}
+.rank {{ font:800 13px/1 ui-monospace,Menlo,monospace; color:var(--muted) }}
+.badge.watch {{ background:#5b6170 }} .act.watch {{ border-left-color:#5b6170; opacity:.92 }}
+.actions .note {{ margin:0; color:var(--muted); font-size:13px }}
 .badge.buy {{ background:var(--yes) }} .badge.sell {{ background:var(--no) }} .badge.hold {{ background:#a8861c }} .badge.idle {{ background:var(--muted) }}
 .act .mk {{ margin:0; color:var(--muted); font-size:12.5px }}
 .act .big {{ margin:0; font-size:15px; line-height:1.5 }}
@@ -1841,7 +1912,7 @@ table.board {{ min-width:0 }}
 }}
 </style></head><body><div class="wrap">
 <header><h1>Kalshi Scout</h1><p>Scanned {now}{f" · refreshes every {refresh_min} min" if refresh_min else ""}</p></header>
-{action_center(state, len(flagged))}
+{action_center(state, len(flagged), results)}
 <div class="stats">
   <div class="stat"><span>Record</span><b>{rec['wins']}W–{rec['losses']}L</b></div>
   <div class="stat"><span>Profit</span><b>{cents(rec['pnl'])}</b><small>per contract, all signals</small></div>
@@ -1850,10 +1921,8 @@ table.board {{ min-width:0 }}
 </div>
 <details class="more"><summary>🏛 Watch the council debate</summary>{council_room(state)}</details>
 <details class="more"><summary>🧠 Who called it? (learning)</summary><section><p class="rec">{record_line}<br>Learned minimum edge: {" · ".join(f"{cat} {round(min_edge(state, cat) * 100)}¢" for cat in ("Crypto", "Sports"))}. Vote weights start changing after {LEARN_MIN_CALLS} settled calls.</p><div class="tbl"><table class="board">{board_head}{board_rows}</table></div></section></details>
-<details class="more"><summary>📋 All open signals (table)</summary><section><div class="tbl"><table>{sig_head}{sig_rows}</table></div></section></details>
-<details class="more"><summary>🎯 Possible edges &amp; close calls</summary><section><h2>Possible edges</h2><div class="tbl"><table>{head}{flagged_rows}</table></div></section>
+<details class="more"><summary>📊 Everything the bot checked</summary><section><h2>Open signals</h2><div class="tbl"><table>{sig_head}{sig_rows}</table></div></section><section><h2>Possible edges</h2><div class="tbl"><table>{head}{flagged_rows}</table></div></section>
 <section><h2>Close calls</h2><div class="tbl"><table>{head}{"".join(row(r) for r in near) or '<tr><td colspan="12" class="empty">Nothing priced yet.</td></tr>'}</table></div></section></details>
-{f'<details class="more"><summary>🏈 Sports watchlist</summary><section><div class="tbl"><table>{head}{"".join(row(r, False) for r in watch[:40])}</table></div></section></details>' if watch else ''}
 <details class="more"><summary>❓ How to read this</summary><section class="howto"><dl>
   <dt>Price / ask</dt><dd>What Kalshi charges for one contract. A contract pays $1 if you're right and $0 if not.</dd>
   <dt>Fair value</dt><dd>What the bot thinks the contract is really worth, from live crypto prices or sportsbook odds.</dd>
