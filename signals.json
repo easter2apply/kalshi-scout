@@ -1,4 +1,19 @@
 {
- "open": [],
+ "open": [
+  {
+   "contracts": 15,
+   "entry": 0.15,
+   "fair": 0.20073021406164177,
+   "key": "KXETHD-26OCT1213-T2539.99:YES",
+   "label": "Ethereum price at Oct 12, 2026 at 1pm EDT? \u2014 $2,540 or above",
+   "last_bid": null,
+   "opened": 1791821289.1521442,
+   "side": "YES",
+   "sl": 0.09,
+   "ticker": "KXETHD-26OCT1213-T2539.99",
+   "tp": 0.2,
+   "url": "https://kalshi.com/markets/kxethd"
+  }
+ ],
  "recent": {}
 }
