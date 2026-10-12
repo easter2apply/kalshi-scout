@@ -1,5 +1,25 @@
 {
  "chat_id": "7590441188",
+ "council_intro": true,
+ "last_px": {
+  "KXBTC-26OCT1213-B82850:NO": 0.76,
+  "KXBTC-26OCT1217-B82875:NO": 0.78,
+  "KXBTCD-26OCT1213-T82599.99:NO": 0.1,
+  "KXBTCD-26OCT1213-T82699.99:NO": 0.22,
+  "KXBTCD-26OCT1213-T82799.99:NO": 0.42,
+  "KXBTCD-26OCT1213-T82999.99:YES": 0.16,
+  "KXBTCD-26OCT1213-T83099.99:YES": 0.07,
+  "KXBTCD-26OCT1217-T82249.99:NO": 0.13,
+  "KXBTCD-26OCT1217-T82999.99:YES": 0.34,
+  "KXBTCD-26OCT1217-T83249.99:YES": 0.19,
+  "KXBTCD-26OCT1217-T83499.99:YES": 0.09,
+  "KXETH-26OCT1213-B2527:NO": 0.71,
+  "KXETH-26OCT1213-B2532:NO": 0.74,
+  "KXETHD-26OCT1213-T2519.99:NO": 0.07,
+  "KXETHD-26OCT1213-T2524.99:NO": 0.2,
+  "KXETHD-26OCT1213-T2534.99:YES": 0.22,
+  "KXETHD-26OCT1213-T2539.99:YES": 0.06
+ },
  "open": [
   {
    "contracts": 20,
@@ -7,17 +27,146 @@
    "fair": 0.18960346918446314,
    "key": "KXBTCD-26OCT1217-T82249.99:NO",
    "label": "Bitcoin price on Oct 12, 2026? \u2014 $82,250 or above",
-   "last_bid": null,
+   "last_bid": 0.12,
    "opened": 1791821651.4920948,
    "side": "NO",
    "sl": 0.06,
    "ticker": "KXBTCD-26OCT1217-T82249.99",
    "tp": 0.19,
    "url": "https://kalshi.com/markets/kxbtcd"
+  },
+  {
+   "contracts": 23,
+   "entry": 0.2,
+   "fair": 0.2991061890392628,
+   "key": "KXETHD-26OCT1213-T2524.99:NO",
+   "label": "Ethereum price at Oct 12, 2026 at 1pm EDT? \u2014 $2,525 or above",
+   "last_bid": null,
+   "opened": 1791822016.312495,
+   "side": "NO",
+   "sl": 0.08,
+   "ticker": "KXETHD-26OCT1213-T2524.99",
+   "tp": 0.3,
+   "url": "https://kalshi.com/markets/kxethd",
+   "votes": {
+    "Doubt": true,
+    "Momentum": null,
+    "Risk": true,
+    "The Quant": true,
+    "Time": true
+   }
+  },
+  {
+   "contracts": 15,
+   "entry": 0.22,
+   "fair": 0.2971123425917074,
+   "key": "KXBTCD-26OCT1213-T82699.99:NO",
+   "label": "Bitcoin price on Oct 12, 2026? \u2014 $82,700 or above",
+   "last_bid": null,
+   "opened": 1791822016.312495,
+   "side": "NO",
+   "sl": 0.13,
+   "ticker": "KXBTCD-26OCT1213-T82699.99",
+   "tp": 0.3,
+   "url": "https://kalshi.com/markets/kxbtcd",
+   "votes": {
+    "Doubt": true,
+    "Momentum": null,
+    "Risk": true,
+    "The Quant": true,
+    "Time": true
+   }
+  },
+  {
+   "contracts": 38,
+   "entry": 0.07,
+   "fair": 0.13681416489827503,
+   "key": "KXETHD-26OCT1213-T2519.99:NO",
+   "label": "Ethereum price at Oct 12, 2026 at 1pm EDT? \u2014 $2,520 or above",
+   "last_bid": null,
+   "opened": 1791822016.312495,
+   "side": "NO",
+   "sl": 0.01,
+   "ticker": "KXETHD-26OCT1213-T2519.99",
+   "tp": 0.14,
+   "url": "https://kalshi.com/markets/kxethd",
+   "votes": {
+    "Doubt": true,
+    "Momentum": null,
+    "Risk": true,
+    "The Quant": true,
+    "Time": true
+   }
+  },
+  {
+   "contracts": 28,
+   "entry": 0.1,
+   "fair": 0.166321455794596,
+   "key": "KXBTCD-26OCT1213-T82599.99:NO",
+   "label": "Bitcoin price on Oct 12, 2026? \u2014 $82,600 or above",
+   "last_bid": null,
+   "opened": 1791822016.312495,
+   "side": "NO",
+   "sl": 0.02,
+   "ticker": "KXBTCD-26OCT1213-T82599.99",
+   "tp": 0.17,
+   "url": "https://kalshi.com/markets/kxbtcd",
+   "votes": {
+    "Doubt": true,
+    "Momentum": null,
+    "Risk": true,
+    "The Quant": true,
+    "Time": true
+   }
+  },
+  {
+   "contracts": 17,
+   "entry": 0.16,
+   "fair": 0.21995064746250836,
+   "key": "KXBTCD-26OCT1213-T82999.99:YES",
+   "label": "Bitcoin price on Oct 12, 2026? \u2014 $83,000 or above",
+   "last_bid": null,
+   "opened": 1791822016.312495,
+   "side": "YES",
+   "sl": 0.09,
+   "ticker": "KXBTCD-26OCT1213-T82999.99",
+   "tp": 0.22,
+   "url": "https://kalshi.com/markets/kxbtcd",
+   "votes": {
+    "Doubt": false,
+    "Momentum": null,
+    "Risk": true,
+    "The Quant": true,
+    "Time": true
+   }
   }
  ],
  "recent": {
   "KXETHD-26OCT1213-T2539.99:YES": 1791821651.4920948
  },
+ "shadow": [
+  {
+   "contracts": 13,
+   "entry": 0.71,
+   "fair": 0.7836617226274919,
+   "key": "KXETH-26OCT1213-B2527:NO",
+   "label": "Ethereum price at Oct 12, 2026 at 1pm EDT? \u2014 $2,525 to 2,529.99",
+   "last_bid": null,
+   "opened": 1791822016.312495,
+   "shadow": true,
+   "side": "NO",
+   "sl": 0.63,
+   "ticker": "KXETH-26OCT1213-B2527",
+   "tp": 0.78,
+   "url": "https://kalshi.com/markets/kxeth",
+   "votes": {
+    "Doubt": true,
+    "Momentum": null,
+    "Risk": false,
+    "The Quant": false,
+    "Time": true
+   }
+  }
+ ],
  "welcomed": true
 }
