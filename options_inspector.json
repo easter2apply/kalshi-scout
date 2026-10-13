@@ -1,0 +1,787 @@
+{
+ "when": 1791923487.0428104,
+ "grade": {
+  "months": 6.0,
+  "budget": 62.5,
+  "setups": 6846,
+  "no_contract": 5321,
+  "approved": 1513,
+  "plans": {
+   "now": {
+    "label": "Current rules (hold weeklies + take profit early)",
+    "r": {
+     "n": 545,
+     "win": 0.3779816513761468,
+     "avg": -0.132845871559633,
+     "total": -72.401
+    },
+    "dollars": -1437.1,
+    "max_dd": 1512.4,
+    "per_month": 90.83333333333333
+   },
+   "day_plain": {
+    "label": "Old rules (sell everything by 3:40, fixed +60% target)",
+    "r": {
+     "n": 551,
+     "win": 0.3157894736842105,
+     "avg": -0.14868602540834847,
+     "total": -81.926
+    },
+    "dollars": -1568.76,
+    "max_dd": 1621.53,
+    "per_month": 91.83333333333333
+   },
+   "hold_plain": {
+    "label": "Hold weeklies, fixed +60% target",
+    "r": {
+     "n": 523,
+     "win": 0.29636711281070743,
+     "avg": -0.19193307839388146,
+     "total": -100.381
+    },
+    "dollars": -1928.91,
+    "max_dd": 2000.51,
+    "per_month": 87.16666666666667
+   },
+   "day_partial": {
+    "label": "Sell by 3:40 daily, take profit early",
+    "r": {
+     "n": 570,
+     "win": 0.37894736842105264,
+     "avg": -0.11063333333333333,
+     "total": -63.061
+    },
+    "dollars": -1240.34,
+    "max_dd": 1287.62,
+    "per_month": 95.0
+   }
+  },
+  "taken": [
+   {
+    "sym": "SPY",
+    "t": "2026-09-30T14:00:00",
+    "setup": "opening breakout",
+    "dir": 1,
+    "pl": -20.0,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.5,
+    "qty": 1
+   },
+   {
+    "sym": "QQQ",
+    "t": "2026-09-30T14:15:00",
+    "setup": "crossover 15m",
+    "dir": 1,
+    "pl": -23.6,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.59,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-09-30T14:45:00",
+    "setup": "crossover 15m",
+    "dir": 1,
+    "pl": -21.2,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.53,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-01T13:45:00",
+    "setup": "crossover 15m",
+    "dir": -1,
+    "pl": 31.8,
+    "r": 1.5,
+    "how": "target",
+    "zero": true,
+    "ask": 0.53,
+    "qty": 1
+   },
+   {
+    "sym": "SOFI",
+    "t": "2026-10-01T13:45:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": -29.16,
+    "r": -1.257,
+    "how": "stop",
+    "zero": false,
+    "ask": 0.29,
+    "qty": 2
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-01T14:00:00",
+    "setup": "crossover 15m",
+    "dir": -1,
+    "pl": 3.74,
+    "r": 0.176,
+    "how": "trailing stop",
+    "zero": true,
+    "ask": 0.53,
+    "qty": 1
+   },
+   {
+    "sym": "QQQ",
+    "t": "2026-10-01T15:15:00",
+    "setup": "crossover 15m",
+    "dir": -1,
+    "pl": 27.0,
+    "r": 1.5,
+    "how": "target",
+    "zero": true,
+    "ask": 0.45,
+    "qty": 1
+   },
+   {
+    "sym": "QQQ",
+    "t": "2026-10-01T15:30:00",
+    "setup": "crossover 15m",
+    "dir": -1,
+    "pl": -19.2,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.48,
+    "qty": 1
+   },
+   {
+    "sym": "IWM",
+    "t": "2026-10-01T15:45:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": -21.6,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.18,
+    "qty": 3
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-02T14:00:00",
+    "setup": "crossover 15m",
+    "dir": 1,
+    "pl": 10.19,
+    "r": 0.439,
+    "how": "trailing stop",
+    "zero": true,
+    "ask": 0.58,
+    "qty": 1
+   },
+   {
+    "sym": "SOFI",
+    "t": "2026-10-02T14:30:00",
+    "setup": "crossover 15m",
+    "dir": 1,
+    "pl": -16.4,
+    "r": -1.0,
+    "how": "stop",
+    "zero": false,
+    "ask": 0.41,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-02T15:00:00",
+    "setup": "opening breakout",
+    "dir": -1,
+    "pl": 26.4,
+    "r": 1.5,
+    "how": "target",
+    "zero": true,
+    "ask": 0.44,
+    "qty": 1
+   },
+   {
+    "sym": "IWM",
+    "t": "2026-10-02T15:00:00",
+    "setup": "opening breakout",
+    "dir": -1,
+    "pl": -19.2,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.24,
+    "qty": 2
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-02T15:15:00",
+    "setup": "pullback 15m",
+    "dir": 1,
+    "pl": 3.07,
+    "r": 0.134,
+    "how": "trailing stop",
+    "zero": true,
+    "ask": 0.57,
+    "qty": 1
+   },
+   {
+    "sym": "SOFI",
+    "t": "2026-10-02T16:00:00",
+    "setup": "pullback 15m",
+    "dir": 1,
+    "pl": -29.46,
+    "r": -1.188,
+    "how": "stop",
+    "zero": false,
+    "ask": 0.31,
+    "qty": 2
+   },
+   {
+    "sym": "QQQ",
+    "t": "2026-10-05T13:45:00",
+    "setup": "pullback 15m",
+    "dir": 1,
+    "pl": -24.8,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.62,
+    "qty": 1
+   },
+   {
+    "sym": "IWM",
+    "t": "2026-10-05T14:00:00",
+    "setup": "pullback 15m",
+    "dir": 1,
+    "pl": 0.28,
+    "r": 0.012,
+    "how": "trailing stop",
+    "zero": true,
+    "ask": 0.57,
+    "qty": 1
+   },
+   {
+    "sym": "IWM",
+    "t": "2026-10-05T14:30:00",
+    "setup": "pullback 15m",
+    "dir": 1,
+    "pl": 44.4,
+    "r": 3.0,
+    "how": "target",
+    "zero": true,
+    "ask": 0.37,
+    "qty": 1
+   },
+   {
+    "sym": "SOFI",
+    "t": "2026-10-05T14:30:00",
+    "setup": "crossover 15m",
+    "dir": 1,
+    "pl": -24.0,
+    "r": -1.0,
+    "how": "stop",
+    "zero": false,
+    "ask": 0.3,
+    "qty": 2
+   },
+   {
+    "sym": "IWM",
+    "t": "2026-10-06T13:30:00",
+    "setup": "pullback 15m",
+    "dir": 1,
+    "pl": -14.0,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.35,
+    "qty": 1
+   },
+   {
+    "sym": "IWM",
+    "t": "2026-10-06T13:45:00",
+    "setup": "pullback 15m",
+    "dir": 1,
+    "pl": -20.0,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.25,
+    "qty": 2
+   },
+   {
+    "sym": "IWM",
+    "t": "2026-10-06T14:00:00",
+    "setup": "opening breakout",
+    "dir": -1,
+    "pl": 36.0,
+    "r": 1.5,
+    "how": "target",
+    "zero": true,
+    "ask": 0.2,
+    "qty": 3
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-06T14:30:00",
+    "setup": "opening breakout",
+    "dir": 1,
+    "pl": 16.31,
+    "r": 0.85,
+    "how": "trailing stop",
+    "zero": true,
+    "ask": 0.48,
+    "qty": 1
+   },
+   {
+    "sym": "IWM",
+    "t": "2026-10-07T14:00:00",
+    "setup": "opening breakout",
+    "dir": -1,
+    "pl": -18.4,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.23,
+    "qty": 2
+   },
+   {
+    "sym": "SOFI",
+    "t": "2026-10-07T14:45:00",
+    "setup": "opening breakout",
+    "dir": -1,
+    "pl": -24.0,
+    "r": -1.0,
+    "how": "stop",
+    "zero": false,
+    "ask": 0.2,
+    "qty": 3
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-07T16:15:00",
+    "setup": "pullback 15m",
+    "dir": 1,
+    "pl": -16.8,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.42,
+    "qty": 1
+   },
+   {
+    "sym": "SOFI",
+    "t": "2026-10-08T13:30:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": -19.85,
+    "r": -1.211,
+    "how": "stop",
+    "zero": false,
+    "ask": 0.41,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-08T14:15:00",
+    "setup": "opening breakout",
+    "dir": 1,
+    "pl": -22.4,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.56,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-08T14:45:00",
+    "setup": "crossover 15m",
+    "dir": -1,
+    "pl": 11.11,
+    "r": 0.487,
+    "how": "trailing stop",
+    "zero": true,
+    "ask": 0.57,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-08T16:15:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": 45.6,
+    "r": 3.0,
+    "how": "target",
+    "zero": true,
+    "ask": 0.38,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-08T16:45:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": 25.2,
+    "r": 1.5,
+    "how": "target",
+    "zero": true,
+    "ask": 0.42,
+    "qty": 1
+   },
+   {
+    "sym": "SOFI",
+    "t": "2026-10-09T14:30:00",
+    "setup": "crossover 15m",
+    "dir": 1,
+    "pl": -36.74,
+    "r": -1.837,
+    "how": "stop",
+    "zero": false,
+    "ask": 0.25,
+    "qty": 2
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-09T14:45:00",
+    "setup": "opening breakout",
+    "dir": 1,
+    "pl": -19.2,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.48,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-12T14:00:00",
+    "setup": "opening breakout",
+    "dir": -1,
+    "pl": -21.2,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.53,
+    "qty": 1
+   },
+   {
+    "sym": "QQQ",
+    "t": "2026-10-12T14:00:00",
+    "setup": "opening breakout",
+    "dir": -1,
+    "pl": -24.4,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.61,
+    "qty": 1
+   },
+   {
+    "sym": "IWM",
+    "t": "2026-10-12T14:30:00",
+    "setup": "opening breakout",
+    "dir": -1,
+    "pl": -16.0,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.4,
+    "qty": 1
+   },
+   {
+    "sym": "QQQ",
+    "t": "2026-10-13T13:30:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": -21.6,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.54,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-13T13:45:00",
+    "setup": "pullback 15m",
+    "dir": 1,
+    "pl": -20.8,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.52,
+    "qty": 1
+   },
+   {
+    "sym": "IWM",
+    "t": "2026-10-13T14:00:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": 9.85,
+    "r": 0.56,
+    "how": "trailing stop",
+    "zero": true,
+    "ask": 0.22,
+    "qty": 2
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-10-13T15:30:00",
+    "setup": "crossover 15m",
+    "dir": -1,
+    "pl": -20.8,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.52,
+    "qty": 1
+   }
+  ],
+  "split_label": "Aug 13",
+  "first": {
+   "n": 368,
+   "win": 0.3804347826086957,
+   "avg": -0.14216304347826086,
+   "total": -52.316
+  },
+  "last": {
+   "n": 177,
+   "win": 0.3728813559322034,
+   "avg": -0.11347457627118644,
+   "total": -20.085
+  },
+  "officers": {
+   "The Quant": {
+    "yes": {
+     "n": 1138,
+     "win": 0.3427065026362039,
+     "avg": -0.2817451669595782,
+     "total": -320.626
+    },
+    "no": {
+     "n": 387,
+     "win": 0.3281653746770026,
+     "avg": -0.3616046511627907,
+     "total": -139.941
+    },
+    "diff": 0.07985948420321254,
+    "verdict": "no real effect"
+   },
+   "Risk": {
+    "yes": {
+     "n": 1525,
+     "win": 0.33901639344262297,
+     "avg": -0.3020111475409836,
+     "total": -460.567
+    },
+    "no": {
+     "n": 0,
+     "win": null,
+     "avg": null,
+     "total": 0.0
+    },
+    "diff": null,
+    "verdict": "not enough data"
+   },
+   "Momentum": {
+    "yes": {
+     "n": 1284,
+     "win": 0.338785046728972,
+     "avg": -0.3126253894080997,
+     "total": -401.411
+    },
+    "no": {
+     "n": 241,
+     "win": 0.34024896265560167,
+     "avg": -0.24546058091286307,
+     "total": -59.156
+    },
+    "diff": -0.06716480849523662,
+    "verdict": "no real effect"
+   },
+   "Time": {
+    "yes": {
+     "n": 1496,
+     "win": 0.33890374331550804,
+     "avg": -0.30418783422459894,
+     "total": -455.065
+    },
+    "no": {
+     "n": 29,
+     "win": 0.3448275862068966,
+     "avg": -0.1897241379310345,
+     "total": -5.502
+    },
+    "diff": -0.11446369629356445,
+    "verdict": "not enough data"
+   },
+   "Doubt": {
+    "yes": {
+     "n": 842,
+     "win": 0.32066508313539194,
+     "avg": -0.37144893111638955,
+     "total": -312.76
+    },
+    "no": {
+     "n": 683,
+     "win": 0.3616398243045388,
+     "avg": -0.21640849194729134,
+     "total": -147.807
+    },
+    "diff": -0.1550404391690982,
+    "verdict": "hurts"
+   },
+   "The Reporter": {
+    "yes": {
+     "n": 0,
+     "win": null,
+     "avg": null,
+     "total": 0.0
+    },
+    "no": {
+     "n": 0,
+     "win": null,
+     "avg": null,
+     "total": 0.0
+    },
+    "diff": null,
+    "verdict": "can't replay"
+   }
+  },
+  "take_all": {
+   "n": 1525,
+   "win": 0.33901639344262297,
+   "avg": -0.3020111475409836,
+   "total": -460.567
+  },
+  "council": {
+   "n": 1513,
+   "win": 0.33773959021810973,
+   "avg": -0.30282419035029745,
+   "total": -458.173
+  },
+  "rejected": {
+   "n": 12,
+   "win": 0.5,
+   "avg": -0.1995,
+   "total": -2.394
+  },
+  "groups": {
+   "setup": {
+    "opening breakout": {
+     "n": 120,
+     "win": 0.44166666666666665,
+     "avg": 0.014799999999999999,
+     "total": 1.7759999999999998
+    },
+    "pullback 15m": {
+     "n": 277,
+     "win": 0.37184115523465705,
+     "avg": -0.1391480144404332,
+     "total": -38.544
+    },
+    "crossover 15m": {
+     "n": 148,
+     "win": 0.33783783783783783,
+     "avg": -0.24076351351351352,
+     "total": -35.633
+    }
+   },
+   "sym": {
+    "IWM": {
+     "n": 215,
+     "win": 0.4046511627906977,
+     "avg": -0.014967441860465119,
+     "total": -3.2180000000000004
+    },
+    "SOFI": {
+     "n": 108,
+     "win": 0.2962962962962963,
+     "avg": -0.47960185185185183,
+     "total": -51.797
+    },
+    "SPY": {
+     "n": 170,
+     "win": 0.38823529411764707,
+     "avg": -0.09201176470588235,
+     "total": -15.642
+    },
+    "QQQ": {
+     "n": 52,
+     "win": 0.40384615384615385,
+     "avg": -0.03353846153846154,
+     "total": -1.744
+    }
+   },
+   "kind": {
+    "same-day (0DTE)": {
+     "n": 437,
+     "win": 0.39816933638443935,
+     "avg": -0.0471487414187643,
+     "total": -20.604
+    },
+    "weeklies": {
+     "n": 108,
+     "win": 0.2962962962962963,
+     "avg": -0.47960185185185183,
+     "total": -51.797
+    }
+   },
+   "exit": {
+    "target": {
+     "n": 129,
+     "win": 1.0,
+     "avg": 1.7034883720930232,
+     "total": 219.75
+    },
+    "stop": {
+     "n": 307,
+     "win": 0.0,
+     "avg": -1.0229674267100977,
+     "total": -314.051
+    },
+    "trailing stop": {
+     "n": 108,
+     "win": 0.7037037037037037,
+     "avg": 0.19930555555555554,
+     "total": 21.525
+    },
+    "breakeven": {
+     "n": 1,
+     "win": 1.0,
+     "avg": 0.375,
+     "total": 0.375
+    }
+   }
+  },
+  "monthly": {
+   "2026-04": -173.16,
+   "2026-05": -108.53,
+   "2026-06": -119.46,
+   "2026-07": -256.42,
+   "2026-08": -546.97,
+   "2026-09": -23.5,
+   "2026-10": -209.06
+  },
+  "no_contract_by_sym": {
+   "SPY": 319,
+   "QQQ": 462,
+   "IWM": 167,
+   "AAPL": 628,
+   "NVDA": 647,
+   "AMD": 555,
+   "TSLA": 642,
+   "AMZN": 608,
+   "META": 620,
+   "PLTR": 647,
+   "SOFI": 26
+  },
+  "advice": [
+   "The options council lost money in the replay (-0.13R a trade over 545 trades). Don't put real money on it as-is.",
+   "The council is NOT picking better setups than it skips (-0.30R approved vs -0.20R rejected).",
+   "Doubt hurts: his YES setups did 0.16R worse than his NO setups.",
+   "78% of setups had no option inside the $62 budget (mostly NVDA, PLTR, TSLA)."
+  ]
+ }
+}
