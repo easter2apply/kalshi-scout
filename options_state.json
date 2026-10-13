@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 250.0,
-  "broker_equity": 100048.88,
-  "nav": 271.0,
+  "broker_equity": 100008.88,
+  "nav": 252.0,
   "options_level": 3,
-  "unrealized": 21.0,
-  "updated": 1791912614.927084
+  "unrealized": 2.0,
+  "updated": 1791912910.94795
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -38,6 +38,10 @@
   [
    1791912011,
    248.0
+  ],
+  [
+   1791912911,
+   252.0
   ]
  ],
  "errors": [
@@ -526,7 +530,7 @@
     }
    ],
    "ok": null,
-   "t": 1791912672.355322,
+   "t": 1791912947.3777912,
    "text": null,
    "title": "Scanned 10 stocks: 2 setups on the latest candle",
    "verdict": null,
@@ -546,8 +550,8 @@
   "SPY:M15": "2026-10-13T17:15:00"
  },
  "last_deploy": 1791912673.295114,
- "last_full_run": 1791912614.927084,
- "last_run": 1791912614.927084,
+ "last_full_run": 1791912910.94795,
+ "last_run": 1791912910.94795,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -1114,7 +1118,7 @@
    "exp": "2026-10-13",
    "opened": "2026-10-13T17:05:00",
    "pair": "QQQ",
-   "price": 0.55,
+   "price": 0.5,
    "qty": 1,
    "risk": 15.6,
    "setup": "pullback 15m",
@@ -1123,7 +1127,7 @@
    "tf": "M15",
    "tp": 0.62,
    "units": 1,
-   "upl": 16.0,
+   "upl": 11.0,
    "votes": {
     "Doubt": false,
     "Momentum": false,
@@ -1138,7 +1142,7 @@
    "exp": "2026-10-13",
    "opened": "2026-10-13T17:05:00",
    "pair": "SPY",
-   "price": 0.53,
+   "price": 0.39,
    "qty": 1,
    "risk": 19.2,
    "setup": "pullback 15m",
@@ -1147,7 +1151,7 @@
    "tf": "M15",
    "tp": 0.77,
    "units": 1,
-   "upl": 5.0,
+   "upl": -9.0,
    "votes": {
     "Doubt": false,
     "Momentum": false,
