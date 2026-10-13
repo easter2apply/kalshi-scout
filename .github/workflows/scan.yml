@@ -13,15 +13,15 @@ permissions:
   contents: write
   pages: write
   id-token: write
-concurrency:
-  group: pages
-  cancel-in-progress: false
 jobs:
   scan:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+    timeout-minutes: 10
+    concurrency:
+      group: options-scan
+      cancel-in-progress: false
+    outputs:
+      deploy: ${{ steps.bot.outputs.deploy }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -42,11 +42,24 @@ jobs:
           git add options_state.json 2>/dev/null || true
           git diff --cached --quiet || (git commit -m "Update state" && git pull --rebase && git push)
       - if: steps.bot.outputs.deploy == 'true'
-        uses: actions/configure-pages@v5
-      - if: steps.bot.outputs.deploy == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
-      - if: steps.bot.outputs.deploy == 'true'
-        id: deploy
+
+  # Publishing is its own job: if GitHub Pages ever hangs, the next run cancels it
+  # instead of the whole bot freezing behind it.
+  publish:
+    needs: scan
+    if: needs.scan.outputs.deploy == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: options-pages
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - id: deploy
         uses: actions/deploy-pages@v4
