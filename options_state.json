@@ -1,11 +1,11 @@
 {
  "account": {
-  "balance": 214.0,
+  "balance": 213.0,
   "broker_equity": 99931.75,
-  "nav": 215.0,
+  "nav": 213.0,
   "options_level": 3,
-  "unrealized": 1.0,
-  "updated": 1791920110.692541
+  "unrealized": 0,
+  "updated": 1791920412.014822
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -70,11 +70,41 @@
     "Time": true
    },
    "why": "stop"
+  },
+  {
+   "closed": "2026-10-13T19:40:12",
+   "closed_ts": 1791920412.014822,
+   "dir": -1,
+   "entry": 0.31,
+   "exit": 0.3,
+   "exp": "2026-10-23",
+   "opened": "2026-10-13T18:00:16",
+   "pair": "SOFI",
+   "pl": -1.0,
+   "price": 0.28,
+   "qty": 1,
+   "r": -0.08,
+   "risk": 12.4,
+   "setup": "pullback 15m",
+   "sl": 0.19,
+   "sym": "SOFI261023P00015000",
+   "tf": "M15",
+   "tp": 0.5,
+   "units": 1,
+   "upl": -3.0,
+   "votes": {
+    "Doubt": true,
+    "Momentum": false,
+    "Risk": true,
+    "The Quant": true,
+    "Time": true
+   },
+   "why": "end of day"
   }
  ],
  "council_record": {
   "right": 9,
-  "total": 11
+  "total": 12
  },
  "day": {
   "date": "2026-10-13",
@@ -1749,6 +1779,77 @@
    "title": "Scanned 10 stocks: 1 setup on the latest candle",
    "verdict": null,
    "who": null
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": false,
+   "t": 1791920414.8518844,
+   "text": "SOFI $15 Put \u00b7 Oct 23 sold at $0.30 (end of day): \u2212$1.00 (-0.08R). Record 0W\u20133L.",
+   "title": "SOFI closed",
+   "verdict": null,
+   "who": "The Quant"
+  },
+  {
+   "kind": "scan",
+   "lines": [
+    {
+     "say": "\u25b2 $778.29, ADX 14, RSI 57: trend too weak, waiting",
+     "vote": null,
+     "who": "SPY"
+    },
+    {
+     "say": "\u25bc $743.13, ADX 30, RSI 50: trending, waiting for a pullback",
+     "vote": null,
+     "who": "QQQ"
+    },
+    {
+     "say": "\u25bc $277.01, ADX 18, RSI 51: trend too weak, waiting",
+     "vote": null,
+     "who": "IWM"
+    },
+    {
+     "say": "\u25b2 $341.72, ADX 28, RSI 41: trending, waiting for a pullback",
+     "vote": null,
+     "who": "AAPL"
+    },
+    {
+     "say": "\u25bc $227.79, ADX 18, RSI 61: trending, waiting for a pullback",
+     "vote": null,
+     "who": "NVDA"
+    },
+    {
+     "say": "\u25bc $599.57, ADX 18, RSI 59: trending, waiting for a pullback",
+     "vote": null,
+     "who": "AMD"
+    },
+    {
+     "say": "\u25bc $259.17, ADX 17, RSI 41: trend too weak, waiting",
+     "vote": null,
+     "who": "AMZN"
+    },
+    {
+     "say": "\u25b2 $764.92, ADX 32, RSI 59: trending, waiting for a pullback",
+     "vote": null,
+     "who": "META"
+    },
+    {
+     "say": "\u25b2 $208.13, ADX 19, RSI 52: pullback 15m setup",
+     "vote": null,
+     "who": "PLTR"
+    },
+    {
+     "say": "\u25bc $15.21, ADX 30, RSI 51: trending, waiting for a pullback",
+     "vote": null,
+     "who": "SOFI"
+    }
+   ],
+   "ok": null,
+   "t": 1791920442.0971894,
+   "text": null,
+   "title": "Scanned 10 stocks: 1 setup on the latest candle",
+   "verdict": null,
+   "who": null
   }
  ],
  "history": [
@@ -1817,6 +1918,12 @@
    "t": 1791919848.4793065,
    "trade": false,
    "won": false
+  },
+  {
+   "right": false,
+   "t": 1791920414.8518322,
+   "trade": true,
+   "won": false
   }
  ],
  "last_bar": {
@@ -1831,9 +1938,9 @@
   "SOFI:M15": "2026-10-13T19:15:00",
   "SPY:M15": "2026-10-13T19:15:00"
  },
- "last_deploy": 1791919848.4868526,
- "last_full_run": 1791920110.692541,
- "last_run": 1791920110.692541,
+ "last_deploy": 1791920443.0791392,
+ "last_full_run": 1791920412.014822,
+ "last_run": 1791920412.014822,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -1952,6 +2059,9 @@
     -1.0,
     -1.0
    ],
+   "SOFI:pullback 15m": [
+    -0.08
+   ],
    "SPY:pullback 15m": [
     -1.15,
     -1.0,
@@ -2036,6 +2146,13 @@
     "r": -1.0,
     "setup": "pullback 15m",
     "t": 1791919848.4793108
+   },
+   {
+    "approved": true,
+    "pair": "SOFI",
+    "r": -0.08,
+    "setup": "pullback 15m",
+    "t": 1791920414.8518898
    }
   ]
  },
@@ -2328,7 +2445,7 @@
    "prec": 2,
    "ready": {
     "dir": -1,
-    "in_trade": true,
+    "in_trade": false,
     "of": 6,
     "passed": 3,
     "session": false,
@@ -2374,30 +2491,30 @@
  "peak": 271.0,
  "recess": "resumes Wed 9:45 AM ET",
  "record": {
-  "losses": 2,
-  "pl": -36.0,
+  "losses": 3,
+  "pl": -37.0,
   "wins": 0
  },
  "scoreboard": {
   "Doubt": {
    "right": 8,
-   "total": 11
+   "total": 12
   },
   "Momentum": {
-   "right": 3,
-   "total": 11
+   "right": 4,
+   "total": 12
   },
   "Risk": {
    "right": 8,
-   "total": 11
+   "total": 12
   },
   "The Quant": {
    "right": 2,
-   "total": 11
+   "total": 12
   },
   "Time": {
    "right": 1,
-   "total": 11
+   "total": 12
   }
  },
  "shadow": [
@@ -2638,31 +2755,6 @@
    "s": "SOFI"
   }
  ],
- "trades": {
-  "1a1fa723-0bdd-40ca-9402-0440f6824a4b": {
-   "dir": -1,
-   "entry": 0.31,
-   "exp": "2026-10-23",
-   "opened": "2026-10-13T18:00:16",
-   "pair": "SOFI",
-   "price": 0.32,
-   "qty": 1,
-   "risk": 12.4,
-   "setup": "pullback 15m",
-   "sl": 0.19,
-   "sym": "SOFI261023P00015000",
-   "tf": "M15",
-   "tp": 0.5,
-   "units": 1,
-   "upl": 1.0,
-   "votes": {
-    "Doubt": true,
-    "Momentum": false,
-    "Risk": true,
-    "The Quant": true,
-    "Time": true
-   }
-  }
- },
+ "trades": {},
  "welcomed": true
 }
