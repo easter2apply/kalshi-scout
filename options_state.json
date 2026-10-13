@@ -1,18 +1,80 @@
 {
  "account": {
-  "balance": 250.0,
-  "broker_equity": 100008.88,
-  "nav": 252.0,
+  "balance": 214.0,
+  "broker_equity": 99932.88,
+  "nav": 214.0,
   "options_level": 3,
-  "unrealized": 2.0,
-  "updated": 1791912910.94795
+  "unrealized": 0,
+  "updated": 1791913212.60291
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
- "closed": [],
+ "closed": [
+  {
+   "breakeven": true,
+   "closed": "2026-10-13T17:40:12",
+   "closed_ts": 1791913212.60291,
+   "dir": -1,
+   "entry": 0.39,
+   "exit": 0.25,
+   "exp": "2026-10-13",
+   "opened": "2026-10-13T17:05:00",
+   "pair": "QQQ",
+   "pl": -14.0,
+   "price": 0.27,
+   "qty": 1,
+   "r": -0.9,
+   "risk": 15.6,
+   "setup": "pullback 15m",
+   "sl": 0.39,
+   "sym": "QQQ261013P00741000",
+   "tf": "M15",
+   "tp": 0.62,
+   "units": 1,
+   "upl": -12.0,
+   "votes": {
+    "Doubt": false,
+    "Momentum": false,
+    "Risk": true,
+    "The Quant": true,
+    "Time": true
+   },
+   "why": "breakeven"
+  },
+  {
+   "closed": "2026-10-13T17:40:12",
+   "closed_ts": 1791913212.60291,
+   "dir": -1,
+   "entry": 0.48,
+   "exit": 0.26,
+   "exp": "2026-10-13",
+   "opened": "2026-10-13T17:05:00",
+   "pair": "SPY",
+   "pl": -22.0,
+   "price": 0.28,
+   "qty": 1,
+   "r": -1.15,
+   "risk": 19.2,
+   "setup": "pullback 15m",
+   "sl": 0.29,
+   "sym": "SPY261013P00777000",
+   "tf": "M15",
+   "tp": 0.77,
+   "units": 1,
+   "upl": -20.0,
+   "votes": {
+    "Doubt": false,
+    "Momentum": false,
+    "Risk": true,
+    "The Quant": true,
+    "Time": true
+   },
+   "why": "stop"
+  }
+ ],
  "council_record": {
   "right": 0,
-  "total": 0
+  "total": 2
  },
  "day": {
   "date": "2026-10-13",
@@ -535,6 +597,101 @@
    "title": "Scanned 10 stocks: 2 setups on the latest candle",
    "verdict": null,
    "who": null
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": false,
+   "t": 1791913214.8804507,
+   "text": "QQQ $741 Put \u00b7 Oct 13 sold at $0.25 (breakeven): \u2212$14.00 (-0.90R). Record 0W\u20131L.",
+   "title": "QQQ closed",
+   "verdict": null,
+   "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": false,
+   "t": 1791913216.138643,
+   "text": "SPY $777 Put \u00b7 Oct 13 sold at $0.26 (stop): \u2212$22.00 (-1.15R). Record 0W\u20132L.",
+   "title": "SPY closed",
+   "verdict": null,
+   "who": "The Quant"
+  },
+  {
+   "kind": "scan",
+   "lines": [
+    {
+     "say": "\u25bc $776.99, ADX 19, RSI 46: pullback 15m setup",
+     "vote": null,
+     "who": "SPY"
+    },
+    {
+     "say": "\u25bc $741.52, ADX 40, RSI 38: trending, waiting for a pullback",
+     "vote": null,
+     "who": "QQQ"
+    },
+    {
+     "say": "\u25bc $276.31, ADX 22, RSI 38: trending, waiting for a pullback",
+     "vote": null,
+     "who": "IWM"
+    },
+    {
+     "say": "\u25b2 $343.77, ADX 44, RSI 56: pullback 15m setup",
+     "vote": null,
+     "who": "AAPL"
+    },
+    {
+     "say": "\u25bc $226.93, ADX 25, RSI 55: trending, waiting for a pullback",
+     "vote": null,
+     "who": "NVDA"
+    },
+    {
+     "say": "\u25bc $595.75, ADX 30, RSI 54: trending, waiting for a pullback",
+     "vote": null,
+     "who": "AMD"
+    },
+    {
+     "say": "\u25b2 $259.86, ADX 14, RSI 44: trend too weak, waiting",
+     "vote": null,
+     "who": "AMZN"
+    },
+    {
+     "say": "\u25b2 $761.05, ADX 35, RSI 57: trending, waiting for a pullback",
+     "vote": null,
+     "who": "META"
+    },
+    {
+     "say": "\u25b2 $207.04, ADX 29, RSI 46: trending, waiting for a pullback",
+     "vote": null,
+     "who": "PLTR"
+    },
+    {
+     "say": "\u25bc $15.12, ADX 50, RSI 37: trending, waiting for a pullback",
+     "vote": null,
+     "who": "SOFI"
+    }
+   ],
+   "ok": null,
+   "t": 1791913252.1998897,
+   "text": null,
+   "title": "Scanned 10 stocks: 2 setups on the latest candle",
+   "verdict": null,
+   "who": null
+  }
+ ],
+ "history": [
+  {
+   "right": false,
+   "t": 1791913214.8803892,
+   "trade": true,
+   "won": false
+  },
+  {
+   "right": false,
+   "t": 1791913216.1385956,
+   "trade": true,
+   "won": false
   }
  ],
  "last_bar": {
@@ -549,9 +706,9 @@
   "SOFI:M15": "2026-10-13T17:15:00",
   "SPY:M15": "2026-10-13T17:15:00"
  },
- "last_deploy": 1791912673.295114,
- "last_full_run": 1791912910.94795,
- "last_run": 1791912910.94795,
+ "last_deploy": 1791913253.9985137,
+ "last_full_run": 1791913212.60291,
+ "last_run": 1791913212.60291,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -652,6 +809,32 @@
    ]
   },
   "when": 1791912614.927084
+ },
+ "learn": {
+  "combos": {
+   "QQQ:pullback 15m": [
+    -0.9
+   ],
+   "SPY:pullback 15m": [
+    -1.15
+   ]
+  },
+  "outcomes": [
+   {
+    "approved": true,
+    "pair": "QQQ",
+    "r": -0.9,
+    "setup": "pullback 15m",
+    "t": 1791913214.880457
+   },
+   {
+    "approved": true,
+    "pair": "SPY",
+    "r": -1.15,
+    "setup": "pullback 15m",
+    "t": 1791913216.1386485
+   }
+  ]
  },
  "mode": "paper",
  "news": {
@@ -915,7 +1098,7 @@
    "prec": 2,
    "ready": {
     "dir": -1,
-    "in_trade": true,
+    "in_trade": false,
     "of": 6,
     "passed": 4,
     "session": true,
@@ -967,7 +1150,7 @@
    "prec": 2,
    "ready": {
     "dir": -1,
-    "in_trade": true,
+    "in_trade": false,
     "of": 6,
     "passed": 5,
     "session": true,
@@ -985,11 +1168,32 @@
  },
  "peak": 271.0,
  "record": {
-  "losses": 0,
-  "pl": 0.0,
+  "losses": 2,
+  "pl": -36.0,
   "wins": 0
  },
- "scoreboard": {},
+ "scoreboard": {
+  "Doubt": {
+   "right": 2,
+   "total": 2
+  },
+  "Momentum": {
+   "right": 2,
+   "total": 2
+  },
+  "Risk": {
+   "right": 0,
+   "total": 2
+  },
+  "The Quant": {
+   "right": 0,
+   "total": 2
+  },
+  "Time": {
+   "right": 0,
+   "total": 2
+  }
+ },
  "shadow": [
   {
    "bar": "2026-10-13T17:00:00",
@@ -1057,6 +1261,12 @@
   }
  ],
  "start_balance": 250.0,
+ "streak": {
+  "half": false,
+  "losses": 2,
+  "until": 0,
+  "wins_since": 0
+ },
  "tg_offset": 225750260,
  "ticker": [
   {
@@ -1110,56 +1320,6 @@
    "s": "SOFI"
   }
  ],
- "trades": {
-  "2201699c-ca67-43b9-a898-330dcbc0260c": {
-   "breakeven": true,
-   "dir": -1,
-   "entry": 0.39,
-   "exp": "2026-10-13",
-   "opened": "2026-10-13T17:05:00",
-   "pair": "QQQ",
-   "price": 0.5,
-   "qty": 1,
-   "risk": 15.6,
-   "setup": "pullback 15m",
-   "sl": 0.39,
-   "sym": "QQQ261013P00741000",
-   "tf": "M15",
-   "tp": 0.62,
-   "units": 1,
-   "upl": 11.0,
-   "votes": {
-    "Doubt": false,
-    "Momentum": false,
-    "Risk": true,
-    "The Quant": true,
-    "Time": true
-   }
-  },
-  "97aa943d-951a-47f7-aa7b-785df00bc65d": {
-   "dir": -1,
-   "entry": 0.48,
-   "exp": "2026-10-13",
-   "opened": "2026-10-13T17:05:00",
-   "pair": "SPY",
-   "price": 0.39,
-   "qty": 1,
-   "risk": 19.2,
-   "setup": "pullback 15m",
-   "sl": 0.29,
-   "sym": "SPY261013P00777000",
-   "tf": "M15",
-   "tp": 0.77,
-   "units": 1,
-   "upl": -9.0,
-   "votes": {
-    "Doubt": false,
-    "Momentum": false,
-    "Risk": true,
-    "The Quant": true,
-    "Time": true
-   }
-  }
- },
+ "trades": {},
  "welcomed": true
 }
