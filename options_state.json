@@ -5,7 +5,7 @@
   "nav": 213.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1791932418.372866
+  "updated": 1791932710.272352
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -235,6 +235,10 @@
   ],
   [
    1791931813,
+   213.0
+  ],
+  [
+   1791932710,
    213.0
   ]
  ],
@@ -2167,8 +2171,8 @@
  },
  "last_daily": "2026-10-13",
  "last_deploy": 1791932418.7507367,
- "last_full_run": 1791932418.372866,
- "last_run": 1791932418.372866,
+ "last_full_run": 1791932710.272352,
+ "last_run": 1791932710.272352,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -2488,7 +2492,7 @@
     "title": "Fed Chairman Warsh Speaks"
    }
   ],
-  "fetched": 1791911101.9173677
+  "fetched": 1791932711.6261642
  },
  "pairs": {
   "AAPL": {
