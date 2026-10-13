@@ -4,7 +4,7 @@ Vault Options — a day-trading options bot for Alpaca, with signals you can cop
 
 Every 5 minutes during market hours it:
   1. reads your phone commands from Telegram (/status, /pause, /resume, /closeall, /testtrade, /live)
-  2. manages open options trades: target, stop, breakeven, and everything closed before the bell
+  2. manages open options trades: target, stop, breakeven, 0DTE closed before the bell, weeklies held until the day before expiry
   3. on each new 15-minute candle, the council votes on stock setups (trend pullbacks, crossovers,
      and opening-range breakouts) for the watchlist
   4. when approved, it buys a CALL (bullish) or PUT (bearish): 0DTE on SPY/QQQ/IWM in the morning,
@@ -38,6 +38,11 @@ RISK_PCT = 0.10              # a full stop-out costs about 10% of the bankroll
 OPT_STOP = 0.40              # sell if the option loses 40% of what we paid
 OPT_TARGET = 0.60            # sell if the option gains 60% (1.5 : 1 reward : risk)
 BREAKEVEN_AT = 0.40          # once up 40%, the stop moves to the entry price
+PARTIAL = True               # take some profit early, let the rest run:
+PARTIAL_AT = 0.30            #   at +30%: sell half (2+ contracts) and move the stop to entry,
+LOCK_AT = 0.10               #   or with 1 contract, lock in +10% instead
+RUNNER_TARGET = 1.20         #   the rest aims for +120%...
+TRAIL_GIVEBACK = 0.25        #   ...with a trailing stop 25% below its best price
 MAX_CONTRACTS = 3            # never more than 3 contracts on one trade
 MAX_OPEN_TRADES = 2          # never more than 2 trades at once (one per stock)
 MAX_SPREAD_PCT = 0.15        # skip contracts whose bid/ask spread is over 15% of the price
@@ -45,7 +50,9 @@ DELTA_RANGE = (0.25, 0.55)   # how far from the money: 0.5 ≈ at the money, 0.2
 WEEKLY_DAYS = (2, 10)        # weeklies: 2–10 days to expiration
 ZERO_DTE_UNTIL = (13, 30)    # 0DTE entries only before 1:30 PM ET
 ENTRY_WINDOW = ((9, 45), (15, 0))   # new trades 9:45 AM – 3:00 PM ET
-FLATTEN_AT = (15, 40)        # day trading: everything is sold by 3:40 PM ET
+FLATTEN_AT = (15, 40)        # 0DTE and expiring trades are sold by 3:40 PM ET
+REPORTER = True              # 6th council member: earnings calendar, headlines, StockTwits crowd (options only)
+HOLD_WEEKLIES = True         # weeklies can be held overnight; they're sold by 3:40 PM the trading day before they expire
 DAILY_LOSS_LIMIT = 0.20      # stop opening trades for the day after a 20% drop (two full losses)
 MAX_DRAWDOWN = 0.35          # pause the bot entirely after a 35% drop from the peak
 STREAK_HALF = 5              # after 5 losses in a row, trade half size
@@ -90,10 +97,11 @@ DATA_API = "https://data.alpaca.markets"
 OPTION_FEED = os.environ.get("ALPACA_OPTION_FEED", "indicative")   # free plan: indicative; paid plan: opra
 STOCK_FEED = os.environ.get("ALPACA_STOCK_FEED", "iex")             # free plan: iex; paid plan: sip
 NAMES = {s: s for s in PAIRS}
-VOTERS = ["The Quant", "Risk", "Momentum", "Time", "Doubt"]
+VOTERS = ["The Quant", "Risk", "Momentum", "Time", "Doubt", "The Reporter"]
 ROLES = {"The Quant": "trend strength (ADX)", "Risk": "contract price, spread and loss limits",
          "Momentum": "MACD is with the move", "Time": "not overextended, inside trading hours",
-         "Doubt": "the 1-hour trend agrees"}
+         "Doubt": "the 1-hour trend agrees",
+         "The Reporter": "no earnings before expiry; headlines and chatter don't fight the trade"}
 CLOCK = {}                   # filled from Alpaca's market clock each run (holidays, early closes)
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -233,8 +241,8 @@ class Alpaca:
     def cancel(self, oid):
         return self.t("DELETE", f"/v2/orders/{oid}", tries=1)
 
-    def close(self, contract):
-        return self.t("DELETE", f"/v2/positions/{contract}", tries=1)
+    def close(self, contract, qty=None):
+        return self.t("DELETE", f"/v2/positions/{contract}", params={"qty": str(qty)} if qty else None, tries=1)
 
 
 def parse_occ(sym):
@@ -432,6 +440,158 @@ def council(a, spread, risk_ok, risk_why, now_utc, pair=None):
     lbl = a.get("htf_label", "4-hour trend")
     v["Doubt"] = (big, f"{lbl} {('agree' if big else 'disagree') if 'and' in lbl else ('agrees' if big else 'disagrees')}")
     return v
+
+
+# ───────────────────────────── The Reporter (news check, options only) ──────────
+EARNINGS_URL = "https://api.nasdaq.com/api/calendar/earnings"
+STOCKTWITS_URL = "https://api.stocktwits.com/api/2/streams/symbol/{s}.json"
+EARNINGS_DAYS = 14           # look this far ahead on the earnings calendar (refreshed every 12 hours)
+HEADLINE_HOURS = 6           # headlines from the last 6 hours count
+FRESH_MIN = 45               # a big headline in the last 45 minutes can block a trade on its own
+ETFS = {"SPY", "QQQ", "IWM"}
+BULL_WORDS = ("beat", "beats", "tops", "upgrade", "raises", "raised", "record", "surge", "soar", "jump", "rall", "approval",
+              "approved", "buyback", "partnership", "outperform", "strong demand", "exceeds", "higher", "gains", "bullish")
+BEAR_WORDS = ("miss", "downgrade", "cuts", "lowers", "plunge", "sink", "falls", "tumble", "slump", "lawsuit", "probe",
+              "investigation", "recall", "halt", "bankrupt", "layoff", "offering", "dilut", "warns", "weak", "underperform",
+              "delay", "lower", "drops", "bearish", "selloff", "sell-off")
+BIG_WORDS = ("halt", "fda", "sec ", "doj", "merger", "acquire", "acquisition", "buyout", "bankrupt", "guidance",
+             "earnings", "results", "offering", "tariff", "ceo", "lawsuit", "probe")
+
+
+def load_earnings(st, log):
+    """Upcoming earnings dates for the watchlist from Nasdaq's public calendar, cached for 12 hours."""
+    E = st.get("earnings") or {}
+    if time.time() - E.get("fetched", 0) < 12 * 3600:
+        return E
+    out, ok = {}, 0
+    day = dt.datetime.now(LOCAL_TZ).date()
+    want = {p for p in PAIRS if p not in ETFS}
+    for k in range(EARNINGS_DAYS + 1):
+        d = day + dt.timedelta(days=k)
+        if d.weekday() >= 5:
+            continue
+        try:
+            j = http("GET", EARNINGS_URL, params={"date": d.isoformat()}, tries=2,
+                     headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Safari/605.1.15",
+                              "Accept": "application/json, text/plain, */*", "Origin": "https://www.nasdaq.com",
+                              "Referer": "https://www.nasdaq.com/"})
+            ok += 1
+        except ApiError as e:
+            log.append(f"Reporter: earnings calendar unavailable for {d} ({str(e)[:60]})")
+            continue
+        for row in ((j.get("data") or {}).get("rows") or []):
+            sym = (row.get("symbol") or "").upper()
+            if sym in want:
+                t = (row.get("time") or "").lower()
+                when = "after" if "after" in t else "before" if "pre" in t else "unknown"
+                out.setdefault(sym, []).append({"date": d.isoformat(), "when": when})
+        time.sleep(0.3)
+    if ok:
+        E = {"fetched": time.time(), "dates": out, "days_checked": ok}
+        st["earnings"] = E
+    return E
+
+
+def earnings_hit(st, pair, sell_by_et):
+    """The first earnings release between now and when we'd have to sell, or None. (Already-released ones don't count.)"""
+    now_et = dt.datetime.now(LOCAL_TZ)
+    for e in (st.get("earnings") or {}).get("dates", {}).get(pair, []):
+        d = dt.date.fromisoformat(e["date"])
+        hour = 16 if e["when"] == "after" else 8                 # after the close, or before the open (unknown = assume before)
+        release = dt.datetime(d.year, d.month, d.day, hour, 5 if hour == 16 else 0, tzinfo=LOCAL_TZ)
+        if now_et < release <= sell_by_et:
+            return e, release
+    return None
+
+
+def headlines(api, pair, log):
+    """Recent Benzinga headlines for this symbol from Alpaca's news feed (same API keys)."""
+    start = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=HEADLINE_HOURS)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    try:
+        j = api.d("/v1beta1/news", {"symbols": pair, "start": start, "limit": 20, "sort": "desc"})
+    except ApiError as e:
+        log.append(f"Reporter: news feed unavailable ({str(e)[:60]})")
+        return None
+    out = []
+    for n in j.get("news", []) or []:
+        try:
+            t = dt.datetime.fromisoformat(n.get("created_at", "").replace("Z", "+00:00")).timestamp()
+        except ValueError:
+            continue
+        text = f"{n.get('headline', '')} {n.get('summary', '')}".lower()
+        score = sum(w in text for w in BULL_WORDS) - sum(w in text for w in BEAR_WORDS)
+        out.append({"t": t, "headline": (n.get("headline") or "").strip(), "score": score,
+                    "big": any(w in text for w in BIG_WORDS), "n_syms": len(n.get("symbols") or [])})
+    return out
+
+
+def crowd_mood(pair, log):
+    """StockTwits: how many recent posts are tagged Bullish vs Bearish (public, no key). None if unavailable."""
+    try:
+        j = http("GET", STOCKTWITS_URL.format(s=pair), tries=1, headers={"User-Agent": "Mozilla/5.0"})
+    except ApiError:
+        return None
+    bull = bear = 0
+    for m in (j.get("messages") or [])[:30]:
+        b = (((m.get("entities") or {}).get("sentiment")) or {}).get("basic")
+        bull += b == "Bullish"
+        bear += b == "Bearish"
+    return {"bull": bull, "bear": bear}
+
+
+def reporter_vote(st, api, pair, d, pick, now_utc, log):
+    """(vote, why, hard_veto). Earnings before we'd sell is a hard NO; fresh headlines or a crowd leaning hard against us are a NO."""
+    if not REPORTER:
+        return None, "off", False
+    e_now = dt.datetime.now(LOCAL_TZ)
+    zero = bool(pick and pick.get("zero")) or (pick is None and pair in ETFS)
+    if pick and not zero:
+        exp = dt.date.fromisoformat(pick["exp"])
+        last = exp - dt.timedelta(days=1)
+        while last.weekday() >= 5:
+            last -= dt.timedelta(days=1)
+        sell_by = dt.datetime(last.year, last.month, last.day, 15, 40, tzinfo=LOCAL_TZ) if HOLD_WEEKLIES else \
+            e_now.replace(hour=15, minute=40)
+    elif pick is None and not zero:
+        sell_by = e_now + dt.timedelta(days=WEEKLY_DAYS[1])          # no contract yet: assume a full-length weekly
+    else:
+        sell_by = e_now.replace(hour=15, minute=40)
+    side = "calls" if d == 1 else "puts"
+    if pair not in ETFS:
+        hit = earnings_hit(st, pair, sell_by)
+        if hit:
+            e, rel = hit
+            return (False, f"{pair} reports earnings {rel:%a %b} {rel.day} {'after the close' if e['when'] == 'after' else 'before the open'}, "
+                           f"before we'd sell. Too much gap risk", True)
+    news = headlines(api, pair, log)
+    crowd = crowd_mood(pair, log)
+    if news is None and crowd is None:
+        return None, "couldn't reach the news feeds this time", False
+    now_ts = time.time()
+    against = [n for n in (news or []) if n["score"] * d < 0]
+    fresh_big = [n for n in against if n["big"] and now_ts - n["t"] <= FRESH_MIN * 60 and n["n_syms"] <= 3]
+    if fresh_big:
+        n = fresh_big[0]
+        return False, f"fresh headline against our {side}: \"{n['headline'][:70]}\"", False
+    net = sum(n["score"] for n in (news or []) if n["n_syms"] <= 3)
+    if net * d <= -3:
+        return False, f"today's headlines lean the other way ({len(against)} against our {side})", False
+    if crowd and crowd["bull"] + crowd["bear"] >= 8:
+        lean = (crowd["bull"] - crowd["bear"]) / (crowd["bull"] + crowd["bear"])
+        if lean * d <= -0.5:
+            return False, (f"StockTwits crowd is {crowd['bear'] if d == 1 else crowd['bull']} to "
+                           f"{crowd['bull'] if d == 1 else crowd['bear']} {'bearish' if d == 1 else 'bullish'}"), False
+    bits = []
+    if pair not in ETFS:
+        bits.append("no earnings before we'd sell" if (st.get("earnings") or {}).get("days_checked") else "earnings calendar unavailable")
+    if news:
+        agree = [n for n in news if n["score"] * d > 0]
+        bits.append(f"{len(news)} headline{'s' if len(news) > 1 else ''} today" + (f", {len(agree)} on our side" if agree else ", none against us"))
+    elif news is not None:
+        bits.append("no headlines today")
+    if crowd and crowd["bull"] + crowd["bear"]:
+        bits.append(f"StockTwits {crowd['bull']} bullish / {crowd['bear']} bearish")
+    return True, "; ".join(bits) or "quiet news", False
 
 
 def opening_range(pair, m15, h1a, now_utc):
@@ -671,6 +831,47 @@ def score(st, votes, won, was_trade):
 
 # ───────────────────────────── Telegram ──────────────────────────────────────
 
+BOT_TITLE = 'Vault Options'
+BOT_COMMAND_GROUPS = [
+    ('📊 Check in', [
+        ('status', "Bankroll, open options and today's results"),
+        ('help', 'This list of commands'),
+    ]),
+    ('🎛 Control', [
+        ('pause', 'Stop opening new trades'),
+        ('resume', 'Start trading again'),
+        ('closeall', 'Sell every open option and pause'),
+        ('testtrade', 'Buy and sell one cheap SPY option to test'),
+    ]),
+    ('🏛 Council', [
+        ('live', 'Turn the live council debate on or off'),
+        ('happy', "Tell the council you're happy (cheers!)"),
+        ('unhappy', "Tell the council you're not happy"),
+    ]),
+]
+def help_text():
+    lines = [f"📟 {BOT_TITLE} commands", ""]
+    for group, cmds in BOT_COMMAND_GROUPS:
+        lines.append(group)
+        lines += [f"/{c} – {d}" for c, d in cmds]
+        lines.append("")
+    lines.append("Tip: tap the Menu button next to the message box to pick a command.")
+    return "\n".join(lines)
+
+
+def sync_menu(tg, st):
+    """Keep Telegram's Menu button in sync with the commands this bot understands."""
+    cmds = [{"command": c, "description": d[:60]} for _, group in BOT_COMMAND_GROUPS for c, d in group]
+    sig = json.dumps(cmds, sort_keys=True)
+    if st.get("menu_sig") == sig:
+        return
+    try:
+        tg.api("setMyCommands", commands=cmds)
+        st["menu_sig"] = sig
+    except Exception:
+        pass
+
+
 class Telegram:
     def __init__(self, token, st):
         self.token, self.st, self.out = token, st, []
@@ -738,6 +939,75 @@ def plan(st, now=None):
     return "manage" if st.get("trades") else "skip"
 
 
+def next_weekday(d):
+    d += dt.timedelta(days=1)
+    while d.weekday() >= 5:
+        d += dt.timedelta(days=1)
+    return d
+
+
+def must_sell_today(meta, today_s):
+    """0DTE (or anything when holding is off) goes by the end of today; weeklies go the trading day before they expire."""
+    exp = meta.get("exp")
+    if not HOLD_WEEKLIES or not exp or exp <= today_s:
+        return True
+    return next_weekday(dt.date.fromisoformat(today_s)) >= dt.date.fromisoformat(exp)
+
+
+def sell_by_text(exp, zero):
+    if zero or not HOLD_WEEKLIES:
+        return "Out by 3:40 PM today no matter what."
+    last = dt.date.fromisoformat(exp) - dt.timedelta(days=1)
+    while last.weekday() >= 5:
+        last -= dt.timedelta(days=1)
+    return f"Can be held overnight. Sold by 3:40 PM {last:%a %b} {last.day} at the latest (the day before it expires)."
+
+
+def take_partial(api, st, meta, bid, now, tg, log):
+    """At +PARTIAL_AT: bank half (or lock a small profit on 1 contract) and let the rest run on a trailing stop."""
+    name = contract_name(meta["sym"])
+    meta["partial"] = True
+    meta["trail"] = True
+    meta["breakeven"] = True
+    meta["peak"] = bid
+    meta["tp"] = round(meta["entry"] * (1 + RUNNER_TARGET), 2)
+    if meta["qty"] >= 2:
+        n = meta["qty"] // 2
+        try:
+            res = api.close(meta["sym"], n)
+            o = wait_fill(api, res["id"]) if res.get("id") else {}
+            px = float(o.get("filled_avg_price") or 0) or bid
+        except ApiError as e:
+            log.append(f"{meta['sym']}: couldn't sell half ({e})")
+            meta["partial"] = False; meta["trail"] = False
+            return
+        banked = round((px - meta["entry"]) * 100 * n, 2)
+        meta["qty"] -= n
+        meta["banked"] = round(meta.get("banked", 0) + banked, 2)
+        meta["sold_early"] = meta.get("sold_early", 0) + n
+        st["record"]["pl"] = round(st["record"]["pl"] + banked, 2)       # booked now so the bankroll shows it
+        meta["sl"] = meta["entry"]
+        st["_changed"] = True
+        feed_add(st, "event", f"{meta['pair']} took profit", who="Risk", ok=True,
+                 text=f"Sold {n} of {name} at ${px:.2f} ({money(banked)}). The rest rides with the stop at entry.")
+        log.append(f"{meta['pair']}: sold {n} of {meta['sym']} at {px:.2f} (+{PARTIAL_AT:.0%} partial)")
+        if tg:
+            tg.say(f"💰 TOOK PROFIT on {name}: sold {n} of {n + meta['qty']} at ${px:.2f} ({money(banked)})\n"
+                   f"The other {meta['qty']} keeps running: stop moved to ${meta['entry']:.2f} (can't lose now), "
+                   f"aiming for ${meta['tp']:.2f}, with a stop that follows the price up.\n\n"
+                   f"👉 Robinhood: if you copied it, sell {n} of your {n + meta['qty']} contracts now (limit near ${px:.2f}) "
+                   f"and set a stop at ${meta['entry']:.2f} on the rest.")
+    else:
+        meta["sl"] = round(meta["entry"] * (1 + LOCK_AT), 2)
+        st["_changed"] = True
+        feed_add(st, "event", f"{meta['pair']} profit locked", who="Risk", ok=True,
+                 text=f"{name} is up {PARTIAL_AT:.0%}. Stop raised to ${meta['sl']:.2f} (+{LOCK_AT:.0%}) and it now trails the price.")
+        if tg:
+            tg.say(f"🔐 {name} is up {PARTIAL_AT:.0%}. Locked in a profit: stop raised to ${meta['sl']:.2f} (+{LOCK_AT:.0%}). "
+                   f"Letting it run toward ${meta['tp']:.2f} with a stop that follows the price up.\n\n"
+                   f"👉 Robinhood: if you copied it, set a stop at ${meta['sl']:.2f}.")
+
+
 def close_trade(api, st, tid, meta, why, price_hint, now, tg, log):
     """Sell the contract at market and book the result."""
     try:
@@ -752,12 +1022,13 @@ def close_trade(api, st, tid, meta, why, price_hint, now, tg, log):
             if tg:
                 tg.say(f"⚠️ Couldn't sell {contract_name(meta['sym'])}: {e}\nPlease close it in the app.")
             return False
-    pl = round((exit_px - meta["entry"]) * 100 * meta["qty"], 2)
+    rest = round((exit_px - meta["entry"]) * 100 * meta["qty"], 2)
+    pl = round(rest + meta.get("banked", 0), 2)                    # includes any half sold early
     won = pl > 0
     meta.update(pl=pl, exit=exit_px, why=why, closed=now.isoformat()[:19], closed_ts=now.timestamp())
     st["closed"].append(meta)
     st["_changed"] = True
-    rec = st["record"]; rec["wins" if won else "losses"] += 1; rec["pl"] = round(rec["pl"] + pl, 2)
+    rec = st["record"]; rec["wins" if won else "losses"] += 1; rec["pl"] = round(rec["pl"] + rest, 2)   # the early half was booked already
     score(st, meta.get("votes", {}), won, True)
     meta["r"] = round(pl / meta["risk"], 2) if meta.get("risk") else 0
     for note_ in streak_update(st, meta["r"], now.timestamp()):
@@ -772,9 +1043,10 @@ def close_trade(api, st, tid, meta, why, price_hint, now, tg, log):
     st["trades"].pop(tid, None)
     log.append(f"{meta['pair']}: CLOSED {meta['sym']} ({why}) {money(pl)}")
     if tg:
-        icon = {"target": "🎯", "stop": "🛑", "breakeven": "🔒", "end of day": "🔔", "expired": "⌛"}.get(why, "⚪")
+        icon = {"target": "🎯", "stop": "🛑", "breakeven": "🔒", "end of day": "🔔", "expired": "⌛", "trailing stop": "📈"}.get(why, "⚪")
+        early = (f" (plus {meta['sold_early']} sold earlier for {money(meta['banked'])})" if meta.get("sold_early") else "")
         tg.say(f"{'✅' if won else '❌'} SOLD {contract_name(meta['sym'])} ({icon} {why})\n"
-               f"Bought ${meta['entry']:.2f} → sold ${exit_px:.2f} × {meta['qty']}\n"
+               f"Bought ${meta['entry']:.2f} → sold ${exit_px:.2f} × {meta['qty']}{early}\n"
                f"Result: {money(pl)}  ·  Record {rec['wins']}W–{rec['losses']}L, total {money(rec['pl'])}\n\n"
                f"👉 Robinhood: if you copied it, sell your {contract_name(meta['sym'])} now (limit near ${exit_px:.2f}).")
     return True
@@ -803,7 +1075,22 @@ def run(log, full=True):
                      checked=now.timestamp())
     except ApiError as e:
         log.append(f"Clock unavailable ({e})")
-    acc = api.account()
+    try:
+        acc = api.account()
+    except ApiError as e:
+        bad_keys = "401" in str(e) or "403" in str(e)
+        st["alpaca_error"] = {"t": now.timestamp(), "keys": bad_keys, "text": str(e)[:200]}
+        log.append(f"ALPACA: couldn't open the account ({e})")
+        if tg and now.timestamp() - st.get("alpaca_alerted", 0) > 3 * 3600:
+            st["alpaca_alerted"] = now.timestamp()
+            tg.say("⚠️ Vault Options can't log in to Alpaca, so it isn't trading.\n\n" + (
+                "Alpaca says the keys are wrong (401). Make new PAPER keys in Alpaca (switch to your Paper account first), "
+                "then paste them into the repo's ALPACA_KEY_ID and ALPACA_SECRET_KEY secrets."
+                if bad_keys else f"Alpaca error: {str(e)[:150]}. I'll keep retrying."))
+            tg.flush(log)
+        save_state(st)
+        return st
+    st.pop("alpaca_error", None)
     if START_BALANCE and st.get("start_balance") != START_BALANCE:
         st.update(start_balance=START_BALANCE, peak=START_BALANCE, day={}, equity=[],
                   record={"wins": 0, "losses": 0, "pl": 0.0})
@@ -818,8 +1105,13 @@ def run(log, full=True):
     st["peak"] = max(st.get("peak", nav), nav)
 
     if tg:
+        sync_menu(tg, st)
         for full_cmd in tg.commands():
             cmd, _, arg = full_cmd.partition(" ")
+            cmd = cmd.split("@")[0].lower()
+            if cmd in ("/help", "/commands"):
+                tg.say(help_text())
+                continue
             if cmd == "/live":
                 on = {"on": True, "off": False}.get(arg.strip(), not st.get("live_tg"))
                 st["live_tg"] = on
@@ -827,7 +1119,7 @@ def run(log, full=True):
                        if on else "🔇 Live council is OFF. You'll still get trades, closes and reports.")
             elif cmd == "/pause":
                 feed_add(st, "event", "Paused", who="Chair", text="You paused new trades. Open trades are still managed.")
-                st["paused"] = "by you"; tg.say("⏸ Paused. No new trades. Open ones are still managed and closed by 3:40. /resume to restart.")
+                st["paused"] = "by you"; tg.say("⏸ Paused. No new trades. Open ones are still managed (stops and targets). /resume to restart.")
             elif cmd == "/resume":
                 st["paused"] = None; st["peak"] = nav; tg.say("▶️ Resumed. Back to normal trading.")
                 if st.get("streak", {}).get("until", 0) > time.time():
@@ -857,7 +1149,7 @@ def run(log, full=True):
             tg.say(f"✅ Vault Options is connected ({ALPACA_ENV.upper()} account, trading a ${nav:,.0f} bankroll).\n\n"
                    f"Watchlist: {', '.join(PAIRS)}. Every 5 minutes during market hours the council looks for setups and, "
                    "when it approves, I buy a CALL (bullish) or PUT (bearish). 0DTE on SPY/QQQ/IWM before 1:30 PM, "
-                   "weeklies otherwise. Everything is sold by 3:40 PM.\n\n"
+                   "weeklies otherwise. 0DTE is sold by 3:40 PM; weeklies can be held overnight and are sold the day before they expire.\n\n"
                    "Each BUY text has the exact contract so you can copy it on Robinhood.\n\n"
                    "Commands:\n/status – bankroll and open trades\n/pause – stop new trades\n/resume – start again\n"
                    "/closeall – sell everything now\n/live – every council debate on or off\n"
@@ -880,6 +1172,8 @@ def run(log, full=True):
             tg.say(f"🛑 Bankroll is down {MAX_DRAWDOWN:.0%} from its peak. I've paused new trades. Review things, then send /resume.")
 
     news = load_news(st, log)
+    if full and REPORTER:
+        load_earnings(st, log)
     today = day_stats(st, nav)
     e_now = et(now)
     is_open = market_open_now(now)
@@ -897,6 +1191,11 @@ def run(log, full=True):
             bid = q.get("bid") or meta.get("price") or meta["entry"]
             meta["price"] = bid
             meta["upl"] = round((bid - meta["entry"]) * 100 * meta["qty"], 2)
+            if meta.get("trail") and bid:
+                meta["peak"] = max(meta.get("peak", bid), bid)
+                trail_sl = round(meta["peak"] * (1 - TRAIL_GIVEBACK), 2)
+                if trail_sl > meta["sl"]:
+                    meta["sl"] = trail_sl
             if pos is not None and meta["sym"] not in pos:
                 close_trade(api, st, tid, meta, "expired" if meta.get("exp", "9") < today_s else "closed outside the bot",
                             bid if meta.get("exp", "9") >= today_s else 0.0, now, tg, log)
@@ -904,13 +1203,17 @@ def run(log, full=True):
             if not is_open:
                 continue
             zero = meta.get("exp") == today_s
-            flat = (e_now.hour, e_now.minute) >= (FLATTEN_AT if not zero else (15, 30))
+            flat = (e_now.hour, e_now.minute) >= (FLATTEN_AT if not zero else (15, 30)) and must_sell_today(meta, today_s)
             if st.get("_closeall") or flat:
                 close_trade(api, st, tid, meta, "end of day" if flat else "closed by you", bid, now, tg, log)
             elif bid >= meta["tp"]:
                 close_trade(api, st, tid, meta, "target", bid, now, tg, log)
             elif bid <= meta["sl"]:
-                close_trade(api, st, tid, meta, "breakeven" if meta.get("breakeven") else "stop", bid, now, tg, log)
+                why_ = ("trailing stop" if meta.get("trail") and meta["sl"] > meta["entry"] else
+                        "breakeven" if meta.get("breakeven") else "stop")
+                close_trade(api, st, tid, meta, why_, bid, now, tg, log)
+            elif PARTIAL and not meta.get("partial") and bid >= meta["entry"] * (1 + PARTIAL_AT):
+                take_partial(api, st, meta, bid, now, tg, log)
             elif not meta.get("breakeven") and bid >= meta["entry"] * (1 + BREAKEVEN_AT):
                 meta["breakeven"] = True; meta["sl"] = meta["entry"]
                 feed_add(st, "event", f"{meta['pair']} stop to breakeven", who="Risk",
@@ -1031,13 +1334,15 @@ def run(log, full=True):
                 votes = council(a, 0, not reasons, "; ".join(reasons), now, pair)
             if pick and votes["Risk"][0]:
                 votes["Risk"] = (True, f"{contract_name(pick['sym'])} at ${pick['ask']:.2f}, spread {pick['spread']:.0%}")
+            rv, rwhy, rhard = reporter_vote(st, api, pair, d, pick, now, log)
+            votes["The Reporter"] = (rv, rwhy)
             under = a["close"]
             if a.get("sl_price") is not None:
                 u_sl = a["sl_price"]; u_tp = under + d * (TARGET_ATR / STOP_ATR) * abs(under - u_sl)
             else:
                 u_sl = under - d * STOP_ATR * a["atr"]; u_tp = under + d * TARGET_ATR * a["atr"]
             yes, no = tally(votes)
-            ok = approved(votes, voter_weights(st)) and pick is not None
+            ok = approved(votes, voter_weights(st)) and pick is not None and not rhard   # earnings = hard veto
             label = f"{pair} {'CALL' if d == 1 else 'PUT'} ({a['setup']})"
             st["last_vote"] = {"label": label, "side": "CALL" if d == 1 else "PUT", "approved": ok, "when": ts,
                                "url": "https://app.alpaca.markets/", "ask": 0, "edge": 0,
@@ -1103,7 +1408,9 @@ def run(log, full=True):
                 tg.say(f"{'🟢 CALL' if d == 1 else '🔴 PUT'} {pair}: {a['setup']}\n\n"
                        f"Bought {qty} × {contract_name(pick['sym'])} at ${fill_px:.2f} (${fill_px * 100 * qty:,.0f} total)\n"
                        f"🎯 Sell at ${tp:.2f} (+{OPT_TARGET:.0%})\n🛑 Sell at ${sl:.2f} (−{OPT_STOP:.0%}), max loss ≈ ${risk_usd:,.0f}\n"
-                       f"🔔 {zero_txt}Out by 3:40 PM no matter what.\n\n"
+                       + (f"💰 At ${fill_px * (1 + PARTIAL_AT):.2f} (+{PARTIAL_AT:.0%}): " + (f"sell {qty // 2}, let the rest run" if qty >= 2 else f"lock in +{LOCK_AT:.0%} and let it run")
+                          + f" (aims for +{RUNNER_TARGET:.0%} with a trailing stop)\n" if PARTIAL else "")
+                       + f"🔔 {zero_txt}{sell_by_text(pick['exp'], pick['zero'])}\n\n"
                        f"👉 Robinhood: search {pair} → Trade → Trade Options → Buy → "
                        f"{'Call' if d == 1 else 'Put'} → expiration {dt.date.fromisoformat(pick['exp']):%b} {dt.date.fromisoformat(pick['exp']).day} → "
                        f"strike ${pick['strike']:g} → limit ${limit:.2f} or less, {qty} contract{'s' if qty > 1 else ''}. "
@@ -1220,6 +1527,8 @@ PERSONA = {   # how each agent talks: (YES lines, NO lines); {why} is the actual
                   ["No juice here. {why}.", "Stalling out: {why}.", "Nothing pushing it. {why}."]),
     "Time":      (["Timing's right. {why}.", "Good window. {why}.", "Clock agrees: {why}."],
                   ["Not now. {why}.", "Bad timing: {why}.", "Wait for it. {why}."]),
+    "The Reporter": (["Checked the wires: {why}.", "Nothing in the press to scare me. {why}.", "Sources say we're clear: {why}."],
+                     ["Hold the presses. {why}.", "Breaking: {why}.", "My sources say no. {why}."]),
     "Doubt":     (["...fine. {why}. I'll allow it.", "Hm. {why}. I can't argue.", "Begrudgingly yes: {why}."],
                   ["Something's off. {why}.", "I don't buy it: {why}.", "Too convenient. {why}."]),
 }
@@ -1496,6 +1805,12 @@ CHARACTERS = {
              '<path d="M50 54 h12" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/>'
              '<circle cx="50" cy="54" r="3.5" fill="var(--ink)"/>'
              '<rect x="44" y="10" width="12" height="9" rx="2" fill="var(--c-time)"/>'),
+    "The Reporter": ("--c-rep", '<rect x="22" y="30" width="56" height="62" rx="8" fill="var(--c-rep)"/>'
+                     '<path d="M14 30 h72 l-8 -12 h-56 z" fill="var(--ink)"/><rect x="30" y="8" width="40" height="12" rx="3" fill="var(--ink)"/>'
+                     '<rect x="56" y="11" width="13" height="7" fill="#fff"/><circle cx="41" cy="50" r="4" fill="var(--ink)"/>'
+                     '<circle cx="59" cy="50" r="4" fill="var(--ink)"/><path d="M42 68 q8 5 16 0" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>'
+                     '<rect x="66" y="62" width="22" height="28" rx="2" fill="#fff" stroke="var(--ink)" stroke-width="2"/>'
+                     '<path d="M70 70 h14 M70 76 h14 M70 82 h10" stroke="var(--ink)" stroke-width="2"/>'),
     "Doubt": ("--c-doubt", '<ellipse cx="50" cy="56" rx="30" ry="38" fill="var(--c-doubt)"/>'
               '<circle cx="40" cy="48" r="4" fill="var(--ink)"/><circle cx="60" cy="48" r="4" fill="var(--ink)"/>'
               '<path d="M32 36 l14 -2 M54 32 l14 6" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>'
@@ -1800,7 +2115,7 @@ ROOM_JS = r"""
   world.add(dust);
 
   // ── the council as little military officers: big heads, uniforms, unique headgear and insignia
-  var COLORS = { 'The Quant': 0x3ee6a1, 'Risk': 0xff5468, 'Momentum': 0xffb03b, 'Time': 0x4cb7ff, 'Doubt': 0xc9a7ff };
+  var COLORS = { 'The Quant': 0x3ee6a1, 'Risk': 0xff5468, 'Momentum': 0xffb03b, 'Time': 0x4cb7ff, 'Doubt': 0xc9a7ff, 'The Reporter': 0xff7ac8 };
   function std(c, r, m) { return new THREE.MeshStandardMaterial({ color: c, roughness: r === undefined ? 0.75 : r, metalness: m || 0 }); }
   var BOOT = std(0x15130f, 0.45, 0.2), GOLD = std(0xd9b44a, 0.3, 0.85), BLACK = std(0x0b0b0e, 0.6), WHITE = std(0xf2f2ee, 0.5);
   var EYE = new THREE.MeshBasicMaterial({ color: 0x111111 });
@@ -1897,6 +2212,18 @@ ROOM_JS = r"""
       bar(hands, 0.008, 0.045, 0, 0.02, 0, 0, BLACK);
     },
     // grizzled colonel: garrison cap tilted, grey mustache, monocle, lots of medals
+    // war correspondent: fedora with a PRESS card, trench coat, notepad and pencil
+    'The Reporter': function (g, u, col) {
+      var s = soldier(g, u, { tunic: 0x8a7556, skin: 0xd99a6c, medals: 0, mouthW: 0.07 }), h = s.head;
+      var brim = M(new THREE.CylinderGeometry(0.34, 0.34, 0.02, 28), std(0x3b3226)); brim.position.y = 0.17; h.add(brim);
+      var crown = M(new THREE.CylinderGeometry(0.2, 0.23, 0.17, 24), std(0x3b3226)); crown.position.y = 0.26; h.add(crown);
+      var band = M(new THREE.CylinderGeometry(0.232, 0.232, 0.04, 24), BLACK); band.position.y = 0.2; h.add(band);
+      var card = M(new THREE.BoxGeometry(0.11, 0.06, 0.01), WHITE); card.position.set(0.09, 0.22, 0.215); card.rotation.y = 0.35; h.add(card);
+      var pad = M(new THREE.BoxGeometry(0.12, 0.16, 0.02), WHITE); pad.position.set(0, -0.5, 0.06); u.armL.userData.joint.add(pad);
+      var pencil = M(new THREE.CylinderGeometry(0.01, 0.01, 0.14, 6), std(0xf2c230)); pencil.position.set(0, -0.5, 0.05);
+      pencil.rotation.x = 1.2; u.armR.userData.joint.add(pencil);
+      var lapel = M(new THREE.BoxGeometry(0.46, 0.06, 0.3), std(0x7a6649)); lapel.position.y = 1.18; g.add(lapel);
+    },
     'Doubt': function (g, u, col) {
       var s = soldier(g, u, { tunic: 0x3a3f4a, skin: 0x5c3a21, medals: 4, browUp: true, mouthX: 0.03, mouthTilt: -0.2, epaulette: true }), h = s.head;
       var cap = M(new THREE.BoxGeometry(0.3, 0.1, 0.4), std(0x2c313b)); cap.position.set(0.04, 0.24, 0); cap.rotation.z = -0.3; h.add(cap);
@@ -2226,7 +2553,7 @@ ROOM_JS = r"""
 
 # ───────────────────────────── Dashboard ─────────────────────────────────────
 
-FEED_COLORS = {"The Quant": "#3ee6a1", "Risk": "#ff5468", "Momentum": "#ffb03b", "Time": "#4cb7ff", "Doubt": "#c9a7ff",
+FEED_COLORS = {"The Quant": "#3ee6a1", "Risk": "#ff5468", "Momentum": "#ffb03b", "Time": "#4cb7ff", "Doubt": "#c9a7ff", "The Reporter": "#ff7ac8",
                "Chair": "#f4c84a"}
 
 
@@ -2313,12 +2640,12 @@ def recess_panel(st):
     if market_open_now(now):
         early = (e.hour, e.minute) < ENTRY_WINDOW[0]
         return f"""<section class="recess night"><div><span class="rb">{'OPENING BELL' if early else 'LAST HOUR'}</span>
-          <b>{'The council lets the first 15 minutes settle before trading.' if early else 'No new trades after 3:00 PM. Open trades are still managed and sold by 3:40.'}</b>
+          <b>{'The council lets the first 15 minutes settle before trading.' if early else 'No new trades after 3:00 PM. Same-day options are sold by 3:40; weeklies can stay open overnight.'}</b>
           <p>{'First votes at 9:45 AM ET.' if early else 'Back tomorrow at 9:45 AM ET.'}</p></div></section>"""
     resume = t.astimezone(LOCAL_TZ)
     return f"""<section class="recess"><div><span class="rb">⚖️ COURT IS OUT OF SESSION</span>
       <b>The stock market is closed. The council resumes after the opening bell.</b>
-      <p>First votes {resume.strftime('%a %I:%M %p').replace(' 0', ' ')} ET. Every trade is closed before the bell, so nothing is held overnight.</p></div>
+      <p>First votes {resume.strftime('%a %I:%M %p').replace(' 0', ' ')} ET. {held_text(st)}</p></div>
       <div class="rc" id="rc" data-t="{int(t.timestamp())}">--:--:--</div>
       <script>(function(){{var e=document.getElementById('rc'),t=+e.dataset.t;function f(){{var s=Math.max(0,Math.round(t-Date.now()/1000));
       var d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60),x=s%60;
@@ -2442,6 +2769,26 @@ def bankroll_chart(st):
   function out(){{tip.hidden=true;x.setAttribute('x1',-10);x.setAttribute('x2',-10);d.setAttribute('cx',-10);}}
   hit.addEventListener('pointermove',mv);hit.addEventListener('pointerdown',mv);hit.addEventListener('pointerleave',out);}})();</script>
 </section>"""
+
+
+def alpaca_banner(st):
+    e = st.get("alpaca_error")
+    if not e:
+        return ""
+    when = dt.datetime.fromtimestamp(e["t"], LOCAL_TZ).strftime("%a %I:%M %p")
+    fix = ("Alpaca rejected the API keys (401). In Alpaca, switch to your <b>Paper</b> account, open API Keys, click "
+           "<b>Generate</b> (or Regenerate), and paste the two values into the repo's <b>ALPACA_KEY_ID</b> and "
+           "<b>ALPACA_SECRET_KEY</b> secrets." if e.get("keys") else html.escape(e["text"]))
+    return (f'<section style="border:2px solid #ff5468;border-radius:14px;padding:14px 16px;background:#2a1220;color:#ffd7dc">'
+            f'<b style="color:#ff8a98">⚠️ Not trading: can\'t log in to Alpaca</b> (last try {when} ET)<br>{fix}</section>')
+
+
+def held_text(st):
+    n = len(st.get("trades", {}))
+    if not n:
+        return "Nothing is being held overnight."
+    return (f"{n} weekly option{'s are' if n > 1 else ' is'} being held overnight. Stops and targets resume at the open "
+            "(a gap can fill past the stop).")
 
 
 def build_html(st, log):
@@ -2607,7 +2954,7 @@ details {{ color:var(--muted) }} .fine {{ color:var(--muted); font-size:12px; ma
   .tbl td.mkt, .tbl td.empty {{ grid-column:1/-1 }}
   .tbl td[data-l]::before {{ content:attr(data-l); display:block; font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted) }}
 }}
-.room {{ --ink:#1b1430; --c-quant:#7ccf8a; --c-risk:#e8565b; --c-mom:#f2a23c; --c-time:#5aa7e0; --c-doubt:#d9c3a5;
+.room {{ --ink:#1b1430; --c-quant:#7ccf8a; --c-risk:#e8565b; --c-mom:#f2a23c; --c-time:#5aa7e0; --c-doubt:#d9c3a5; --c-rep:#ff8fcf;
   background:radial-gradient(120% 90% at 50% 0%, #3a2a6b 0%, #1d1538 60%, #140f28 100%); color:#efe9ff;
   border-radius:14px; padding:16px; overflow:hidden; display:grid; gap:12px }}
 .roomhead {{ display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:end }}
@@ -2655,7 +3002,8 @@ details {{ color:var(--muted) }} .fine {{ color:var(--muted); font-size:12px; ma
 .stamp {{ font:800 15px/1 ui-sans-serif,-apple-system,sans-serif; letter-spacing:.08em; padding:7px 12px; border-radius:6px;
   border:3px solid currentColor; transform:rotate(-6deg) scale(0); animation:stamp .35s 2.5s cubic-bezier(.2,1.6,.4,1) both }}
 .stamp.ok {{ color:#6ff0a8 }} .stamp.rej {{ color:#ff8a8e }}
-.seats {{ display:grid; grid-template-columns:repeat(5,1fr); gap:6px }}
+.navlinks a {{ color:#38e1ff; font-weight:600; text-decoration:none }}
+.seats {{ display:grid; grid-template-columns:repeat(6,1fr); gap:6px }}
 .seat {{ all:unset; cursor:pointer; display:grid; justify-items:center; gap:3px; text-align:center; position:relative; min-width:0 }}
 .seat:focus-visible {{ outline:2px solid #f4c84a; outline-offset:4px; border-radius:8px }}
 .char {{ width:min(76px,100%); height:auto; animation:bob 2.6s calc(var(--i) * .3s) ease-in-out infinite; filter:drop-shadow(0 6px 6px #0006) }}
@@ -2676,8 +3024,10 @@ details {{ color:var(--muted) }} .fine {{ color:var(--muted); font-size:12px; ma
 @media (max-width:720px) {{ .nm {{ font-size:11px }} .acc {{ font-size:10px }}
   .roomhead {{ grid-template-columns:1fr; gap:10px }} .overall {{ border-right:0; padding-right:0; border-bottom:1px solid #4a3a85; padding-bottom:10px }} }}
 </style></head><body><div class="wrap">
-<header><div><h1>Vault Options</h1><p>Updated {updated} · day-trading calls and puts on 15-minute setups{f" · started with ${START_BALANCE:,.0f}" if START_BALANCE else ""}</p></div>
+<header><div><h1>Vault Options</h1><p>Updated {updated} · day-trading calls and puts on 15-minute setups{f" · started with ${START_BALANCE:,.0f}" if START_BALANCE else ""}</p>
+  <p class="navlinks"><a href="hq.html">🏛 HQ: all bots</a> · <a href="inspector.html">🕵️ Inspector's options report</a></p></div>
   <div><span class="badge {mode.lower()}">{mode}</span> {f'<span class="badge paused">PAUSED · {html.escape(paused)}</span>' if paused else ''}</div></header>
+{alpaca_banner(st)}
 {council_room(st)}
 {recess_panel(st)}
 {next_panel(st)}
@@ -2701,8 +3051,9 @@ details {{ color:var(--muted) }} .fine {{ color:var(--muted); font-size:12px; ma
 <p class="fine">Strategy: on 15-minute stock charts, the EMA20/EMA50 trend sets the direction (it must agree with the 1-hour trend); a fresh crossover,
 a pullback to the EMA20, or a break of the 9:30–10:00 opening range creates a setup. Bullish setups buy a call, bearish setups buy a put
 (0DTE on SPY/QQQ/IWM before 1:30 PM, otherwise {WEEKLY_DAYS[0]}–{WEEKLY_DAYS[1]} day weeklies, delta {DELTA_RANGE[0]}–{DELTA_RANGE[1]}, spread under {MAX_SPREAD_PCT:.0%}).
-Each trade is sized so a full stop (−{OPT_STOP:.0%} on the option) costs about {RISK_PCT:.0%} of the bankroll; target +{OPT_TARGET:.0%}; stop moves to entry at +{BREAKEVEN_AT:.0%};
-everything is sold by 3:40 PM ET. Limits: {MAX_OPEN_TRADES} open trades, {DAILY_LOSS_LIMIT:.0%} daily loss stop, {MAX_DRAWDOWN:.0%} drawdown pause, half size after {STREAK_HALF} straight losses.
+Each trade is sized so a full stop (−{OPT_STOP:.0%} on the option) costs about {RISK_PCT:.0%} of the bankroll; target +{OPT_TARGET:.0%}; at +{PARTIAL_AT:.0%} it sells half (or locks +{LOCK_AT:.0%} on a single contract) and the rest runs toward +{RUNNER_TARGET:.0%} with a stop {TRAIL_GIVEBACK:.0%} below its best price;
+0DTE is sold by 3:40 PM ET; weeklies can be held overnight (stops are only checked while the market is open, so a gap at the open can fill past the stop)
+and are sold by 3:40 PM the trading day before they expire. Limits: {MAX_OPEN_TRADES} open trades, {DAILY_LOSS_LIMIT:.0%} daily loss stop, {MAX_DRAWDOWN:.0%} drawdown pause, half size after {STREAK_HALF} straight losses.
 Stops and targets are checked every 5 minutes, so fast moves can fill worse than planned. Options can lose most or all of their value quickly,
 and most short-term options traders lose money. Rejected setups are scored on the stock's own price so "Who called it?" learns from both sides.
 This is software, not financial advice.</p>
