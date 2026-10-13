@@ -5,7 +5,7 @@
   "nav": 213.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1791923110.614187
+  "updated": 1791923417.222383
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -121,6 +121,24 @@
    "setups": 25,
    "start_nav": 250.0
   }
+ },
+ "earnings": {
+  "dates": {
+   "SOFI": [
+    {
+     "date": "2026-10-27",
+     "when": "before"
+    }
+   ],
+   "TSLA": [
+    {
+     "date": "2026-10-21",
+     "when": "after"
+    }
+   ]
+  },
+  "days_checked": 11,
+  "fetched": 1791923422.2543073
  },
  "equity": [
   [
@@ -2108,9 +2126,9 @@
   "SPY:M15": "2026-10-13T19:30:00"
  },
  "last_daily": "2026-10-13",
- "last_deploy": 1791922515.553171,
- "last_full_run": 1791923110.614187,
- "last_run": 1791923110.614187,
+ "last_deploy": 1791923422.3802288,
+ "last_full_run": 1791923417.222383,
+ "last_run": 1791923417.222383,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -2360,6 +2378,7 @@
    }
   ]
  },
+ "menu_sig": "[{\"command\": \"status\", \"description\": \"Bankroll, open options and today's results\"}, {\"command\": \"help\", \"description\": \"This list of commands\"}, {\"command\": \"pause\", \"description\": \"Stop opening new trades\"}, {\"command\": \"resume\", \"description\": \"Start trading again\"}, {\"command\": \"closeall\", \"description\": \"Sell every open option and pause\"}, {\"command\": \"testtrade\", \"description\": \"Buy and sell one cheap SPY option to test\"}, {\"command\": \"live\", \"description\": \"Turn the live council debate on or off\"}, {\"command\": \"happy\", \"description\": \"Tell the council you're happy (cheers!)\"}, {\"command\": \"unhappy\", \"description\": \"Tell the council you're not happy\"}]",
  "mode": "paper",
  "news": {
   "events": [
