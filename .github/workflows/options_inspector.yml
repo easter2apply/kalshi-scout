@@ -1,0 +1,41 @@
+name: Options Inspector
+on:
+  schedule:
+    - cron: "17 15 * * 0"        # Sundays ~11 AM ET
+  workflow_dispatch:
+    inputs:
+      months:
+        description: "How many months to replay"
+        default: "6"
+permissions:
+  contents: write
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Replay Vault Options
+        env:
+          ALPACA_KEY_ID: ${{ secrets.ALPACA_KEY_ID }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+          ALPACA_ENV: ${{ vars.ALPACA_ENV }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: python options_inspector.py --months "${{ inputs.months || '6' }}"
+      - name: Save the report
+        run: |
+          mkdir -p /tmp/report && cp options_inspector.html options_inspector.json /tmp/report/
+          git config user.name "options-inspector"
+          git config user.email "options-inspector@users.noreply.github.com"
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            cp /tmp/report/* .
+            git add options_inspector.html options_inspector.json
+            git diff --cached --quiet && exit 0
+            git commit -qm "Inspector report" && git push -q origin HEAD:main && exit 0
+            sleep 5
+          done
+          exit 1
