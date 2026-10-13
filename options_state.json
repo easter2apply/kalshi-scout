@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 214.0,
-  "broker_equity": 99931.75,
-  "nav": 211.0,
+  "broker_equity": 99929.75,
+  "nav": 209.0,
   "options_level": 3,
-  "unrealized": -3.0,
-  "updated": 1791914715.739871
+  "unrealized": -5.0,
+  "updated": 1791915012.141044
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -947,7 +947,7 @@
     }
    ],
    "ok": null,
-   "t": 1791914750.2663436,
+   "t": 1791915037.526341,
    "text": null,
    "title": "Scanned 10 stocks: 3 setups on the latest candle",
    "verdict": null,
@@ -993,8 +993,8 @@
   "SPY:M15": "2026-10-13T17:45:00"
  },
  "last_deploy": 1791914492.1656835,
- "last_full_run": 1791914715.739871,
- "last_run": 1791914715.739871,
+ "last_full_run": 1791915012.141044,
+ "last_run": 1791915012.141044,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -1646,7 +1646,7 @@
    "exp": "2026-10-23",
    "opened": "2026-10-13T18:00:16",
    "pair": "SOFI",
-   "price": 0.28,
+   "price": 0.26,
    "qty": 1,
    "risk": 12.4,
    "setup": "pullback 15m",
@@ -1655,7 +1655,7 @@
    "tf": "M15",
    "tp": 0.5,
    "units": 1,
-   "upl": -3.0,
+   "upl": -5.0,
    "votes": {
     "Doubt": true,
     "Momentum": false,
