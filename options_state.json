@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 311.0,
-  "broker_equity": 100025.37,
-  "nav": 307.0,
+  "broker_equity": 99997.37,
+  "nav": 280.0,
   "options_level": 3,
-  "unrealized": -4.0,
-  "updated": 1791988214.592173
+  "unrealized": -31.0,
+  "updated": 1791988512.193325
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -559,6 +559,10 @@
   [
    1791987611,
    326.0
+  ],
+  [
+   1791988512,
+   280.0
   ]
  ],
  "errors": [
@@ -3525,7 +3529,7 @@
     }
    ],
    "ok": null,
-   "t": 1791988235.6560016,
+   "t": 1791988528.5045757,
    "text": null,
    "title": "Scanned 10 stocks: 1 setup on the latest candle",
    "verdict": null,
@@ -3751,8 +3755,8 @@
  },
  "last_daily": "2026-10-13",
  "last_deploy": 1791988235.66999,
- "last_full_run": 1791988214.592173,
- "last_run": 1791988214.592173,
+ "last_full_run": 1791988512.193325,
+ "last_run": 1791988512.193325,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -4705,7 +4709,7 @@
    "exp": "2026-10-14",
    "opened": "2026-10-14T14:15:13",
    "pair": "IWM",
-   "price": 0.55,
+   "price": 0.46,
    "qty": 1,
    "risk": 25.6,
    "setup": "opening breakout",
@@ -4714,7 +4718,7 @@
    "tf": "ORB",
    "tp": 1.02,
    "units": 1,
-   "upl": -9.0,
+   "upl": -18.0,
    "votes": {
     "Doubt": true,
     "Momentum": false,
@@ -4730,7 +4734,7 @@
    "exp": "2026-10-14",
    "opened": "2026-10-14T14:15:13",
    "pair": "SPY",
-   "price": 0.56,
+   "price": 0.38,
    "qty": 1,
    "risk": 20.4,
    "setup": "crossover 15m",
@@ -4739,7 +4743,7 @@
    "tf": "M15",
    "tp": 0.82,
    "units": 1,
-   "upl": 5.0,
+   "upl": -13.0,
    "votes": {
     "Doubt": false,
     "Momentum": true,
