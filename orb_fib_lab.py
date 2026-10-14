@@ -54,12 +54,12 @@ def fib_trade(day, start, d, anchor, rng, p, until):
             return None, None, ext
         new_ext = max(ext, b["h"]) if d == 1 else min(ext, b["l"])
         leg = (new_ext - anchor) * d
-        if not qualified and leg >= p["outburst"] * rng:
+        if not qualified and leg >= (1 + p["outburst"]) * rng:      # leg includes the ORB itself: must run X× range PAST it
             qualified = True
         if qualified:
             lvl = ext - d * p["fib"] * (ext - anchor) * d          # entry level from the extreme reached BEFORE this bar
             touched = (b["l"] <= lvl) if d == 1 else (b["h"] >= lvl)
-            if touched and (ext - anchor) * d >= p["outburst"] * rng:
+            if touched and (ext - anchor) * d >= (1 + p["outburst"]) * rng:
                 leg0 = (ext - anchor) * d
                 stop = (ext - d * 0.786 * leg0) if p["stop"] == "786" else (anchor - d * 0.0005 * anchor)
                 target = ext if p["target"] == "extreme" else lvl + d * 1.5 * abs(lvl - stop)
@@ -97,7 +97,7 @@ def day_trades(day, p):
         if start is None and t is None:
             # no continuation entry happened; still look for a failure of the move after the breakout
             leg = (ext - anchor) * d
-            if leg >= p["outburst"] * rng:
+            if leg >= (1 + p["outburst"]) * rng:
                 fail_lvl = ext - d * 0.786 * leg
                 start = next((i for i in range(brk, len(day)) if (day[i]["c"] < fail_lvl if d == 1 else day[i]["c"] > fail_lvl)), None)
         if start is not None:
@@ -112,7 +112,7 @@ def day_trades(day, p):
 
 GRID = {
     "orb": [15, 30],
-    "outburst": [0.5, 1.0],
+    "outburst": [0.25, 0.5, 1.0],
     "fib": [0.5, 0.618],
     "stop": ["786", "anchor"],
     "target": ["extreme", "1.5R"],
