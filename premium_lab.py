@@ -38,12 +38,13 @@ import vault_options as vo
 
 UTC = dt.timezone.utc
 ET = vo.LOCAL_TZ
-SYMS = ["SPY", "QQQ"]
+SYMS = [x.strip() for x in os.environ.get("LAB_SYMS", "SPY,QQQ").split(",") if x.strip()]
 START = dt.date(2016, 1, 4)
 SPLIT = dt.date(2023, 1, 1)               # pick on 2016-2022, judge on 2023 → today
 REAL_FROM = dt.date(2024, 2, 5)           # Alpaca option history starts Feb 2024
 DAILY_EXP_FROM = dt.date(2022, 11, 14)    # before this, SPY/QQQ 0DTE only existed Mon/Wed/Fri
-SLIP = {("SPY", "0dte"): 0.02, ("SPY", "swing"): 0.04, ("QQQ", "0dte"): 0.03, ("QQQ", "swing"): 0.05}  # $/share/leg/side
+SLIP = {("SPY", "0dte"): 0.02, ("SPY", "swing"): 0.04, ("QQQ", "0dte"): 0.03, ("QQQ", "swing"): 0.05,
+        ("IWM", "0dte"): 0.03, ("IWM", "swing"): 0.05}  # $/share/leg/side
 RATES = {2016: .004, 2017: .01, 2018: .019, 2019: .021, 2020: .004, 2021: .0005, 2022: .02, 2023: .051, 2024: .052,
          2025: .043, 2026: .039}
 CBOE = "https://cdn.cboe.com/api/global/us_indices/daily_prices/{}_History.csv"
@@ -133,7 +134,7 @@ def load_data(api):
         log.append(f"{s}: {len(daily[s])} days ({feed}), 5-min bars on {len(intra[s])} days ({feed5})")
         print(log[-1], flush=True)
     vol = {}
-    for n in ("VIX", "VIX9D", "VXN"):
+    for n in ("VIX", "VIX9D", "VXN", "RVX"):
         try:
             vol[n] = cboe(n)
             log.append(f"{n}: {len(vol[n])} days from CBOE")
@@ -198,7 +199,7 @@ def occ(sym, exp, put, K):
 class Market:
     def __init__(self, daily, intra, vol):
         self.daily, self.intra = daily, intra
-        self.days = sorted(set(daily["SPY"]) & set(daily["QQQ"]))
+        self.days = sorted(set.intersection(*(set(daily[s]) for s in SYMS)))
         self.idx = {d: i for i, d in enumerate(self.days)}
         self.vol = {}
         for n, ser in vol.items():
@@ -219,9 +220,10 @@ class Market:
         """Implied vol (decimal) for a symbol on a day. short=True → 9-day vol (VIX9D)."""
         vix = self._ff("VIX", d, field) or 18.0
         b = vix
-        if sym == "QQQ":
-            vxn = self._ff("VXN", d, field)
-            b = vxn if vxn else vix * 1.25
+        if sym in ("QQQ", "IWM"):
+            idx, mult = ("VXN", 1.25) if sym == "QQQ" else ("RVX", 1.3)
+            x = self._ff(idx, d, field)
+            b = x if x else vix * mult
         if short:
             v9 = self._ff("VIX9D", d, field)
             if v9:
@@ -261,7 +263,7 @@ class Market:
         if flt == "none":
             return True
         if flt == "vix15":
-            return self.base(sym, d, False) * 100 > (15 if sym == "SPY" else 19)
+            return self.base(sym, d, False) * 100 > {"SPY": 15, "QQQ": 19, "IWM": 20}.get(sym, 15)
         if flt == "ivr30":
             return self.rank[sym].get(d, 0) >= 0.30
         if flt == "trend":
