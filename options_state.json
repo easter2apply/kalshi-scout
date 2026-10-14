@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 297.0,
-  "broker_equity": 100023.3,
-  "nav": 307.0,
+  "broker_equity": 100047.3,
+  "nav": 331.0,
   "options_level": 3,
-  "unrealized": 10.0,
-  "updated": 1791992110.154345
+  "unrealized": 34.0,
+  "updated": 1791992414.775624
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -730,42 +730,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "Clean read: ADX 21 (needs 18).",
-     "vote": true,
-     "who": "The Quant"
-    },
-    {
-     "say": "Exposure's fine. SPY $777 Put \u00b7 Oct 13 at $0.50, spread 2%.",
-     "vote": true,
-     "who": "Risk"
-    },
-    {
-     "say": "Stalling out: MACD against us (down).",
-     "vote": false,
-     "who": "Momentum"
-    },
-    {
-     "say": "Timing's right. RSI 49.",
-     "vote": true,
-     "who": "Time"
-    },
-    {
-     "say": "Something's off. 1-hour trend disagrees.",
-     "vote": false,
-     "who": "Doubt"
-    }
-   ],
-   "ok": true,
-   "t": 1791911127.7660065,
-   "text": null,
-   "title": "SPY PUT (pullback 15m)",
-   "verdict": "APPROVED 3\u20132. Bought 1 \u00d7 SPY $777 Put \u00b7 Oct 13 at $0.48. Target $0.77, stop $0.29.",
-   "who": null
-  },
   {
    "kind": "vote",
    "lines": [
@@ -4013,6 +3977,77 @@
    "title": "Scanned 10 stocks: 0 setups on the latest candle",
    "verdict": null,
    "who": null
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": true,
+   "t": 1791992415.6815252,
+   "text": "QQQ $731 Put \u00b7 Oct 14 is up 30%. Stop raised to $0.64 (+10%) and it now trails the price.",
+   "title": "QQQ profit locked",
+   "verdict": null,
+   "who": "Risk"
+  },
+  {
+   "kind": "scan",
+   "lines": [
+    {
+     "say": "\u25bc $771.61, ADX 34, RSI 21: trending, waiting for a pullback",
+     "vote": null,
+     "who": "SPY"
+    },
+    {
+     "say": "\u25bc $734.11, ADX 39, RSI 23: in a trade",
+     "vote": null,
+     "who": "QQQ"
+    },
+    {
+     "say": "\u25bc $272.71, ADX 35, RSI 26: trending, waiting for a pullback",
+     "vote": null,
+     "who": "IWM"
+    },
+    {
+     "say": "\u25b2 $345.94, ADX 26, RSI 63: trending, waiting for a pullback",
+     "vote": null,
+     "who": "AAPL"
+    },
+    {
+     "say": "\u25bc $222.98, ADX 27, RSI 30: trending, waiting for a pullback",
+     "vote": null,
+     "who": "NVDA"
+    },
+    {
+     "say": "\u25bc $580.07, ADX 25, RSI 34: trending, waiting for a pullback",
+     "vote": null,
+     "who": "AMD"
+    },
+    {
+     "say": "\u25bc $256.16, ADX 30, RSI 34: trending, waiting for a pullback",
+     "vote": null,
+     "who": "AMZN"
+    },
+    {
+     "say": "\u25b2 $742.80, ADX 37, RSI 32: trending, waiting for a pullback",
+     "vote": null,
+     "who": "META"
+    },
+    {
+     "say": "\u25b2 $204.84, ADX 22, RSI 33: trending, waiting for a pullback",
+     "vote": null,
+     "who": "PLTR"
+    },
+    {
+     "say": "\u25bc $14.18, ADX 48, RSI 21: trending, waiting for a pullback",
+     "vote": null,
+     "who": "SOFI"
+    }
+   ],
+   "ok": null,
+   "t": 1791992423.0157173,
+   "text": null,
+   "title": "Scanned 10 stocks: 0 setups on the latest candle",
+   "verdict": null,
+   "who": null
   }
  ],
  "history": [
@@ -4266,9 +4301,9 @@
   "SPY:ORB": "2026-10-14T14:30:00"
  },
  "last_daily": "2026-10-13",
- "last_deploy": 1791992118.585221,
- "last_full_run": 1791992110.154345,
- "last_run": 1791992110.154345,
+ "last_deploy": 1791992423.9103265,
+ "last_full_run": 1791992414.775624,
+ "last_run": 1791992414.775624,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -5046,7 +5081,7 @@
    "trend": -1
   }
  },
- "peak": 326.0,
+ "peak": 331.0,
  "record": {
   "losses": 4,
   "pl": 47.0,
@@ -5244,21 +5279,25 @@
  ],
  "trades": {
   "f46f1cb1-30b8-46b4-aef2-a953824ddb31": {
+   "breakeven": true,
    "dir": -1,
    "entry": 0.58,
    "exp": "2026-10-14",
    "opened": "2026-10-14T15:15:16",
    "pair": "QQQ",
-   "price": 0.68,
+   "partial": true,
+   "peak": 0.92,
+   "price": 0.92,
    "qty": 1,
    "risk": 23.2,
    "setup": "opening breakout",
-   "sl": 0.35,
+   "sl": 0.64,
    "sym": "QQQ261014P00731000",
    "tf": "ORB",
-   "tp": 0.93,
+   "tp": 1.28,
+   "trail": true,
    "units": 1,
-   "upl": 10.0,
+   "upl": 34.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
