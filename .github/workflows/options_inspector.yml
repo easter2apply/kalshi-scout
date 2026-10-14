@@ -22,18 +22,18 @@ jobs:
           ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
           ALPACA_ENV: ${{ vars.ALPACA_ENV }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        run: python strategy_lab.py --months "${{ inputs.months || '12' }}"
+        run: python orb_fib_lab.py --months "${{ inputs.months || '6' }}"
       - name: Save the report
         run: |
-          mkdir -p /tmp/report && cp strategy_lab.html strategy_lab.json /tmp/report/
+          mkdir -p /tmp/report && cp orb_fib_lab.html orb_fib_lab.json /tmp/report/
           git config user.name "strategy-lab"
           git config user.email "strategy-lab@users.noreply.github.com"
           for i in 1 2 3 4 5; do
             git fetch -q origin inspector-lab && git reset -q --hard origin/inspector-lab
             cp /tmp/report/* .
-            git add strategy_lab.html strategy_lab.json
+            git add orb_fib_lab.html orb_fib_lab.json
             git diff --cached --quiet && exit 0
-            git commit -qm "Strategy Lab report" && git push -q origin HEAD:inspector-lab && exit 0
+            git commit -qm "ORB Fib Lab report" && git push -q origin HEAD:inspector-lab && exit 0
             sleep 5
           done
           exit 1
