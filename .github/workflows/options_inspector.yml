@@ -12,7 +12,7 @@ permissions:
 jobs:
   inspect:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -31,11 +31,11 @@ jobs:
           git config user.name "options-inspector"
           git config user.email "options-inspector@users.noreply.github.com"
           for i in 1 2 3 4 5; do
-            git fetch -q origin main && git reset -q --hard origin/main
+            git fetch -q origin inspector-lab && git reset -q --hard origin/inspector-lab
             cp /tmp/report/* .
             git add options_inspector.html options_inspector.json
             git diff --cached --quiet && exit 0
-            git commit -qm "Inspector report" && git push -q origin HEAD:main && exit 0
+            git commit -qm "Inspector lab report" && git push -q origin HEAD:inspector-lab && exit 0
             sleep 5
           done
           exit 1

@@ -47,6 +47,18 @@ PLANS = {
 }
 
 
+# Extra exit plans the lab tries (all sell by 3:40 PM the same day; weeklies held overnight did worst)
+LAB_EXITS = {
+    "s30_t60_p": {"label": "stop −30%, target +60%, take profit early", "hold": False, "partial": True, "stop": 0.30},
+    "s50_t60_p": {"label": "stop −50%, target +60%, take profit early", "hold": False, "partial": True, "stop": 0.50},
+    "s40_t100": {"label": "stop −40%, target +100%", "hold": False, "partial": False, "target": 1.00},
+    "s40_t40": {"label": "stop −40%, target +40%", "hold": False, "partial": False, "target": 0.40},
+    "s30_t45": {"label": "stop −30%, target +45%", "hold": False, "partial": False, "stop": 0.30, "target": 0.45},
+    "s25_t50": {"label": "stop −25%, target +50%", "hold": False, "partial": False, "stop": 0.25, "target": 0.50},
+}
+ALL_EXITS = {**PLANS, **LAB_EXITS}
+RISK_USD = vo.START_BALANCE * vo.RISK_PCT          # $25: results below are in units of this
+
 # ───────────────────────────── data ──────────────────────────────────────────
 
 def fetch_bars(api, sym, timeframe, start):
@@ -171,10 +183,11 @@ def walk(c, m15, j, iv, plan):
     """Follow one option trade bar by bar with the bot's exit rules. Returns (pl $, R, how, exit index)."""
     entry, qty0 = c["ask"], c["qty"]
     qty, banked = qty0, 0.0
-    sl, tp = entry * (1 - vo.OPT_STOP), entry * (1 + vo.OPT_TARGET)
+    stop_pct, tgt_pct = plan.get("stop", vo.OPT_STOP), plan.get("target", vo.OPT_TARGET)
+    sl, tp = entry * (1 - stop_pct), entry * (1 + tgt_pct)
     partial = breakeven = trail = False
     peak = entry
-    risk = entry * vo.OPT_STOP * 100 * qty0
+    risk = entry * stop_pct * 100 * qty0
     d = 1 if c["kind"] == "call" else -1
     if c["zero"]:
         sell_day, sell_hm = c["exp"], (15, 30)
@@ -283,7 +296,7 @@ def replay(sym, m15, h1, test_from, log):
             if ct:
                 rec.update(zero=ct["zero"], ask=ct["ask"], qty=ct["qty"], delta=round(ct["delta"], 2))
                 rec["x"] = {}
-                for key, plan in PLANS.items():
+                for key, plan in ALL_EXITS.items():
                     res = walk(ct, m15, j, iv, plan)
                     if res:
                         rec["x"][key] = {"pl": res[0], "r": res[1], "how": res[2], "exit_ts": m15[res[3]]["ts"] + 900}
@@ -294,11 +307,11 @@ def replay(sym, m15, h1, test_from, log):
     return setups
 
 
-def take_trades(setups, key):
+def take_trades(setups, key, keep=None, council=True):
     """Apply the bot's limits in time order: one trade per stock, 2 at once, daily loss limit."""
     open_until, taken, day_loss = {}, [], {}
     for s in sorted(setups, key=lambda s: s["ts"]):
-        if not s["approved"] or key not in s.get("x", {}):
+        if (council and not s["approved"]) or key not in s.get("x", {}) or (keep and not keep(s)):
             continue
         open_until = {k: v for k, v in open_until.items() if v > s["ts"]}
         if s["sym"] in open_until or len(open_until) >= vo.MAX_OPEN_TRADES:
@@ -397,6 +410,101 @@ def grade(setups, months):
     g["no_contract_by_sym"] = no_ct
     g["advice"] = advice(g)
     return g
+
+
+def grade_with_lab(setups, months, log):
+    g = grade(setups, months)
+    g["lab"] = lab(setups, log)
+    return g
+
+
+# ───────────────────────────── the lab ───────────────────────────────────────
+
+LAB_SYMS = {"whole watchlist": None, "SPY/QQQ/IWM only": set(vo.ETFS), "watchlist minus SOFI": set(vo.PAIRS) - {"SOFI"}}
+LAB_SETUPS = {"all setups": None, "no 15-min crossovers": {"pullback 15m", "opening breakout"},
+              "opening breakout only": {"opening breakout"}, "pullbacks only": {"pullback 15m"}}
+LAB_KIND = {"0DTE or weekly": None, "0DTE only": True, "weeklies only": False}
+LAB_HOURS = {"all day": None, "10 AM–noon": (10, 12), "10 AM–2 PM": (10, 14), "noon–3 PM": (12, 15)}
+LAB_COUNCIL = {"council approves": True, "every setup": False}
+
+
+def _rs(tk):
+    return [t["pl"] / RISK_USD for t in tk]
+
+
+def lab(setups, log):
+    priced = sorted([s for s in setups if s.get("x")], key=lambda s: s["ts"])
+    if len(priced) < 300:
+        return None
+    t0, t1 = priced[0]["ts"], priced[-1]["ts"]
+    split = t0 + (t1 - t0) * 2 / 3
+    rows = []
+    for sy_l, syms in LAB_SYMS.items():
+        for se_l, sets in LAB_SETUPS.items():
+            for k_l, zero in LAB_KIND.items():
+                for h_l, hrs in LAB_HOURS.items():
+                    def keep(s, syms=syms, sets=sets, zero=zero, hrs=hrs):
+                        return ((syms is None or s["sym"] in syms) and (sets is None or s["setup"] in sets)
+                                and (zero is None or s.get("zero") == zero) and (hrs is None or hrs[0] <= s["hour"] < hrs[1]))
+                    pool = [s for s in priced if keep(s)]
+                    if len(pool) < 60:
+                        continue
+                    for c_l, council in LAB_COUNCIL.items():
+                        for ex in ALL_EXITS:
+                            tk = take_trades(pool, ex, council=council)
+                            tr = [t for t in tk if t["ts"] < split]
+                            te = [t for t in tk if t["ts"] >= split]
+                            if len(tr) < 60 or len(te) < 25:
+                                continue
+                            rows.append({"rule": {"symbols": sy_l, "setups": se_l, "contracts": k_l, "hours": h_l, "council": c_l,
+                                                  "exit": ALL_EXITS[ex]["label"]}, "key": (sy_l, se_l, k_l, h_l, c_l, ex),
+                                         "train": stats(_rs(tr)), "test": stats(_rs(te)), "all": stats(_rs(tk))})
+    log.append(f"Lab: tried {len(rows)} versions")
+    if not rows:
+        return None
+    rows.sort(key=lambda r: -r["train"]["avg"])
+    top = rows[:15]
+    held = [r for r in top if r["test"]["avg"] > 0.05 and r["train"]["avg"] > 0.05]
+    out = {"tried": len(rows), "split": dt.datetime.fromtimestamp(split, ET).strftime("%b %d, %Y"),
+           "top": [{k: v for k, v in r.items() if k != "key"} for r in top], "held": len(held),
+           "positive_test": sum(1 for r in rows if r["test"]["avg"] > 0), "best_test_any": max(r["test"]["avg"] for r in rows)}
+    # the proposal: same-day only, no crossovers, SPY/QQQ/IWM only, council, take profit early
+    prop = next((r for r in rows if r["key"] == ("SPY/QQQ/IWM only", "no 15-min crossovers", "0DTE or weekly", "all day",
+                                                 "council approves", "day_partial")), None)
+    out["proposal"] = {k: v for k, v in prop.items() if k != "key"} if prop else None
+    # stress test the best training rule: monthly consistency, drawdown, and worse fills
+    champ = top[0]
+    sy_l, se_l, k_l, h_l, c_l, ex = champ["key"]
+    syms, sets, zero, hrs = LAB_SYMS[sy_l], LAB_SETUPS[se_l], LAB_KIND[k_l], LAB_HOURS[h_l]
+    tk = take_trades([s for s in priced if (syms is None or s["sym"] in syms) and (sets is None or s["setup"] in sets)
+                      and (zero is None or s.get("zero") == zero) and (hrs is None or hrs[0] <= s["hour"] < hrs[1])],
+                     ex, council=LAB_COUNCIL[c_l])
+    mon = {}
+    for t in tk:
+        mon.setdefault(t["t"][:7], 0.0)
+        mon[t["t"][:7]] += t["pl"]
+    worse = [(t["pl"] - t.get("qty", 1) * 100 * 0.04) / RISK_USD for t in tk]     # 2¢ worse on the way in and out
+    out["champ"] = {"rule": champ["rule"], "months_up": sum(1 for v in mon.values() if v > 0), "months": len(mon),
+                    "max_dd": round(max_dd([t["pl"] for t in tk]), 2), "dollars": round(sum(t["pl"] for t in tk), 2),
+                    "worse_fills": stats(worse), "train": champ["train"], "test": champ["test"]}
+    return out
+
+
+def lab_text(L):
+    if not L:
+        return []
+    c = L["champ"]
+    rule = lambda r: " · ".join(r[k] for k in ("symbols", "setups", "contracts", "hours", "council", "exit"))
+    lines = ["", f"🧪 Options lab: tried {L['tried']} versions (tuned before {L['split']}, checked after)",
+             f"Best on the tuning months: {rule(c['rule'])}",
+             f"   tuning {c['train']['avg']:+.2f}R ({c['train']['n']} trades) → unseen {c['test']['avg']:+.2f}R ({c['test']['n']} trades)",
+             f"   {c['months_up']} of {c['months']} months up · worst drawdown ${c['max_dd']:,.0f} · with 2¢ worse fills {c['worse_fills']['avg']:+.2f}R",
+             f"{L['held']} of the top 15 stayed above +0.05R on the unseen months; {L['positive_test']} of {L['tried']} were positive there at all."]
+    p = L.get("proposal")
+    if p:
+        lines.append(f"Proposed changes (same-day sells, no crossovers, SPY/QQQ/IWM): tuning {p['train']['avg']:+.2f}R → unseen {p['test']['avg']:+.2f}R "
+                     f"({p['all']['n']} trades)")
+    return lines
 
 
 def advice(g):
@@ -574,13 +682,13 @@ def main():
         print(log[-1], flush=True)
     if not setups:
         sys.exit("No setups found. Check the log above.")
-    g = grade(setups, args.months)
+    g = grade_with_lab(setups, args.months, log)
     log.append(f"Finished in {(time.time() - started) / 60:.1f} min")
     with open("options_inspector.html", "w", encoding="utf-8") as f:
         f.write(render(g, log, started))
     with open("options_inspector.json", "w", encoding="utf-8") as f:
         json.dump({"when": started, "grade": g}, f, indent=1, default=str)
-    msg = telegram_summary(g)
+    msg = telegram_summary(g) + "\n".join(lab_text(g.get("lab")))
     print(msg)
     tg = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
     chat = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
