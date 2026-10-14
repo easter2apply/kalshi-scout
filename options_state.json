@@ -5,7 +5,7 @@
   "nav": 213.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1791972614.393126
+  "updated": 1791972911.526579
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -2355,9 +2355,9 @@
   "SPY:M15": "2026-10-13T19:30:00"
  },
  "last_daily": "2026-10-13",
- "last_deploy": 1791972018.0886617,
- "last_full_run": 1791972614.393126,
- "last_run": 1791972614.393126,
+ "last_deploy": 1791972963.5666,
+ "last_full_run": 1791972911.526579,
+ "last_run": 1791972911.526579,
  "last_vote": {
   "approved": false,
   "ask": 0,
