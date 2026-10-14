@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 277.0,
-  "broker_equity": 100020.35,
-  "nav": 300.0,
+  "broker_equity": 100004.35,
+  "nav": 284.0,
   "options_level": 3,
-  "unrealized": 23.0,
-  "updated": 1791989711.51356
+  "unrealized": 7.0,
+  "updated": 1791990019.432957
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -3696,58 +3696,58 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25bc $772.55, ADX 27, RSI 24: in a trade",
+     "say": "\u25bc $772.55, ADX 29, RSI 24: in a trade",
      "vote": null,
      "who": "SPY"
     },
     {
-     "say": "\u25bc $736.14, ADX 34, RSI 27: trending, waiting for a pullback",
+     "say": "\u25bc $736.27, ADX 36, RSI 28: trending, waiting for a pullback",
      "vote": null,
      "who": "QQQ"
     },
     {
-     "say": "\u25bc $273.69, ADX 31, RSI 30: trending, waiting for a pullback",
+     "say": "\u25bc $273.06, ADX 32, RSI 27: trending, waiting for a pullback",
      "vote": null,
      "who": "IWM"
     },
     {
-     "say": "\u25b2 $345.33, ADX 28, RSI 60: trending, waiting for a pullback",
+     "say": "\u25b2 $345.24, ADX 27, RSI 60: trending, waiting for a pullback",
      "vote": null,
      "who": "AAPL"
     },
     {
-     "say": "\u25bc $223.90, ADX 24, RSI 33: trending, waiting for a pullback",
+     "say": "\u25bc $224.28, ADX 25, RSI 36: trending, waiting for a pullback",
      "vote": null,
      "who": "NVDA"
     },
     {
-     "say": "\u25bc $585.33, ADX 23, RSI 39: trending, waiting for a pullback",
+     "say": "\u25bc $583.65, ADX 24, RSI 37: trending, waiting for a pullback",
      "vote": null,
      "who": "AMD"
     },
     {
-     "say": "\u25bc $256.42, ADX 24, RSI 29: trending, waiting for a pullback",
+     "say": "\u25bc $256.36, ADX 26, RSI 28: trending, waiting for a pullback",
      "vote": null,
      "who": "AMZN"
     },
     {
-     "say": "\u25b2 $745.50, ADX 34, RSI 34: trending, waiting for a pullback",
+     "say": "\u25b2 $746.39, ADX 35, RSI 35: trending, waiting for a pullback",
      "vote": null,
      "who": "META"
     },
     {
-     "say": "\u25b2 $206.81, ADX 19, RSI 43: trending, waiting for a pullback",
+     "say": "\u25b2 $207.30, ADX 20, RSI 47: trending, waiting for a pullback",
      "vote": null,
      "who": "PLTR"
     },
     {
-     "say": "\u25bc $14.45, ADX 42, RSI 24: trending, waiting for a pullback",
+     "say": "\u25bc $14.35, ADX 44, RSI 22: trending, waiting for a pullback",
      "vote": null,
      "who": "SOFI"
     }
    ],
    "ok": null,
-   "t": 1791989719.1362596,
+   "t": 1791990036.1997068,
    "text": null,
    "title": "Scanned 10 stocks: 0 setups on the latest candle",
    "verdict": null,
@@ -3961,27 +3961,27 @@
   }
  ],
  "last_bar": {
-  "AAPL:M15": "2026-10-14T14:30:00",
-  "AMD:M15": "2026-10-14T14:30:00",
-  "AMZN:M15": "2026-10-14T14:30:00",
+  "AAPL:M15": "2026-10-14T14:45:00",
+  "AMD:M15": "2026-10-14T14:45:00",
+  "AMZN:M15": "2026-10-14T14:45:00",
   "AMZN:ORB": "2026-10-14T14:00:00",
-  "IWM:M15": "2026-10-14T14:30:00",
+  "IWM:M15": "2026-10-14T14:45:00",
   "IWM:ORB": "2026-10-14T14:00:00",
-  "META:M15": "2026-10-14T14:30:00",
+  "META:M15": "2026-10-14T14:45:00",
   "META:ORB": "2026-10-14T14:15:00",
-  "NVDA:M15": "2026-10-14T14:30:00",
+  "NVDA:M15": "2026-10-14T14:45:00",
   "NVDA:ORB": "2026-10-14T14:15:00",
-  "PLTR:M15": "2026-10-14T14:30:00",
-  "QQQ:M15": "2026-10-14T14:30:00",
-  "SOFI:M15": "2026-10-14T14:30:00",
+  "PLTR:M15": "2026-10-14T14:45:00",
+  "QQQ:M15": "2026-10-14T14:45:00",
+  "SOFI:M15": "2026-10-14T14:45:00",
   "SOFI:ORB": "2026-10-14T14:00:00",
-  "SPY:M15": "2026-10-14T14:30:00",
+  "SPY:M15": "2026-10-14T14:45:00",
   "SPY:ORB": "2026-10-14T14:30:00"
  },
  "last_daily": "2026-10-13",
- "last_deploy": 1791989128.8302066,
- "last_full_run": 1791989711.51356,
- "last_run": 1791989711.51356,
+ "last_deploy": 1791990036.2109957,
+ "last_full_run": 1791990019.432957,
+ "last_run": 1791990019.432957,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -4467,11 +4467,11 @@
  },
  "pairs": {
   "AAPL": {
-   "adx": 27.648931617388843,
-   "atr_pips": 1.3920323349121766,
-   "bar": "2026-10-14T14:30:00",
-   "chg": 1.1733513022588098,
-   "close": 345.335,
+   "adx": 26.813096789449443,
+   "atr_pips": 1.3926014538695617,
+   "bar": "2026-10-14T14:45:00",
+   "chg": 1.144054141153731,
+   "close": 345.235,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
@@ -4485,18 +4485,18 @@
      "a pullback to the trend line or a fresh crossover"
     ]
    },
-   "rsi": 60.26662118893513,
+   "rsi": 59.6176550660909,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
   },
   "AMD": {
-   "adx": 23.106676139599607,
-   "atr_pips": 4.438249013633618,
-   "bar": "2026-10-14T14:30:00",
-   "chg": -3.326341519811053,
-   "close": 585.33,
+   "adx": 23.575341917186197,
+   "atr_pips": 4.407659798419872,
+   "bar": "2026-10-14T14:45:00",
+   "chg": -3.6038119147108936,
+   "close": 583.65,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
@@ -4511,18 +4511,18 @@
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 39.2047492213261,
+   "rsi": 37.437590586084596,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
   },
   "AMZN": {
-   "adx": 24.481931258979262,
-   "atr_pips": 0.8814666991813047,
-   "bar": "2026-10-14T14:30:00",
-   "chg": -0.8506689351171558,
-   "close": 256.42,
+   "adx": 25.919452322223638,
+   "atr_pips": 0.8892190771957809,
+   "bar": "2026-10-14T14:45:00",
+   "chg": -0.8738689969839885,
+   "close": 256.36,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
@@ -4537,18 +4537,18 @@
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 28.625374397171882,
+   "rsi": 28.34311721391633,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
   },
   "IWM": {
-   "adx": 30.898958500415226,
-   "atr_pips": 0.6265091115178418,
-   "bar": "2026-10-14T14:30:00",
-   "chg": -1.0824583913114207,
-   "close": 273.69,
+   "adx": 32.26759082653368,
+   "atr_pips": 0.6360441745271549,
+   "bar": "2026-10-14T14:45:00",
+   "chg": -1.3101541464119848,
+   "close": 273.06,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -4562,44 +4562,44 @@
      "a pullback to the trend line or a fresh crossover"
     ]
    },
-   "rsi": 29.71483137624081,
+   "rsi": 26.520916658656887,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
   },
   "META": {
-   "adx": 33.92248061577022,
-   "atr_pips": 4.43070264287583,
-   "bar": "2026-10-14T14:30:00",
-   "chg": -2.230134686758206,
-   "close": 745.505,
+   "adx": 34.64251095798259,
+   "atr_pips": 4.29993816856002,
+   "bar": "2026-10-14T14:45:00",
+   "chg": -2.114070635139212,
+   "close": 746.39,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 3,
+    "passed": 4,
     "session": true,
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
-     "MACD against us (up)"
+     "RSI 35 (stretched)"
     ]
    },
-   "rsi": 33.5129833726555,
+   "rsi": 35.258430369189455,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
   },
   "NVDA": {
-   "adx": 24.20691512171681,
-   "atr_pips": 0.916791236144362,
-   "bar": "2026-10-14T14:30:00",
-   "chg": -2.0131291028446365,
-   "close": 223.9,
+   "adx": 24.756024861199787,
+   "atr_pips": 0.9123775764283534,
+   "bar": "2026-10-14T14:45:00",
+   "chg": -1.8490153172866495,
+   "close": 224.275,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
@@ -4614,44 +4614,43 @@
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 32.73382679562516,
+   "rsi": 36.31127207741841,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
   },
   "PLTR": {
-   "adx": 19.083830011892367,
-   "atr_pips": 1.2220578302743021,
-   "bar": "2026-10-14T14:30:00",
-   "chg": -0.8699611752863912,
-   "close": 206.815,
+   "adx": 19.608526079090552,
+   "atr_pips": 1.2104822709571874,
+   "bar": "2026-10-14T14:45:00",
+   "chg": -0.6374922110913982,
+   "close": 207.3,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 4,
+    "passed": 5,
     "session": true,
     "tf": "M15",
     "waiting": [
-     "a pullback to the trend line or a fresh crossover",
-     "MACD against us (up)"
+     "a pullback to the trend line or a fresh crossover"
     ]
    },
-   "rsi": 42.717140972914564,
+   "rsi": 47.02119706816962,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
   },
   "QQQ": {
-   "adx": 34.0339719015876,
-   "atr_pips": 1.6199834480559279,
-   "bar": "2026-10-14T14:30:00",
-   "chg": -1.0085525254155236,
-   "close": 736.14,
+   "adx": 35.63583993381645,
+   "atr_pips": 1.6656989160365459,
+   "bar": "2026-10-14T14:45:00",
+   "chg": -0.991070948308322,
+   "close": 736.27,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
@@ -4666,18 +4665,18 @@
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 27.45807538685594,
+   "rsi": 28.295528389617402,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
   },
   "SOFI": {
-   "adx": 42.342926271209926,
-   "atr_pips": 0.11224394313844097,
-   "bar": "2026-10-14T14:30:00",
-   "chg": -5.123152709359601,
-   "close": 14.445,
+   "adx": 43.97389482409695,
+   "atr_pips": 0.11386937571451781,
+   "bar": "2026-10-14T14:45:00",
+   "chg": -5.747126436781609,
+   "close": 14.35,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -4689,21 +4688,21 @@
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
-     "RSI 24 (stretched)"
+     "RSI 22 (stretched)"
     ]
    },
-   "rsi": 23.947159187438913,
+   "rsi": 21.90201091216791,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
   },
   "SPY": {
-   "adx": 26.918397641458082,
-   "atr_pips": 1.0070579256667611,
-   "bar": "2026-10-14T14:30:00",
-   "chg": -0.7037003714509753,
-   "close": 772.555,
+   "adx": 29.458481926700802,
+   "atr_pips": 1.0222680737310896,
+   "bar": "2026-10-14T14:45:00",
+   "chg": -0.7043430201920258,
+   "close": 772.55,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
@@ -4718,7 +4717,7 @@
      "RSI 24 (stretched)"
     ]
    },
-   "rsi": 24.06237121810433,
+   "rsi": 24.04579618325478,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -4910,48 +4909,48 @@
    "s": "SPY"
   },
   {
-   "c": -1.01,
-   "p": "736.14",
+   "c": -0.99,
+   "p": "736.27",
    "s": "QQQ"
   },
   {
-   "c": -1.08,
-   "p": "273.69",
+   "c": -1.31,
+   "p": "273.06",
    "s": "IWM"
   },
   {
-   "c": 1.17,
-   "p": "345.33",
+   "c": 1.14,
+   "p": "345.24",
    "s": "AAPL"
   },
   {
-   "c": -2.01,
-   "p": "223.90",
+   "c": -1.85,
+   "p": "224.28",
    "s": "NVDA"
   },
   {
-   "c": -3.33,
-   "p": "585.33",
+   "c": -3.6,
+   "p": "583.65",
    "s": "AMD"
   },
   {
-   "c": -0.85,
-   "p": "256.42",
+   "c": -0.87,
+   "p": "256.36",
    "s": "AMZN"
   },
   {
-   "c": -2.23,
-   "p": "745.50",
+   "c": -2.11,
+   "p": "746.39",
    "s": "META"
   },
   {
-   "c": -0.87,
-   "p": "206.81",
+   "c": -0.64,
+   "p": "207.30",
    "s": "PLTR"
   },
   {
-   "c": -5.12,
-   "p": "14.45",
+   "c": -5.75,
+   "p": "14.35",
    "s": "SOFI"
   }
  ],
@@ -4965,7 +4964,7 @@
    "pair": "SPY",
    "partial": true,
    "peak": 0.75,
-   "price": 0.74,
+   "price": 0.58,
    "qty": 1,
    "risk": 20.4,
    "setup": "crossover 15m",
@@ -4975,7 +4974,7 @@
    "tp": 1.12,
    "trail": true,
    "units": 1,
-   "upl": 23.0,
+   "upl": 7.0,
    "votes": {
     "Doubt": false,
     "Momentum": true,
