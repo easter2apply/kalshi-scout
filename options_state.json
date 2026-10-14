@@ -1,11 +1,11 @@
 {
  "account": {
-  "balance": 262.0,
-  "broker_equity": 100013.47,
-  "nav": 294.0,
+  "balance": 311.0,
+  "broker_equity": 100029.45,
+  "nav": 311.0,
   "options_level": 3,
-  "unrealized": 32.0,
-  "updated": 1791986398.081197
+  "unrealized": 0,
+  "updated": 1791986714.380877
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -131,11 +131,46 @@
     "Time": true
    },
    "why": "target"
+  },
+  {
+   "breakeven": true,
+   "closed": "2026-10-14T14:05:14",
+   "closed_ts": 1791986714.380877,
+   "dir": -1,
+   "entry": 0.32,
+   "exit": 0.81,
+   "exp": "2026-10-14",
+   "opened": "2026-10-14T13:45:12",
+   "pair": "IWM",
+   "partial": true,
+   "peak": 0.79,
+   "pl": 49.0,
+   "price": 0.79,
+   "qty": 1,
+   "r": 3.83,
+   "risk": 12.8,
+   "setup": "pullback 15m",
+   "sl": 0.59,
+   "sym": "IWM261014P00273000",
+   "tf": "M15",
+   "tp": 0.7,
+   "trail": true,
+   "units": 1,
+   "upl": 47.0,
+   "votes": {
+    "Doubt": true,
+    "Momentum": true,
+    "Risk": true,
+    "The Quant": true,
+    "The Reporter": true,
+    "Time": false
+   },
+   "why": "target"
   }
  ],
  "council_record": {
-  "right": 23,
-  "total": 31
+  "right": 24,
+  "total": 32
  },
  "day": {
   "date": "2026-10-14",
@@ -516,6 +551,10 @@
   [
    1791985814,
    206.0
+  ],
+  [
+   1791986714,
+   311.0
   ]
  ],
  "errors": [
@@ -2966,6 +3005,77 @@
    "title": "Scanned 10 stocks: 2 setups on the latest candle",
    "verdict": null,
    "who": null
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": true,
+   "t": 1791986717.0279336,
+   "text": "IWM $273 Put \u00b7 Oct 14 sold at $0.81 (target): +$49.00 (+3.83R). Record 2W\u20133L.",
+   "title": "IWM closed",
+   "verdict": null,
+   "who": "The Quant"
+  },
+  {
+   "kind": "scan",
+   "lines": [
+    {
+     "say": "\u25bc $773.24, ADX 19, RSI 26: crossover 15m setup",
+     "vote": null,
+     "who": "SPY"
+    },
+    {
+     "say": "\u25bc $735.91, ADX 29, RSI 25: trending, waiting for a pullback",
+     "vote": null,
+     "who": "QQQ"
+    },
+    {
+     "say": "\u25bc $273.10, ADX 24, RSI 19: trending, waiting for a pullback",
+     "vote": null,
+     "who": "IWM"
+    },
+    {
+     "say": "\u25b2 $345.48, ADX 28, RSI 64: trending, waiting for a pullback",
+     "vote": null,
+     "who": "AAPL"
+    },
+    {
+     "say": "\u25bc $224.37, ADX 21, RSI 34: trending, waiting for a pullback",
+     "vote": null,
+     "who": "NVDA"
+    },
+    {
+     "say": "\u25bc $586.61, ADX 20, RSI 39: trending, waiting for a pullback",
+     "vote": null,
+     "who": "AMD"
+    },
+    {
+     "say": "\u25bc $257.94, ADX 19, RSI 36: pullback 15m setup",
+     "vote": null,
+     "who": "AMZN"
+    },
+    {
+     "say": "\u25b2 $750.98, ADX 31, RSI 38: trending, waiting for a pullback",
+     "vote": null,
+     "who": "META"
+    },
+    {
+     "say": "\u25b2 $207.11, ADX 18, RSI 44: trending, waiting for a pullback",
+     "vote": null,
+     "who": "PLTR"
+    },
+    {
+     "say": "\u25bc $14.53, ADX 33, RSI 15: trending, waiting for a pullback",
+     "vote": null,
+     "who": "SOFI"
+    }
+   ],
+   "ok": null,
+   "t": 1791986736.1742013,
+   "text": null,
+   "title": "Scanned 10 stocks: 2 setups on the latest candle",
+   "verdict": null,
+   "who": null
   }
  ],
  "history": [
@@ -3154,6 +3264,12 @@
    "t": 1791986434.5993154,
    "trade": false,
    "won": true
+  },
+  {
+   "right": true,
+   "t": 1791986717.0278816,
+   "trade": true,
+   "won": true
   }
  ],
  "last_bar": {
@@ -3169,9 +3285,9 @@
   "SPY:M15": "2026-10-14T13:45:00"
  },
  "last_daily": "2026-10-13",
- "last_deploy": 1791986435.6727295,
- "last_full_run": 1791986398.081197,
- "last_run": 1791986398.081197,
+ "last_deploy": 1791986737.2916584,
+ "last_full_run": 1791986714.380877,
+ "last_run": 1791986714.380877,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -3293,7 +3409,8 @@
     1.5
    ],
    "IWM:pullback 15m": [
-    1.5
+    1.5,
+    3.83
    ],
    "PLTR:pullback 15m": [
     -1.0,
@@ -3546,6 +3663,13 @@
     "r": 1.5,
     "setup": "pullback 15m",
     "t": 1791986434.5993192
+   },
+   {
+    "approved": true,
+    "pair": "IWM",
+    "r": 3.83,
+    "setup": "pullback 15m",
+    "t": 1791986717.0279396
    }
   ]
  },
@@ -3708,7 +3832,7 @@
    "prec": 2,
    "ready": {
     "dir": -1,
-    "in_trade": true,
+    "in_trade": false,
     "of": 6,
     "passed": 4,
     "session": true,
@@ -3880,36 +4004,36 @@
    "trend": -1
   }
  },
- "peak": 294.0,
+ "peak": 311.0,
  "record": {
   "losses": 3,
-  "pl": 12.0,
-  "wins": 1
+  "pl": 61.0,
+  "wins": 2
  },
  "scoreboard": {
   "Doubt": {
-   "right": 15,
-   "total": 31
+   "right": 16,
+   "total": 32
   },
   "Momentum": {
-   "right": 10,
-   "total": 31
+   "right": 11,
+   "total": 32
   },
   "Risk": {
-   "right": 15,
-   "total": 31
+   "right": 16,
+   "total": 32
   },
   "The Quant": {
-   "right": 13,
-   "total": 31
+   "right": 14,
+   "total": 32
   },
   "The Reporter": {
-   "right": 4,
-   "total": 6
+   "right": 5,
+   "total": 7
   },
   "Time": {
    "right": 13,
-   "total": 31
+   "total": 32
   }
  },
  "shadow": [
@@ -4008,36 +4132,6 @@
    "s": "SOFI"
   }
  ],
- "trades": {
-  "1154b44d-4578-404c-91e8-6f26e4c42cd3": {
-   "breakeven": true,
-   "dir": -1,
-   "entry": 0.32,
-   "exp": "2026-10-14",
-   "opened": "2026-10-14T13:45:12",
-   "pair": "IWM",
-   "partial": true,
-   "peak": 0.64,
-   "price": 0.64,
-   "qty": 1,
-   "risk": 12.8,
-   "setup": "pullback 15m",
-   "sl": 0.48,
-   "sym": "IWM261014P00273000",
-   "tf": "M15",
-   "tp": 0.7,
-   "trail": true,
-   "units": 1,
-   "upl": 32.0,
-   "votes": {
-    "Doubt": true,
-    "Momentum": true,
-    "Risk": true,
-    "The Quant": true,
-    "The Reporter": true,
-    "Time": false
-   }
-  }
- },
+ "trades": {},
  "welcomed": true
 }
