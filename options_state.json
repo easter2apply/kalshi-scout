@@ -1,11 +1,11 @@
 {
  "account": {
-  "balance": 277.0,
-  "broker_equity": 100030.35,
-  "nav": 314.0,
+  "balance": 297.0,
+  "broker_equity": 100008.32,
+  "nav": 288.0,
   "options_level": 3,
-  "unrealized": 37.0,
-  "updated": 1791990916.325284
+  "unrealized": -9.0,
+  "updated": 1791991211.335757
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -197,11 +197,46 @@
     "Time": true
    },
    "why": "stop"
+  },
+  {
+   "breakeven": true,
+   "closed": "2026-10-14T15:20:11",
+   "closed_ts": 1791991211.335757,
+   "dir": -1,
+   "entry": 0.51,
+   "exit": 0.71,
+   "exp": "2026-10-14",
+   "opened": "2026-10-14T14:15:13",
+   "pair": "SPY",
+   "partial": true,
+   "peak": 0.92,
+   "pl": 20.0,
+   "price": 0.69,
+   "qty": 1,
+   "r": 0.98,
+   "risk": 20.4,
+   "setup": "crossover 15m",
+   "sl": 0.69,
+   "sym": "SPY261014P00771000",
+   "tf": "M15",
+   "tp": 1.12,
+   "trail": true,
+   "units": 1,
+   "upl": 18.0,
+   "votes": {
+    "Doubt": false,
+    "Momentum": true,
+    "Risk": true,
+    "The Quant": true,
+    "The Reporter": true,
+    "Time": false
+   },
+   "why": "trailing stop"
   }
  ],
  "council_record": {
-  "right": 24,
-  "total": 37
+  "right": 25,
+  "total": 38
  },
  "day": {
   "date": "2026-10-14",
@@ -602,6 +637,10 @@
   [
    1791990315,
    308.0
+  ],
+  [
+   1791991211,
+   288.0
   ]
  ],
  "errors": [
@@ -3899,6 +3938,77 @@
    "title": "Scanned 10 stocks: 0 setups on the latest candle",
    "verdict": null,
    "who": null
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": true,
+   "t": 1791991212.8097162,
+   "text": "SPY $771 Put \u00b7 Oct 14 sold at $0.71 (trailing stop): +$20.00 (+0.98R). Record 3W\u20134L.",
+   "title": "SPY closed",
+   "verdict": null,
+   "who": "The Quant"
+  },
+  {
+   "kind": "scan",
+   "lines": [
+    {
+     "say": "\u25bc $771.59, ADX 32, RSI 21: trending, waiting for a pullback",
+     "vote": null,
+     "who": "SPY"
+    },
+    {
+     "say": "\u25bc $734.16, ADX 37, RSI 24: in a trade",
+     "vote": null,
+     "who": "QQQ"
+    },
+    {
+     "say": "\u25bc $272.56, ADX 34, RSI 24: trending, waiting for a pullback",
+     "vote": null,
+     "who": "IWM"
+    },
+    {
+     "say": "\u25b2 $345.87, ADX 26, RSI 62: trending, waiting for a pullback",
+     "vote": null,
+     "who": "AAPL"
+    },
+    {
+     "say": "\u25bc $223.42, ADX 26, RSI 32: trending, waiting for a pullback",
+     "vote": null,
+     "who": "NVDA"
+    },
+    {
+     "say": "\u25bc $580.13, ADX 25, RSI 34: trending, waiting for a pullback",
+     "vote": null,
+     "who": "AMD"
+    },
+    {
+     "say": "\u25bc $255.02, ADX 28, RSI 23: trending, waiting for a pullback",
+     "vote": null,
+     "who": "AMZN"
+    },
+    {
+     "say": "\u25b2 $742.55, ADX 36, RSI 31: trending, waiting for a pullback",
+     "vote": null,
+     "who": "META"
+    },
+    {
+     "say": "\u25b2 $205.09, ADX 21, RSI 34: trending, waiting for a pullback",
+     "vote": null,
+     "who": "PLTR"
+    },
+    {
+     "say": "\u25bc $14.13, ADX 46, RSI 18: trending, waiting for a pullback",
+     "vote": null,
+     "who": "SOFI"
+    }
+   ],
+   "ok": null,
+   "t": 1791991218.0082998,
+   "text": null,
+   "title": "Scanned 10 stocks: 0 setups on the latest candle",
+   "verdict": null,
+   "who": null
   }
  ],
  "history": [
@@ -4123,6 +4233,12 @@
    "t": 1791990938.0155466,
    "trade": false,
    "won": true
+  },
+  {
+   "right": true,
+   "t": 1791991212.8096576,
+   "trade": true,
+   "won": true
   }
  ],
  "last_bar": {
@@ -4146,9 +4262,9 @@
   "SPY:ORB": "2026-10-14T14:30:00"
  },
  "last_daily": "2026-10-13",
- "last_deploy": 1791990938.9695911,
- "last_full_run": 1791990916.325284,
- "last_run": 1791990916.325284,
+ "last_deploy": 1791991218.8618534,
+ "last_full_run": 1791991211.335757,
+ "last_run": 1791991211.335757,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -4314,7 +4430,8 @@
     -1.0,
     -1.0,
     1.5,
-    1.5
+    1.5,
+    0.98
    ],
    "SPY:pullback 15m": [
     -1.15,
@@ -4583,6 +4700,13 @@
     "r": 1.5,
     "setup": "pullback 15m",
     "t": 1791990938.015551
+   },
+   {
+    "approved": true,
+    "pair": "SPY",
+    "r": 0.98,
+    "setup": "crossover 15m",
+    "t": 1791991212.8097227
    }
   ]
  },
@@ -4850,7 +4974,7 @@
    "prec": 2,
    "ready": {
     "dir": -1,
-    "in_trade": false,
+    "in_trade": true,
     "of": 6,
     "passed": 3,
     "session": true,
@@ -4902,7 +5026,7 @@
    "prec": 2,
    "ready": {
     "dir": -1,
-    "in_trade": true,
+    "in_trade": false,
     "of": 6,
     "passed": 3,
     "session": true,
@@ -4922,33 +5046,33 @@
  "peak": 326.0,
  "record": {
   "losses": 4,
-  "pl": 27.0,
-  "wins": 2
+  "pl": 47.0,
+  "wins": 3
  },
  "scoreboard": {
   "Doubt": {
    "right": 16,
-   "total": 37
+   "total": 38
   },
   "Momentum": {
-   "right": 16,
-   "total": 37
+   "right": 17,
+   "total": 38
   },
   "Risk": {
-   "right": 16,
-   "total": 37
+   "right": 17,
+   "total": 38
   },
   "The Quant": {
-   "right": 18,
-   "total": 37
+   "right": 19,
+   "total": 38
   },
   "The Reporter": {
-   "right": 7,
-   "total": 12
+   "right": 8,
+   "total": 13
   },
   "Time": {
    "right": 17,
-   "total": 37
+   "total": 38
   }
  },
  "shadow": [
@@ -5058,7 +5182,7 @@
  "start_balance": 250.0,
  "streak": {
   "half": false,
-  "losses": 1,
+  "losses": 0,
   "until": 0,
   "wins_since": 0
  },
@@ -5116,42 +5240,13 @@
   }
  ],
  "trades": {
-  "eb4d8d4b-6cdd-484a-b0e1-2f239b56408c": {
-   "breakeven": true,
-   "dir": -1,
-   "entry": 0.51,
-   "exp": "2026-10-14",
-   "opened": "2026-10-14T14:15:13",
-   "pair": "SPY",
-   "partial": true,
-   "peak": 0.92,
-   "price": 0.88,
-   "qty": 1,
-   "risk": 20.4,
-   "setup": "crossover 15m",
-   "sl": 0.69,
-   "sym": "SPY261014P00771000",
-   "tf": "M15",
-   "tp": 1.12,
-   "trail": true,
-   "units": 1,
-   "upl": 37.0,
-   "votes": {
-    "Doubt": false,
-    "Momentum": true,
-    "Risk": true,
-    "The Quant": true,
-    "The Reporter": true,
-    "Time": false
-   }
-  },
   "f46f1cb1-30b8-46b4-aef2-a953824ddb31": {
    "dir": -1,
    "entry": 0.58,
    "exp": "2026-10-14",
    "opened": "2026-10-14T15:15:16",
    "pair": "QQQ",
-   "price": 0.58,
+   "price": 0.49,
    "qty": 1,
    "risk": 23.2,
    "setup": "opening breakout",
@@ -5160,7 +5255,7 @@
    "tf": "ORB",
    "tp": 0.93,
    "units": 1,
-   "upl": 0.0,
+   "upl": -9.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
