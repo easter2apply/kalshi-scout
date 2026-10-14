@@ -1,41 +1,39 @@
 name: Options Inspector
 on:
-  schedule:
-    - cron: "17 15 * * 0"        # Sundays ~11 AM ET
   workflow_dispatch:
     inputs:
       months:
-        description: "How many months to replay"
-        default: "6"
+        description: "How many months to test"
+        default: "12"
 permissions:
   contents: write
 jobs:
-  inspect:
+  lab:
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Replay Vault Options
+      - name: Test the strategies
         env:
           ALPACA_KEY_ID: ${{ secrets.ALPACA_KEY_ID }}
           ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
           ALPACA_ENV: ${{ vars.ALPACA_ENV }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        run: python options_inspector.py --months "${{ inputs.months || '6' }}"
+        run: python strategy_lab.py --months "${{ inputs.months || '12' }}"
       - name: Save the report
         run: |
-          mkdir -p /tmp/report && cp options_inspector.html options_inspector.json /tmp/report/
-          git config user.name "options-inspector"
-          git config user.email "options-inspector@users.noreply.github.com"
+          mkdir -p /tmp/report && cp strategy_lab.html strategy_lab.json /tmp/report/
+          git config user.name "strategy-lab"
+          git config user.email "strategy-lab@users.noreply.github.com"
           for i in 1 2 3 4 5; do
             git fetch -q origin inspector-lab && git reset -q --hard origin/inspector-lab
             cp /tmp/report/* .
-            git add options_inspector.html options_inspector.json
+            git add strategy_lab.html strategy_lab.json
             git diff --cached --quiet && exit 0
-            git commit -qm "Inspector lab report" && git push -q origin HEAD:inspector-lab && exit 0
+            git commit -qm "Strategy Lab report" && git push -q origin HEAD:inspector-lab && exit 0
             sleep 5
           done
           exit 1
