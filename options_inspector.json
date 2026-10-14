@@ -1,5 +1,5 @@
 {
- "when": 1791996956.4676006,
+ "when": 1792004447.6805577,
  "grade": {
   "months": 24.0,
   "budget": 62.5,
@@ -829,6 +829,495 @@
    "The options council lost money in the replay (-0.16R a trade over 2146 trades). Don't put real money on it as-is.",
    "The council is NOT picking better setups than it skips (-0.28R approved vs -0.09R rejected).",
    "75% of setups had no option inside the $62 budget (mostly AAPL, NVDA, AMZN)."
-  ]
+  ],
+  "lab": {
+   "tried": 2100,
+   "split": "Feb 13, 2026",
+   "top": [
+    {
+     "rule": {
+      "symbols": "whole watchlist",
+      "setups": "no 15-min crossovers",
+      "contracts": "0DTE or weekly",
+      "hours": "10 AM\u2013noon",
+      "council": "every setup",
+      "exit": "stop \u221240%, target +100%"
+     },
+     "train": {
+      "n": 999,
+      "win": 0.25625625625625625,
+      "avg": -0.02272672672672673,
+      "total": -22.704000000000004
+     },
+     "test": {
+      "n": 489,
+      "win": 0.24948875255623723,
+      "avg": -0.09025930470347648,
+      "total": -44.1368
+     },
+     "all": {
+      "n": 1488,
+      "win": 0.2540322580645161,
+      "avg": -0.044919892473118284,
+      "total": -66.8408
+     }
+    },
+    {
+     "rule": {
+      "symbols": "whole watchlist",
+      "setups": "no 15-min crossovers",
+      "contracts": "0DTE or weekly",
+      "hours": "10 AM\u2013noon",
+      "council": "council approves",
+      "exit": "stop \u221240%, target +100%"
+     },
+     "train": {
+      "n": 994,
+      "win": 0.25251509054325955,
+      "avg": -0.02828893360160966,
+      "total": -28.119200000000003
+     },
+     "test": {
+      "n": 487,
+      "win": 0.24435318275154005,
+      "avg": -0.09973388090349078,
+      "total": -48.57040000000001
+     },
+     "all": {
+      "n": 1481,
+      "win": 0.24983119513841998,
+      "avg": -0.05178230925050643,
+      "total": -76.68960000000001
+     }
+    },
+    {
+     "rule": {
+      "symbols": "whole watchlist",
+      "setups": "all setups",
+      "contracts": "0DTE or weekly",
+      "hours": "10 AM\u2013noon",
+      "council": "every setup",
+      "exit": "stop \u221240%, target +100%"
+     },
+     "train": {
+      "n": 1149,
+      "win": 0.24369016536118362,
+      "avg": -0.03600905134899913,
+      "total": -41.3744
+     },
+     "test": {
+      "n": 579,
+      "win": 0.2452504317789292,
+      "avg": -0.06728497409326425,
+      "total": -38.958000000000006
+     },
+     "all": {
+      "n": 1728,
+      "win": 0.24421296296296297,
+      "avg": -0.04648865740740741,
+      "total": -80.3324
+     }
+    },
+    {
+     "rule": {
+      "symbols": "whole watchlist",
+      "setups": "all setups",
+      "contracts": "0DTE or weekly",
+      "hours": "10 AM\u2013noon",
+      "council": "council approves",
+      "exit": "stop \u221240%, target +100%"
+     },
+     "train": {
+      "n": 1145,
+      "win": 0.2410480349344978,
+      "avg": -0.04055650655021834,
+      "total": -46.437200000000004
+     },
+     "test": {
+      "n": 578,
+      "win": 0.24048442906574394,
+      "avg": -0.0749612456747405,
+      "total": -43.327600000000004
+     },
+     "all": {
+      "n": 1723,
+      "win": 0.240858966918166,
+      "avg": -0.05209796865931515,
+      "total": -89.76480000000001
+     }
+    },
+    {
+     "rule": {
+      "symbols": "whole watchlist",
+      "setups": "pullbacks only",
+      "contracts": "0DTE only",
+      "hours": "10 AM\u2013noon",
+      "council": "every setup",
+      "exit": "stop \u221250%, target +60%, take profit early"
+     },
+     "train": {
+      "n": 566,
+      "win": 0.4558303886925795,
+      "avg": -0.04111519434628974,
+      "total": -23.271199999999993
+     },
+     "test": {
+      "n": 234,
+      "win": 0.4188034188034188,
+      "avg": -0.10999316239316238,
+      "total": -25.7384
+     },
+     "all": {
+      "n": 800,
+      "win": 0.445,
+      "avg": -0.06126199999999999,
+      "total": -49.00959999999999
+     }
+    },
+    {
+     "rule": {
+      "symbols": "SPY/QQQ/IWM only",
+      "setups": "pullbacks only",
+      "contracts": "0DTE or weekly",
+      "hours": "10 AM\u2013noon",
+      "council": "every setup",
+      "exit": "stop \u221250%, target +60%, take profit early"
+     },
+     "train": {
+      "n": 566,
+      "win": 0.4558303886925795,
+      "avg": -0.04111519434628974,
+      "total": -23.271199999999993
+     },
+     "test": {
+      "n": 234,
+      "win": 0.4188034188034188,
+      "avg": -0.10999316239316238,
+      "total": -25.7384
+     },
+     "all": {
+      "n": 800,
+      "win": 0.445,
+      "avg": -0.06126199999999999,
+      "total": -49.00959999999999
+     }
+    },
+    {
+     "rule": {
+      "symbols": "SPY/QQQ/IWM only",
+      "setups": "pullbacks only",
+      "contracts": "0DTE only",
+      "hours": "10 AM\u2013noon",
+      "council": "every setup",
+      "exit": "stop \u221250%, target +60%, take profit early"
+     },
+     "train": {
+      "n": 566,
+      "win": 0.4558303886925795,
+      "avg": -0.04111519434628974,
+      "total": -23.271199999999993
+     },
+     "test": {
+      "n": 234,
+      "win": 0.4188034188034188,
+      "avg": -0.10999316239316238,
+      "total": -25.7384
+     },
+     "all": {
+      "n": 800,
+      "win": 0.445,
+      "avg": -0.06126199999999999,
+      "total": -49.00959999999999
+     }
+    },
+    {
+     "rule": {
+      "symbols": "watchlist minus SOFI",
+      "setups": "pullbacks only",
+      "contracts": "0DTE only",
+      "hours": "10 AM\u2013noon",
+      "council": "every setup",
+      "exit": "stop \u221250%, target +60%, take profit early"
+     },
+     "train": {
+      "n": 566,
+      "win": 0.4558303886925795,
+      "avg": -0.04111519434628974,
+      "total": -23.271199999999993
+     },
+     "test": {
+      "n": 234,
+      "win": 0.4188034188034188,
+      "avg": -0.10999316239316238,
+      "total": -25.7384
+     },
+     "all": {
+      "n": 800,
+      "win": 0.445,
+      "avg": -0.06126199999999999,
+      "total": -49.00959999999999
+     }
+    },
+    {
+     "rule": {
+      "symbols": "whole watchlist",
+      "setups": "pullbacks only",
+      "contracts": "0DTE only",
+      "hours": "10 AM\u2013noon",
+      "council": "council approves",
+      "exit": "stop \u221250%, target +60%, take profit early"
+     },
+     "train": {
+      "n": 563,
+      "win": 0.4547069271758437,
+      "avg": -0.04285754884547068,
+      "total": -24.128799999999995
+     },
+     "test": {
+      "n": 232,
+      "win": 0.41810344827586204,
+      "avg": -0.11173448275862068,
+      "total": -25.922399999999996
+     },
+     "all": {
+      "n": 795,
+      "win": 0.4440251572327044,
+      "avg": -0.06295748427672955,
+      "total": -50.051199999999994
+     }
+    },
+    {
+     "rule": {
+      "symbols": "SPY/QQQ/IWM only",
+      "setups": "pullbacks only",
+      "contracts": "0DTE or weekly",
+      "hours": "10 AM\u2013noon",
+      "council": "council approves",
+      "exit": "stop \u221250%, target +60%, take profit early"
+     },
+     "train": {
+      "n": 563,
+      "win": 0.4547069271758437,
+      "avg": -0.04285754884547068,
+      "total": -24.128799999999995
+     },
+     "test": {
+      "n": 232,
+      "win": 0.41810344827586204,
+      "avg": -0.11173448275862068,
+      "total": -25.922399999999996
+     },
+     "all": {
+      "n": 795,
+      "win": 0.4440251572327044,
+      "avg": -0.06295748427672955,
+      "total": -50.051199999999994
+     }
+    },
+    {
+     "rule": {
+      "symbols": "SPY/QQQ/IWM only",
+      "setups": "pullbacks only",
+      "contracts": "0DTE only",
+      "hours": "10 AM\u2013noon",
+      "council": "council approves",
+      "exit": "stop \u221250%, target +60%, take profit early"
+     },
+     "train": {
+      "n": 563,
+      "win": 0.4547069271758437,
+      "avg": -0.04285754884547068,
+      "total": -24.128799999999995
+     },
+     "test": {
+      "n": 232,
+      "win": 0.41810344827586204,
+      "avg": -0.11173448275862068,
+      "total": -25.922399999999996
+     },
+     "all": {
+      "n": 795,
+      "win": 0.4440251572327044,
+      "avg": -0.06295748427672955,
+      "total": -50.051199999999994
+     }
+    },
+    {
+     "rule": {
+      "symbols": "watchlist minus SOFI",
+      "setups": "pullbacks only",
+      "contracts": "0DTE only",
+      "hours": "10 AM\u2013noon",
+      "council": "council approves",
+      "exit": "stop \u221250%, target +60%, take profit early"
+     },
+     "train": {
+      "n": 563,
+      "win": 0.4547069271758437,
+      "avg": -0.04285754884547068,
+      "total": -24.128799999999995
+     },
+     "test": {
+      "n": 232,
+      "win": 0.41810344827586204,
+      "avg": -0.11173448275862068,
+      "total": -25.922399999999996
+     },
+     "all": {
+      "n": 795,
+      "win": 0.4440251572327044,
+      "avg": -0.06295748427672955,
+      "total": -50.051199999999994
+     }
+    },
+    {
+     "rule": {
+      "symbols": "whole watchlist",
+      "setups": "no 15-min crossovers",
+      "contracts": "0DTE or weekly",
+      "hours": "10 AM\u20132 PM",
+      "council": "every setup",
+      "exit": "stop \u221240%, target +100%"
+     },
+     "train": {
+      "n": 1209,
+      "win": 0.2522746071133168,
+      "avg": -0.04348519437551696,
+      "total": -52.573600000000006
+     },
+     "test": {
+      "n": 577,
+      "win": 0.2391681109185442,
+      "avg": -0.10632374350086655,
+      "total": -61.348800000000004
+     },
+     "all": {
+      "n": 1786,
+      "win": 0.24804031354983203,
+      "avg": -0.06378633818589026,
+      "total": -113.92240000000001
+     }
+    },
+    {
+     "rule": {
+      "symbols": "watchlist minus SOFI",
+      "setups": "all setups",
+      "contracts": "0DTE or weekly",
+      "hours": "10 AM\u2013noon",
+      "council": "every setup",
+      "exit": "stop \u221240%, target +100%"
+     },
+     "train": {
+      "n": 1065,
+      "win": 0.21502347417840376,
+      "avg": -0.04487661971830986,
+      "total": -47.793600000000005
+     },
+     "test": {
+      "n": 518,
+      "win": 0.23552123552123552,
+      "avg": -0.0082957528957529,
+      "total": -4.297200000000003
+     },
+     "all": {
+      "n": 1583,
+      "win": 0.2217308907138345,
+      "avg": -0.0329063802905875,
+      "total": -52.09080000000001
+     }
+    },
+    {
+     "rule": {
+      "symbols": "whole watchlist",
+      "setups": "all setups",
+      "contracts": "0DTE only",
+      "hours": "10 AM\u2013noon",
+      "council": "every setup",
+      "exit": "stop \u221240%, target +100%"
+     },
+     "train": {
+      "n": 1057,
+      "win": 0.21475875118259224,
+      "avg": -0.046135856196783356,
+      "total": -48.765600000000006
+     },
+     "test": {
+      "n": 518,
+      "win": 0.23552123552123552,
+      "avg": -0.0082957528957529,
+      "total": -4.297200000000003
+     },
+     "all": {
+      "n": 1575,
+      "win": 0.22158730158730158,
+      "avg": -0.03369066666666667,
+      "total": -53.0628
+     }
+    }
+   ],
+   "held": 0,
+   "positive_test": 0,
+   "best_test_any": -0.0082957528957529,
+   "proposal": {
+    "rule": {
+     "symbols": "SPY/QQQ/IWM only",
+     "setups": "no 15-min crossovers",
+     "contracts": "0DTE or weekly",
+     "hours": "all day",
+     "council": "council approves",
+     "exit": "Sell by 3:40 daily, take profit early"
+    },
+    "train": {
+     "n": 1235,
+     "win": 0.3805668016194332,
+     "avg": -0.09817716599190283,
+     "total": -121.2488
+    },
+    "test": {
+     "n": 546,
+     "win": 0.37545787545787546,
+     "avg": -0.0748051282051282,
+     "total": -40.8436
+    },
+    "all": {
+     "n": 1781,
+     "win": 0.3790005614823133,
+     "avg": -0.09101201572150477,
+     "total": -162.0924
+    }
+   },
+   "champ": {
+    "rule": {
+     "symbols": "whole watchlist",
+     "setups": "no 15-min crossovers",
+     "contracts": "0DTE or weekly",
+     "hours": "10 AM\u2013noon",
+     "council": "every setup",
+     "exit": "stop \u221240%, target +100%"
+    },
+    "months_up": 7,
+    "months": 25,
+    "max_dd": 2137.14,
+    "dollars": -1671.02,
+    "worse_fills": {
+     "n": 1488,
+     "win": 0.2325268817204301,
+     "avg": -0.23072634408602152,
+     "total": -343.3208
+    },
+    "train": {
+     "n": 999,
+     "win": 0.25625625625625625,
+     "avg": -0.02272672672672673,
+     "total": -22.704000000000004
+    },
+    "test": {
+     "n": 489,
+     "win": 0.24948875255623723,
+     "avg": -0.09025930470347648,
+     "total": -44.1368
+    }
+   }
+  }
  }
 }
