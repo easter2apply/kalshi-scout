@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 277.0,
-  "broker_equity": 100028.35,
-  "nav": 308.0,
+  "broker_equity": 100038.35,
+  "nav": 318.0,
   "options_level": 3,
-  "unrealized": 31.0,
-  "updated": 1791990314.817866
+  "unrealized": 41.0,
+  "updated": 1791990613.366119
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -3751,7 +3751,7 @@
     }
    ],
    "ok": null,
-   "t": 1791990323.5222256,
+   "t": 1791990620.566856,
    "text": null,
    "title": "Scanned 10 stocks: 0 setups on the latest candle",
    "verdict": null,
@@ -3984,8 +3984,8 @@
  },
  "last_daily": "2026-10-13",
  "last_deploy": 1791990036.2109957,
- "last_full_run": 1791990314.817866,
- "last_run": 1791990314.817866,
+ "last_full_run": 1791990613.366119,
+ "last_run": 1791990613.366119,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -4967,18 +4967,18 @@
    "opened": "2026-10-14T14:15:13",
    "pair": "SPY",
    "partial": true,
-   "peak": 0.82,
-   "price": 0.82,
+   "peak": 0.92,
+   "price": 0.92,
    "qty": 1,
    "risk": 20.4,
    "setup": "crossover 15m",
-   "sl": 0.61,
+   "sl": 0.69,
    "sym": "SPY261014P00771000",
    "tf": "M15",
    "tp": 1.12,
    "trail": true,
    "units": 1,
-   "upl": 31.0,
+   "upl": 41.0,
    "votes": {
     "Doubt": false,
     "Momentum": true,
