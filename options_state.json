@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 213.0,
-  "broker_equity": 99931.53,
-  "nav": 213.0,
+  "broker_equity": 99924.47,
+  "nav": 206.0,
   "options_level": 3,
-  "unrealized": 0,
-  "updated": 1791985512.546463
+  "unrealized": -7.0,
+  "updated": 1791985813.579714
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -481,6 +481,10 @@
   [
    1791984911,
    213.0
+  ],
+  [
+   1791985814,
+   206.0
   ]
  ],
  "errors": [
@@ -2702,7 +2706,7 @@
     }
    ],
    "ok": null,
-   "t": 1791985537.2960083,
+   "t": 1791985827.7497442,
    "text": null,
    "title": "Scanned 10 stocks: 4 setups on the latest candle",
    "verdict": null,
@@ -2893,8 +2897,8 @@
  },
  "last_daily": "2026-10-13",
  "last_deploy": 1791985539.2887695,
- "last_full_run": 1791985512.546463,
- "last_run": 1791985512.546463,
+ "last_full_run": 1791985813.579714,
+ "last_run": 1791985813.579714,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -3407,7 +3411,7 @@
    "prec": 2,
    "ready": {
     "dir": -1,
-    "in_trade": false,
+    "in_trade": true,
     "of": 6,
     "passed": 5,
     "session": true,
@@ -3510,7 +3514,7 @@
    "prec": 2,
    "ready": {
     "dir": -1,
-    "in_trade": false,
+    "in_trade": true,
     "of": 6,
     "passed": 5,
     "session": true,
@@ -3712,7 +3716,7 @@
    "exp": "2026-10-14",
    "opened": "2026-10-14T13:45:12",
    "pair": "IWM",
-   "price": 0.32,
+   "price": 0.39,
    "qty": 1,
    "risk": 12.8,
    "setup": "pullback 15m",
@@ -3721,7 +3725,7 @@
    "tf": "M15",
    "tp": 0.51,
    "units": 1,
-   "upl": 0.0,
+   "upl": 7.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
@@ -3737,7 +3741,7 @@
    "exp": "2026-10-14",
    "opened": "2026-10-14T13:45:12",
    "pair": "QQQ",
-   "price": 0.44,
+   "price": 0.3,
    "qty": 1,
    "risk": 17.6,
    "setup": "pullback 15m",
@@ -3746,7 +3750,7 @@
    "tf": "M15",
    "tp": 0.7,
    "units": 1,
-   "upl": 0.0,
+   "upl": -14.0,
    "votes": {
     "Doubt": false,
     "Momentum": true,
