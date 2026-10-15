@@ -5,7 +5,7 @@
   "nav": 234.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792087218.493684
+  "updated": 1792087511.225866
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -1248,6 +1248,10 @@
   ],
   [
    1792086611,
+   234.0
+  ],
+  [
+   1792087511,
    234.0
   ]
  ],
@@ -4827,60 +4831,15 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25bc $769.56, ADX 28, RSI 49: trending, waiting for a pullback",
-     "vote": null,
-     "who": "SPY"
-    },
-    {
-     "say": "\u25bc $723.07, ADX 45, RSI 41: trending, waiting for a pullback",
-     "vote": null,
-     "who": "QQQ"
-    },
-    {
      "say": "\u25bc $273.17, ADX 31, RSI 53: trending, waiting for a pullback",
      "vote": null,
      "who": "IWM"
-    },
-    {
-     "say": "\u25b2 $343.85, ADX 14, RSI 50: trend too weak, waiting",
-     "vote": null,
-     "who": "AAPL"
-    },
-    {
-     "say": "\u25bc $217.20, ADX 44, RSI 41: trending, waiting for a pullback",
-     "vote": null,
-     "who": "NVDA"
-    },
-    {
-     "say": "\u25bc $546.00, ADX 48, RSI 36: trending, waiting for a pullback",
-     "vote": null,
-     "who": "AMD"
-    },
-    {
-     "say": "\u25bc $253.54, ADX 30, RSI 49: trending, waiting for a pullback",
-     "vote": null,
-     "who": "AMZN"
-    },
-    {
-     "say": "\u25bc $733.23, ADX 46, RSI 42: trending, waiting for a pullback",
-     "vote": null,
-     "who": "META"
-    },
-    {
-     "say": "\u25bc $198.83, ADX 51, RSI 44: pullback 15m setup",
-     "vote": null,
-     "who": "PLTR"
-    },
-    {
-     "say": "\u25bc $14.54, ADX 24, RSI 62: trending, waiting for a pullback",
-     "vote": null,
-     "who": "SOFI"
     }
    ],
    "ok": null,
-   "t": 1792087245.1153843,
+   "t": 1792087514.5749228,
    "text": null,
-   "title": "Scanned 10 stocks: 1 setup on the latest candle",
+   "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
    "who": null
   }
@@ -5264,8 +5223,8 @@
  },
  "last_daily": "2026-10-14",
  "last_deploy": 1792087245.1316216,
- "last_full_run": 1792087218.493684,
- "last_run": 1792087218.493684,
+ "last_full_run": 1792087511.225866,
+ "last_run": 1792087511.225866,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -6578,54 +6537,9 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": -0.01,
-   "p": "769.56",
-   "s": "SPY"
-  },
-  {
-   "c": -0.81,
-   "p": "723.07",
-   "s": "QQQ"
-  },
-  {
    "c": 0.65,
    "p": "273.17",
    "s": "IWM"
-  },
-  {
-   "c": 0.24,
-   "p": "343.85",
-   "s": "AAPL"
-  },
-  {
-   "c": -1.94,
-   "p": "217.20",
-   "s": "NVDA"
-  },
-  {
-   "c": -4.37,
-   "p": "546.00",
-   "s": "AMD"
-  },
-  {
-   "c": -0.25,
-   "p": "253.54",
-   "s": "AMZN"
-  },
-  {
-   "c": -0.68,
-   "p": "733.23",
-   "s": "META"
-  },
-  {
-   "c": -1.07,
-   "p": "198.83",
-   "s": "PLTR"
-  },
-  {
-   "c": 2.18,
-   "p": "14.54",
-   "s": "SOFI"
   }
  ],
  "trades": {},

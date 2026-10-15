@@ -1,0 +1,19 @@
+{
+ "account": {
+  "nav": 250.0
+ },
+ "closed": [],
+ "day": {
+  "date": "2026-10-15",
+  "start_nav": 250.0
+ },
+ "days": {},
+ "last_run": 1792087514.911506,
+ "record": {
+  "losses": 0,
+  "pl": 0.0,
+  "wins": 0
+ },
+ "trade": null,
+ "trades": {}
+}
