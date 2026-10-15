@@ -5,7 +5,7 @@
   "nav": 315.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792053611.456091
+  "updated": 1792053916.324908
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -309,6 +309,18 @@
  },
  "earnings": {
   "dates": {
+   "AMZN": [
+    {
+     "date": "2026-10-29",
+     "when": "unknown"
+    }
+   ],
+   "META": [
+    {
+     "date": "2026-10-21",
+     "when": "after"
+    }
+   ],
    "SOFI": [
     {
      "date": "2026-10-27",
@@ -323,7 +335,7 @@
    ]
   },
   "days_checked": 11,
-  "fetched": 1792010416.8900182
+  "fetched": 1792053920.9121304
  },
  "equity": [
   [
@@ -4830,9 +4842,9 @@
   "SPY:ORB": "2026-10-14T14:30:00"
  },
  "last_daily": "2026-10-14",
- "last_deploy": 1792053017.8857064,
- "last_full_run": 1792053611.456091,
- "last_run": 1792053611.456091,
+ "last_deploy": 1792053920.928458,
+ "last_full_run": 1792053916.324908,
+ "last_run": 1792053916.324908,
  "last_vote": {
   "approved": false,
   "ask": 0,
