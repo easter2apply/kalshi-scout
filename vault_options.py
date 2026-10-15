@@ -31,14 +31,20 @@ import urllib.request
 from zoneinfo import ZoneInfo
 
 # ─────────────────────────── SETTINGS (edit these) ───────────────────────────
-PAIRS = ["SPY", "QQQ", "IWM", "AAPL", "NVDA", "AMD", "TSLA", "AMZN", "META", "PLTR", "SOFI"]   # the watchlist
+PAIRS = ["IWM"]               # the watchlist: IWM options only (was SPY, QQQ, IWM, AAPL, NVDA, AMD, TSLA, AMZN, META, PLTR, SOFI)
 ZERO_DTE = {"SPY", "QQQ", "IWM"}   # these may use same-day (0DTE) contracts in the morning
 START_BALANCE = 250.00       # the bot trades as if the account holds this much
 RISK_PCT = 0.10              # a full stop-out costs about 10% of the bankroll
 OPT_STOP = 0.40              # sell if the option loses 40% of what we paid
 OPT_TARGET = 0.60            # sell if the option gains 60% (1.5 : 1 reward : risk)
 BREAKEVEN_AT = 0.40          # once up 40%, the stop moves to the entry price
-PARTIAL = True               # take some profit early, let the rest run:
+HER_EXITS = True             # Easter's exits: at +30% the stop locks +30%; 2+ contracts sell half at +50% and the rest
+LOCK_PROFIT_AT = 0.30        #   targets +60%; 1 contract trails 25% below its best price (never below +30%)
+HALF_AT = 0.50
+HALF_TARGET = 0.60
+NO_CHASE = 0.50              # skip if the option already costs 50%+ more than its first price today,
+                             #   and never a second trade in the same direction on the same day
+PARTIAL = False              # (old exits, off) take some profit early, let the rest run:
 PARTIAL_AT = 0.30            #   at +30%: sell half (2+ contracts) and move the stop to entry,
 LOCK_AT = 0.10               #   or with 1 contract, lock in +10% instead
 RUNNER_TARGET = 1.20         #   the rest aims for +120%...
@@ -742,6 +748,66 @@ def tick_up(p):
     return math.ceil(p / step - 1e-9) * step
 
 
+def her_exits(api, st, meta, bid, tg, log):
+    """Easter's exit rules. The stop (−OPT_STOP) and the end-of-day sale are handled by the main loop."""
+    name, entry = contract_name(meta["sym"]), meta["entry"]
+    if not meta.get("locked") and bid >= entry * (1 + LOCK_PROFIT_AT):
+        meta["locked"] = True
+        meta["sl"] = max(meta["sl"], round(entry * (1 + LOCK_PROFIT_AT), 2))
+        if meta.get("qty0", meta["qty"]) < 2:
+            meta["trail"], meta["peak"] = True, bid
+        st["_changed"] = True
+        feed_add(st, "event", f"{meta['pair']} profit locked", who="Risk", ok=True,
+                 text=f"{name} is up {LOCK_PROFIT_AT:.0%}. Stop raised to ${meta['sl']:.2f}, so this trade can't lose now.")
+        if tg:
+            tg.say(f"🔐 {name} is up {LOCK_PROFIT_AT:.0%}. Stop raised to ${meta['sl']:.2f} (locks +{LOCK_PROFIT_AT:.0%})"
+                   + (". Half comes off at +50%." if meta["qty"] >= 2 else " and now follows the price up (25% below its best).")
+                   + f"\n\n👉 Robinhood: if you copied it, move your stop to ${meta['sl']:.2f}.")
+    if meta.get("locked") and meta["qty"] >= 2 and not meta.get("half") and bid >= entry * (1 + HALF_AT):
+        n = meta["qty"] // 2
+        try:
+            res = api.close(meta["sym"], n)
+            o = wait_fill(api, res["id"]) if res.get("id") else {}
+            px = float(o.get("filled_avg_price") or 0) or bid
+        except ApiError as e:
+            log.append(f"{meta['sym']}: couldn't sell half ({e})")
+            return
+        banked = round((px - entry) * 100 * n, 2)
+        meta.update(half=True, qty=meta["qty"] - n, tp=round(entry * (1 + HALF_TARGET), 2), tp_on=True)
+        meta["banked"] = round(meta.get("banked", 0) + banked, 2)
+        meta["sold_early"] = meta.get("sold_early", 0) + n
+        st["record"]["pl"] = round(st["record"]["pl"] + banked, 2)
+        st["_changed"] = True
+        feed_add(st, "event", f"{meta['pair']} took profit", who="Risk", ok=True,
+                 text=f"Sold {n} of {name} at ${px:.2f} ({money(banked)}). The rest aims for ${meta['tp']:.2f}.")
+        if tg:
+            tg.say(f"💰 TOOK PROFIT on {name}: sold {n} at ${px:.2f} ({money(banked)}). The other {meta['qty']} aims for "
+                   f"${meta['tp']:.2f} (+{HALF_TARGET:.0%}); stop stays at ${meta['sl']:.2f}.\n\n"
+                   f"👉 Robinhood: if you copied it, sell {n} now and set a limit sell at ${meta['tp']:.2f} on the rest.")
+
+
+def first_price_today(api, sym, now_utc):
+    """The option's first traded price today (None if Alpaca has no bars for it yet)."""
+    e = et(now_utc)
+    start = dt.datetime(e.year, e.month, e.day, 9, 30, tzinfo=LOCAL_TZ).astimezone(dt.timezone.utc)
+    try:
+        j = api.d("/v1beta1/options/bars", {"symbols": sym, "timeframe": "1Min", "limit": 5,
+                                            "start": start.strftime("%Y-%m-%dT%H:%M:%SZ")})
+        bars = (j.get("bars") or {}).get(sym) or []
+        return float(bars[0]["o"]) if bars else None
+    except (ApiError, KeyError, ValueError):
+        return None
+
+
+def gap_fade_holds():
+    """Contracts the Gap Fade bot holds (same Alpaca account): never buy those, so neither bot sells the other's."""
+    try:
+        t = json.load(open("gap_state.json", encoding="utf-8")).get("trade")
+        return {t["sym"]} if t else set()
+    except (OSError, ValueError):
+        return set()
+
+
 def pick_contract(api, pair, d, price, budget, now_utc):
     """Best call (d=1) or put (d=-1) that fits the budget. Returns (contract dict, None) or (None, reason)."""
     e = et(now_utc)
@@ -1206,14 +1272,17 @@ def run(log, full=True):
             flat = (e_now.hour, e_now.minute) >= (FLATTEN_AT if not zero else (15, 30)) and must_sell_today(meta, today_s)
             if st.get("_closeall") or flat:
                 close_trade(api, st, tid, meta, "end of day" if flat else "closed by you", bid, now, tg, log)
-            elif bid >= meta["tp"]:
+            elif meta.get("tp_on", True) and bid >= meta["tp"]:
                 close_trade(api, st, tid, meta, "target", bid, now, tg, log)
             elif bid <= meta["sl"]:
                 why_ = ("trailing stop" if meta.get("trail") and meta["sl"] > meta["entry"] else
+                        "locked profit" if meta.get("locked") and meta["sl"] > meta["entry"] else
                         "breakeven" if meta.get("breakeven") else "stop")
                 close_trade(api, st, tid, meta, why_, bid, now, tg, log)
             elif PARTIAL and not meta.get("partial") and bid >= meta["entry"] * (1 + PARTIAL_AT):
                 take_partial(api, st, meta, bid, now, tg, log)
+            elif HER_EXITS:
+                her_exits(api, st, meta, bid, tg, log)
             elif not meta.get("breakeven") and bid >= meta["entry"] * (1 + BREAKEVEN_AT):
                 meta["breakeven"] = True; meta["sl"] = meta["entry"]
                 feed_add(st, "event", f"{meta['pair']} stop to breakeven", who="Risk",
@@ -1326,6 +1395,18 @@ def run(log, full=True):
                 pick, why_not = pick_contract(api, pair, d, a["close"], budget, now)
                 if not pick:
                     reasons.append(why_not)
+                elif pick["sym"] in gap_fade_holds():
+                    pick = None
+                    reasons.append("the Gap Fade bot already holds that exact contract")
+                elif NO_CHASE and f"{pair}:{d}" in st.get("dirs_today", {}).get(today_s, []):
+                    pick = None
+                    reasons.append("already traded this direction today (no chasing)")
+                elif NO_CHASE:
+                    fp = first_price_today(api, pick["sym"], now)
+                    if fp and pick["ask"] >= fp * (1 + NO_CHASE):
+                        reasons.append(f"chasing: the option already costs ${pick['ask']:.2f}, "
+                                       f"{pick['ask'] / fp - 1:.0%} above its first price today (${fp:.2f})")
+                        pick = None
             today["setups"] += 1
             if tf == "ORB":
                 st.setdefault("lb_done", {})[pair] = today_s
@@ -1396,7 +1477,9 @@ def run(log, full=True):
             tid = str(res["id"])
             st["trades"][tid] = {"pair": pair, "sym": pick["sym"], "dir": d, "qty": qty, "units": qty, "entry": fill_px,
                                  "sl": sl, "tp": tp, "exp": pick["exp"], "opened": now.isoformat()[:19], "risk": risk_usd,
-                                 "votes": plain_votes, "setup": a["setup"], "tf": tf, "price": fill_px, "upl": 0.0}
+                                 "votes": plain_votes, "setup": a["setup"], "tf": tf, "price": fill_px, "upl": 0.0,
+                                 "qty0": qty, "tp_on": not HER_EXITS}
+            st["dirs_today"] = {today_s: st.get("dirs_today", {}).get(today_s, []) + [f"{pair}:{d}"]}
             open_pairs.add(pair)
             today["approved"] += 1
             today["opened"] += 1
@@ -1407,7 +1490,11 @@ def run(log, full=True):
                 zero_txt = "Expires TODAY (0DTE). " if pick["zero"] else ""
                 tg.say(f"{'🟢 CALL' if d == 1 else '🔴 PUT'} {pair}: {a['setup']}\n\n"
                        f"Bought {qty} × {contract_name(pick['sym'])} at ${fill_px:.2f} (${fill_px * 100 * qty:,.0f} total)\n"
-                       f"🎯 Sell at ${tp:.2f} (+{OPT_TARGET:.0%})\n🛑 Sell at ${sl:.2f} (−{OPT_STOP:.0%}), max loss ≈ ${risk_usd:,.0f}\n"
+                       + (f"🔐 At ${fill_px * (1 + LOCK_PROFIT_AT):.2f} (+{LOCK_PROFIT_AT:.0%}) the stop locks +{LOCK_PROFIT_AT:.0%}"
+                          + (f"; at ${fill_px * (1 + HALF_AT):.2f} (+{HALF_AT:.0%}) sell half, the rest aims for ${fill_px * (1 + HALF_TARGET):.2f}\n"
+                             if qty >= 2 else ", then it follows the price up (25% below its best)\n") if HER_EXITS else
+                          f"🎯 Sell at ${tp:.2f} (+{OPT_TARGET:.0%})\n")
+                       + f"🛑 Sell at ${sl:.2f} (−{OPT_STOP:.0%}), max loss ≈ ${risk_usd:,.0f}\n"
                        + (f"💰 At ${fill_px * (1 + PARTIAL_AT):.2f} (+{PARTIAL_AT:.0%}): " + (f"sell {qty // 2}, let the rest run" if qty >= 2 else f"lock in +{LOCK_AT:.0%} and let it run")
                           + f" (aims for +{RUNNER_TARGET:.0%} with a trailing stop)\n" if PARTIAL else "")
                        + f"🔔 {zero_txt}{sell_by_text(pick['exp'], pick['zero'])}\n\n"
@@ -3025,7 +3112,7 @@ details {{ color:var(--muted) }} .fine {{ color:var(--muted); font-size:12px; ma
   .roomhead {{ grid-template-columns:1fr; gap:10px }} .overall {{ border-right:0; padding-right:0; border-bottom:1px solid #4a3a85; padding-bottom:10px }} }}
 </style></head><body><div class="wrap">
 <header><div><h1>Vault Options</h1><p>Updated {updated} · day-trading calls and puts on 15-minute setups{f" · started with ${START_BALANCE:,.0f}" if START_BALANCE else ""}</p>
-  <p class="navlinks"><a href="hq.html">🏛 HQ: all bots</a> · <a href="inspector.html">🕵️ Inspector's options report</a></p></div>
+  <p class="navlinks"><a href="hq.html">🏛 HQ: all bots</a> · <a href="inspector.html">🕵️ Inspector's options report</a> · <a href="gap.html">🔄 Gap Fade (IWM)</a></p></div>
   <div><span class="badge {mode.lower()}">{mode}</span> {f'<span class="badge paused">PAUSED · {html.escape(paused)}</span>' if paused else ''}</div></header>
 {alpaca_banner(st)}
 {council_room(st)}

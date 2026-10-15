@@ -26,6 +26,8 @@ HQ_STATE = "hq_state.json"
 BOTS = [
     {"id": "options", "name": "Vault Options", "icon": "📈", "local": "options_state.json", "start": 250.0,
      "url": f"https://{OWNER}.github.io/kalshi-scout/", "hours": "market"},
+    {"id": "gap", "name": "Gap Fade (IWM)", "icon": "🔄", "local": "gap_state.json", "start": 250.0,
+     "url": f"https://{OWNER}.github.io/kalshi-scout/gap.html", "hours": "market"},
     {"id": "fx", "name": "Vault FX", "icon": "💱", "raw": f"https://raw.githubusercontent.com/{OWNER}/vault-fx/main/fx_state.json",
      "start": 500.0, "url": f"https://{OWNER}.github.io/vault-fx/", "hours": "fx"},
     {"id": "btc", "name": "Bitcoin Scout", "icon": "₿", "raw": f"https://raw.githubusercontent.com/{OWNER}/btc-scout/main/btc_state.json",
@@ -96,7 +98,7 @@ def summarize(bot, st, err, now):
         out["total"] = (nav - bot["start"]) if nav is not None else None
         start_nav = (st.get("day") or {}).get("start_nav")
         out["today"] = (nav - start_nav) if nav is not None and start_nav else None
-        out["open"] = [f"{m.get('pair', '').replace('_', '/')} {('CALL' if m.get('dir') == 1 else 'PUT') if bot['id'] == 'options' else ('BUY' if m.get('dir') == 1 else 'SELL')}"
+        out["open"] = [f"{m.get('pair', '').replace('_', '/')} {('CALL' if m.get('dir') == 1 else 'PUT') if bot['id'] in ('options', 'gap') else ('BUY' if m.get('dir') == 1 else 'SELL')}"
                        + (f" {money(m.get('upl', 0))}" if m.get("upl") is not None else "") for m in st.get("trades", {}).values()]
         out["kind"] = "auto-trades a practice account"
         if bot["id"] == "fx" and st.get("doubt_job"):
