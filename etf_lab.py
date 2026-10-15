@@ -54,6 +54,7 @@ def run(start_day, label):
     return res
 
 
-out = {"since_lunch": run(EVENT, "Bought at the close on the day of the luncheon"),
+out = {"ytd": run(dt.date(2026, 1, 1), "Bought Jan 1, 2026 (Dec 31 close)"),
+       "since_lunch": run(EVENT, "Bought at the close on the day of the luncheon"),
        "one_year": run(EVENT - dt.timedelta(days=365), "Same basket bought one year earlier (hindsight)")}
 json.dump(out, open("etf_lab.json", "w"), indent=1, default=str)
