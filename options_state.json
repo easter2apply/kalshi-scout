@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 315.0,
-  "broker_equity": 100013.96,
-  "nav": 298.0,
+  "broker_equity": 100002.96,
+  "nav": 291.0,
   "options_level": 3,
-  "unrealized": -17.0,
-  "updated": 1792074015.078916
+  "unrealized": -24.0,
+  "updated": 1792074310.273942
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -4655,7 +4655,7 @@
     }
    ],
    "ok": null,
-   "t": 1792074037.6047907,
+   "t": 1792074327.6463878,
    "text": null,
    "title": "Scanned 10 stocks: 0 setups on the latest candle",
    "verdict": null,
@@ -5010,8 +5010,8 @@
  },
  "last_daily": "2026-10-14",
  "last_deploy": 1792073739.4101655,
- "last_full_run": 1792074015.078916,
- "last_run": 1792074015.078916,
+ "last_full_run": 1792074310.273942,
+ "last_run": 1792074310.273942,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -6068,7 +6068,7 @@
    "exp": "2026-10-15",
    "opened": "2026-10-15T14:15:12",
    "pair": "IWM",
-   "price": 0.36,
+   "price": 0.29,
    "qty": 1,
    "risk": 17.2,
    "setup": "opening breakout",
@@ -6077,7 +6077,7 @@
    "tf": "ORB",
    "tp": 0.69,
    "units": 1,
-   "upl": -7.0,
+   "upl": -14.0,
    "votes": {
     "Doubt": false,
     "Momentum": true,
