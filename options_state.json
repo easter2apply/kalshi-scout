@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 293.0,
-  "broker_equity": 100010.89,
+  "broker_equity": 100012.86,
   "nav": 293.0,
   "options_level": 3,
-  "unrealized": 0,
-  "updated": 1792078216.332065
+  "unrealized": 0.0,
+  "updated": 1792078511.187478
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -1147,6 +1147,10 @@
   [
    1792077614,
    305.0
+  ],
+  [
+   1792078511,
+   293.0
   ]
  ],
  "errors": [
@@ -4745,7 +4749,7 @@
     }
    ],
    "ok": null,
-   "t": 1792078245.2538333,
+   "t": 1792078537.5940275,
    "text": null,
    "title": "Scanned 10 stocks: 1 setup on the latest candle",
    "verdict": null,
@@ -5119,8 +5123,8 @@
  },
  "last_daily": "2026-10-14",
  "last_deploy": 1792078246.1187997,
- "last_full_run": 1792078216.332065,
- "last_run": 1792078216.332065,
+ "last_full_run": 1792078511.187478,
+ "last_run": 1792078511.187478,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -6000,7 +6004,7 @@
    "prec": 2,
    "ready": {
     "dir": -1,
-    "in_trade": false,
+    "in_trade": true,
     "of": 6,
     "passed": 4,
     "session": true,
