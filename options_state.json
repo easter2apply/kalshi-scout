@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 315.0,
-  "broker_equity": 100033.04,
-  "nav": 315.0,
+  "broker_equity": 100022.99,
+  "nav": 309.0,
   "options_level": 3,
-  "unrealized": 0,
-  "updated": 1792072820.959523
+  "unrealized": -6.0,
+  "updated": 1792073110.946917
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -1057,6 +1057,10 @@
   [
    1792072212,
    315.0
+  ],
+  [
+   1792073111,
+   309.0
   ]
  ],
  "errors": [
@@ -4576,7 +4580,7 @@
      "who": "IWM"
     },
     {
-     "say": "\u25b2 $345.08, ADX 18, RSI 57: trending, waiting for a pullback",
+     "say": "\u25b2 $345.11, ADX 18, RSI 57: trending, waiting for a pullback",
      "vote": null,
      "who": "AAPL"
     },
@@ -4612,7 +4616,7 @@
     }
    ],
    "ok": null,
-   "t": 1792072844.5809562,
+   "t": 1792073140.882203,
    "text": null,
    "title": "Scanned 10 stocks: 1 setup on the latest candle",
    "verdict": null,
@@ -4961,8 +4965,8 @@
  },
  "last_daily": "2026-10-14",
  "last_deploy": 1792072845.4905086,
- "last_full_run": 1792072820.959523,
- "last_run": 1792072820.959523,
+ "last_full_run": 1792073110.946917,
+ "last_run": 1792073110.946917,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -5621,8 +5625,8 @@
    "adx": 18.41156299356651,
    "atr_pips": 1.4014944185437652,
    "bar": "2026-10-15T13:45:00",
-   "chg": 0.6049386315267744,
-   "close": 345.085,
+   "chg": 0.6122270487740948,
+   "close": 345.11,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
@@ -5636,7 +5640,7 @@
      "a pullback to the trend line or a fresh crossover"
     ]
    },
-   "rsi": 57.296700854932524,
+   "rsi": 57.44319333611031,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -5833,7 +5837,7 @@
    "prec": 2,
    "ready": {
     "dir": -1,
-    "in_trade": false,
+    "in_trade": true,
     "of": 6,
     "passed": 6,
     "session": true,
@@ -5966,8 +5970,8 @@
    "s": "IWM"
   },
   {
-   "c": 0.6,
-   "p": "345.08",
+   "c": 0.61,
+   "p": "345.11",
    "s": "AAPL"
   },
   {
@@ -6008,7 +6012,7 @@
    "exp": "2026-10-23",
    "opened": "2026-10-15T14:00:20",
    "pair": "SOFI",
-   "price": 0.34,
+   "price": 0.31,
    "qty": 2,
    "risk": 27.2,
    "setup": "pullback 15m",
@@ -6017,7 +6021,7 @@
    "tf": "M15",
    "tp": 0.54,
    "units": 2,
-   "upl": 0.0,
+   "upl": -6.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
