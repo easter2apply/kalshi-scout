@@ -87,6 +87,7 @@ def main():
     weeks = list(zip(mondays, mondays[1:]))
 
     ucache = {}
+    dead = [0]
 
     def universe(d):
         if d in ucache:
@@ -125,7 +126,11 @@ def main():
     }
     split = weeks[int(len(weeks) * 2 / 3)][0]
     out = {}
-    for name, rule in rules.items():
+    all_weeks = weeks
+    variants = [("", all_weeks, COST), (" [no fees]", all_weeks, 0.0),
+                (" [monthly]", list(zip(mondays[::4], mondays[4::4])), COST)]
+    for (vname, weeks, cost), (name, rule) in [(v, r) for v in variants for r in rules.items()]:
+        name = name + vname
         eq, peak, dd, held, wk = 1.0, 1.0, 0.0, set(), []
         picks_log = []
         for d0, d1 in weeks:
@@ -143,8 +148,10 @@ def main():
                 elif a:
                     later = [data[c][x][3] for x in sorted(data[c]) if d0 < x <= d1]
                     rs.append((later[-1] / a - 1) if later else -0.9)        # stopped trading: assume it mostly died
+                    if not later:
+                        dead[0] += 1
             turnover = len(set(picks) ^ held) / max(len(picks) + len(held), 1) * 2 if (picks or held) else 0
-            r = (sum(rs) / len(rs) if rs else 0.0) - COST * turnover
+            r = (sum(rs) / len(rs) if rs else 0.0) - cost * turnover
             held = set(picks)
             eq *= 1 + r
             peak = max(peak, eq)
@@ -164,10 +171,11 @@ def main():
                      "last_part": round(comp(last) * 100, 1), "by_year": {y: round((v - 1) * 100, 1) for y, v in yrs.items()},
                      "start_500": round(500 * eq), "recent_picks": picks_log[-6:]}
         print(name, out[name]["total"], out[name]["max_drop"], out[name]["first_part"], out[name]["last_part"], flush=True)
+    weeks = all_weeks
     uni_sizes = [len(universe(d)) for d, _ in weeks[::4]]
     res = {"when": t0, "weeks": len(weeks), "from": weeks[0][0].isoformat(), "to": weeks[-1][1].isoformat(),
            "split": split.isoformat(), "coins": len(data), "universe_avg": round(sum(uni_sizes) / len(uni_sizes)),
-           "universe_now": universe(weeks[-1][1]) if weeks else [], "rules": out}
+           "universe_now": universe(weeks[-1][1]) if weeks else [], "dead_picks": dead[0], "rules": out}
     json.dump(res, open("penny_lab.json", "w"), indent=1, default=str)
     print(json.dumps({k: v for k, v in res.items() if k != "rules"}, default=str))
 
