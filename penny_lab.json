@@ -1,0 +1,942 @@
+{
+ "when": 1792097674.980316,
+ "weeks": 149,
+ "from": "2023-12-04",
+ "to": "2026-10-12",
+ "split": "2025-10-27",
+ "coins": 449,
+ "universe_avg": 119,
+ "universe_now": [
+  "BILL",
+  "SHDW",
+  "SPX",
+  "MEGA",
+  "HNT",
+  "XRP",
+  "OP",
+  "POL",
+  "XCN",
+  "S",
+  "ARX",
+  "MINA",
+  "TROLL",
+  "CAP",
+  "API3",
+  "CRV",
+  "BLAST",
+  "JTO",
+  "AVT",
+  "GRT",
+  "ENA",
+  "DRIFT",
+  "APR",
+  "APE",
+  "XAN",
+  "ADA",
+  "MANA",
+  "LCX",
+  "ALGO",
+  "STX",
+  "BONK",
+  "POPCAT",
+  "XLM",
+  "FET",
+  "AERO",
+  "HBAR",
+  "MAGIC",
+  "PEPE",
+  "ALICE",
+  "PUMP",
+  "AVNT",
+  "FARTCOIN",
+  "TOSHI",
+  "XPL",
+  "PENGU",
+  "IO",
+  "RARE",
+  "BNKR",
+  "GEOD",
+  "JASMY",
+  "DRV",
+  "W",
+  "PYTH",
+  "ONDO",
+  "HFT",
+  "SKL",
+  "DOGE",
+  "VIRTUAL",
+  "XTZ",
+  "APT",
+  "FLR",
+  "MON",
+  "IMX",
+  "SEI",
+  "MAMO",
+  "KMNO",
+  "DOT",
+  "SUI",
+  "SYRUP",
+  "USELESS",
+  "AXS",
+  "POWR",
+  "AKT",
+  "ETHFI",
+  "SAND",
+  "MNDE",
+  "CHIP",
+  "MET",
+  "FIL",
+  "AXL",
+  "G",
+  "WLFI",
+  "PLUME",
+  "BERA",
+  "BICO",
+  "OGN",
+  "ARB",
+  "AIOZ",
+  "ASTER",
+  "GTC",
+  "REZ",
+  "SKY",
+  "SHIB",
+  "FLOCK",
+  "TRAC",
+  "AMP",
+  "PROS",
+  "STRK",
+  "VET",
+  "RSR",
+  "CRO",
+  "POND",
+  "KTA",
+  "PYR",
+  "LDO",
+  "FORTH",
+  "VTHO",
+  "WIF",
+  "MANTLE",
+  "RAVE",
+  "DIMO",
+  "EIGEN",
+  "ZK",
+  "TIA",
+  "COTI",
+  "ALEO",
+  "FLOKI",
+  "TON",
+  "WLD",
+  "CTSI",
+  "ZAMA",
+  "KAIO",
+  "B3",
+  "CELR",
+  "BAT",
+  "ZORA",
+  "SUPER",
+  "NOM",
+  "EDGE",
+  "HONEY",
+  "ATH",
+  "STG",
+  "NEON",
+  "JUPITER",
+  "RLC",
+  "SENT",
+  "SKR",
+  "AURORA",
+  "SPK",
+  "QI",
+  "CFG"
+ ],
+ "rules": {
+  "Equal-weight every penny coin": {
+   "total": -72.7,
+   "max_drop": -91.7,
+   "weeks_up": 47,
+   "first_part": -12.2,
+   "last_part": -68.9,
+   "by_year": {
+    "2023": 27.2,
+    "2024": 66.8,
+    "2025": -72.5,
+    "2026": -53.2
+   },
+   "start_500": 137,
+   "recent_picks": [
+    [
+     "2026-08-31",
+     [
+      "BILL",
+      "SPX",
+      "MEGA",
+      "HNT",
+      "XRP"
+     ]
+    ],
+    [
+     "2026-09-07",
+     [
+      "BILL",
+      "SPX",
+      "MEGA",
+      "HNT",
+      "XRP"
+     ]
+    ],
+    [
+     "2026-09-14",
+     [
+      "BILL",
+      "SPX",
+      "MEGA",
+      "HNT",
+      "XRP"
+     ]
+    ],
+    [
+     "2026-09-21",
+     [
+      "BILL",
+      "SPX",
+      "MEGA",
+      "HNT",
+      "OP"
+     ]
+    ],
+    [
+     "2026-09-28",
+     [
+      "BILL",
+      "SPX",
+      "MEGA",
+      "HNT",
+      "XRP"
+     ]
+    ],
+    [
+     "2026-10-05",
+     [
+      "BILL",
+      "SPX",
+      "MEGA",
+      "HNT",
+      "OP"
+     ]
+    ]
+   ]
+  },
+  "Top 5 by 30-day gain": {
+   "total": -100.0,
+   "max_drop": -100.0,
+   "weeks_up": 31,
+   "first_part": -99.0,
+   "last_part": -97.7,
+   "by_year": {
+    "2023": -34.2,
+    "2024": -88.9,
+    "2025": -94.7,
+    "2026": -94.0
+   },
+   "start_500": 0,
+   "recent_picks": [
+    [
+     "2026-08-31",
+     [
+      "SKR",
+      "MDT",
+      "HNT",
+      "NCT",
+      "CAP"
+     ]
+    ],
+    [
+     "2026-09-07",
+     [
+      "USELESS",
+      "MDT",
+      "HNT",
+      "SKR",
+      "NCT"
+     ]
+    ],
+    [
+     "2026-09-14",
+     [
+      "USELESS",
+      "MDT",
+      "HNT",
+      "SKR",
+      "FLOCK"
+     ]
+    ],
+    [
+     "2026-09-21",
+     [
+      "USELESS",
+      "DRV",
+      "MDT",
+      "SKR",
+      "HNT"
+     ]
+    ],
+    [
+     "2026-09-28",
+     [
+      "AURORA",
+      "USELESS",
+      "QI",
+      "MINA",
+      "NEON"
+     ]
+    ],
+    [
+     "2026-10-05",
+     [
+      "DIMO",
+      "AURORA",
+      "LCX",
+      "DRV",
+      "GTC"
+     ]
+    ]
+   ]
+  },
+  "Top 5 by 90-day gain": {
+   "total": -99.7,
+   "max_drop": -99.8,
+   "weeks_up": 33,
+   "first_part": -95.4,
+   "last_part": -93.9,
+   "by_year": {
+    "2023": 3.8,
+    "2024": -77.3,
+    "2025": -90.7,
+    "2026": -87.2
+   },
+   "start_500": 1,
+   "recent_picks": [
+    [
+     "2026-08-31",
+     [
+      "MDT",
+      "PUMP",
+      "SKR",
+      "NCT",
+      "SPX"
+     ]
+    ],
+    [
+     "2026-09-07",
+     [
+      "USELESS",
+      "MDT",
+      "PUMP",
+      "XAN",
+      "ARB"
+     ]
+    ],
+    [
+     "2026-09-14",
+     [
+      "MDT",
+      "USELESS",
+      "PUMP",
+      "RAY",
+      "SKR"
+     ]
+    ],
+    [
+     "2026-09-21",
+     [
+      "DRV",
+      "USELESS",
+      "PUMP",
+      "MDT",
+      "ZAMA"
+     ]
+    ],
+    [
+     "2026-09-28",
+     [
+      "MINA",
+      "ENA",
+      "PUMP",
+      "DRV",
+      "USELESS"
+     ]
+    ],
+    [
+     "2026-10-05",
+     [
+      "DIMO",
+      "PUMP",
+      "DRV",
+      "CAP",
+      "LCX"
+     ]
+    ]
+   ]
+  },
+  "Top 5 by 30-day gain, only when BTC is in an uptrend": {
+   "total": -98.1,
+   "max_drop": -98.1,
+   "weeks_up": 20,
+   "first_part": -94.4,
+   "last_part": -65.5,
+   "by_year": {
+    "2023": -34.2,
+    "2024": -81.9,
+    "2025": -52.7,
+    "2026": -65.5
+   },
+   "start_500": 10,
+   "recent_picks": [
+    [
+     "2026-08-31",
+     [
+      "SKR",
+      "MDT",
+      "HNT",
+      "NCT",
+      "CAP"
+     ]
+    ],
+    [
+     "2026-09-07",
+     [
+      "USELESS",
+      "MDT",
+      "HNT",
+      "SKR",
+      "NCT"
+     ]
+    ],
+    [
+     "2026-09-14",
+     [
+      "USELESS",
+      "MDT",
+      "HNT",
+      "SKR",
+      "FLOCK"
+     ]
+    ],
+    [
+     "2026-09-21",
+     [
+      "USELESS",
+      "DRV",
+      "MDT",
+      "SKR",
+      "HNT"
+     ]
+    ],
+    [
+     "2026-09-28",
+     [
+      "AURORA",
+      "USELESS",
+      "QI",
+      "MINA",
+      "NEON"
+     ]
+    ],
+    [
+     "2026-10-05",
+     [
+      "DIMO",
+      "AURORA",
+      "LCX",
+      "DRV",
+      "GTC"
+     ]
+    ]
+   ]
+  },
+  "Top 5 by 90-day gain, only when BTC is in an uptrend": {
+   "total": -94.7,
+   "max_drop": -95.6,
+   "weeks_up": 21,
+   "first_part": -89.3,
+   "last_part": -50.3,
+   "by_year": {
+    "2023": 3.8,
+    "2024": -73.9,
+    "2025": -60.7,
+    "2026": -50.3
+   },
+   "start_500": 27,
+   "recent_picks": [
+    [
+     "2026-08-31",
+     [
+      "MDT",
+      "PUMP",
+      "SKR",
+      "NCT",
+      "SPX"
+     ]
+    ],
+    [
+     "2026-09-07",
+     [
+      "USELESS",
+      "MDT",
+      "PUMP",
+      "XAN",
+      "ARB"
+     ]
+    ],
+    [
+     "2026-09-14",
+     [
+      "MDT",
+      "USELESS",
+      "PUMP",
+      "RAY",
+      "SKR"
+     ]
+    ],
+    [
+     "2026-09-21",
+     [
+      "DRV",
+      "USELESS",
+      "PUMP",
+      "MDT",
+      "ZAMA"
+     ]
+    ],
+    [
+     "2026-09-28",
+     [
+      "MINA",
+      "ENA",
+      "PUMP",
+      "DRV",
+      "USELESS"
+     ]
+    ],
+    [
+     "2026-10-05",
+     [
+      "DIMO",
+      "PUMP",
+      "DRV",
+      "CAP",
+      "LCX"
+     ]
+    ]
+   ]
+  },
+  "Top 5 trend + rising volume, BTC uptrend": {
+   "total": -93.1,
+   "max_drop": -93.1,
+   "weeks_up": 21,
+   "first_part": -85.8,
+   "last_part": -51.7,
+   "by_year": {
+    "2023": -36.7,
+    "2024": -78.4,
+    "2025": 4.3,
+    "2026": -51.7
+   },
+   "start_500": 34,
+   "recent_picks": [
+    [
+     "2026-08-31",
+     [
+      "SKR",
+      "MDT",
+      "HNT",
+      "NCT",
+      "PUMP"
+     ]
+    ],
+    [
+     "2026-09-07",
+     [
+      "USELESS",
+      "MDT",
+      "HNT",
+      "SKR",
+      "NCT"
+     ]
+    ],
+    [
+     "2026-09-14",
+     [
+      "USELESS",
+      "HNT",
+      "SKR",
+      "FLOCK",
+      "RAY"
+     ]
+    ],
+    [
+     "2026-09-21",
+     [
+      "USELESS",
+      "DRV",
+      "AIOZ",
+      "ARB",
+      "FLOCK"
+     ]
+    ],
+    [
+     "2026-09-28",
+     [
+      "AURORA",
+      "USELESS",
+      "QI",
+      "MINA",
+      "NEON"
+     ]
+    ],
+    [
+     "2026-10-05",
+     [
+      "DIMO",
+      "AURORA",
+      "LCX",
+      "DRV",
+      "GTC"
+     ]
+    ]
+   ]
+  },
+  "Every penny coin above its 50-day average, BTC uptrend": {
+   "total": -14.8,
+   "max_drop": -73.2,
+   "weeks_up": 28,
+   "first_part": -16.5,
+   "last_part": 2.0,
+   "by_year": {
+    "2023": 28.2,
+    "2024": 0.8,
+    "2025": -35.3,
+    "2026": 2.0
+   },
+   "start_500": 426,
+   "recent_picks": [
+    [
+     "2026-08-31",
+     [
+      "SPX",
+      "HNT",
+      "XRP",
+      "OP",
+      "POL"
+     ]
+    ],
+    [
+     "2026-09-07",
+     [
+      "SPX",
+      "MEGA",
+      "HNT",
+      "XRP",
+      "OP"
+     ]
+    ],
+    [
+     "2026-09-14",
+     [
+      "SPX",
+      "HNT",
+      "XRP",
+      "OP",
+      "POL"
+     ]
+    ],
+    [
+     "2026-09-21",
+     [
+      "SPX",
+      "MEGA",
+      "HNT",
+      "OP",
+      "POL"
+     ]
+    ],
+    [
+     "2026-09-28",
+     [
+      "MEGA",
+      "HNT",
+      "XRP",
+      "OP",
+      "POL"
+     ]
+    ],
+    [
+     "2026-10-05",
+     [
+      "MEGA",
+      "HNT",
+      "OP",
+      "POL",
+      "XCN"
+     ]
+    ]
+   ]
+  },
+  "Biggest 5 losers of the last 30 days (buy the dip)": {
+   "total": -96.8,
+   "max_drop": -98.3,
+   "weeks_up": 38,
+   "first_part": -42.5,
+   "last_part": -94.4,
+   "by_year": {
+    "2023": 16.3,
+    "2024": 61.9,
+    "2025": -77.1,
+    "2026": -92.5
+   },
+   "start_500": 16,
+   "recent_picks": [
+    [
+     "2026-08-31",
+     [
+      "KAITO",
+      "TRIA",
+      "CFG",
+      "PRL",
+      "STORJ"
+     ]
+    ],
+    [
+     "2026-09-07",
+     [
+      "BICO",
+      "PRL",
+      "KAITO",
+      "TRIA",
+      "HFT"
+     ]
+    ],
+    [
+     "2026-09-14",
+     [
+      "PRL",
+      "TRIA",
+      "ROBO",
+      "BILL",
+      "HOME"
+     ]
+    ],
+    [
+     "2026-09-21",
+     [
+      "TRIA",
+      "CAP",
+      "BILL",
+      "RAVE",
+      "APR"
+     ]
+    ],
+    [
+     "2026-09-28",
+     [
+      "BILL",
+      "APR",
+      "MDT",
+      "RAVE",
+      "TRIA"
+     ]
+    ],
+    [
+     "2026-10-05",
+     [
+      "APR",
+      "TROLL",
+      "MDT",
+      "XAN",
+      "BILL"
+     ]
+    ]
+   ]
+  },
+  "Top 5 by 7-day gain (chasing pumps)": {
+   "total": -99.9,
+   "max_drop": -99.9,
+   "weeks_up": 35,
+   "first_part": -88.5,
+   "last_part": -99.0,
+   "by_year": {
+    "2023": 6.4,
+    "2024": -10.3,
+    "2025": -97.2,
+    "2026": -95.8
+   },
+   "start_500": 1,
+   "recent_picks": [
+    [
+     "2026-08-31",
+     [
+      "SKR",
+      "HNT",
+      "NCT",
+      "MDT",
+      "USELESS"
+     ]
+    ],
+    [
+     "2026-09-07",
+     [
+      "USELESS",
+      "ARB",
+      "XAN",
+      "FLOCK",
+      "RAY"
+     ]
+    ],
+    [
+     "2026-09-14",
+     [
+      "VTHO",
+      "CAP",
+      "FORTH",
+      "B3",
+      "OXT"
+     ]
+    ],
+    [
+     "2026-09-21",
+     [
+      "DRV",
+      "ZAMA",
+      "AIOZ",
+      "ARB",
+      "G"
+     ]
+    ],
+    [
+     "2026-09-28",
+     [
+      "NEON",
+      "KAIO",
+      "QI",
+      "POND",
+      "ALEO"
+     ]
+    ],
+    [
+     "2026-10-05",
+     [
+      "DIMO",
+      "GTC",
+      "LCX",
+      "HONEY",
+      "SAND"
+     ]
+    ]
+   ]
+  },
+  "Bitcoin, buy and hold": {
+   "total": 91.5,
+   "max_drop": -51.8,
+   "weeks_up": 50,
+   "first_part": 167.3,
+   "last_part": -28.4,
+   "by_year": {
+    "2023": 3.6,
+    "2024": 131.3,
+    "2025": -8.2,
+    "2026": -12.9
+   },
+   "start_500": 958,
+   "recent_picks": [
+    [
+     "2026-08-31",
+     [
+      "BTC"
+     ]
+    ],
+    [
+     "2026-09-07",
+     [
+      "BTC"
+     ]
+    ],
+    [
+     "2026-09-14",
+     [
+      "BTC"
+     ]
+    ],
+    [
+     "2026-09-21",
+     [
+      "BTC"
+     ]
+    ],
+    [
+     "2026-09-28",
+     [
+      "BTC"
+     ]
+    ],
+    [
+     "2026-10-05",
+     [
+      "BTC"
+     ]
+    ]
+   ]
+  },
+  "Bitcoin, only when above its 100-day average": {
+   "total": 79.7,
+   "max_drop": -29.1,
+   "weeks_up": 30,
+   "first_part": 93.8,
+   "last_part": -7.3,
+   "by_year": {
+    "2023": 3.6,
+    "2024": 90.0,
+    "2025": -1.6,
+    "2026": -7.3
+   },
+   "start_500": 898,
+   "recent_picks": [
+    [
+     "2026-08-31",
+     [
+      "BTC"
+     ]
+    ],
+    [
+     "2026-09-07",
+     [
+      "BTC"
+     ]
+    ],
+    [
+     "2026-09-14",
+     [
+      "BTC"
+     ]
+    ],
+    [
+     "2026-09-21",
+     [
+      "BTC"
+     ]
+    ],
+    [
+     "2026-09-28",
+     [
+      "BTC"
+     ]
+    ],
+    [
+     "2026-10-05",
+     [
+      "BTC"
+     ]
+    ]
+   ]
+  }
+ }
+}
