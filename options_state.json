@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 260.0,
-  "broker_equity": 99965.81,
-  "nav": 247.0,
+  "broker_equity": 99961.81,
+  "nav": 242.0,
   "options_level": 3,
-  "unrealized": -13.0,
-  "updated": 1792082110.684663
+  "unrealized": -18.0,
+  "updated": 1792082412.127792
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -372,7 +372,7 @@
  },
  "day": {
   "date": "2026-10-15",
-  "halted": false,
+  "halted": true,
   "start_nav": 315.0
  },
  "days": {
@@ -4827,7 +4827,7 @@
     }
    ],
    "ok": null,
-   "t": 1792082136.8688633,
+   "t": 1792082440.9238732,
    "text": null,
    "title": "Scanned 10 stocks: 3 setups on the latest candle",
    "verdict": null,
@@ -5207,8 +5207,8 @@
  },
  "last_daily": "2026-10-14",
  "last_deploy": 1792081849.241425,
- "last_full_run": 1792082110.684663,
- "last_run": 1792082110.684663,
+ "last_full_run": 1792082412.127792,
+ "last_run": 1792082412.127792,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -6515,7 +6515,7 @@
    "exp": "2026-10-15",
    "opened": "2026-10-15T16:30:15",
    "pair": "SPY",
-   "price": 0.46,
+   "price": 0.41,
    "qty": 1,
    "risk": 23.6,
    "setup": "pullback 15m",
@@ -6524,7 +6524,7 @@
    "tf": "M15",
    "tp": 0.94,
    "units": 1,
-   "upl": -13.0,
+   "upl": -18.0,
    "votes": {
     "Doubt": false,
     "Momentum": true,
