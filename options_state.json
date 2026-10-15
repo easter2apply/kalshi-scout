@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 315.0,
-  "broker_equity": 100004.96,
-  "nav": 285.0,
+  "broker_equity": 100014.96,
+  "nav": 295.0,
   "options_level": 3,
-  "unrealized": -30.0,
-  "updated": 1792074615.620004
+  "unrealized": -20.0,
+  "updated": 1792074911.162742
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -1065,6 +1065,10 @@
   [
    1792074015,
    298.0
+  ],
+  [
+   1792074911,
+   295.0
   ]
  ],
  "errors": [
@@ -4655,7 +4659,7 @@
     }
    ],
    "ok": null,
-   "t": 1792074647.0071628,
+   "t": 1792074928.882961,
    "text": null,
    "title": "Scanned 10 stocks: 0 setups on the latest candle",
    "verdict": null,
@@ -5010,8 +5014,8 @@
  },
  "last_daily": "2026-10-14",
  "last_deploy": 1792074647.0248806,
- "last_full_run": 1792074615.620004,
- "last_run": 1792074615.620004,
+ "last_full_run": 1792074911.162742,
+ "last_run": 1792074911.162742,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -6069,7 +6073,7 @@
    "exp": "2026-10-15",
    "opened": "2026-10-15T14:15:12",
    "pair": "IWM",
-   "price": 0.29,
+   "price": 0.37,
    "qty": 1,
    "risk": 17.2,
    "setup": "opening breakout",
@@ -6078,7 +6082,7 @@
    "tf": "ORB",
    "tp": 0.69,
    "units": 1,
-   "upl": -14.0,
+   "upl": -6.0,
    "votes": {
     "Doubt": false,
     "Momentum": true,
@@ -6094,7 +6098,7 @@
    "exp": "2026-10-23",
    "opened": "2026-10-15T14:00:20",
    "pair": "SOFI",
-   "price": 0.26,
+   "price": 0.27,
    "qty": 2,
    "risk": 27.2,
    "setup": "pullback 15m",
@@ -6103,7 +6107,7 @@
    "tf": "M15",
    "tp": 0.54,
    "units": 2,
-   "upl": -16.0,
+   "upl": -14.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
