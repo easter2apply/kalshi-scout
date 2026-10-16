@@ -1691,10 +1691,6 @@
  ],
  "errors": [
   {
-   "t": 1791909612.0179238,
-   "text": "Clock unavailable (401: <html>\r\n<head><title>401 Authorization Required</title></head>\r\n<body>\r\n<center><h1>401 Authorization Required</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n)"
-  },
-  {
    "t": 1791909612.0179272,
    "text": "Run failed: 401: {\"message\": \"unauthorized.\"}\n"
   },
@@ -1768,6 +1764,10 @@
   },
   {
    "t": 1792183214.3650925,
+   "text": "Run failed: 'QQQ'"
+  },
+  {
+   "t": 1792183512.3984487,
    "text": "Run failed: 'QQQ'"
   }
  ],
@@ -5474,7 +5474,7 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-15",
- "last_deploy": 1792182615.6460493,
+ "last_deploy": 1792183512.4100008,
  "last_full_run": 1792180510.147379,
  "last_run": 1792180510.147379,
  "last_vote": {
