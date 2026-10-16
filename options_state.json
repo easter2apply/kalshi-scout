@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792164615.930302
+  "updated": 1792164910.274711
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -1614,6 +1614,10 @@
   ],
   [
    1792164011,
+   214.0
+  ],
+  [
+   1792164910,
    214.0
   ]
  ],
@@ -5053,13 +5057,13 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25b2 $273.17, ADX 30, RSI 43: trending, waiting for a pullback",
+     "say": "\u25b2 $273.17, ADX 28, RSI 41: trending, waiting for a pullback",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792164618.8578598,
+   "t": 1792164911.8213599,
    "text": null,
    "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
@@ -5469,8 +5473,8 @@
  },
  "last_daily": "2026-10-15",
  "last_deploy": 1792164618.8765464,
- "last_full_run": 1792164615.930302,
- "last_run": 1792164615.930302,
+ "last_full_run": 1792164910.274711,
+ "last_run": 1792164910.274711,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -6287,8 +6291,8 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 30.31170932502409,
-   "atr_pips": 0.6179573116315689,
+   "adx": 27.823161147101125,
+   "atr_pips": 0.5844223375426656,
    "bar": "2026-10-16T15:15:00",
    "chg": -0.6726783506653937,
    "close": 273.17,
@@ -6306,7 +6310,7 @@
      "MACD against us (up)"
     ]
    },
-   "rsi": 42.54417982189355,
+   "rsi": 41.25526140041707,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
