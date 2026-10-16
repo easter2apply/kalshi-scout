@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792174210.261756
+  "updated": 1792174511.179801
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -5013,13 +5013,13 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25bc $270.33, ADX 33, RSI 27: trending, waiting for a pullback",
+     "say": "\u25bc $270.34, ADX 34, RSI 27: trending, waiting for a pullback",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792174211.7255373,
+   "t": 1792174513.1385458,
    "text": null,
    "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
@@ -5431,7 +5431,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-16T17:45:00",
+  "IWM:M15": "2026-10-16T18:00:00",
   "IWM:ORB": "2026-10-16T14:00:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -5446,9 +5446,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-15",
- "last_deploy": 1792173621.0581732,
- "last_full_run": 1792174210.261756,
- "last_run": 1792174210.261756,
+ "last_deploy": 1792174513.3594105,
+ "last_full_run": 1792174511.179801,
+ "last_run": 1792174511.179801,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -6289,11 +6289,11 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 33.15345089924564,
-   "atr_pips": 0.6379580257361807,
-   "bar": "2026-10-16T17:45:00",
-   "chg": -1.7035124718202324,
-   "close": 270.335,
+   "adx": 33.79393216923013,
+   "atr_pips": 0.6295324528167417,
+   "bar": "2026-10-16T18:00:00",
+   "chg": -1.7016944222238408,
+   "close": 270.34,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -6307,7 +6307,7 @@
      "a pullback to the trend line or a fresh crossover"
     ]
    },
-   "rsi": 26.901137643819922,
+   "rsi": 26.97682897386356,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -6821,7 +6821,7 @@
  "ticker": [
   {
    "c": -1.7,
-   "p": "270.33",
+   "p": "270.34",
    "s": "IWM"
   }
  ],
