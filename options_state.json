@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792160712.472209
+  "updated": 1792161016.415742
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -5037,15 +5037,15 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25b2 $274.63, ADX 36, RSI 59: crossover 15m setup",
+     "say": "\u25b2 $274.51, ADX 36, RSI 58: trending, waiting for a pullback",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792160715.9206908,
+   "t": 1792161019.008289,
    "text": null,
-   "title": "Scanned 1 stock: 1 setup on the latest candle",
+   "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
    "who": null
   }
@@ -5419,7 +5419,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-16T14:00:00",
+  "IWM:M15": "2026-10-16T14:15:00",
   "IWM:ORB": "2026-10-16T14:00:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -5434,9 +5434,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-15",
- "last_deploy": 1792160114.6946504,
- "last_full_run": 1792160712.472209,
- "last_run": 1792160712.472209,
+ "last_deploy": 1792161019.0280964,
+ "last_full_run": 1792161016.415742,
+ "last_run": 1792161016.415742,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -6229,26 +6229,27 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 35.715562533020965,
-   "atr_pips": 0.626781515692541,
-   "bar": "2026-10-16T14:00:00",
-   "chg": -0.14180786851864824,
-   "close": 274.63,
+   "adx": 35.555080171471836,
+   "atr_pips": 0.6223685501791626,
+   "bar": "2026-10-16T14:15:00",
+   "chg": -0.1836230092356903,
+   "close": 274.515,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 5,
+    "passed": 4,
     "session": true,
     "tf": "M15",
     "waiting": [
+     "a pullback to the trend line or a fresh crossover",
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 59.01767996824141,
-   "setup": "crossover 15m",
+   "rsi": 57.60829781677937,
+   "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
@@ -6811,8 +6812,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": -0.14,
-   "p": "274.63",
+   "c": -0.18,
+   "p": "274.51",
    "s": "IWM"
   }
  ],
