@@ -1,11 +1,11 @@
 {
  "account": {
-  "balance": 234.0,
-  "broker_equity": 99927.52,
+  "balance": 214.0,
+  "broker_equity": 99931.52,
   "nav": 214.0,
   "options_level": 3,
-  "unrealized": -20.0,
-  "updated": 1792158611.851935
+  "unrealized": 0,
+  "updated": 1792158911.573081
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -395,11 +395,44 @@
     "Time": true
    },
    "why": "stop"
+  },
+  {
+   "closed": "2026-10-16T13:55:11",
+   "closed_ts": 1792158911.573081,
+   "dir": 1,
+   "entry": 0.27,
+   "exit": 0.17,
+   "exp": "2026-10-16",
+   "opened": "2026-10-16T13:45:13",
+   "pair": "IWM",
+   "pl": -20.0,
+   "price": 0.15,
+   "qty": 2,
+   "qty0": 2,
+   "r": -0.93,
+   "risk": 21.6,
+   "setup": "crossover 15m",
+   "sl": 0.16,
+   "sym": "IWM261016C00277000",
+   "tf": "M15",
+   "tp": 0.43,
+   "tp_on": false,
+   "units": 2,
+   "upl": -24.0,
+   "votes": {
+    "Doubt": false,
+    "Momentum": true,
+    "Risk": true,
+    "The Quant": true,
+    "The Reporter": true,
+    "Time": true
+   },
+   "why": "stop"
   }
  ],
  "council_record": {
   "right": 33,
-  "total": 59
+  "total": 60
  },
  "day": {
   "date": "2026-10-16",
@@ -1643,108 +1676,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "Data's too weak: Opening range is 3.57% of the price (too wild).",
-     "vote": false,
-     "who": "The Quant"
-    },
-    {
-     "say": "Blocked. 2 trades already open.",
-     "vote": false,
-     "who": "Risk"
-    },
-    {
-     "say": "Engine's running: Breakout candle closed strong (88% body).",
-     "vote": true,
-     "who": "Momentum"
-    },
-    {
-     "say": "Good window. First hour of the session.",
-     "vote": true,
-     "who": "Time"
-    },
-    {
-     "say": "Hm. 1-hour trend isn't fighting it. I can't argue.",
-     "vote": true,
-     "who": "Doubt"
-    },
-    {
-     "say": "Checked the wires: No earnings before we'd sell; no headlines today; StockTwits 4 bullish / 7 bearish.",
-     "vote": true,
-     "who": "The Reporter"
-    }
-   ],
-   "ok": false,
-   "t": 1791987333.8059986,
-   "text": null,
-   "title": "SOFI PUT (opening breakout)",
-   "verdict": "REJECTED 4\u20132. Logged on paper so we learn whether we were right.",
-   "who": null
-  },
-  {
-   "kind": "scan",
-   "lines": [
-    {
-     "say": "\u25bc $772.92, ADX 22, RSI 25: in a trade",
-     "vote": null,
-     "who": "SPY"
-    },
-    {
-     "say": "\u25bc $736.37, ADX 31, RSI 28: trending, waiting for a pullback",
-     "vote": null,
-     "who": "QQQ"
-    },
-    {
-     "say": "\u25bc $272.91, ADX 27, RSI 19: in a trade",
-     "vote": null,
-     "who": "IWM"
-    },
-    {
-     "say": "\u25b2 $344.79, ADX 28, RSI 60: trending, waiting for a pullback",
-     "vote": null,
-     "who": "AAPL"
-    },
-    {
-     "say": "\u25bc $224.56, ADX 22, RSI 36: trending, waiting for a pullback",
-     "vote": null,
-     "who": "NVDA"
-    },
-    {
-     "say": "\u25bc $584.98, ADX 21, RSI 37: trending, waiting for a pullback",
-     "vote": null,
-     "who": "AMD"
-    },
-    {
-     "say": "\u25bc $256.70, ADX 21, RSI 30: pullback 15m setup",
-     "vote": null,
-     "who": "AMZN"
-    },
-    {
-     "say": "\u25b2 $746.88, ADX 32, RSI 34: trending, waiting for a pullback",
-     "vote": null,
-     "who": "META"
-    },
-    {
-     "say": "\u25b2 $206.86, ADX 19, RSI 42: trending, waiting for a pullback",
-     "vote": null,
-     "who": "PLTR"
-    },
-    {
-     "say": "\u25bc $14.29, ADX 37, RSI 11: trending, waiting for a pullback",
-     "vote": null,
-     "who": "SOFI"
-    }
-   ],
-   "ok": null,
-   "t": 1791987916.1856515,
-   "text": null,
-   "title": "Scanned 10 stocks: 2 setups on the latest candle",
-   "verdict": null,
-   "who": null
-  },
   {
    "kind": "vote",
    "lines": [
@@ -5122,6 +5053,32 @@
    "title": "Scanned 1 stock: 1 setup on the latest candle",
    "verdict": null,
    "who": null
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": false,
+   "t": 1792158914.1338983,
+   "text": "IWM $277 Call \u00b7 Oct 16 sold at $0.17 (stop): \u2212$20.00 (-0.93R). Record 5W\u20138L.",
+   "title": "IWM closed",
+   "verdict": null,
+   "who": "The Quant"
+  },
+  {
+   "kind": "scan",
+   "lines": [
+    {
+     "say": "\u25b2 $275.73, ADX 35, RSI 74: crossover 15m setup",
+     "vote": null,
+     "who": "IWM"
+    }
+   ],
+   "ok": null,
+   "t": 1792158915.5273318,
+   "text": null,
+   "title": "Scanned 1 stock: 1 setup on the latest candle",
+   "verdict": null,
+   "who": null
   }
  ],
  "history": [
@@ -5478,6 +5435,12 @@
    "t": 1792082716.1679509,
    "trade": true,
    "won": false
+  },
+  {
+   "right": false,
+   "t": 1792158914.1338477,
+   "trade": true,
+   "won": false
   }
  ],
  "last_bar": {
@@ -5502,9 +5465,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-15",
- "last_deploy": 1792158319.7814496,
- "last_full_run": 1792158611.851935,
- "last_run": 1792158611.851935,
+ "last_deploy": 1792158917.3576949,
+ "last_full_run": 1792158911.573081,
+ "last_run": 1792158911.573081,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -5648,6 +5611,9 @@
     1.5,
     1.5,
     1.5
+   ],
+   "IWM:crossover 15m": [
+    -0.93
    ],
    "IWM:opening breakout": [
     -1.33,
@@ -6132,6 +6098,13 @@
     "r": -1.1,
     "setup": "pullback 15m",
     "t": 1792082716.1680198
+   },
+   {
+    "approved": true,
+    "pair": "IWM",
+    "r": -0.93,
+    "setup": "crossover 15m",
+    "t": 1792158914.133906
    }
   ]
  },
@@ -6296,7 +6269,7 @@
    "prec": 2,
    "ready": {
     "dir": 1,
-    "in_trade": true,
+    "in_trade": false,
     "of": 6,
     "passed": 5,
     "session": true,
@@ -6467,36 +6440,37 @@
    "trend": -1
   }
  },
+ "paused": "drawdown over 35%",
  "peak": 341.0,
  "record": {
-  "losses": 7,
-  "pl": -16.0,
+  "losses": 8,
+  "pl": -36.0,
   "wins": 5
  },
  "scoreboard": {
   "Doubt": {
-   "right": 24,
-   "total": 59
+   "right": 25,
+   "total": 60
   },
   "Momentum": {
    "right": 30,
-   "total": 59
+   "total": 60
   },
   "Risk": {
    "right": 24,
-   "total": 59
+   "total": 60
   },
   "The Quant": {
    "right": 33,
-   "total": 59
+   "total": 60
   },
   "The Reporter": {
    "right": 22,
-   "total": 34
+   "total": 35
   },
   "Time": {
    "right": 30,
-   "total": 59
+   "total": 60
   }
  },
  "shadow": [
@@ -6810,7 +6784,7 @@
  "start_balance": 250.0,
  "streak": {
   "half": false,
-  "losses": 2,
+  "losses": 3,
   "until": 0,
   "wins_since": 0
  },
@@ -6822,34 +6796,6 @@
    "s": "IWM"
   }
  ],
- "trades": {
-  "12416c45-8668-444a-9a10-46957667f55f": {
-   "dir": 1,
-   "entry": 0.27,
-   "exp": "2026-10-16",
-   "opened": "2026-10-16T13:45:13",
-   "pair": "IWM",
-   "price": 0.17,
-   "qty": 2,
-   "qty0": 2,
-   "risk": 21.6,
-   "setup": "crossover 15m",
-   "sl": 0.16,
-   "sym": "IWM261016C00277000",
-   "tf": "M15",
-   "tp": 0.43,
-   "tp_on": false,
-   "units": 2,
-   "upl": -20.0,
-   "votes": {
-    "Doubt": false,
-    "Momentum": true,
-    "Risk": true,
-    "The Quant": true,
-    "The Reporter": true,
-    "Time": true
-   }
-  }
- },
+ "trades": {},
  "welcomed": true
 }
