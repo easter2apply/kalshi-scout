@@ -1,0 +1,1425 @@
+{
+ "when": 1792122493.2239802,
+ "split": "Feb 13, 2026",
+ "account": 1000.0,
+ "budget": 250.0,
+ "facts": {
+  "days": 583,
+  "corr_spy": 0.19,
+  "corr_tlt": 0.12,
+  "corr_dollar_uup": -0.39,
+  "avg_daily_range_pct": 1.12,
+  "hour_move_pct": {
+   "9": 0.689,
+   "10": 0.577,
+   "11": 0.452,
+   "12": 0.35,
+   "13": 0.319,
+   "14": 0.311,
+   "15": 0.32
+  },
+  "weekday": {
+   "Fri": {
+    "avg_pct": 0.092,
+    "up": 0.58
+   },
+   "Mon": {
+    "avg_pct": 0.113,
+    "up": 0.53
+   },
+   "Tue": {
+    "avg_pct": 0.131,
+    "up": 0.61
+   },
+   "Wed": {
+    "avg_pct": 0.109,
+    "up": 0.55
+   },
+   "Thu": {
+    "avg_pct": 0.09,
+    "up": 0.54
+   }
+  },
+  "gaps": 317,
+  "gap_fill_rate": 0.17,
+  "gap_keeps_going": 0.56,
+  "events": {
+   "Fed decision days": {
+    "days": 16,
+    "avg_move_pct": 1.31,
+    "normal_pct": 1.05,
+    "x_normal": 1.25
+   },
+   "Jobs report days": {
+    "days": 19,
+    "avg_move_pct": 1.19,
+    "normal_pct": 1.05,
+    "x_normal": 1.13
+   },
+   "CPI days": {
+    "days": 25,
+    "avg_move_pct": 0.84,
+    "normal_pct": 1.06,
+    "x_normal": 0.79
+   }
+  },
+  "gld_on": {
+   "Dollar up big (UUP +0.4%+)": {
+    "days": 79,
+    "gld_avg_pct": -0.906,
+    "gld_up": 0.25
+   },
+   "Dollar down big (UUP -0.4%+)": {
+    "days": 82,
+    "gld_avg_pct": 0.935,
+    "gld_up": 0.78
+   },
+   "Rates falling (TLT +0.8%+)": {
+    "days": 69,
+    "gld_avg_pct": 0.376,
+    "gld_up": 0.67
+   },
+   "Rates rising (TLT -0.8%+)": {
+    "days": 76,
+    "gld_avg_pct": -0.189,
+    "gld_up": 0.46
+   },
+   "Stocks drop 1%+ (SPY)": {
+    "days": 61,
+    "gld_avg_pct": -0.251,
+    "gld_up": 0.39
+   },
+   "Stocks rally 1%+ (SPY)": {
+    "days": 59,
+    "gld_avg_pct": 0.623,
+    "gld_up": 0.69
+   }
+  },
+  "fomc_2pm_to_close_pct": 0.98,
+  "normal_2pm_to_close_pct": 0.22,
+  "jobs_days_found": 19,
+  "cpi_days_found": 25
+ },
+ "news": {
+  "normal_hour_pct": 0.2,
+  "groups": {
+   "Gold & central banks": {
+    "headline_hours": 334,
+    "next_hour_size_pct": 0.257,
+    "x_normal_hour": 1.29,
+    "next_hour_avg_pct": 0.003,
+    "up_share": 0.53
+   },
+   "Fed / interest rates": {
+    "headline_hours": 873,
+    "next_hour_size_pct": 0.228,
+    "x_normal_hour": 1.14,
+    "next_hour_avg_pct": 0.006,
+    "up_share": 0.55
+   },
+   "War / geopolitics": {
+    "headline_hours": 1311,
+    "next_hour_size_pct": 0.222,
+    "x_normal_hour": 1.11,
+    "next_hour_avg_pct": -0.011,
+    "up_share": 0.5
+   },
+   "Inflation (CPI/PCE)": {
+    "headline_hours": 521,
+    "next_hour_size_pct": 0.246,
+    "x_normal_hour": 1.23,
+    "next_hour_avg_pct": 0.009,
+    "up_share": 0.53
+   },
+   "Government shutdown / debt": {
+    "headline_hours": 156,
+    "next_hour_size_pct": 0.24,
+    "x_normal_hour": 1.2,
+    "next_hour_avg_pct": 0.036,
+    "up_share": 0.56
+   },
+   "US dollar": {
+    "headline_hours": 137,
+    "next_hour_size_pct": 0.187,
+    "x_normal_hour": 0.94,
+    "next_hour_avg_pct": 0.007,
+    "up_share": 0.58
+   },
+   "Tariffs / trade": {
+    "headline_hours": 647,
+    "next_hour_size_pct": 0.199,
+    "x_normal_hour": 0.99,
+    "next_hour_avg_pct": 0.028,
+    "up_share": 0.55
+   },
+   "Stock sell-off / fear": {
+    "headline_hours": 144,
+    "next_hour_size_pct": 0.262,
+    "x_normal_hour": 1.31,
+    "next_hour_avg_pct": -0.064,
+    "up_share": 0.43
+   },
+   "Jobs data": {
+    "headline_hours": 134,
+    "next_hour_size_pct": 0.32,
+    "x_normal_hour": 1.6,
+    "next_hour_avg_pct": -0.038,
+    "up_share": 0.56
+   }
+  }
+ },
+ "trends": {
+  "above_50d": {
+   "days": 344,
+   "next_5d_avg_pct": 0.67,
+   "next_5d_up": 0.62
+  },
+  "below_50d": {
+   "days": 158,
+   "next_5d_avg_pct": 0.14,
+   "next_5d_up": 0.55
+  },
+  "20d_over_50d": {
+   "days": 355,
+   "next_5d_avg_pct": 0.63,
+   "next_5d_up": 0.62
+  },
+  "20d_under_50d": {
+   "days": 147,
+   "next_5d_avg_pct": 0.19,
+   "next_5d_up": 0.56
+  },
+  "up_5d": {
+   "days": 300,
+   "next_5d_avg_pct": 0.45,
+   "next_5d_up": 0.59
+  },
+  "down_5d": {
+   "days": 202,
+   "next_5d_avg_pct": 0.58,
+   "next_5d_up": 0.62
+  },
+  "daily_autocorr": -0.04,
+  "up_days_share": 0.56,
+  "total_move_pct": 73.69
+ },
+ "contract_cost": {
+  "median_contract_usd": 416,
+  "p25": 253,
+  "p75": 678,
+  "min_account_for_median": 1664
+ },
+ "ideas": {
+  "Today's bot on GLD (council approves, your exits)": {
+   "n": 355,
+   "win": 0.46,
+   "avg_r": 0.03,
+   "first": 0.079,
+   "unseen": -0.113,
+   "n_unseen": 90,
+   "usd": 1067,
+   "usd_unseen": -1018,
+   "months_up": 12,
+   "months": 24,
+   "worst_drop": 2368
+  },
+  "Today's bot, -30% stop": {
+   "n": 399,
+   "win": 0.39,
+   "avg_r": -0.004,
+   "first": 0.035,
+   "unseen": -0.123,
+   "n_unseen": 99,
+   "usd": -164,
+   "usd_unseen": -1213,
+   "months_up": 10,
+   "months": 24,
+   "worst_drop": 2664
+  },
+  "Today's bot, only WITH GLD's 50-day trend": {
+   "n": 228,
+   "win": 0.46,
+   "avg_r": 0.177,
+   "first": 0.284,
+   "unseen": -0.116,
+   "n_unseen": 61,
+   "usd": 4040,
+   "usd_unseen": -708,
+   "months_up": 11,
+   "months": 24,
+   "worst_drop": 1612
+  },
+  "Today's bot, no chasing (same rules as IWM)": {
+   "n": 300,
+   "win": 0.45,
+   "avg_r": 0.025,
+   "first": 0.053,
+   "unseen": -0.06,
+   "n_unseen": 74,
+   "usd": 745,
+   "usd_unseen": -447,
+   "months_up": 11,
+   "months": 24,
+   "worst_drop": 3141
+  },
+  "Every setup (even ones the council rejected)": {
+   "n": 356,
+   "win": 0.46,
+   "avg_r": 0.027,
+   "first": 0.081,
+   "unseen": -0.132,
+   "n_unseen": 91,
+   "usd": 945,
+   "usd_unseen": -1202,
+   "months_up": 12,
+   "months": 24,
+   "worst_drop": 2245
+  }
+ },
+ "lessons": {
+  "overall": -0.035,
+  "first": 0.042,
+  "unseen": -0.302,
+  "n": 1469,
+  "rows": [
+   {
+    "feature": "Time of day",
+    "value": "9:30\u201310:00",
+    "n": 86,
+    "avg_r": 0.311,
+    "first": 0.432,
+    "unseen": -0.217,
+    "win": 0.49,
+    "usd": 2674,
+    "t": 1.23,
+    "verdict": ""
+   },
+   {
+    "feature": "Time of day",
+    "value": "11:00\u201312:00",
+    "n": 276,
+    "avg_r": -0.112,
+    "first": -0.009,
+    "unseen": -0.457,
+    "win": 0.4,
+    "usd": -3084,
+    "t": -0.78,
+    "verdict": ""
+   },
+   {
+    "feature": "Time of day",
+    "value": "12:00\u201313:00",
+    "n": 199,
+    "avg_r": -0.284,
+    "first": -0.293,
+    "unseen": -0.253,
+    "win": 0.35,
+    "usd": -5650,
+    "t": -2.56,
+    "verdict": ""
+   },
+   {
+    "feature": "Time of day",
+    "value": "13:00\u201314:00",
+    "n": 175,
+    "avg_r": -0.228,
+    "first": -0.2,
+    "unseen": -0.347,
+    "win": 0.35,
+    "usd": -3997,
+    "t": -1.61,
+    "verdict": ""
+   },
+   {
+    "feature": "Time of day",
+    "value": "10:00\u201311:00",
+    "n": 523,
+    "avg_r": 0.157,
+    "first": 0.218,
+    "unseen": -0.069,
+    "win": 0.49,
+    "usd": 8206,
+    "t": 2.82,
+    "verdict": "helps"
+   },
+   {
+    "feature": "Time of day",
+    "value": "14:00\u201315:00",
+    "n": 210,
+    "avg_r": -0.155,
+    "first": 0.021,
+    "unseen": -0.627,
+    "win": 0.34,
+    "usd": -3255,
+    "t": -1.02,
+    "verdict": ""
+   },
+   {
+    "feature": "Weekday",
+    "value": "Wednesday",
+    "n": 373,
+    "avg_r": -0.169,
+    "first": -0.082,
+    "unseen": -0.417,
+    "win": 0.38,
+    "usd": -6303,
+    "t": -1.9,
+    "verdict": ""
+   },
+   {
+    "feature": "Weekday",
+    "value": "Friday",
+    "n": 250,
+    "avg_r": -0.001,
+    "first": 0.108,
+    "unseen": -0.608,
+    "win": 0.38,
+    "usd": -13,
+    "t": 0.26,
+    "verdict": ""
+   },
+   {
+    "feature": "Weekday",
+    "value": "Monday",
+    "n": 293,
+    "avg_r": -0.166,
+    "first": 0.01,
+    "unseen": -0.555,
+    "win": 0.48,
+    "usd": -4860,
+    "t": -1.93,
+    "verdict": ""
+   },
+   {
+    "feature": "Weekday",
+    "value": "Tuesday",
+    "n": 360,
+    "avg_r": 0.141,
+    "first": 0.137,
+    "unseen": 0.152,
+    "win": 0.42,
+    "usd": 5075,
+    "t": 1.66,
+    "verdict": ""
+   },
+   {
+    "feature": "Setup",
+    "value": "pullback",
+    "n": 787,
+    "avg_r": -0.044,
+    "first": 0.068,
+    "unseen": -0.428,
+    "win": 0.4,
+    "usd": -3449,
+    "t": -0.2,
+    "verdict": ""
+   },
+   {
+    "feature": "Setup",
+    "value": "opening breakout",
+    "n": 289,
+    "avg_r": 0.137,
+    "first": 0.204,
+    "unseen": -0.113,
+    "win": 0.51,
+    "usd": 3970,
+    "t": 1.77,
+    "verdict": ""
+   },
+   {
+    "feature": "Setup",
+    "value": "crossover",
+    "n": 393,
+    "avg_r": -0.143,
+    "first": -0.131,
+    "unseen": -0.184,
+    "win": 0.39,
+    "usd": -5628,
+    "t": -1.49,
+    "verdict": ""
+   },
+   {
+    "feature": "Direction",
+    "value": "calls (bullish)",
+    "n": 784,
+    "avg_r": 0.146,
+    "first": 0.267,
+    "unseen": -0.378,
+    "win": 0.46,
+    "usd": 11462,
+    "t": 4.07,
+    "verdict": ""
+   },
+   {
+    "feature": "Direction",
+    "value": "puts (bearish)",
+    "n": 685,
+    "avg_r": -0.242,
+    "first": -0.242,
+    "unseen": -0.241,
+    "win": 0.37,
+    "usd": -16568,
+    "t": -4.07,
+    "verdict": ""
+   },
+   {
+    "feature": "Council",
+    "value": "approved",
+    "n": 1444,
+    "avg_r": -0.025,
+    "first": 0.053,
+    "unseen": -0.298,
+    "win": 0.42,
+    "usd": -3633,
+    "t": 3.15,
+    "verdict": ""
+   },
+   {
+    "feature": "Fed decision day",
+    "value": "no",
+    "n": 1410,
+    "avg_r": -0.037,
+    "first": 0.044,
+    "unseen": -0.314,
+    "win": 0.42,
+    "usd": -5228,
+    "t": -0.28,
+    "verdict": ""
+   },
+   {
+    "feature": "Jobs report day",
+    "value": "no",
+    "n": 1421,
+    "avg_r": -0.036,
+    "first": 0.037,
+    "unseen": -0.29,
+    "win": 0.41,
+    "usd": -5175,
+    "t": -0.25,
+    "verdict": ""
+   },
+   {
+    "feature": "CPI day",
+    "value": "no",
+    "n": 1370,
+    "avg_r": -0.01,
+    "first": 0.075,
+    "unseen": -0.303,
+    "win": 0.43,
+    "usd": -1372,
+    "t": 3.67,
+    "verdict": ""
+   },
+   {
+    "feature": "CPI day",
+    "value": "yes",
+    "n": 99,
+    "avg_r": -0.377,
+    "first": -0.399,
+    "unseen": -0.29,
+    "win": 0.27,
+    "usd": -3734,
+    "t": -3.67,
+    "verdict": ""
+   },
+   {
+    "feature": "Gold fear gauge (GVZ)",
+    "value": "jumpy (20\u201325)",
+    "n": 433,
+    "avg_r": -0.09,
+    "first": -0.014,
+    "unseen": -0.279,
+    "win": 0.38,
+    "usd": -3908,
+    "t": -0.74,
+    "verdict": ""
+   },
+   {
+    "feature": "Gold fear gauge (GVZ)",
+    "value": "wild (25+)",
+    "n": 262,
+    "avg_r": 0.082,
+    "first": 1.484,
+    "unseen": -0.316,
+    "win": 0.39,
+    "usd": 2153,
+    "t": 0.77,
+    "verdict": ""
+   },
+   {
+    "feature": "Stock fear gauge (VIX)",
+    "value": "nervous (20+)",
+    "n": 273,
+    "avg_r": 0.319,
+    "first": 0.322,
+    "unseen": 0.298,
+    "win": 0.52,
+    "usd": 8712,
+    "t": 3.44,
+    "verdict": "helps"
+   },
+   {
+    "feature": "Stock fear gauge (VIX)",
+    "value": "normal (15\u201320)",
+    "n": 973,
+    "avg_r": -0.082,
+    "first": 0.024,
+    "unseen": -0.368,
+    "win": 0.38,
+    "usd": -8025,
+    "t": -1.45,
+    "verdict": ""
+   },
+   {
+    "feature": "Stock fear gauge (VIX)",
+    "value": "calm (<15)",
+    "n": 223,
+    "avg_r": -0.26,
+    "first": -0.252,
+    "unseen": -0.304,
+    "win": 0.43,
+    "usd": -5793,
+    "t": -2.74,
+    "verdict": ""
+   },
+   {
+    "feature": "Trade vs GLD's 50-day trend",
+    "value": "with the trend",
+    "n": 845,
+    "avg_r": 0.078,
+    "first": 0.183,
+    "unseen": -0.316,
+    "win": 0.45,
+    "usd": 6557,
+    "t": 2.79,
+    "verdict": ""
+   },
+   {
+    "feature": "Trade vs GLD's 50-day trend",
+    "value": "against the trend",
+    "n": 624,
+    "avg_r": -0.187,
+    "first": -0.156,
+    "unseen": -0.286,
+    "win": 0.37,
+    "usd": -11663,
+    "t": -2.79,
+    "verdict": ""
+   },
+   {
+    "feature": "Trade vs last 5 days",
+    "value": "with the last 5 days",
+    "n": 875,
+    "avg_r": 0.103,
+    "first": 0.228,
+    "unseen": -0.316,
+    "win": 0.44,
+    "usd": 9033,
+    "t": 3.73,
+    "verdict": ""
+   },
+   {
+    "feature": "Trade vs last 5 days",
+    "value": "against the last 5 days",
+    "n": 594,
+    "avg_r": -0.238,
+    "first": -0.226,
+    "unseen": -0.281,
+    "win": 0.39,
+    "usd": -14140,
+    "t": -3.73,
+    "verdict": ""
+   },
+   {
+    "feature": "Opening gap",
+    "value": "gap up > 0.4%",
+    "n": 497,
+    "avg_r": 0.018,
+    "first": 0.097,
+    "unseen": -0.235,
+    "win": 0.43,
+    "usd": 892,
+    "t": 0.77,
+    "verdict": ""
+   },
+   {
+    "feature": "Opening gap",
+    "value": "small gap",
+    "n": 690,
+    "avg_r": -0.003,
+    "first": 0.06,
+    "unseen": -0.286,
+    "win": 0.43,
+    "usd": -236,
+    "t": 0.59,
+    "verdict": ""
+   },
+   {
+    "feature": "Opening gap",
+    "value": "gap down > 0.4%",
+    "n": 282,
+    "avg_r": -0.204,
+    "first": -0.113,
+    "unseen": -0.422,
+    "win": 0.35,
+    "usd": -5763,
+    "t": -2.13,
+    "verdict": "hurts"
+   },
+   {
+    "feature": "Trade vs the gap",
+    "value": "with the gap",
+    "n": 777,
+    "avg_r": 0.033,
+    "first": 0.128,
+    "unseen": -0.329,
+    "win": 0.43,
+    "usd": 2568,
+    "t": 1.45,
+    "verdict": ""
+   },
+   {
+    "feature": "Trade vs the gap",
+    "value": "against the gap",
+    "n": 365,
+    "avg_r": -0.142,
+    "first": -0.077,
+    "unseen": -0.326,
+    "win": 0.42,
+    "usd": -5176,
+    "t": -1.55,
+    "verdict": ""
+   },
+   {
+    "feature": "Trade vs the gap",
+    "value": "no real gap",
+    "n": 327,
+    "avg_r": -0.076,
+    "first": -0.038,
+    "unseen": -0.212,
+    "win": 0.39,
+    "usd": -2499,
+    "t": -0.35,
+    "verdict": ""
+   },
+   {
+    "feature": "Move since the open (in trade direction)",
+    "value": "quiet so far",
+    "n": 1271,
+    "avg_r": 0.019,
+    "first": 0.099,
+    "unseen": -0.279,
+    "win": 0.42,
+    "usd": 2390,
+    "t": 3.28,
+    "verdict": ""
+   },
+   {
+    "feature": "Move since the open (in trade direction)",
+    "value": "already ran > 0.6%",
+    "n": 182,
+    "avg_r": -0.454,
+    "first": -0.473,
+    "unseen": -0.41,
+    "win": 0.38,
+    "usd": -8268,
+    "t": -4.07,
+    "verdict": "hurts"
+   },
+   {
+    "feature": "Dollar today (UUP)",
+    "value": "dollar flat",
+    "n": 975,
+    "avg_r": -0.021,
+    "first": 0.06,
+    "unseen": -0.257,
+    "win": 0.44,
+    "usd": -2073,
+    "t": 0.34,
+    "verdict": ""
+   },
+   {
+    "feature": "Dollar today (UUP)",
+    "value": "dollar helping",
+    "n": 282,
+    "avg_r": 0.083,
+    "first": 0.184,
+    "unseen": -0.435,
+    "win": 0.36,
+    "usd": 2349,
+    "t": 0.81,
+    "verdict": ""
+   },
+   {
+    "feature": "Dollar today (UUP)",
+    "value": "dollar fighting",
+    "n": 212,
+    "avg_r": -0.254,
+    "first": -0.217,
+    "unseen": -0.456,
+    "win": 0.36,
+    "usd": -5383,
+    "t": -2.23,
+    "verdict": "hurts"
+   },
+   {
+    "feature": "Rates today (TLT)",
+    "value": "rates flat",
+    "n": 737,
+    "avg_r": 0.048,
+    "first": 0.115,
+    "unseen": -0.16,
+    "win": 0.45,
+    "usd": 3522,
+    "t": 1.69,
+    "verdict": ""
+   },
+   {
+    "feature": "Rates today (TLT)",
+    "value": "rates fighting",
+    "n": 314,
+    "avg_r": -0.14,
+    "first": -0.065,
+    "unseen": -0.538,
+    "win": 0.37,
+    "usd": -4412,
+    "t": -1.18,
+    "verdict": ""
+   },
+   {
+    "feature": "Rates today (TLT)",
+    "value": "rates helping",
+    "n": 418,
+    "avg_r": -0.101,
+    "first": 0.004,
+    "unseen": -0.447,
+    "win": 0.39,
+    "usd": -4217,
+    "t": -0.92,
+    "verdict": ""
+   },
+   {
+    "feature": "Stocks today (SPY)",
+    "value": "stocks flat",
+    "n": 874,
+    "avg_r": 0.054,
+    "first": 0.143,
+    "unseen": -0.216,
+    "win": 0.46,
+    "usd": 4743,
+    "t": 2.24,
+    "verdict": "helps"
+   },
+   {
+    "feature": "Stocks today (SPY)",
+    "value": "stocks down",
+    "n": 286,
+    "avg_r": -0.329,
+    "first": -0.265,
+    "unseen": -0.573,
+    "win": 0.34,
+    "usd": -9399,
+    "t": -3.07,
+    "verdict": "hurts"
+   },
+   {
+    "feature": "Stocks today (SPY)",
+    "value": "stocks up",
+    "n": 309,
+    "avg_r": -0.015,
+    "first": 0.056,
+    "unseen": -0.354,
+    "win": 0.37,
+    "usd": -450,
+    "t": 0.23,
+    "verdict": ""
+   },
+   {
+    "feature": "Option price",
+    "value": "over $2",
+    "n": 1142,
+    "avg_r": -0.03,
+    "first": 0.08,
+    "unseen": -0.302,
+    "win": 0.4,
+    "usd": -3389,
+    "t": 0.26,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: Fed / interest rates",
+    "value": "no",
+    "n": 691,
+    "avg_r": -0.078,
+    "first": -0.005,
+    "unseen": -0.295,
+    "win": 0.41,
+    "usd": -5419,
+    "t": -0.83,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: Fed / interest rates",
+    "value": "yes",
+    "n": 778,
+    "avg_r": 0.004,
+    "first": 0.081,
+    "unseen": -0.311,
+    "win": 0.42,
+    "usd": 313,
+    "t": 0.83,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: Inflation (CPI/PCE)",
+    "value": "no",
+    "n": 897,
+    "avg_r": -0.103,
+    "first": -0.022,
+    "unseen": -0.371,
+    "win": 0.42,
+    "usd": -9250,
+    "t": -1.74,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: Inflation (CPI/PCE)",
+    "value": "yes",
+    "n": 572,
+    "avg_r": 0.072,
+    "first": 0.14,
+    "unseen": -0.184,
+    "win": 0.41,
+    "usd": 4144,
+    "t": 1.74,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: Jobs data",
+    "value": "no",
+    "n": 1235,
+    "avg_r": -0.071,
+    "first": 0.005,
+    "unseen": -0.299,
+    "win": 0.41,
+    "usd": -8712,
+    "t": -1.7,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: Jobs data",
+    "value": "yes",
+    "n": 234,
+    "avg_r": 0.154,
+    "first": 0.206,
+    "unseen": -0.35,
+    "win": 0.45,
+    "usd": 3606,
+    "t": 1.7,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: US dollar",
+    "value": "no",
+    "n": 1348,
+    "avg_r": -0.077,
+    "first": -0.009,
+    "unseen": -0.294,
+    "win": 0.41,
+    "usd": -10422,
+    "t": -2.55,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: War / geopolitics",
+    "value": "no",
+    "n": 492,
+    "avg_r": 0.023,
+    "first": 0.055,
+    "unseen": -0.227,
+    "win": 0.45,
+    "usd": 1120,
+    "t": 0.88,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: War / geopolitics",
+    "value": "yes",
+    "n": 977,
+    "avg_r": -0.064,
+    "first": 0.034,
+    "unseen": -0.318,
+    "win": 0.4,
+    "usd": -6226,
+    "t": -0.88,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: Tariffs / trade",
+    "value": "no",
+    "n": 877,
+    "avg_r": -0.118,
+    "first": -0.023,
+    "unseen": -0.346,
+    "win": 0.42,
+    "usd": -10350,
+    "t": -1.92,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: Tariffs / trade",
+    "value": "yes",
+    "n": 592,
+    "avg_r": 0.089,
+    "first": 0.12,
+    "unseen": -0.143,
+    "win": 0.42,
+    "usd": 5244,
+    "t": 1.92,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: Gold & central banks",
+    "value": "no",
+    "n": 1166,
+    "avg_r": -0.084,
+    "first": -0.015,
+    "unseen": -0.302,
+    "win": 0.42,
+    "usd": -9753,
+    "t": -1.33,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: Gold & central banks",
+    "value": "yes",
+    "n": 303,
+    "avg_r": 0.153,
+    "first": 0.244,
+    "unseen": -0.305,
+    "win": 0.42,
+    "usd": 4647,
+    "t": 1.33,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: Stock sell-off / fear",
+    "value": "no",
+    "n": 1320,
+    "avg_r": -0.05,
+    "first": 0.014,
+    "unseen": -0.271,
+    "win": 0.41,
+    "usd": -6598,
+    "t": -1.04,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: Stock sell-off / fear",
+    "value": "yes",
+    "n": 149,
+    "avg_r": 0.1,
+    "first": 0.29,
+    "unseen": -0.593,
+    "win": 0.46,
+    "usd": 1492,
+    "t": 1.04,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: Government shutdown / debt",
+    "value": "no",
+    "n": 1325,
+    "avg_r": -0.103,
+    "first": -0.038,
+    "unseen": -0.316,
+    "win": 0.4,
+    "usd": -13602,
+    "t": -3.44,
+    "verdict": ""
+   },
+   {
+    "feature": "News in last 2h: Government shutdown / debt",
+    "value": "yes",
+    "n": 144,
+    "avg_r": 0.59,
+    "first": 0.684,
+    "unseen": -0.071,
+    "win": 0.56,
+    "usd": 8495,
+    "t": 3.44,
+    "verdict": "helps"
+   }
+  ]
+ },
+ "playbook": {
+  "rules": [
+   [
+    "Direction",
+    "puts (bearish)"
+   ],
+   [
+    "News in last 2h: Tariffs / trade",
+    "no"
+   ],
+   [
+    "Setup",
+    "crossover"
+   ]
+  ],
+  "result": {
+   "n": 95,
+   "win": 0.48,
+   "avg_r": 0.646,
+   "first": 0.806,
+   "unseen": -0.278,
+   "n_unseen": 14,
+   "usd": 6142,
+   "usd_unseen": -389,
+   "months_up": 10,
+   "months": 20,
+   "worst_drop": 860
+  }
+ },
+ "gap_fade": {
+  "Gap fade: gap 0.3%+, enter 9:45": {
+   "n": 220,
+   "win": 0.39,
+   "avg_r": -0.282,
+   "first": -0.288,
+   "unseen": -0.264,
+   "n_unseen": 60,
+   "usd": -6195,
+   "usd_unseen": -1582,
+   "months_up": 5,
+   "months": 24,
+   "worst_drop": 6509
+  },
+  "Gap fade: gap 0.3%+, enter 9:45, once it turns": {
+   "n": 114,
+   "win": 0.32,
+   "avg_r": -0.388,
+   "first": -0.35,
+   "unseen": -0.479,
+   "n_unseen": 33,
+   "usd": -4419,
+   "usd_unseen": -1580,
+   "months_up": 4,
+   "months": 24,
+   "worst_drop": 4663
+  },
+  "Gap fade: gap 0.3%+, enter 10:00": {
+   "n": 221,
+   "win": 0.4,
+   "avg_r": -0.191,
+   "first": -0.233,
+   "unseen": -0.078,
+   "n_unseen": 60,
+   "usd": -4217,
+   "usd_unseen": -470,
+   "months_up": 6,
+   "months": 24,
+   "worst_drop": 5596
+  },
+  "Gap fade: gap 0.3%+, enter 10:00, once it turns": {
+   "n": 127,
+   "win": 0.42,
+   "avg_r": -0.25,
+   "first": -0.267,
+   "unseen": -0.197,
+   "n_unseen": 31,
+   "usd": -3176,
+   "usd_unseen": -612,
+   "months_up": 7,
+   "months": 24,
+   "worst_drop": 3641
+  },
+  "Gap fade: gap 0.3%+, enter 10:30": {
+   "n": 220,
+   "win": 0.42,
+   "avg_r": -0.148,
+   "first": -0.147,
+   "unseen": -0.15,
+   "n_unseen": 59,
+   "usd": -3246,
+   "usd_unseen": -885,
+   "months_up": 6,
+   "months": 24,
+   "worst_drop": 4570
+  },
+  "Gap fade: gap 0.3%+, enter 10:30, once it turns": {
+   "n": 116,
+   "win": 0.41,
+   "avg_r": -0.271,
+   "first": -0.268,
+   "unseen": -0.277,
+   "n_unseen": 32,
+   "usd": -3142,
+   "usd_unseen": -888,
+   "months_up": 6,
+   "months": 24,
+   "worst_drop": 3681
+  },
+  "Gap fade: gap 0.5%+, enter 9:45": {
+   "n": 179,
+   "win": 0.35,
+   "avg_r": -0.394,
+   "first": -0.39,
+   "unseen": -0.404,
+   "n_unseen": 50,
+   "usd": -7045,
+   "usd_unseen": -2019,
+   "months_up": 4,
+   "months": 24,
+   "worst_drop": 7062
+  },
+  "Gap fade: gap 0.5%+, enter 9:45, once it turns": {
+   "n": 91,
+   "win": 0.29,
+   "avg_r": -0.485,
+   "first": -0.393,
+   "unseen": -0.693,
+   "n_unseen": 28,
+   "usd": -4417,
+   "usd_unseen": -1941,
+   "months_up": 5,
+   "months": 24,
+   "worst_drop": 4442
+  },
+  "Gap fade: gap 0.5%+, enter 10:00": {
+   "n": 183,
+   "win": 0.38,
+   "avg_r": -0.328,
+   "first": -0.394,
+   "unseen": -0.156,
+   "n_unseen": 51,
+   "usd": -5995,
+   "usd_unseen": -794,
+   "months_up": 5,
+   "months": 24,
+   "worst_drop": 6070
+  },
+  "Gap fade: gap 0.5%+, enter 10:00, once it turns": {
+   "n": 101,
+   "win": 0.4,
+   "avg_r": -0.302,
+   "first": -0.332,
+   "unseen": -0.211,
+   "n_unseen": 25,
+   "usd": -3054,
+   "usd_unseen": -528,
+   "months_up": 8,
+   "months": 24,
+   "worst_drop": 3173
+  },
+  "Gap fade: gap 0.5%+, enter 10:30": {
+   "n": 177,
+   "win": 0.42,
+   "avg_r": -0.152,
+   "first": -0.16,
+   "unseen": -0.132,
+   "n_unseen": 50,
+   "usd": -2686,
+   "usd_unseen": -660,
+   "months_up": 7,
+   "months": 24,
+   "worst_drop": 3695
+  },
+  "Gap fade: gap 0.5%+, enter 10:30, once it turns": {
+   "n": 88,
+   "win": 0.41,
+   "avg_r": -0.297,
+   "first": -0.329,
+   "unseen": -0.212,
+   "n_unseen": 24,
+   "usd": -2613,
+   "usd_unseen": -510,
+   "months_up": 6,
+   "months": 24,
+   "worst_drop": 3091
+  },
+  "Gap fade: gap 0.8%+, enter 9:45": {
+   "n": 122,
+   "win": 0.34,
+   "avg_r": -0.384,
+   "first": -0.382,
+   "unseen": -0.386,
+   "n_unseen": 40,
+   "usd": -4680,
+   "usd_unseen": -1546,
+   "months_up": 4,
+   "months": 24,
+   "worst_drop": 4680
+  },
+  "Gap fade: gap 0.8%+, enter 9:45, once it turns": {
+   "n": 65,
+   "win": 0.28,
+   "avg_r": -0.518,
+   "first": -0.389,
+   "unseen": -0.752,
+   "n_unseen": 23,
+   "usd": -3365,
+   "usd_unseen": -1730,
+   "months_up": 5,
+   "months": 23,
+   "worst_drop": 3365
+  },
+  "Gap fade: gap 0.8%+, enter 10:00": {
+   "n": 123,
+   "win": 0.36,
+   "avg_r": -0.32,
+   "first": -0.418,
+   "unseen": -0.125,
+   "n_unseen": 41,
+   "usd": -3938,
+   "usd_unseen": -511,
+   "months_up": 5,
+   "months": 24,
+   "worst_drop": 4105
+  },
+  "Gap fade: gap 0.8%+, enter 10:00, once it turns": {
+   "n": 68,
+   "win": 0.38,
+   "avg_r": -0.329,
+   "first": -0.361,
+   "unseen": -0.251,
+   "n_unseen": 20,
+   "usd": -2237,
+   "usd_unseen": -501,
+   "months_up": 4,
+   "months": 23,
+   "worst_drop": 2384
+  },
+  "Gap fade: gap 0.8%+, enter 10:30": {
+   "n": 119,
+   "win": 0.39,
+   "avg_r": -0.105,
+   "first": -0.125,
+   "unseen": -0.065,
+   "n_unseen": 39,
+   "usd": -1254,
+   "usd_unseen": -252,
+   "months_up": 8,
+   "months": 24,
+   "worst_drop": 2749
+  },
+  "Gap fade: gap 0.8%+, enter 10:30, once it turns": {
+   "n": 54,
+   "win": 0.35,
+   "avg_r": -0.373,
+   "first": -0.461,
+   "unseen": -0.198,
+   "n_unseen": 18,
+   "usd": -2016,
+   "usd_unseen": -357,
+   "months_up": 5,
+   "months": 23,
+   "worst_drop": 2435
+  }
+ },
+ "ema200": {
+  "Her 200 EMA + zone, clear slope": {
+   "signals": 2,
+   "stock_avg_r": 1.041,
+   "stock_win": 1.0,
+   "stock_total_r": 2.1,
+   "options": {
+    "n": 1,
+    "win": 1.0,
+    "avg_r": 2.499,
+    "first": null,
+    "unseen": 2.499,
+    "n_unseen": 1,
+    "usd": 250,
+    "usd_unseen": 250,
+    "months_up": 1,
+    "months": 1,
+    "worst_drop": 0
+   },
+   "options_s30": {
+    "n": 1,
+    "win": 1.0,
+    "avg_r": 2.499,
+    "first": null,
+    "unseen": 2.499,
+    "n_unseen": 1,
+    "usd": 250,
+    "usd_unseen": 250,
+    "months_up": 1,
+    "months": 1,
+    "worst_drop": 0
+   }
+  },
+  "Her 200 EMA + zone, gentle slope": {
+   "signals": 2,
+   "stock_avg_r": 1.041,
+   "stock_win": 1.0,
+   "stock_total_r": 2.1,
+   "options": {
+    "n": 1,
+    "win": 1.0,
+    "avg_r": 2.499,
+    "first": null,
+    "unseen": 2.499,
+    "n_unseen": 1,
+    "usd": 250,
+    "usd_unseen": 250,
+    "months_up": 1,
+    "months": 1,
+    "worst_drop": 0
+   },
+   "options_s30": {
+    "n": 1,
+    "win": 1.0,
+    "avg_r": 2.499,
+    "first": null,
+    "unseen": 2.499,
+    "n_unseen": 1,
+    "usd": 250,
+    "usd_unseen": 250,
+    "months_up": 1,
+    "months": 1,
+    "worst_drop": 0
+   }
+  },
+  "200 EMA tap + 2 candles, no zone": {
+   "signals": 4,
+   "stock_avg_r": 1.476,
+   "stock_win": 1.0,
+   "stock_total_r": 5.9,
+   "options": {
+    "n": 2,
+    "win": 1.0,
+    "avg_r": 2.239,
+    "first": null,
+    "unseen": 2.239,
+    "n_unseen": 2,
+    "usd": 448,
+    "usd_unseen": 448,
+    "months_up": 2,
+    "months": 2,
+    "worst_drop": 0
+   },
+   "options_s30": {
+    "n": 2,
+    "win": 1.0,
+    "avg_r": 2.239,
+    "first": null,
+    "unseen": 2.239,
+    "n_unseen": 2,
+    "usd": 448,
+    "usd_unseen": 448,
+    "months_up": 2,
+    "months": 2,
+    "worst_drop": 0
+   }
+  }
+ },
+ "log": [
+  "Data: 13633 GLD 15-min bars, 583 days, 18860 headlines, VIX 9295, GVZ 4293 days",
+  "GLD: 2068 setups, 1575 approved (16s)",
+  "1469 GLD bot setups priced on real option bars; 466 had no contract within the $250 budget",
+  "Finished in 7.6 min, 1216 option price calls"
+ ],
+ "calls": 1216
+}
