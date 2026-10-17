@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792180510.147379
+  "updated": 1792209615.883008
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -435,9 +435,9 @@
   "total": 66
  },
  "day": {
-  "date": "2026-10-16",
+  "date": "2026-10-17",
   "halted": false,
-  "start_nav": 234.0
+  "start_nav": 214.0
  },
  "days": {
   "2026-10-13": {
@@ -475,6 +475,15 @@
    "rejected": 6,
    "setups": 7,
    "start_nav": 234.0
+  },
+  "2026-10-17": {
+   "approved": 0,
+   "benched": 0,
+   "news": 0,
+   "opened": 0,
+   "rejected": 0,
+   "setups": 0,
+   "start_nav": 214.0
   }
  },
  "dirs_today": {
@@ -484,8 +493,8 @@
  },
  "earnings": {
   "dates": {},
-  "days_checked": 11,
-  "fetched": 1792140915.551763
+  "days_checked": 10,
+  "fetched": 1792209619.9598162
  },
  "equity": [
   [
@@ -1686,6 +1695,10 @@
   ],
   [
    1792180211,
+   214.0
+  ],
+  [
+   1792209616,
    214.0
   ]
  ],
@@ -5474,9 +5487,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-15",
- "last_deploy": 1792208715.2322183,
- "last_full_run": 1792180510.147379,
- "last_run": 1792180510.147379,
+ "last_deploy": 1792209619.978763,
+ "last_full_run": 1792209615.883008,
+ "last_run": 1792209615.883008,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -6235,7 +6248,7 @@
     "title": "Fed Chairman Warsh Speaks"
    }
   ],
-  "fetched": 1792173311.1686354
+  "fetched": 1792209616.452759
  },
  "pairs": {
   "AAPL": {
