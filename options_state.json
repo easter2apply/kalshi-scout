@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792318511.088626
+  "updated": 1792318810.691014
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -5981,8 +5981,8 @@
  },
  "last_daily": "2026-10-15",
  "last_deploy": 1792318511.7449398,
- "last_full_run": 1792318511.088626,
- "last_run": 1792318511.088626,
+ "last_full_run": 1792318810.691014,
+ "last_run": 1792318810.691014,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -6676,72 +6676,32 @@
  "news": {
   "events": [
    {
-    "cur": "USD",
-    "t": 1791981000.0,
-    "title": "Core CPI m/m"
-   },
-   {
-    "cur": "USD",
-    "t": 1791981000.0,
-    "title": "Core CPI y/y"
-   },
-   {
-    "cur": "USD",
-    "t": 1791981000.0,
+    "cur": "CAD",
+    "t": 1792413000.0,
     "title": "CPI m/m"
    },
    {
-    "cur": "USD",
-    "t": 1791981000.0,
+    "cur": "CAD",
+    "t": 1792413000.0,
+    "title": "Median CPI y/y"
+   },
+   {
+    "cur": "CAD",
+    "t": 1792413000.0,
+    "title": "Trimmed CPI y/y"
+   },
+   {
+    "cur": "GBP",
+    "t": 1792562400.0,
     "title": "CPI y/y"
    },
    {
-    "cur": "AUD",
-    "t": 1792024200.0,
-    "title": "Employment Change"
-   },
-   {
-    "cur": "AUD",
-    "t": 1792024200.0,
-    "title": "Unemployment Rate"
-   },
-   {
-    "cur": "GBP",
-    "t": 1792044000.0,
-    "title": "GDP m/m"
-   },
-   {
-    "cur": "USD",
-    "t": 1792067400.0,
-    "title": "Core PPI m/m"
-   },
-   {
-    "cur": "USD",
-    "t": 1792067400.0,
-    "title": "Core Retail Sales m/m"
-   },
-   {
-    "cur": "USD",
-    "t": 1792067400.0,
-    "title": "PPI m/m"
-   },
-   {
-    "cur": "USD",
-    "t": 1792067400.0,
-    "title": "Retail Sales m/m"
-   },
-   {
-    "cur": "GBP",
-    "t": 1792116000.0,
-    "title": "BOE Gov Bailey Speaks"
-   },
-   {
-    "cur": "USD",
-    "t": 1792121400.0,
-    "title": "Fed Chairman Warsh Speaks"
+    "cur": "NZD",
+    "t": 1792619100.0,
+    "title": "CPI q/q"
    }
   ],
-  "fetched": 1792296912.3333423
+  "fetched": 1792318811.6357503
  },
  "pairs": {
   "AAPL": {
