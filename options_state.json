@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792434311.534966
+  "updated": 1792434615.454858
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -5981,13 +5981,13 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25bc $271.19, ADX 14, RSI 44: trend too weak, waiting",
+     "say": "\u25bc $270.95, ADX 14, RSI 41: trend too weak, waiting",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792434313.9428241,
+   "t": 1792434616.3813086,
    "text": null,
    "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
@@ -6411,7 +6411,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-19T18:00:00",
+  "IWM:M15": "2026-10-19T18:15:00",
   "IWM:ORB": "2026-10-16T14:00:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -6426,9 +6426,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-18",
- "last_deploy": 1792433719.829804,
- "last_full_run": 1792434311.534966,
- "last_run": 1792434311.534966,
+ "last_deploy": 1792434616.4078832,
+ "last_full_run": 1792434615.454858,
+ "last_run": 1792434615.454858,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -7245,11 +7245,11 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 14.211684141754597,
-   "atr_pips": 0.4975742776101927,
-   "bar": "2026-10-19T18:00:00",
-   "chg": 0.26620327577918823,
-   "close": 271.19,
+   "adx": 14.096992631138063,
+   "atr_pips": 0.4927475438043265,
+   "bar": "2026-10-19T18:15:00",
+   "chg": 0.17746885051945183,
+   "close": 270.95,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -7264,7 +7264,7 @@
      "ADX 14 (needs 18)"
     ]
    },
-   "rsi": 44.21734559982193,
+   "rsi": 41.261529497930184,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -7811,8 +7811,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.27,
-   "p": "271.19",
+   "c": 0.18,
+   "p": "270.95",
    "s": "IWM"
   }
  ],
