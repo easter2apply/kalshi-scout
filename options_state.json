@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792423514.67641
+  "updated": 1792423813.139027
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -5992,13 +5992,13 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25bc $272.14, ADX 23, RSI 56: trending, waiting for a pullback",
+     "say": "\u25bc $272.36, ADX 23, RSI 58: trending, waiting for a pullback",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792423517.7728615,
+   "t": 1792423815.1699567,
    "text": null,
    "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
@@ -6422,7 +6422,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-19T15:00:00",
+  "IWM:M15": "2026-10-19T15:15:00",
   "IWM:ORB": "2026-10-16T14:00:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -6437,9 +6437,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-18",
- "last_deploy": 1792422913.1974745,
- "last_full_run": 1792423514.67641,
- "last_run": 1792423514.67641,
+ "last_deploy": 1792423815.2233157,
+ "last_full_run": 1792423813.139027,
+ "last_run": 1792423813.139027,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -7256,11 +7256,11 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 23.02691603091827,
-   "atr_pips": 0.6851831154028006,
-   "bar": "2026-10-19T15:00:00",
-   "chg": 0.6174437090989607,
-   "close": 272.14,
+   "adx": 22.573373210859224,
+   "atr_pips": 0.6619557498082848,
+   "bar": "2026-10-19T15:15:00",
+   "chg": 0.6987835989203928,
+   "close": 272.36,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -7275,7 +7275,7 @@
      "MACD against us (down)"
     ]
    },
-   "rsi": 55.838915607616116,
+   "rsi": 57.62447700040829,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -7788,8 +7788,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.62,
-   "p": "272.14",
+   "c": 0.7,
+   "p": "272.36",
    "s": "IWM"
   }
  ],
