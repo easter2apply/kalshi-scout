@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792419011.669501
+  "updated": 1792419324.809377
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -5986,15 +5986,15 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25bc $270.91, ADX 31, RSI 44: pullback 15m setup",
+     "say": "\u25bc $271.42, ADX 29, RSI 49: trending, waiting for a pullback",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792419014.039691,
+   "t": 1792419327.6681046,
    "text": null,
-   "title": "Scanned 1 stock: 1 setup on the latest candle",
+   "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
    "who": null
   }
@@ -6404,7 +6404,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-19T13:45:00",
+  "IWM:M15": "2026-10-19T14:00:00",
   "IWM:ORB": "2026-10-16T14:00:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -6419,9 +6419,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-18",
- "last_deploy": 1792418422.3184867,
- "last_full_run": 1792419011.669501,
- "last_run": 1792419011.669501,
+ "last_deploy": 1792419327.8233492,
+ "last_full_run": 1792419324.809377,
+ "last_run": 1792419324.809377,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -7222,26 +7222,27 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 31.057090808372468,
-   "atr_pips": 0.7300926875378061,
-   "bar": "2026-10-19T13:45:00",
-   "chg": 0.16267977964284308,
-   "close": 270.91,
+   "adx": 28.98249793851925,
+   "atr_pips": 0.7265146380272169,
+   "bar": "2026-10-19T14:00:00",
+   "chg": 0.35124043331977245,
+   "close": 271.42,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": -1,
     "in_trade": false,
     "of": 6,
-    "passed": 5,
+    "passed": 4,
     "session": true,
     "tf": "M15",
     "waiting": [
+     "a pullback to the trend line or a fresh crossover",
      "MACD against us (down)"
     ]
    },
-   "rsi": 43.63006700389717,
-   "setup": "pullback 15m",
+   "rsi": 48.9886144081781,
+   "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
@@ -7770,8 +7771,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.16,
-   "p": "270.91",
+   "c": 0.35,
+   "p": "271.42",
    "s": "IWM"
   }
  ],
