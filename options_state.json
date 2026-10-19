@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792430711.168905
+  "updated": 1792431013.91372
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -5965,15 +5965,15 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25bc $271.28, ADX 17, RSI 45: pullback 15m setup",
+     "say": "\u25bc $271.47, ADX 16, RSI 48: trend too weak, waiting",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792430712.7258961,
+   "t": 1792431014.9559793,
    "text": null,
-   "title": "Scanned 1 stock: 1 setup on the latest candle",
+   "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
    "who": null
   }
@@ -6395,7 +6395,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-19T17:00:00",
+  "IWM:M15": "2026-10-19T17:15:00",
   "IWM:ORB": "2026-10-16T14:00:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -6410,9 +6410,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-18",
- "last_deploy": 1792430112.8603606,
- "last_full_run": 1792430711.168905,
- "last_run": 1792430711.168905,
+ "last_deploy": 1792431014.9776118,
+ "last_full_run": 1792431013.91372,
+ "last_run": 1792431013.91372,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -7229,26 +7229,27 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 16.555275239302823,
-   "atr_pips": 0.5550121982456478,
-   "bar": "2026-10-19T17:00:00",
-   "chg": 0.29947868525157884,
-   "close": 271.28,
+   "adx": 15.642720726677256,
+   "atr_pips": 0.536082755838708,
+   "bar": "2026-10-19T17:15:00",
+   "chg": 0.36972677191555436,
+   "close": 271.47,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": -1,
     "in_trade": false,
     "of": 6,
-    "passed": 5,
+    "passed": 4,
     "session": true,
     "tf": "M15",
     "waiting": [
-     "ADX 17 (needs 18)"
+     "a pullback to the trend line or a fresh crossover",
+     "ADX 16 (needs 18)"
     ]
    },
-   "rsi": 45.128397424420335,
-   "setup": "pullback 15m",
+   "rsi": 47.62000787397002,
+   "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
@@ -7794,8 +7795,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.3,
-   "p": "271.28",
+   "c": 0.37,
+   "p": "271.47",
    "s": "IWM"
   }
  ],
