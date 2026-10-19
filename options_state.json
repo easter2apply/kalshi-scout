@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792431612.386927
+  "updated": 1792431912.553267
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -5969,13 +5969,13 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25bc $271.47, ADX 16, RSI 48: trend too weak, waiting",
+     "say": "\u25bc $271.34, ADX 15, RSI 46: trend too weak, waiting",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792431613.8705406,
+   "t": 1792431914.3062856,
    "text": null,
    "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
@@ -6399,7 +6399,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-19T17:15:00",
+  "IWM:M15": "2026-10-19T17:30:00",
   "IWM:ORB": "2026-10-16T14:00:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -6414,9 +6414,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-18",
- "last_deploy": 1792431014.9776118,
- "last_full_run": 1792431612.386927,
- "last_run": 1792431612.386927,
+ "last_deploy": 1792431914.3274312,
+ "last_full_run": 1792431912.553267,
+ "last_run": 1792431912.553267,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -7233,11 +7233,11 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 15.642720726677256,
-   "atr_pips": 0.536082755838708,
-   "bar": "2026-10-19T17:15:00",
-   "chg": 0.36972677191555436,
-   "close": 271.47,
+   "adx": 15.072473024115514,
+   "atr_pips": 0.525648273661301,
+   "bar": "2026-10-19T17:30:00",
+   "chg": 0.321662291566513,
+   "close": 271.34,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -7249,10 +7249,10 @@
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
-     "ADX 16 (needs 18)"
+     "ADX 15 (needs 18)"
     ]
    },
-   "rsi": 47.62000787397002,
+   "rsi": 46.078295550338574,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -7799,8 +7799,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.37,
-   "p": "271.47",
+   "c": 0.32,
+   "p": "271.34",
    "s": "IWM"
   }
  ],
