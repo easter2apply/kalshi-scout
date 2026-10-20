@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792492510.298765
+  "updated": 1792492814.129062
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -2978,6 +2978,10 @@
   ],
   [
    1792491910,
+   214.0
+  ],
+  [
+   1792492814,
    214.0
   ]
  ],
@@ -6647,8 +6651,8 @@
  },
  "last_daily": "2026-10-19",
  "last_deploy": 1792492215.0053086,
- "last_full_run": 1792492510.298765,
- "last_run": 1792492510.298765,
+ "last_full_run": 1792492814.129062,
+ "last_run": 1792492814.129062,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -7383,7 +7387,7 @@
     "title": "CPI q/q"
    }
   ],
-  "fetched": 1792471211.5692914
+  "fetched": 1792492815.3742344
  },
  "pairs": {
   "AAPL": {
