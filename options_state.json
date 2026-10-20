@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792521611.911634
+  "updated": 1792521913.004396
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -6173,13 +6173,13 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25b2 $275.83, ADX 28, RSI 63: trending, waiting for a pullback",
+     "say": "\u25b2 $275.49, ADX 27, RSI 58: trending, waiting for a pullback",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792521614.1516876,
+   "t": 1792521915.1283703,
    "text": null,
    "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
@@ -6645,7 +6645,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-20T18:15:00",
+  "IWM:M15": "2026-10-20T18:30:00",
   "IWM:ORB": "2026-10-20T14:15:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -6661,8 +6661,8 @@
  },
  "last_daily": "2026-10-19",
  "last_deploy": 1792521314.212013,
- "last_full_run": 1792521611.911634,
- "last_run": 1792521611.911634,
+ "last_full_run": 1792521913.004396,
+ "last_run": 1792521913.004396,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -7535,11 +7535,11 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 28.132366196456207,
-   "atr_pips": 0.5653270061812663,
-   "bar": "2026-10-20T18:15:00",
-   "chg": 1.669738297088084,
-   "close": 275.83,
+   "adx": 27.388659565971107,
+   "atr_pips": 0.5535179346976079,
+   "bar": "2026-10-20T18:30:00",
+   "chg": 1.5444157758938435,
+   "close": 275.49,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -7554,7 +7554,7 @@
      "MACD against us (up)"
     ]
    },
-   "rsi": 62.59891099326768,
+   "rsi": 58.262258917921066,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -8084,8 +8084,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 1.67,
-   "p": "275.83",
+   "c": 1.54,
+   "p": "275.49",
    "s": "IWM"
   }
  ],
