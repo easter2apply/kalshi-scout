@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792516247.007194
+  "updated": 1792516512.112537
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -6149,13 +6149,13 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25b2 $275.24, ADX 29, RSI 61: trending, waiting for a pullback",
+     "say": "\u25b2 $275.42, ADX 29, RSI 62: trending, waiting for a pullback",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792516248.5279484,
+   "t": 1792516513.897991,
    "text": null,
    "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
@@ -6621,7 +6621,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-20T16:45:00",
+  "IWM:M15": "2026-10-20T17:00:00",
   "IWM:ORB": "2026-10-20T14:15:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -6636,9 +6636,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-19",
- "last_deploy": 1792515623.5081694,
- "last_full_run": 1792516247.007194,
- "last_run": 1792516247.007194,
+ "last_deploy": 1792516513.9208803,
+ "last_full_run": 1792516512.112537,
+ "last_run": 1792516512.112537,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -7511,26 +7511,26 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 29.423337241778565,
-   "atr_pips": 0.7098102535849761,
-   "bar": "2026-10-20T16:45:00",
-   "chg": 1.4504238849981577,
-   "close": 275.235,
+   "adx": 28.741589687142334,
+   "atr_pips": 0.6798238071801429,
+   "bar": "2026-10-20T17:00:00",
+   "chg": 1.5186140803538535,
+   "close": 275.42,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 4,
+    "passed": 3,
     "session": true,
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
-     "1-hour trend disagrees"
+     "MACD against us (up)"
     ]
    },
-   "rsi": 60.89996903346007,
+   "rsi": 62.17647938639122,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -8060,8 +8060,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 1.45,
-   "p": "275.24",
+   "c": 1.52,
+   "p": "275.42",
    "s": "IWM"
   }
  ],
