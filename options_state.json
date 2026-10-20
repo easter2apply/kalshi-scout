@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792505412.099827
+  "updated": 1792505712.315401
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -508,8 +508,8 @@
    "benched": 0,
    "news": 0,
    "opened": 0,
-   "rejected": 1,
-   "setups": 1,
+   "rejected": 2,
+   "setups": 2,
    "start_nav": 214.0
   }
  },
@@ -3124,88 +3124,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "The data says go. ADX 41 (needs 18).",
-     "vote": true,
-     "who": "The Quant"
-    },
-    {
-     "say": "Hard no. Cheapest good put costs $452, over the $79 budget.",
-     "vote": false,
-     "who": "Risk"
-    },
-    {
-     "say": "It's moving our way. MACD with us (down).",
-     "vote": true,
-     "who": "Momentum"
-    },
-    {
-     "say": "Clock agrees: RSI 25.",
-     "vote": true,
-     "who": "Time"
-    },
-    {
-     "say": "Too convenient. 1-hour trend disagrees.",
-     "vote": false,
-     "who": "Doubt"
-    },
-    {
-     "say": "Nothing in the press to scare me. No earnings before we'd sell; 14 headlines today, 4 on our side; StockTwits 5 bullish / 6 bearish.",
-     "vote": true,
-     "who": "The Reporter"
-    }
-   ],
-   "ok": false,
-   "t": 1791994534.6606793,
-   "text": null,
-   "title": "META PUT (crossover 15m)",
-   "verdict": "REJECTED 4\u20132. Logged on paper so we learn whether we were right.",
-   "who": null
-  },
-  {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "The data says go. ADX 27 (needs 18).",
-     "vote": true,
-     "who": "The Quant"
-    },
-    {
-     "say": "Hard no. Cheapest good put costs $178, over the $79 budget.",
-     "vote": false,
-     "who": "Risk"
-    },
-    {
-     "say": "It's moving our way. MACD with us (down).",
-     "vote": true,
-     "who": "Momentum"
-    },
-    {
-     "say": "Clock agrees: RSI 30.",
-     "vote": true,
-     "who": "Time"
-    },
-    {
-     "say": "Too convenient. 1-hour trend disagrees.",
-     "vote": false,
-     "who": "Doubt"
-    },
-    {
-     "say": "Nothing in the press to scare me. No earnings before we'd sell; 1 headline today, none against us; StockTwits 6 bullish / 6 bearish.",
-     "vote": true,
-     "who": "The Reporter"
-    }
-   ],
-   "ok": false,
-   "t": 1791994535.3915274,
-   "text": null,
-   "title": "PLTR PUT (crossover 15m)",
-   "verdict": "REJECTED 4\u20132. Logged on paper so we learn whether we were right.",
-   "who": null
-  },
   {
    "kind": "scan",
    "lines": [
@@ -6227,6 +6145,63 @@
    "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
    "who": null
+  },
+  {
+   "kind": "vote",
+   "lines": [
+    {
+     "say": "I need more than this. ADX 17 (needs 18).",
+     "vote": false,
+     "who": "The Quant"
+    },
+    {
+     "say": "Hard no. Paused (drawdown over 35%).",
+     "vote": false,
+     "who": "Risk"
+    },
+    {
+     "say": "It's moving our way. MACD with us (up).",
+     "vote": true,
+     "who": "Momentum"
+    },
+    {
+     "say": "Clock agrees: RSI 70.",
+     "vote": true,
+     "who": "Time"
+    },
+    {
+     "say": "Too convenient. 1-hour trend disagrees.",
+     "vote": false,
+     "who": "Doubt"
+    },
+    {
+     "say": "Nothing in the press to scare me. No headlines today; StockTwits 5 bullish / 2 bearish.",
+     "vote": true,
+     "who": "The Reporter"
+    }
+   ],
+   "ok": false,
+   "t": 1792505714.127263,
+   "text": null,
+   "title": "IWM CALL (crossover 15m)",
+   "verdict": "REJECTED 3\u20133. Logged on paper so we learn whether we were right.",
+   "who": null
+  },
+  {
+   "kind": "scan",
+   "lines": [
+    {
+     "say": "\u25b2 $273.99, ADX 17, RSI 70: crossover 15m setup",
+     "vote": null,
+     "who": "IWM"
+    }
+   ],
+   "ok": null,
+   "t": 1792505714.1272936,
+   "text": null,
+   "title": "Scanned 1 stock: 1 setup on the latest candle",
+   "verdict": null,
+   "who": null
   }
  ],
  "history": [
@@ -6670,7 +6645,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-20T13:45:00",
+  "IWM:M15": "2026-10-20T14:00:00",
   "IWM:ORB": "2026-10-16T14:00:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -6685,17 +6660,14 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-19",
- "last_deploy": 1792504821.5130937,
- "last_full_run": 1792505412.099827,
- "last_run": 1792505412.099827,
+ "last_deploy": 1792505714.149592,
+ "last_full_run": 1792505712.315401,
+ "last_run": 1792505712.315401,
  "last_vote": {
   "approved": false,
   "ask": 0,
   "chart": {
    "closes": [
-    273.49,
-    273.455,
-    273.535,
     273.74,
     274.39,
     274.515,
@@ -6752,27 +6724,30 @@
     271.13,
     271.36,
     271.67,
-    271.3
+    271.3,
+    272.61,
+    274.3,
+    273.99
    ],
-   "entry": 271.3,
+   "entry": 273.99,
    "prec": 2,
-   "sl": 271.7538824269355,
+   "sl": 273.35782445721395,
    "tf": "M15",
-   "tp": 270.6191763595968
+   "tp": 274.9382633141791
   },
-  "detail": "IWM $271.30 \u00b7 stock stop 271.75 \u00b7 target 270.62",
+  "detail": "IWM $273.99 \u00b7 stock stop 273.36 \u00b7 target 274.94",
   "edge": 0,
-  "label": "IWM PUT (pullback 15m)",
-  "side": "PUT",
+  "label": "IWM CALL (crossover 15m)",
+  "side": "CALL",
   "url": "https://app.alpaca.markets/",
   "votes": {
    "Doubt": [
-    true,
-    "1-hour trend agrees"
+    false,
+    "1-hour trend disagrees"
    ],
    "Momentum": [
     true,
-    "MACD with us (down)"
+    "MACD with us (up)"
    ],
    "Risk": [
     false,
@@ -6780,18 +6755,18 @@
    ],
    "The Quant": [
     false,
-    "ADX 11 (needs 18)"
+    "ADX 17 (needs 18)"
    ],
    "The Reporter": [
     true,
-    "no headlines today; StockTwits 2 bullish / 3 bearish"
+    "no headlines today; StockTwits 5 bullish / 2 bearish"
    ],
    "Time": [
-    false,
-    "RSI 48, outside trading hours"
+    true,
+    "RSI 70"
    ]
   },
-  "when": 1792503013.465594
+  "when": 1792505712.315401
  },
  "lb_done": {
   "AAPL": "2026-10-15",
@@ -7536,30 +7511,30 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 14.76200711340867,
-   "atr_pips": 0.6192659691183808,
-   "bar": "2026-10-20T13:45:00",
-   "chg": 1.1057869517139698,
-   "close": 274.3,
+   "adx": 17.183631702068535,
+   "atr_pips": 0.6321755427860593,
+   "bar": "2026-10-20T14:00:00",
+   "chg": 0.9915223000368586,
+   "close": 273.99,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
-    "dir": -1,
+    "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 2,
+    "passed": 4,
     "session": true,
     "tf": "M15",
     "waiting": [
-     "a pullback to the trend line or a fresh crossover",
-     "ADX 15 (needs 18)"
+     "ADX 17 (needs 18)",
+     "1-hour trend disagrees"
     ]
    },
-   "rsi": 73.7045039081528,
-   "setup": null,
+   "rsi": 69.71249173043628,
+   "setup": "crossover 15m",
    "spread_pips": 0,
    "tradeable": true,
-   "trend": -1
+   "trend": 1
   },
   "META": {
    "adx": 46.037074123259806,
@@ -8056,6 +8031,23 @@
     "The Reporter": false,
     "Time": true
    }
+  },
+  {
+   "bar": "2026-10-20T14:00:00",
+   "dir": 1,
+   "pair": "IWM",
+   "setup": "crossover 15m",
+   "sl": 273.35782445721395,
+   "tf": "M15",
+   "tp": 274.9382633141791,
+   "votes": {
+    "Doubt": false,
+    "Momentum": true,
+    "Risk": false,
+    "The Quant": false,
+    "The Reporter": true,
+    "Time": true
+   }
   }
  ],
  "start_balance": 250.0,
@@ -8068,8 +8060,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 1.11,
-   "p": "274.30",
+   "c": 0.99,
+   "p": "273.99",
    "s": "IWM"
   }
  ],
