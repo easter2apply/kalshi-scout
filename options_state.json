@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792508110.290106
+  "updated": 1792508419.037232
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -6113,15 +6113,15 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25b2 $276.27, ADX 24, RSI 79: crossover 15m setup",
+     "say": "\u25b2 $276.77, ADX 27, RSI 80: trending, waiting for a pullback",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792508111.2850478,
+   "t": 1792508421.6270373,
    "text": null,
-   "title": "Scanned 1 stock: 1 setup on the latest candle",
+   "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
    "who": null
   }
@@ -6573,7 +6573,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-20T14:30:00",
+  "IWM:M15": "2026-10-20T14:45:00",
   "IWM:ORB": "2026-10-20T14:15:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -6588,9 +6588,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-19",
- "last_deploy": 1792507515.1978517,
- "last_full_run": 1792508110.290106,
- "last_run": 1792508110.290106,
+ "last_deploy": 1792508421.6495862,
+ "last_full_run": 1792508419.037232,
+ "last_run": 1792508419.037232,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -7447,27 +7447,27 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 23.525656529137304,
-   "atr_pips": 0.7316207479047988,
-   "bar": "2026-10-20T14:30:00",
-   "chg": 1.8337633615923208,
-   "close": 276.275,
+   "adx": 26.677052070300213,
+   "atr_pips": 0.7336478372893611,
+   "bar": "2026-10-20T14:45:00",
+   "chg": 2.0162182086251272,
+   "close": 276.77,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 4,
+    "passed": 3,
     "session": true,
     "tf": "M15",
     "waiting": [
-     "RSI 79 (stretched)",
-     "1-hour trend disagrees"
+     "a pullback to the trend line or a fresh crossover",
+     "RSI 80 (stretched)"
     ]
    },
-   "rsi": 78.90868624759528,
-   "setup": "crossover 15m",
+   "rsi": 80.38419438267118,
+   "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
@@ -8030,8 +8030,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 1.83,
-   "p": "276.27",
+   "c": 2.02,
+   "p": "276.77",
    "s": "IWM"
   }
  ],
