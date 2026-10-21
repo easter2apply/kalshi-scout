@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792611612.814916
+  "updated": 1792611912.667072
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -3516,6 +3516,10 @@
   [
    1792611016,
    214.0
+  ],
+  [
+   1792611913,
+   214.0
   ]
  ],
  "errors": [
@@ -6488,15 +6492,15 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25b2 $276.66, ADX 24, RSI 52: pullback 15m setup",
+     "say": "\u25b2 $276.49, ADX 23, RSI 50: trending, waiting for a pullback",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792611615.1583836,
+   "t": 1792611915.6170244,
    "text": null,
-   "title": "Scanned 1 stock: 1 setup on the latest candle",
+   "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
    "who": null
   }
@@ -6966,7 +6970,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-21T19:15:00",
+  "IWM:M15": "2026-10-21T19:30:00",
   "IWM:ORB": "2026-10-21T14:00:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -6981,9 +6985,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-20",
- "last_deploy": 1792611018.086389,
- "last_full_run": 1792611612.814916,
- "last_run": 1792611612.814916,
+ "last_deploy": 1792611915.6412663,
+ "last_full_run": 1792611912.667072,
+ "last_run": 1792611912.667072,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -7864,27 +7868,27 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 24.414923430004958,
-   "atr_pips": 0.5148484325553121,
-   "bar": "2026-10-21T19:15:00",
-   "chg": 0.31182015953590053,
-   "close": 276.66,
+   "adx": 22.960132881622094,
+   "atr_pips": 0.4941449718200757,
+   "bar": "2026-10-21T19:30:00",
+   "chg": 0.250181290790427,
+   "close": 276.49,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 4,
+    "passed": 3,
     "session": false,
     "tf": "M15",
     "waiting": [
-     "RSI 52, outside trading hours",
-     "1-hour trend disagrees"
+     "a pullback to the trend line or a fresh crossover",
+     "RSI 50, outside trading hours"
     ]
    },
-   "rsi": 52.2058293907016,
-   "setup": "pullback 15m",
+   "rsi": 50.086023003303445,
+   "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
@@ -8431,8 +8435,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.31,
-   "p": "276.66",
+   "c": 0.25,
+   "p": "276.49",
    "s": "IWM"
   }
  ],
