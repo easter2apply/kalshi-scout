@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792680011.745194
+  "updated": 1792680312.542647
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -3829,6 +3829,10 @@
   [
    1792679416,
    214.0
+  ],
+  [
+   1792680313,
+   214.0
   ]
  ],
  "errors": [
@@ -6756,13 +6760,13 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25b2 $275.08, ADX 22, RSI 40: trending, waiting for a pullback",
+     "say": "\u25b2 $275.30, ADX 22, RSI 42: trending, waiting for a pullback",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792680012.6450763,
+   "t": 1792680313.663334,
    "text": null,
    "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
@@ -7246,7 +7250,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-22T14:15:00",
+  "IWM:M15": "2026-10-22T14:30:00",
   "IWM:ORB": "2026-10-21T14:00:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -7261,9 +7265,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-21",
- "last_deploy": 1792679417.571682,
- "last_full_run": 1792680011.745194,
- "last_run": 1792680011.745194,
+ "last_deploy": 1792680313.6893637,
+ "last_full_run": 1792680312.542647,
+ "last_run": 1792680312.542647,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -8160,18 +8164,18 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 21.674302146316872,
-   "atr_pips": 0.7274950529565233,
-   "bar": "2026-10-22T14:15:00",
-   "chg": -0.4991680532445908,
-   "close": 275.08,
+   "adx": 22.393800716866185,
+   "atr_pips": 0.7383882635723383,
+   "bar": "2026-10-22T14:30:00",
+   "chg": -0.4195905375099357,
+   "close": 275.3,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 2,
+    "passed": 3,
     "session": true,
     "tf": "M15",
     "waiting": [
@@ -8179,7 +8183,7 @@
      "MACD against us (up)"
     ]
    },
-   "rsi": 39.61687300533364,
+   "rsi": 41.73874951221822,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -8709,8 +8713,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": -0.5,
-   "p": "275.08",
+   "c": -0.42,
+   "p": "275.30",
    "s": "IWM"
   }
  ],
