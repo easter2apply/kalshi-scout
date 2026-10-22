@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792685412.852871
+  "updated": 1792685713.61799
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -526,8 +526,8 @@
    "benched": 0,
    "news": 0,
    "opened": 0,
-   "rejected": 2,
-   "setups": 2,
+   "rejected": 3,
+   "setups": 3,
    "start_nav": 214.0
   }
  },
@@ -3853,6 +3853,10 @@
   [
    1792684819,
    214.0
+  ],
+  [
+   1792685714,
+   214.0
   ]
  ],
  "errors": [
@@ -3938,108 +3942,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "Numbers check out: Opening range is 0.89% of the price.",
-     "vote": true,
-     "who": "The Quant"
-    },
-    {
-     "say": "Blocked. 2 trades already open.",
-     "vote": false,
-     "who": "Risk"
-    },
-    {
-     "say": "Engine's running: Breakout candle closed strong (74% body).",
-     "vote": true,
-     "who": "Momentum"
-    },
-    {
-     "say": "Good window. First hour of the session.",
-     "vote": true,
-     "who": "Time"
-    },
-    {
-     "say": "I don't buy it: 1-hour trend is strongly against it.",
-     "vote": false,
-     "who": "Doubt"
-    },
-    {
-     "say": "Checked the wires: No earnings before we'd sell; 2 headlines today, none against us; StockTwits 15 bullish / 1 bearish.",
-     "vote": true,
-     "who": "The Reporter"
-    }
-   ],
-   "ok": false,
-   "t": 1792073738.5596306,
-   "text": null,
-   "title": "AMZN CALL (opening breakout)",
-   "verdict": "REJECTED 4\u20132. Logged on paper so we learn whether we were right.",
-   "who": null
-  },
-  {
-   "kind": "scan",
-   "lines": [
-    {
-     "say": "\u25bc $767.39, ADX 51, RSI 39: trending, waiting for a pullback",
-     "vote": null,
-     "who": "SPY"
-    },
-    {
-     "say": "\u25bc $720.18, ADX 59, RSI 27: trending, waiting for a pullback",
-     "vote": null,
-     "who": "QQQ"
-    },
-    {
-     "say": "\u25bc $272.63, ADX 44, RSI 54: in a trade",
-     "vote": null,
-     "who": "IWM"
-    },
-    {
-     "say": "\u25b2 $344.91, ADX 19, RSI 56: trending, waiting for a pullback",
-     "vote": null,
-     "who": "AAPL"
-    },
-    {
-     "say": "\u25bc $216.16, ADX 48, RSI 31: trending, waiting for a pullback",
-     "vote": null,
-     "who": "NVDA"
-    },
-    {
-     "say": "\u25bc $538.93, ADX 54, RSI 22: trending, waiting for a pullback",
-     "vote": null,
-     "who": "AMD"
-    },
-    {
-     "say": "\u25bc $252.47, ADX 51, RSI 42: trending, waiting for a pullback",
-     "vote": null,
-     "who": "AMZN"
-    },
-    {
-     "say": "\u25bc $731.04, ADX 46, RSI 35: trending, waiting for a pullback",
-     "vote": null,
-     "who": "META"
-    },
-    {
-     "say": "\u25bc $195.04, ADX 59, RSI 21: trending, waiting for a pullback",
-     "vote": null,
-     "who": "PLTR"
-    },
-    {
-     "say": "\u25bc $14.29, ADX 42, RSI 51: in a trade",
-     "vote": null,
-     "who": "SOFI"
-    }
-   ],
-   "ok": null,
-   "t": 1792075231.4875903,
-   "text": null,
-   "title": "Scanned 10 stocks: 0 setups on the latest candle",
-   "verdict": null,
-   "who": null
-  },
   {
    "kind": "vote",
    "lines": [
@@ -6746,6 +6648,63 @@
    "title": "Scanned 1 stock: 1 setup on the latest candle",
    "verdict": null,
    "who": null
+  },
+  {
+   "kind": "vote",
+   "lines": [
+    {
+     "say": "Clean read: ADX 21 (needs 18).",
+     "vote": true,
+     "who": "The Quant"
+    },
+    {
+     "say": "Not on my watch: Paused (drawdown over 35%).",
+     "vote": false,
+     "who": "Risk"
+    },
+    {
+     "say": "Feel that push? MACD with us (up).",
+     "vote": true,
+     "who": "Momentum"
+    },
+    {
+     "say": "Timing's right. RSI 53.",
+     "vote": true,
+     "who": "Time"
+    },
+    {
+     "say": "Something's off. 1-hour trend disagrees.",
+     "vote": false,
+     "who": "Doubt"
+    },
+    {
+     "say": "Sources say we're clear: 1 headline today, none against us; StockTwits 5 bullish / 1 bearish.",
+     "vote": true,
+     "who": "The Reporter"
+    }
+   ],
+   "ok": false,
+   "t": 1792685716.7796276,
+   "text": null,
+   "title": "IWM CALL (pullback 15m)",
+   "verdict": "REJECTED 4\u20132. Logged on paper so we learn whether we were right.",
+   "who": null
+  },
+  {
+   "kind": "scan",
+   "lines": [
+    {
+     "say": "\u25b2 $276.39, ADX 21, RSI 53: pullback 15m setup",
+     "vote": null,
+     "who": "IWM"
+    }
+   ],
+   "ok": null,
+   "t": 1792685716.7796574,
+   "text": null,
+   "title": "Scanned 1 stock: 1 setup on the latest candle",
+   "verdict": null,
+   "who": null
   }
  ],
  "history": [
@@ -7225,7 +7184,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-22T15:45:00",
+  "IWM:M15": "2026-10-22T16:00:00",
   "IWM:ORB": "2026-10-21T14:00:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -7240,15 +7199,14 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-21",
- "last_deploy": 1792684821.0526164,
- "last_full_run": 1792685412.852871,
- "last_run": 1792685412.852871,
+ "last_deploy": 1792685716.8045704,
+ "last_full_run": 1792685713.61799,
+ "last_run": 1792685713.61799,
  "last_vote": {
   "approved": false,
   "ask": 0,
   "chart": {
    "closes": [
-    273.99,
     275.855,
     276.275,
     276.77,
@@ -7307,15 +7265,16 @@
     275.02,
     275.47,
     275.58,
-    276.3
+    276.3,
+    276.39
    ],
-   "entry": 276.3,
+   "entry": 276.39,
    "prec": 2,
-   "sl": 275.54025202761034,
+   "sl": 275.65773402552225,
    "tf": "M15",
-   "tp": 277.4396219585845
+   "tp": 277.4883989617166
   },
-  "detail": "IWM $276.30 \u00b7 stock stop 275.54 \u00b7 target 277.44",
+  "detail": "IWM $276.39 \u00b7 stock stop 275.66 \u00b7 target 277.49",
   "edge": 0,
   "label": "IWM CALL (pullback 15m)",
   "side": "CALL",
@@ -7335,18 +7294,18 @@
    ],
    "The Quant": [
     true,
-    "ADX 22 (needs 18)"
+    "ADX 21 (needs 18)"
    ],
    "The Reporter": [
     true,
-    "1 headline today, none against us; StockTwits 7 bullish / 1 bearish"
+    "1 headline today, none against us; StockTwits 5 bullish / 1 bearish"
    ],
    "Time": [
     true,
-    "RSI 52"
+    "RSI 53"
    ]
   },
-  "when": 1792684818.624471
+  "when": 1792685713.61799
  },
  "lb_done": {
   "AAPL": "2026-10-15",
@@ -8139,11 +8098,11 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 21.748523280450957,
-   "atr_pips": 0.759747972389658,
-   "bar": "2026-10-22T15:45:00",
-   "chg": -0.05787455689791224,
-   "close": 276.3,
+   "adx": 20.700848064415236,
+   "atr_pips": 0.7322659744777554,
+   "bar": "2026-10-22T16:00:00",
+   "chg": -0.025320118642839177,
+   "close": 276.39,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -8157,7 +8116,7 @@
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 52.116446199970085,
+   "rsi": 52.86397231282438,
    "setup": "pullback 15m",
    "spread_pips": 0,
    "tradeable": true,
@@ -8692,6 +8651,23 @@
     "The Reporter": true,
     "Time": true
    }
+  },
+  {
+   "bar": "2026-10-22T16:00:00",
+   "dir": 1,
+   "pair": "IWM",
+   "setup": "pullback 15m",
+   "sl": 275.65773402552225,
+   "tf": "M15",
+   "tp": 277.4883989617166,
+   "votes": {
+    "Doubt": false,
+    "Momentum": true,
+    "Risk": false,
+    "The Quant": true,
+    "The Reporter": true,
+    "Time": true
+   }
   }
  ],
  "start_balance": 250.0,
@@ -8704,8 +8680,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": -0.06,
-   "p": "276.30",
+   "c": -0.03,
+   "p": "276.39",
    "s": "IWM"
   }
  ],
