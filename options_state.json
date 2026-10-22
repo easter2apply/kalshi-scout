@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792697112.390945
+  "updated": 1792697418.932857
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -526,8 +526,8 @@
    "benched": 0,
    "news": 0,
    "opened": 0,
-   "rejected": 5,
-   "setups": 5,
+   "rejected": 6,
+   "setups": 6,
    "start_nav": 214.0
   }
  },
@@ -3905,6 +3905,10 @@
   [
    1792696514,
    214.0
+  ],
+  [
+   1792697419,
+   214.0
   ]
  ],
  "errors": [
@@ -3990,77 +3994,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": true,
-   "t": 1792076121.1650043,
-   "text": "IWM $274 Call \u00b7 Oct 15 is up 30%. Stop raised to $0.47 (+10%) and it now trails the price.",
-   "title": "IWM profit locked",
-   "verdict": null,
-   "who": "Risk"
-  },
-  {
-   "kind": "scan",
-   "lines": [
-    {
-     "say": "\u25bc $768.98, ADX 49, RSI 47: trending, waiting for a pullback",
-     "vote": null,
-     "who": "SPY"
-    },
-    {
-     "say": "\u25bc $722.53, ADX 59, RSI 35: trending, waiting for a pullback",
-     "vote": null,
-     "who": "QQQ"
-    },
-    {
-     "say": "\u25bc $273.72, ADX 43, RSI 63: in a trade",
-     "vote": null,
-     "who": "IWM"
-    },
-    {
-     "say": "\u25b2 $344.65, ADX 19, RSI 54: trending, waiting for a pullback",
-     "vote": null,
-     "who": "AAPL"
-    },
-    {
-     "say": "\u25bc $216.75, ADX 48, RSI 34: trending, waiting for a pullback",
-     "vote": null,
-     "who": "NVDA"
-    },
-    {
-     "say": "\u25bc $545.56, ADX 54, RSI 31: trending, waiting for a pullback",
-     "vote": null,
-     "who": "AMD"
-    },
-    {
-     "say": "\u25bc $252.47, ADX 49, RSI 42: trending, waiting for a pullback",
-     "vote": null,
-     "who": "AMZN"
-    },
-    {
-     "say": "\u25bc $731.75, ADX 47, RSI 36: trending, waiting for a pullback",
-     "vote": null,
-     "who": "META"
-    },
-    {
-     "say": "\u25bc $196.15, ADX 61, RSI 28: trending, waiting for a pullback",
-     "vote": null,
-     "who": "PLTR"
-    },
-    {
-     "say": "\u25bc $14.29, ADX 40, RSI 51: in a trade",
-     "vote": null,
-     "who": "SOFI"
-    }
-   ],
-   "ok": null,
-   "t": 1792076131.9782484,
-   "text": null,
-   "title": "Scanned 10 stocks: 0 setups on the latest candle",
-   "verdict": null,
-   "who": null
-  },
   {
    "kind": "vote",
    "lines": [
@@ -6683,6 +6616,63 @@
    "title": "Scanned 1 stock: 1 setup on the latest candle",
    "verdict": null,
    "who": null
+  },
+  {
+   "kind": "vote",
+   "lines": [
+    {
+     "say": "Doesn't pass my screen: ADX 16 (needs 18).",
+     "vote": false,
+     "who": "The Quant"
+    },
+    {
+     "say": "Not on my watch: Paused (drawdown over 35%).",
+     "vote": false,
+     "who": "Risk"
+    },
+    {
+     "say": "Feel that push? MACD with us (up).",
+     "vote": true,
+     "who": "Momentum"
+    },
+    {
+     "say": "Not now. RSI 55, outside trading hours.",
+     "vote": false,
+     "who": "Time"
+    },
+    {
+     "say": "Something's off. 1-hour trend disagrees.",
+     "vote": false,
+     "who": "Doubt"
+    },
+    {
+     "say": "Sources say we're clear: 2 headlines today, none against us; StockTwits 4 bullish / 1 bearish.",
+     "vote": true,
+     "who": "The Reporter"
+    }
+   ],
+   "ok": false,
+   "t": 1792697420.2428923,
+   "text": null,
+   "title": "IWM CALL (pullback 15m)",
+   "verdict": "REJECTED 2\u20134. Logged on paper so we learn whether we were right.",
+   "who": null
+  },
+  {
+   "kind": "scan",
+   "lines": [
+    {
+     "say": "\u25b2 $276.42, ADX 16, RSI 55: pullback 15m setup",
+     "vote": null,
+     "who": "IWM"
+    }
+   ],
+   "ok": null,
+   "t": 1792697420.2429245,
+   "text": null,
+   "title": "Scanned 1 stock: 1 setup on the latest candle",
+   "verdict": null,
+   "who": null
   }
  ],
  "history": [
@@ -7180,7 +7170,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-22T19:00:00",
+  "IWM:M15": "2026-10-22T19:15:00",
   "IWM:ORB": "2026-10-21T14:00:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -7195,15 +7185,14 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-21",
- "last_deploy": 1792696516.198855,
- "last_full_run": 1792697112.390945,
- "last_run": 1792697112.390945,
+ "last_deploy": 1792697420.2691655,
+ "last_full_run": 1792697418.932857,
+ "last_run": 1792697418.932857,
  "last_vote": {
   "approved": false,
   "ask": 0,
   "chart": {
    "closes": [
-    275.62,
     275.89,
     275.855,
     276.16,
@@ -7262,15 +7251,16 @@
     275.9,
     275.83,
     275.78,
-    276.185
+    276.185,
+    276.42
    ],
-   "entry": 276.185,
+   "entry": 276.42,
    "prec": 2,
-   "sl": 275.56965863694165,
+   "sl": 275.81932587708746,
    "tf": "M15",
-   "tp": 277.1080120445875
+   "tp": 277.3210111843688
   },
-  "detail": "IWM $276.19 \u00b7 stock stop 275.57 \u00b7 target 277.11",
+  "detail": "IWM $276.42 \u00b7 stock stop 275.82 \u00b7 target 277.32",
   "edge": 0,
   "label": "IWM CALL (pullback 15m)",
   "side": "CALL",
@@ -7290,7 +7280,7 @@
    ],
    "The Quant": [
     false,
-    "ADX 18 (needs 18)"
+    "ADX 16 (needs 18)"
    ],
    "The Reporter": [
     true,
@@ -7298,10 +7288,10 @@
    ],
    "Time": [
     false,
-    "RSI 52, outside trading hours"
+    "RSI 55, outside trading hours"
    ]
   },
-  "when": 1792696513.91837
+  "when": 1792697418.932857
  },
  "lb_done": {
   "AAPL": "2026-10-15",
@@ -8118,11 +8108,11 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 17.55521428907731,
-   "atr_pips": 0.6153413630583445,
-   "bar": "2026-10-22T19:00:00",
-   "chg": -0.09947189466829823,
-   "close": 276.185,
+   "adx": 16.3091370772317,
+   "atr_pips": 0.6006741229125243,
+   "bar": "2026-10-22T19:15:00",
+   "chg": -0.014468639224467778,
+   "close": 276.42,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -8133,11 +8123,11 @@
     "session": false,
     "tf": "M15",
     "waiting": [
-     "ADX 18 (needs 18)",
-     "RSI 52, outside trading hours"
+     "ADX 16 (needs 18)",
+     "RSI 55, outside trading hours"
     ]
    },
-   "rsi": 52.25725799016938,
+   "rsi": 54.70289813923031,
    "setup": "pullback 15m",
    "spread_pips": 0,
    "tradeable": true,
@@ -8673,6 +8663,23 @@
     "The Reporter": true,
     "Time": false
    }
+  },
+  {
+   "bar": "2026-10-22T19:15:00",
+   "dir": 1,
+   "pair": "IWM",
+   "setup": "pullback 15m",
+   "sl": 275.81932587708746,
+   "tf": "M15",
+   "tp": 277.3210111843688,
+   "votes": {
+    "Doubt": false,
+    "Momentum": true,
+    "Risk": false,
+    "The Quant": false,
+    "The Reporter": true,
+    "Time": false
+   }
   }
  ],
  "start_balance": 250.0,
@@ -8685,8 +8692,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": -0.1,
-   "p": "276.19",
+   "c": -0.01,
+   "p": "276.42",
    "s": "IWM"
   }
  ],
