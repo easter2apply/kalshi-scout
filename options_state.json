@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792678813.600812
+  "updated": 1792679111.814718
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -6758,7 +6758,7 @@
     }
    ],
    "ok": null,
-   "t": 1792678815.0253887,
+   "t": 1792679113.7719378,
    "text": null,
    "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
@@ -7258,8 +7258,8 @@
  },
  "last_daily": "2026-10-21",
  "last_deploy": 1792678514.1029916,
- "last_full_run": 1792678813.600812,
- "last_run": 1792678813.600812,
+ "last_full_run": 1792679111.814718,
+ "last_run": 1792679111.814718,
  "last_vote": {
   "approved": false,
   "ask": 0,
