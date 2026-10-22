@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792693512.592804
+  "updated": 1792693815.267418
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -3889,6 +3889,10 @@
   [
    1792692912,
    214.0
+  ],
+  [
+   1792693815,
+   214.0
   ]
  ],
  "errors": [
@@ -6701,13 +6705,13 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25b2 $275.67, ADX 19, RSI 47: trending, waiting for a pullback",
+     "say": "\u25b2 $275.90, ADX 19, RSI 49: trending, waiting for a pullback",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792693518.6451705,
+   "t": 1792693820.8799565,
    "text": null,
    "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
@@ -7209,7 +7213,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-22T18:00:00",
+  "IWM:M15": "2026-10-22T18:15:00",
   "IWM:ORB": "2026-10-21T14:00:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -7224,9 +7228,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-21",
- "last_deploy": 1792692915.4266624,
- "last_full_run": 1792693512.592804,
- "last_run": 1792693512.592804,
+ "last_deploy": 1792693820.9055424,
+ "last_full_run": 1792693815.267418,
+ "last_run": 1792693815.267418,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -8147,26 +8151,26 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 19.400780002166407,
-   "atr_pips": 0.6672778888961385,
-   "bar": "2026-10-22T18:00:00",
-   "chg": -0.28575562468348537,
-   "close": 275.67,
+   "adx": 19.04454200863401,
+   "atr_pips": 0.6674723257538492,
+   "bar": "2026-10-22T18:15:00",
+   "chg": -0.20256094914273395,
+   "close": 275.9,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 3,
+    "passed": 4,
     "session": true,
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
-     "MACD against us (up)"
+     "1-hour trend disagrees"
     ]
    },
-   "rsi": 46.60834039719092,
+   "rsi": 48.96300278310991,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -8696,8 +8700,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": -0.29,
-   "p": "275.67",
+   "c": -0.2,
+   "p": "275.90",
    "s": "IWM"
   }
  ],
