@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792773610.997272
+  "updated": 1792773912.231295
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -4254,6 +4254,10 @@
   [
    1792773022,
    214.0
+  ],
+  [
+   1792773912,
+   214.0
   ]
  ],
  "errors": [
@@ -6864,13 +6868,13 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25bc $275.72, ADX 13, RSI 50: trend too weak, waiting",
+     "say": "\u25bc $276.15, ADX 12, RSI 54: trend too weak, waiting",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792773614.7798874,
+   "t": 1792773930.8850698,
    "text": null,
    "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
@@ -7414,7 +7418,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-23T16:15:00",
+  "IWM:M15": "2026-10-23T16:30:00",
   "IWM:ORB": "2026-10-23T14:15:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -7429,9 +7433,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-22",
- "last_deploy": 1792773031.9415839,
- "last_full_run": 1792773610.997272,
- "last_run": 1792773610.997272,
+ "last_deploy": 1792773930.9047651,
+ "last_full_run": 1792773912.231295,
+ "last_run": 1792773912.231295,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -8408,26 +8412,26 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 13.403095945815187,
-   "atr_pips": 0.7526470914058556,
-   "bar": "2026-10-23T16:15:00",
-   "chg": -0.33436353449364875,
-   "close": 275.72,
+   "adx": 12.498524552841479,
+   "atr_pips": 0.7367437277672829,
+   "bar": "2026-10-23T16:30:00",
+   "chg": -0.17892967521553058,
+   "close": 276.15,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": -1,
     "in_trade": false,
     "of": 6,
-    "passed": 4,
+    "passed": 3,
     "session": true,
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
-     "ADX 13 (needs 18)"
+     "ADX 12 (needs 18)"
     ]
    },
-   "rsi": 50.34051398680569,
+   "rsi": 53.56605295640287,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -8974,8 +8978,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": -0.33,
-   "p": "275.72",
+   "c": -0.18,
+   "p": "276.15",
    "s": "IWM"
   }
  ],
