@@ -15,50 +15,55 @@ def fetch(api, sym, start):
         if not token: break
     return out
 
+SYMS = ["SPY", "QQQ", "IWM", "DIA", "SMH", "XLF", "GLD", "TLT", "AAPL", "MSFT", "NVDA", "AMD", "TSLA", "AMZN", "META", "GOOGL", "PLTR", "SOFI", "COIN", "MSTR", "NFLX", "AVGO"]
+
+
+def run_sym(api, sym, start):
+    raw = fetch(api, sym, start)
+    days = {}
+    for b in raw:
+        e = vo.et(b["t"].replace("Z", "")[:19])
+        m = e.hour * 60 + e.minute
+        if 570 <= m < 960:
+            days.setdefault(e.date().isoformat(), []).append({"mins": m, "label": e.strftime("%H:%M"), "t": b["t"][:19],
+                "o": float(b["o"]), "h": float(b["h"]), "l": float(b["l"]), "c": float(b["c"])})
+    trades = []
+    for d, bars in sorted(days.items()):
+        if len(bars) < 60:
+            continue
+        r = vo.orb5(bars, True)
+        t = r["trade"]
+        if t and t["result"] is not None:
+            trades.append({"day": d, "dir": t["dir"], "r": round(t["result"], 3), "risk_pct": round(t["one_r"] / t["entry"] * 100, 3)})
+    rs = [x["r"] for x in trades]
+    n = len(rs); cut = int(n * 2 / 3)
+    f = lambda xs: {"n": len(xs), "win": round(sum(1 for x in xs if x > 0) / len(xs), 3) if xs else None,
+                    "avg_r": round(stt.mean(xs), 3) if xs else None, "total_r": round(sum(xs), 1),
+                    "t": round(stt.mean(xs) / (stt.pstdev(xs) / len(xs) ** .5), 2) if len(xs) > 2 and stt.pstdev(xs) else None}
+    mon = {}
+    for x in trades: mon[x["day"][:7]] = mon.get(x["day"][:7], 0) + x["r"]
+    return {"days": len(days), "all": f(rs), "first_2_3": f(rs[:cut]), "last_1_3": f(rs[cut:]),
+            "calls": f([x["r"] for x in trades if x["dir"] > 0]), "puts": f([x["r"] for x in trades if x["dir"] < 0]),
+            "median_risk_pct": stt.median([x["risk_pct"] for x in trades]) if trades else None,
+            "months_up": sum(1 for v in mon.values() if v > 0), "months": len(mon)}
+
+
 def main():
     api = vo.Alpaca(os.environ["ALPACA_KEY_ID"].strip(), os.environ["ALPACA_SECRET_KEY"].strip())
     start = dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=730)
     res = {}
-    for feed in ("iex", "sip"):
+    for feed in ("sip", "iex"):
         vo.STOCK_FEED = feed
-        try:
-            raw = fetch(api, "IWM", start)
-        except Exception as e:
-            res[feed] = {"error": str(e)[:200]}; continue
-        days = {}
-        for b in raw:
-            e = vo.et(b["t"].replace("Z", "")[:19])
-            m = e.hour * 60 + e.minute
-            if 570 <= m < 960:
-                days.setdefault(e.date().isoformat(), []).append({"mins": m, "label": e.strftime("%H:%M"), "t": b["t"][:19],
-                    "o": float(b["o"]), "h": float(b["h"]), "l": float(b["l"]), "c": float(b["c"])})
-        trades = []
-        phases = {}
-        for d, bars in sorted(days.items()):
-            if len(bars) < 60: continue
-            r = vo.orb5(bars, True)
-            phases[r["phase"]] = phases.get(r["phase"], 0) + 1
-            t = r["trade"]
-            if t and t["result"] is not None:
-                trades.append({"day": d, "dir": t["dir"], "r": round(t["result"], 3), "risk_pct": round(t["one_r"] / t["entry"] * 100, 3),
-                               "be": t["be"], "entry": t["entry_label"]})
-        rs = [x["r"] for x in trades]
-        n = len(rs); cut = int(n * 2 / 3)
-        f = lambda xs: {"n": len(xs), "win": round(sum(1 for x in xs if x > 0) / len(xs), 3) if xs else None,
-                        "scratch": round(sum(1 for x in xs if abs(x) < 0.05) / len(xs), 3) if xs else None,
-                        "avg_r": round(stt.mean(xs), 3) if xs else None, "total_r": round(sum(xs), 1),
-                        "t": round(stt.mean(xs) / (stt.pstdev(xs) / len(xs) ** .5), 2) if len(xs) > 2 and stt.pstdev(xs) else None}
-        mon = {}
-        for x in trades: mon[x["day"][:7]] = mon.get(x["day"][:7], 0) + x["r"]
-        dd, pk, cum = 0, 0, 0
-        for x in rs: cum += x; pk = max(pk, cum); dd = min(dd, cum - pk)
-        res[feed] = {"days": len(days), "phases": phases, "all": f(rs), "first_2_3": f(rs[:cut]), "last_1_3": f(rs[cut:]),
-                     "calls": f([x["r"] for x in trades if x["dir"] > 0]), "puts": f([x["r"] for x in trades if x["dir"] < 0]),
-                     "median_risk_pct": stt.median([x["risk_pct"] for x in trades]) if trades else None,
-                     "months_up": sum(1 for v in mon.values() if v > 0), "months": len(mon), "worst_drawdown_r": round(dd, 1),
-                     "by_month": {k: round(v, 2) for k, v in sorted(mon.items())}, "last_trades": trades[-15:]}
-        print(feed, json.dumps({k: v for k, v in res[feed].items() if k not in ("by_month", "last_trades")}), flush=True)
-    json.dump(res, open("orb5_lab.json", "w"), indent=1)
+        res[feed] = {}
+        for sym in SYMS:
+            try:
+                res[feed][sym] = run_sym(api, sym, start)
+                a = res[feed][sym]["all"]
+                print(feed, sym, a, "unseen", res[feed][sym]["last_1_3"]["avg_r"], flush=True)
+            except Exception as e:
+                res[feed][sym] = {"error": str(e)[:200]}
+        json.dump(res, open("orb5_lab.json", "w"), indent=1)
+
 
 if __name__ == "__main__":
     main()
