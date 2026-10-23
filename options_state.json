@@ -5,7 +5,7 @@
   "nav": 214.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792762812.790748
+  "updated": 1792763112.602664
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -431,8 +431,8 @@
   }
  ],
  "council_record": {
-  "right": 50,
-  "total": 82
+  "right": 52,
+  "total": 84
  },
  "day": {
   "date": "2026-10-23",
@@ -4206,6 +4206,10 @@
   [
    1792762215,
    214.0
+  ],
+  [
+   1792763113,
+   214.0
   ]
  ],
  "errors": [
@@ -6934,15 +6938,15 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25b2 $276.64, ADX 15, RSI 56: pullback 15m setup",
+     "say": "\u25b2 $274.63, ADX 16, RSI 39: trend too weak, waiting",
      "vote": null,
      "who": "IWM"
     }
    ],
    "ok": null,
-   "t": 1792762818.2884734,
+   "t": 1792763116.6592834,
    "text": null,
-   "title": "Scanned 1 stock: 1 setup on the latest candle",
+   "title": "Scanned 1 stock: 0 setups on the latest candle",
    "verdict": null,
    "who": null
   }
@@ -7439,6 +7443,18 @@
    "t": 1792762220.6176004,
    "trade": false,
    "won": false
+  },
+  {
+   "right": true,
+   "t": 1792763116.659209,
+   "trade": false,
+   "won": false
+  },
+  {
+   "right": true,
+   "t": 1792763116.6592438,
+   "trade": false,
+   "won": false
   }
  ],
  "last_bar": {
@@ -7448,7 +7464,7 @@
   "AMD:ORB": "2026-10-14T15:00:00",
   "AMZN:M15": "2026-10-15T16:45:00",
   "AMZN:ORB": "2026-10-15T14:00:00",
-  "IWM:M15": "2026-10-22T19:45:00",
+  "IWM:M15": "2026-10-23T13:30:00",
   "IWM:ORB": "2026-10-21T14:00:00",
   "META:M15": "2026-10-15T16:45:00",
   "META:ORB": "2026-10-14T14:15:00",
@@ -7463,9 +7479,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-22",
- "last_deploy": 1792762220.996003,
- "last_full_run": 1792762812.790748,
- "last_run": 1792762812.790748,
+ "last_deploy": 1792763116.6888018,
+ "last_full_run": 1792763112.602664,
+ "last_run": 1792763112.602664,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -7630,6 +7646,8 @@
    "IWM:pullback 15m": [
     1.5,
     3.83,
+    -1.0,
+    -1.0,
     -1.0,
     -1.0,
     -1.0,
@@ -8279,6 +8297,20 @@
     "r": -1.0,
     "setup": "pullback 15m",
     "t": 1792762220.6176085
+   },
+   {
+    "approved": false,
+    "pair": "IWM",
+    "r": -1.0,
+    "setup": "pullback 15m",
+    "t": 1792763116.6592155
+   },
+   {
+    "approved": false,
+    "pair": "IWM",
+    "r": -1.0,
+    "setup": "pullback 15m",
+    "t": 1792763116.6592472
    }
   ]
  },
@@ -8394,27 +8426,27 @@
    "trend": -1
   },
   "IWM": {
-   "adx": 14.93018187502963,
-   "atr_pips": 0.6257841621587331,
-   "bar": "2026-10-22T19:45:00",
-   "chg": 0.0,
-   "close": 276.645,
+   "adx": 15.892485857205703,
+   "atr_pips": 0.7650138646630958,
+   "bar": "2026-10-23T13:30:00",
+   "chg": -0.7283702940591684,
+   "close": 274.63,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 3,
-    "session": false,
+    "passed": 1,
+    "session": true,
     "tf": "M15",
     "waiting": [
-     "ADX 15 (needs 18)",
-     "RSI 56, outside trading hours"
+     "a pullback to the trend line or a fresh crossover",
+     "ADX 16 (needs 18)"
     ]
    },
-   "rsi": 56.273820696368496,
-   "setup": "pullback 15m",
+   "rsi": 39.243149715806105,
+   "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
@@ -8577,7 +8609,6 @@
  },
  "paused": "drawdown over 35%",
  "peak": 341.0,
- "recess": "resumes Fri 9:45 AM ET",
  "record": {
   "losses": 8,
   "pl": -36.0,
@@ -8585,28 +8616,28 @@
  },
  "scoreboard": {
   "Doubt": {
-   "right": 39,
-   "total": 82
+   "right": 41,
+   "total": 84
   },
   "Momentum": {
    "right": 35,
-   "total": 82
+   "total": 84
   },
   "Risk": {
-   "right": 41,
-   "total": 82
+   "right": 43,
+   "total": 84
   },
   "The Quant": {
-   "right": 42,
-   "total": 82
+   "right": 44,
+   "total": 84
   },
   "The Reporter": {
    "right": 26,
-   "total": 57
+   "total": 59
   },
   "Time": {
-   "right": 41,
-   "total": 82
+   "right": 43,
+   "total": 84
   }
  },
  "shadow": [
@@ -8932,40 +8963,6 @@
     "The Reporter": true,
     "Time": true
    }
-  },
-  {
-   "bar": "2026-10-22T19:00:00",
-   "dir": 1,
-   "pair": "IWM",
-   "setup": "pullback 15m",
-   "sl": 275.56965863694165,
-   "tf": "M15",
-   "tp": 277.1080120445875,
-   "votes": {
-    "Doubt": false,
-    "Momentum": true,
-    "Risk": false,
-    "The Quant": false,
-    "The Reporter": true,
-    "Time": false
-   }
-  },
-  {
-   "bar": "2026-10-22T19:45:00",
-   "dir": 1,
-   "pair": "IWM",
-   "setup": "pullback 15m",
-   "sl": 276.0192158378413,
-   "tf": "M15",
-   "tp": 277.5836762432381,
-   "votes": {
-    "Doubt": false,
-    "Momentum": true,
-    "Risk": false,
-    "The Quant": false,
-    "The Reporter": true,
-    "Time": false
-   }
   }
  ],
  "start_balance": 250.0,
@@ -8978,8 +8975,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.0,
-   "p": "276.64",
+   "c": -0.73,
+   "p": "274.63",
    "s": "IWM"
   }
  ],
