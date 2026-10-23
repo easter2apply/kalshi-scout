@@ -31,9 +31,9 @@ import urllib.request
 from zoneinfo import ZoneInfo
 
 # ─────────────────────────── SETTINGS (edit these) ───────────────────────────
-PAIRS = ["IWM"]               # the watchlist: IWM options only (was SPY, QQQ, IWM, AAPL, NVDA, AMD, TSLA, AMZN, META, PLTR, SOFI)
+PAIRS = ["SPY", "DIA", "AMZN"]   # opening range breakout watchlist: the tickers where the rules tested positive in both halves of 2 years (IWM tested negative; Gap Fade still trades IWM)
 ZERO_DTE = {"SPY", "QQQ", "IWM"}   # these may use same-day (0DTE) contracts in the morning
-START_BALANCE = 250.00       # the bot trades as if the account holds this much
+START_BALANCE = 1000.00      # the bot trades as if the account holds this much (raised from $250 so SPY, DIA and AMZN contracts fit)
 RISK_PCT = 0.10              # a full stop-out costs about 10% of the bankroll
 OPT_STOP = 0.40              # sell if the option loses 40% of what we paid
 OPT_TARGET = 0.60            # sell if the option gains 60% (1.5 : 1 reward : risk)
@@ -90,7 +90,17 @@ BENCH_MIN = 20               # a stock + setup combo is benched if its last 20 r
 REPORT_HOUR_ET = 16          # daily report after the 4 PM close
 WEEKLY_DAY = 4               # weekly report on Friday (Mon=0)
 
-ORB = True                   # opening-range breakout: the 9:30–10:00 box, breakouts until 11:30 AM ET
+STRATEGY = "orb5"            # Easter's 5-minute opening range breakout (from the IWM Day Signal page) is the only strategy
+OLD_SETUPS = False           # the old 15-min pullback/crossover/breakout setups are off (they tested negative)
+ORB5 = True                  # mark 9:30–10:00 high/low, then watch 5-min candles 10:00–12:00 for a confirmed breakout
+ORB5_BODY = 0.60             # breakout candle: body at least 60% of its range, closing outside the box
+ORB5_RR = 1.5                # target = 1.5 × the risk (entry to stop) on IWM itself
+ORB5_BE_AT = 1.0             # at +1R on IWM the stop moves to entry
+ORB5_END = (12, 0)           # no new breakouts after 12:00 ET
+ORB5_EOD = (15, 50)          # an ORB trade still open at 3:50 PM ET is closed (it's a day trade)
+ORB5_OPT_SAFETY = 0.70       # option safety net: sell if the option itself loses 70% (fast gaps)
+ORB5_FRESH_MIN = 12          # only act on an entry signal from the last 12 minutes (no late entries)
+ORB = False                  # (old 15-min opening breakout, replaced by ORB5)
 ORB_WINDOW = ((10, 0), (11, 30))
 FULL_SCAN_MIN = 5
 DEPLOY_EVERY_MIN = 14
@@ -174,7 +184,7 @@ class Alpaca:
         """Completed bars per symbol as {t, o, h, l, c} (t = bar start, UTC ISO)."""
         start = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=days)).strftime("%Y-%m-%dT%H:%M:%SZ")
         out, token = {s: [] for s in symbols}, None
-        step = {"15Min": 900, "1Hour": 3600}[timeframe]
+        step = {"5Min": 300, "15Min": 900, "1Hour": 3600}[timeframe]
         for _ in range(20):
             p = {"symbols": ",".join(symbols), "timeframe": timeframe, "start": start, "limit": 10000,
                  "feed": STOCK_FEED, "adjustment": "raw", "sort": "asc"}
@@ -454,7 +464,7 @@ STOCKTWITS_URL = "https://api.stocktwits.com/api/2/streams/symbol/{s}.json"
 EARNINGS_DAYS = 14           # look this far ahead on the earnings calendar (refreshed every 12 hours)
 HEADLINE_HOURS = 6           # headlines from the last 6 hours count
 FRESH_MIN = 45               # a big headline in the last 45 minutes can block a trade on its own
-ETFS = {"SPY", "QQQ", "IWM"}
+ETFS = {"SPY", "QQQ", "IWM", "DIA"}
 BULL_WORDS = ("beat", "beats", "tops", "upgrade", "raises", "raised", "record", "surge", "soar", "jump", "rall", "approval",
               "approved", "buyback", "partnership", "outperform", "strong demand", "exceeds", "higher", "gains", "bullish")
 BEAR_WORDS = ("miss", "downgrade", "cuts", "lowers", "plunge", "sink", "falls", "tumble", "slump", "lawsuit", "probe",
@@ -627,6 +637,169 @@ def opening_range(pair, m15, h1a, now_utc):
     return {"time": last["t"], "setup": "opening breakout", "trend": d, "close": last["c"], "atr": size,
             "sl_price": (top + bot) / 2, "box": (bot, top), "size": size, "body": body,
             "h1_trend": h1a["trend"], "h1_adx": h1a["adx"] or 0, "rsi": h1a.get("rsi")}
+
+
+def orb5(bars, complete):
+    """Easter's opening range breakout on one session's completed 5-min bars ({mins,label,o,h,l,c}, ascending).
+    Same rules as the IWM Day Signal page: 9:30–10:00 box; 10:00–12:00 a strong candle (60%+ body) closes outside;
+    the next candle must stay outside without touching the line and make a new extreme; entry at its close;
+    stop past the breakout candles; target 1.5R; stop to breakeven at 1R; one trade a day."""
+    r = {"phase": "wait", "status": "", "events": [], "orh": None, "orl": None, "trade": None, "box_bars": 0}
+    box = [b for b in bars if 570 <= b["mins"] < 600]
+    r["box_bars"] = len(box)
+    if box:
+        r["orh"], r["orl"] = max(b["h"] for b in box), min(b["l"] for b in box)
+    if len(box) < 6:
+        r["phase"] = "building"
+        r["status"] = "Building the opening range until 10:00 ET" if box else "Waiting for the 9:30 ET open"
+        return r
+    orh, orl = r["orh"], r["orl"]
+    end = ORB5_END[0] * 60 + ORB5_END[1]
+    r["status"] = f"Range set. Watching for a strong 5-min close outside it until {ORB5_END[0] % 12 or 12}:{ORB5_END[1]:02d} ET"
+    dirn, bH, bL, pos, traded, t, closed_note, pend = 0, 0.0, 0.0, 0, False, None, False, ""
+
+    def ev(b, txt, kind):
+        r["events"].append({"t": b["label"], "mins": b["mins"], "txt": txt, "kind": kind})
+
+    for b in bars:
+        if b["mins"] < 600:
+            continue
+        in_win = b["mins"] < end
+        sig = 0
+        if not traded and pos == 0 and in_win:
+            if dirn == -1:
+                if b["h"] < orl and b["l"] < bL:
+                    sig = -1
+                elif b["h"] >= orl:
+                    dirn = 0; ev(b, "Breakdown failed: price came back to the range low", "fail")
+                else:
+                    bH = max(bH, b["h"])
+            elif dirn == 1:
+                if b["l"] > orh and b["h"] > bH:
+                    sig = 1
+                elif b["l"] <= orh:
+                    dirn = 0; ev(b, "Breakout failed: price came back to the range high", "fail")
+                else:
+                    bL = min(bL, b["l"])
+            if dirn == 0 and not sig:
+                rg = b["h"] - b["l"]
+                if b["c"] < orl and rg > 0 and b["c"] < b["o"] and (b["o"] - b["c"]) / rg >= ORB5_BODY:
+                    dirn, bH, bL = -1, b["h"], b["l"]
+                    pend = "Strong close below the range low. Waiting for the next candle to hold below and make a new low"
+                    ev(b, pend, "pend")
+                elif b["c"] > orh and rg > 0 and b["c"] > b["o"] and (b["c"] - b["o"]) / rg >= ORB5_BODY:
+                    dirn, bH, bL = 1, b["h"], b["l"]
+                    pend = "Strong close above the range high. Waiting for the next candle to hold above and make a new high"
+                    ev(b, pend, "pend")
+        if sig:
+            pos, traded, dirn = sig, True, 0
+            entry = b["c"]
+            stop = bH if sig < 0 else bL
+            one_r = abs(stop - entry)
+            t = {"dir": sig, "entry": entry, "stop0": stop, "stop": stop, "one_r": one_r, "target": entry + sig * ORB5_RR * one_r,
+                 "be": False, "result": None, "entry_mins": b["mins"], "entry_label": b["label"], "entry_t": b["t"], "exit_mins": None}
+            ev(b, f"{'LONG' if sig > 0 else 'SHORT'} at {entry:.2f}, stop {stop:.2f}, target {t['target']:.2f}", "entry")
+            continue
+        if not traded and not in_win and not closed_note:
+            closed_note, dirn = True, 0
+            ev(b, f"No setup by {ORB5_END[0] % 12 or 12}:{ORB5_END[1]:02d} ET. Done for the day", "none")
+        if pos != 0:
+            sgn = pos
+            if (b["h"] >= t["stop"]) if sgn < 0 else (b["l"] <= t["stop"]):
+                pos = 0; t["result"] = 0.0 if t["be"] else -1.0; t["exit_mins"] = b["mins"]
+                ev(b, "Stopped at breakeven: 0R" if t["be"] else "Stop hit: −1R", "be_exit" if t["be"] else "sl")
+            else:
+                if not t["be"] and ((b["l"] <= t["entry"] - ORB5_BE_AT * t["one_r"]) if sgn < 0 else (b["h"] >= t["entry"] + ORB5_BE_AT * t["one_r"])):
+                    t["be"], t["stop"] = True, t["entry"]
+                    ev(b, f"1R reached. Stop moves to breakeven at {t['entry']:.2f}", "be")
+                if (b["l"] <= t["target"]) if sgn < 0 else (b["h"] >= t["target"]):
+                    pos = 0; t["result"] = ORB5_RR; t["exit_mins"] = b["mins"]
+                    ev(b, f"Target hit: +{ORB5_RR:g}R", "tp")
+    last = bars[-1] if bars else None
+    if pos != 0 and complete and last and last["mins"] >= 955:
+        t["result"] = (last["c"] - t["entry"]) * t["dir"] / t["one_r"]; t["exit_mins"] = last["mins"]; pos = 0
+        ev(last, f"Closed at 4:00 PM ET: {t['result']:+.1f}R", "eod")
+    r["trade"] = t
+    if t:
+        if t["result"] is None:
+            r["phase"] = "long" if t["dir"] > 0 else "short"
+            r["status"] = f"{'LONG' if t['dir'] > 0 else 'SHORT'} trade open" + (", stop at breakeven" if t["be"] else "")
+        else:
+            r["phase"] = "done"; r["status"] = f"Trade finished: {t['result']:+.1f}R"
+    elif dirn != 0:
+        r["phase"] = "pending"; r["status"] = pend
+    elif closed_note:
+        r["phase"] = "none"; r["status"] = "No setup today"
+    return r
+
+
+def council_orb5(o, t, risk_ok, risk_why, news_hit, now_utc, pair):
+    """The council's take on an ORB entry. The rules already decided the trade; Risk can still veto."""
+    v = {}
+    size = o["orh"] - o["orl"]
+    pct = size / t["entry"] * 100
+    ok_size = 0.15 <= pct <= 2.5
+    v["The Quant"] = (ok_size, f"opening range is ${size:.2f} ({pct:.2f}% of the price)" + ("" if ok_size else ", too " + ("small" if pct < 0.15 else "wild")))
+    v["Risk"] = (False, risk_why) if not risk_ok else (True, "contract and limits OK")
+    v["Momentum"] = (True, f"strong {'green' if t['dir'] > 0 else 'red'} 5-min close outside the range, then the next candle held and made a new {'high' if t['dir'] > 0 else 'low'}")
+    e = et(now_utc)
+    v["Time"] = ((10, 0) <= (e.hour, e.minute) <= (12, 15), f"entry at {t['entry_label']} ET, inside the 10:00–12:00 window")
+    v["Doubt"] = (news_hit is None, f"big news right now: {news_label(news_hit)}" if news_hit else f"stop ${abs(t['entry'] - t['stop0']):.2f} away, target 1.5× that")
+    return v
+
+
+def orb5_panel(st):
+    """Today's opening ranges: a chart for each ticker with a signal or a breakout watch, one line for the rest."""
+    oa = st.get("orb5") or {}
+    if not oa.get("date") or not oa.get("pairs"):
+        return ""
+    e = html.escape
+
+    def chart(o, t):
+        cs = o.get("candles") or []
+        if not cs or not o.get("orh"):
+            return ""
+        W, H, pad, LBL = 420, 190, 8, 104
+        hi = max([c[2] for c in cs] + [o["orh"]] + ([t["target"], t["stop0"]] if t else []))
+        lo = min([c[3] for c in cs] + [o["orl"]] + ([t["target"], t["stop0"]] if t else []))
+        sp = (hi - lo) or 1
+        y = lambda v: pad + (hi - v) / sp * (H - 2 * pad)
+        n = len(cs); step = (W - LBL) / max(n, 1); bw = max(2, step * 0.6)
+        parts = []
+        for i, (lab, op, h, l, c) in enumerate(cs):
+            x = 4 + step * (i + 0.5); col = "#45e39b" if c >= op else "#ff6378"
+            parts.append(f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{y(h):.1f}" y2="{y(l):.1f}" stroke="{col}"/>'
+                         f'<rect x="{x - bw / 2:.1f}" y="{y(max(op, c)):.1f}" width="{bw:.1f}" height="{max(1, y(min(op, c)) - y(max(op, c))):.1f}" fill="{col}"/>')
+        lines = [("Range high", o["orh"], "#8fb0d6"), ("Range low", o["orl"], "#8fb0d6")]
+        if t:
+            lines += [("Target", t["target"], "#45e39b"), ("Entry" + (" = stop" if t.get("be") else ""), t["entry"], "#c9cde4")]
+            if not t.get("be"):
+                lines.append(("Stop", t["stop"], "#ff6378"))
+        last_y = -99
+        for name, v, col in sorted(lines, key=lambda z: -z[1]):
+            ly = y(v); ty = max(ly + 4, last_y + 13); last_y = ty
+            parts.append(f'<line x1="0" x2="{W - LBL + 2}" y1="{ly:.1f}" y2="{ly:.1f}" stroke="{col}" stroke-dasharray="5 4"/>'
+                         f'<text x="{W - LBL + 6}" y="{ty:.1f}" fill="{col}" font-size="10.5">{name} {v:.2f}</text>')
+        return f'<svg viewBox="0 0 {W} {H + 6}" width="100%" role="img" aria-label="5-minute candles with the opening range">{"".join(parts)}</svg>'
+
+    big, small = [], []
+    for pair, o in sorted(oa["pairs"].items()):
+        t = o.get("trade")
+        if t or o.get("phase") == "pending":
+            tr = ""
+            if t:
+                res = "" if t.get("result") is None else f" · result {t['result']:+.1f}R"
+                tr = (f'<p><b>{"CALLS" if t["dir"] > 0 else "PUTS"}</b> from {t["entry"]:.2f} · stop {t["stop"]:.2f}'
+                      f'{" (breakeven)" if t.get("be") else ""} · target {t["target"]:.2f}{res}</p>')
+            rows = "".join(f'<li><span class="t">{e(x["t"])}</span> {e(x["txt"])}</li>' for x in o.get("events", []))
+            big.append(f'<h3>{e(pair)} · range {o["orl"]:.2f}–{o["orh"]:.2f} · now {o.get("last") or 0:.2f}</h3>'
+                       f'<p class="fine">{e(o.get("status", ""))}</p>{chart(o, t)}{tr}<ul class="fine">{rows}</ul>')
+        else:
+            rng = f'{o["orl"]:.2f}–{o["orh"]:.2f}' if o.get("orh") else "building"
+            small.append(f'<tr><td>{e(pair)}</td><td>{rng}</td><td>{o.get("last") or 0:.2f}</td><td>{e(o.get("status", ""))}</td></tr>')
+    tbl = (f'<div class="tbl"><table><tr><th>Ticker</th><th>Range</th><th>Now</th><th>Status</th></tr>{"".join(small)}</table></div>'
+           if small else "")
+    return f'<section><h2>Opening range breakout · {e(oa["date"])}</h2>{"".join(big)}{tbl}</section>'
 
 
 def council_orb(b, risk_ok, risk_why, now_utc, pair, inf=None):
@@ -1160,6 +1333,12 @@ def run(log, full=True):
     if START_BALANCE and st.get("start_balance") != START_BALANCE:
         st.update(start_balance=START_BALANCE, peak=START_BALANCE, day={}, equity=[],
                   record={"wins": 0, "losses": 0, "pl": 0.0})
+    if st.get("strategy") != STRATEGY:            # new strategy = fresh paper bankroll; the old record is kept for reference
+        st.setdefault("old_records", []).append({"strategy": st.get("strategy") or "council setups", "record": st.get("record"),
+                                                 "until": now.isoformat()[:19]})
+        st.update(strategy=STRATEGY, record={"wins": 0, "losses": 0, "pl": 0.0}, peak=START_BALANCE, paused=None,
+                  equity=[], day={}, streak={"losses": 0, "half": False, "wins_since": 0, "until": 0})
+        st["_strategy_switched"] = True
     bal = START_BALANCE + st["record"]["pl"]
     unreal = sum(m.get("upl", 0) for m in st["trades"].values())
     nav = bal + unreal
@@ -1279,6 +1458,8 @@ def run(log, full=True):
                         "locked profit" if meta.get("locked") and meta["sl"] > meta["entry"] else
                         "breakeven" if meta.get("breakeven") else "stop")
                 close_trade(api, st, tid, meta, why_, bid, now, tg, log)
+            elif meta.get("orb5"):
+                pass                                          # exits come from the ORB rules on IWM itself (below)
             elif PARTIAL and not meta.get("partial") and bid >= meta["entry"] * (1 + PARTIAL_AT):
                 take_partial(api, st, meta, bid, now, tg, log)
             elif HER_EXITS:
@@ -1359,6 +1540,8 @@ def run(log, full=True):
             elif age > SHADOW_DAYS:
                 st["shadow"].remove(sh)
 
+        if not OLD_SETUPS:
+            tfs = []
         for tf, a, _candles in tfs:
             bar_key = f"{pair}:{tf}"
             if st["last_bar"].get(bar_key) == a["time"]:
@@ -1523,7 +1706,178 @@ def run(log, full=True):
             else:
                 what = "trending, waiting for a pullback"
             notes.append({"who": pr, "vote": None, "say": f"{arrow} ${pp['close']:,.2f}, ADX {(pp.get('adx') or 0):.0f}, RSI {(pp.get('rsi') or 0):.0f}: {what}"})
-        feed_add(st, "scan", f"Scanned {len(notes)} stock{'s' if len(notes) != 1 else ''}: {setups} setup{'s' if setups != 1 else ''} on the latest candle", lines=notes)
+        if OLD_SETUPS:
+            feed_add(st, "scan", f"Scanned {len(notes)} stock{'s' if len(notes) != 1 else ''}: {setups} setup{'s' if setups != 1 else ''} on the latest candle", lines=notes)
+
+    # 3a) Easter's 5-minute opening range breakout
+    if ORB5 and is_open:
+        try:
+            m5s = api.bars(pairs, "5Min", 1)
+        except ApiError as e:
+            m5s = {}
+            log.append(f"5-min bars unavailable ({e})")
+        for pair in pairs:
+            bars = []
+            for x in m5s.get(pair, []):
+                e_ = et(x["t"])
+                if e_.date() == e_now.date():
+                    bars.append({"mins": e_.hour * 60 + e_.minute, "label": e_.strftime("%I:%M").lstrip("0"), "t": x["t"],
+                                 "o": x["o"], "h": x["h"], "l": x["l"], "c": x["c"]})
+            r = orb5(bars, False)
+            o5all = st.setdefault("orb5", {})
+            if o5all.get("date") != today_s or "pairs" not in o5all:
+                o5all.clear(); o5all.update(date=today_s, pairs={})
+            o5 = o5all["pairs"].setdefault(pair, {"sent": [], "entered": False})
+            o5.update(pair=pair, orh=r["orh"], orl=r["orl"], phase=r["phase"], status=r["status"], events=r["events"][-14:],
+                      trade=r["trade"], last=bars[-1]["c"] if bars else None, checked=now.timestamp(),
+                      candles=[[b["label"], round(b["o"], 2), round(b["h"], 2), round(b["l"], 2), round(b["c"], 2)] for b in bars[-80:]])
+            sent = o5["sent"]
+
+            def tell(key, text, feed_title=None, ok=None):
+                if key in sent:
+                    return
+                sent.append(key)
+                st["_changed"] = True
+                feed_add(st, "event", feed_title or f"{pair} opening range", who="The Quant", ok=ok, text=text)
+                if tg:
+                    tg.say(text)
+
+            if r["box_bars"] >= 6:
+                size = r["orh"] - r["orl"]
+                tell("range", f"📏 {pair} opening range is set (9:30–10:00 ET)\nHigh {r['orh']:.2f} · Low {r['orl']:.2f} · size ${size:.2f}\n\n"
+                              f"Watching 5-min candles until {ORB5_END[0] % 12 or 12}:{ORB5_END[1]:02d}. Signal = a strong candle closes outside "
+                              f"the range, then the next one holds outside and makes a new high (calls) or low (puts).",
+                     f"{pair} range set: {r['orl']:.2f}–{r['orh']:.2f}")
+            open_orb = next(((tid, m) for tid, m in st["trades"].items() if m.get("orb5") and m["pair"] == pair), None)
+            for ev_ in r["events"]:
+                key = f"{ev_['mins']}:{ev_['kind']}"
+                k = ev_["kind"]
+                if k == "pend":
+                    tell(key, f"👀 {pair} {ev_['t']} ET: {ev_['txt']}.", f"{pair} breakout watch")
+                elif k == "fail":
+                    tell(key, f"↩️ {pair} {ev_['t']} ET: {ev_['txt']}. No trade, still watching.", f"{pair} breakout failed", False)
+                elif k == "none":
+                    tell(key, f"😴 {pair}: {ev_['txt']}.", f"{pair}: no setup today")
+                elif k == "be":
+                    if open_orb:
+                        open_orb[1]["orb5"]["be"] = True
+                    tell(key, f"🔒 {pair} {ev_['t']} ET: {ev_['txt']} ({pair} level). The trade can't lose on {pair}'s move now.", f"{pair} stop to breakeven", True)
+            t = r["trade"]
+            # entry
+            if t and not o5.get("entered"):
+                o5["entered"] = True
+                d = t["dir"]
+                ts = now.timestamp()
+                end_dt = dt.datetime.fromisoformat(t["entry_t"]).replace(tzinfo=dt.timezone.utc) + dt.timedelta(minutes=5)
+                late = (now - end_dt).total_seconds() / 60 > ORB5_FRESH_MIN
+                head = (f"{'🟢 CALLS' if d == 1 else '🔴 PUTS'} SIGNAL · {pair} opening range breakout ({t['entry_label']} ET)\n"
+                        f"{pair} entry {t['entry']:.2f} · stop {t['stop0']:.2f} · target {t['target']:.2f} (1.5R)\n"
+                        f"Breakeven: when {pair} reaches {t['entry'] + d * ORB5_BE_AT * t['one_r']:.2f}, the stop moves to {t['entry']:.2f}")
+                reasons = []
+                if late:
+                    reasons.append(f"signal was {int((now - end_dt).total_seconds() // 60)} min old when I saw it (no late entries)")
+                if st.get("paused"):
+                    reasons.append(f"paused ({st['paused']})")
+                if streak_status(st, ts) == "timeout":
+                    reasons.append(f"cooling off after {st['streak']['losses']} losses in a row")
+                if st["day"].get("halted"):
+                    reasons.append("daily loss limit hit")
+                if len(st["trades"]) >= MAX_OPEN_TRADES:
+                    reasons.append(f"{MAX_OPEN_TRADES} trades already open")
+                hit = next((e for e in news if e["cur"] == "USD" and e["t"] - NEWS_BEFORE_MIN * 60 <= ts <= e["t"] + NEWS_AFTER_MIN * 60), None)
+                budget = nav * RISK_PCT * (0.5 if streak_status(st, ts) != "normal" else 1) / OPT_STOP
+                pick = None
+                if not reasons:
+                    pick, why_not = pick_contract(api, pair, d, t["entry"], budget, now)
+                    if not pick:
+                        reasons.append(why_not)
+                    elif pick["sym"] in gap_fade_holds():
+                        pick = None; reasons.append("the Gap Fade bot already holds that exact contract")
+                votes = council_orb5(r, t, not reasons, "; ".join(reasons), hit, now, pair)
+                if pick:
+                    votes["Risk"] = (True, f"{contract_name(pick['sym'])} at ${pick['ask']:.2f}, spread {pick['spread']:.0%}")
+                rv, rwhy, rhard = reporter_vote(st, api, pair, d, pick, now, log)
+                votes["The Reporter"] = (rv, rwhy)
+                yes, no = tally(votes)
+                ok = pick is not None and votes["Risk"][0] is True and hit is None and not rhard
+                today["setups"] += 1
+                label = f"{pair} {'CALL' if d == 1 else 'PUT'} (opening range breakout)"
+                vote_text = "\n".join(f"{'✅' if o_ else '❌' if o_ is False else '➖'} {n}: {why}" for n, (o_, why) in votes.items())
+                st["last_vote"] = {"label": label, "side": "CALL" if d == 1 else "PUT", "approved": ok, "when": ts,
+                                   "url": "https://app.alpaca.markets/", "ask": 0, "edge": 0,
+                                   "detail": (f"{contract_name(pick['sym'])} @ ${pick['ask']:.2f}" if pick else f"{pair} ${t['entry']:,.2f}")
+                                             + f" · stock stop {t['stop0']:,.2f} · target {t['target']:,.2f}",
+                                   "votes": {n: [o_, why] for n, (o_, why) in votes.items()},
+                                   "chart": {"closes": [b["c"] for b in bars[-60:]], "entry": t["entry"], "sl": t["stop0"],
+                                             "tp": t["target"], "prec": 2, "tf": "5m"}}
+                vote_entry = feed_add(st, "vote", label,
+                                      lines=[{"who": n, "vote": o_, "say": say(n, o_, why, t["entry_t"] + pair)} for n, (o_, why) in votes.items()],
+                                      verdict=(f"APPROVED {yes}–{no}. Buying {contract_name(pick['sym'])}." if ok else
+                                               f"SIGNAL ONLY {yes}–{no}: {'; '.join(reasons) or 'news or earnings'}. Tracked on {pair}'s levels."), ok=ok)
+                if not ok:
+                    today["rejected"] += 1
+                    o5["paper_only"] = True
+                    if tg:
+                        tg.say(head + f"\n\n⚠️ The bot is NOT buying this one: {'; '.join(reasons) or (news_label(hit) if hit else 'earnings/news veto')}.\n"
+                                      f"I'll still track it on {pair} and tell you how it ends.\n\nCouncil {yes}–{no}:\n{vote_text}")
+                else:
+                    limit = tick_up(pick["ask"])
+                    try:
+                        res = api.buy(pick["sym"], pick["qty"], limit)
+                        o = wait_fill(api, res["id"])
+                    except ApiError as e:
+                        o, res = None, None
+                        log.append(f"{pair}: order rejected ({e})")
+                        vote_entry["verdict"] = f"APPROVED {yes}–{no}, but the order was rejected: {e}"
+                        if tg:
+                            tg.say(head + f"\n\n⚠️ Alpaca rejected {contract_name(pick['sym'])}: {e}")
+                    filled_qty = int(float((o or {}).get("filled_qty") or 0))
+                    if o is not None and o.get("status") != "filled":
+                        try:
+                            api.cancel(res["id"])
+                        except ApiError:
+                            pass
+                    if o is not None and (o.get("status") == "filled" or filled_qty):
+                        fill_px = float(o.get("filled_avg_price") or limit)
+                        qty = filled_qty or pick["qty"]
+                        risk_usd = round(fill_px * OPT_STOP * 100 * qty, 2)
+                        tid = str(res["id"])
+                        st["trades"][tid] = {"pair": pair, "sym": pick["sym"], "dir": d, "qty": qty, "units": qty, "entry": fill_px,
+                                             "sl": round(fill_px * (1 - ORB5_OPT_SAFETY), 2), "tp": 999.0, "tp_on": False,
+                                             "exp": pick["exp"], "opened": now.isoformat()[:19], "risk": risk_usd,
+                                             "votes": {n: o_ for n, (o_, _) in votes.items()}, "setup": "opening range breakout",
+                                             "tf": "5m", "price": fill_px, "upl": 0.0, "qty0": qty,
+                                             "orb5": {"date": today_s, "entry": t["entry"], "stop": t["stop0"], "target": t["target"], "be": False}}
+                        today["approved"] += 1; today["opened"] += 1
+                        vote_entry["verdict"] = f"APPROVED {yes}–{no}. Bought {qty} × {contract_name(pick['sym'])} at ${fill_px:.2f}."
+                        log.append(f"{pair}: OPENED {qty} × {pick['sym']} @ {fill_px:.2f} (ORB)")
+                        if tg:
+                            tg.say(head + f"\n\nBought {qty} × {contract_name(pick['sym'])} at ${fill_px:.2f} (${fill_px * 100 * qty:,.0f}) on the paper account.\n"
+                                          f"Exits follow {pair}'s levels above, not the option's %. Closed by 3:50 PM ET either way.\n\n"
+                                          f"👉 Robinhood: search {pair} → Trade → Trade Options → Buy → {'Call' if d == 1 else 'Put'} → "
+                                          f"expiration {dt.date.fromisoformat(pick['exp']):%b} {dt.date.fromisoformat(pick['exp']).day} → strike ${pick['strike']:g} → "
+                                          f"limit ${limit:.2f} or less. Skip it if it's already above ${limit * 1.1:.2f}.\n\nCouncil {yes}–{no}:\n{vote_text}")
+                    elif o is not None:
+                        vote_entry["verdict"] = f"APPROVED {yes}–{no}, but it didn't fill at ${limit:.2f}. Canceled."
+                        if tg:
+                            tg.say(head + f"\n\n⚠️ {contract_name(pick['sym'])} didn't fill at ${limit:.2f}. Canceled; tracking on {pair} only.")
+                        o5["paper_only"] = True
+            # exits on IWM's levels
+            open_orb = next(((tid, m) for tid, m in st["trades"].items() if m.get("orb5") and m["pair"] == pair), None)
+            if t and t["result"] is not None:
+                why_ = {ORB5_RR: f"target +{ORB5_RR:g}R on {pair}", -1.0: f"stop on {pair}", 0.0: f"breakeven on {pair}"}.get(t["result"], f"{pair} rule exit")
+                if open_orb:
+                    tid, meta = open_orb
+                    close_trade(api, st, tid, meta, why_, meta.get("price") or meta["entry"], now, tg, log)
+                    sent.append(f"exit:{t['exit_mins']}")
+                else:
+                    icon = "🎯" if t["result"] > 0 else "🛑" if t["result"] < 0 else "🔒"
+                    tell(f"exit:{t['exit_mins']}", f"{icon} {pair} ORB signal finished on {pair}: {why_} ({t['result']:+.1f}R). "
+                                                   f"No option was held{' (signal only)' if o5.get('paper_only') else ''}.",
+                         f"{pair} ORB signal finished", t["result"] > 0)
+            elif open_orb and (e_now.hour, e_now.minute) >= ORB5_EOD:
+                tid, meta = open_orb
+                close_trade(api, st, tid, meta, "end of day (ORB is a day trade)", meta.get("price") or meta["entry"], now, tg, log)
 
     # 3b) test trade on request
     if st.get("test_pending"):
@@ -1561,6 +1915,17 @@ def run(log, full=True):
             if tg:
                 tg.say(msg)
             st["test_pending"] = False
+
+    if st.pop("_strategy_switched", False):
+        feed_add(st, "event", "New strategy", who="Chair", ok=True,
+                 text=f"Vault Options now trades only Easter's 5-minute opening range breakout on {', '.join(PAIRS)}. Fresh ${START_BALANCE:,.0f} paper bankroll.")
+        if tg:
+            tg.say(f"🔄 Vault Options has a new strategy: the 5-minute opening range breakout on {', '.join(PAIRS)}.\n\n"
+                   "1) 9:30–10:00 ET: I mark the high and low and text you the levels.\n"
+                   "2) 10:00–12:00: I watch every 5-min candle. A strong candle (60%+ body) closing outside the range starts a watch.\n"
+                   "3) If the next candle holds outside and makes a new high (or low), that's the SIGNAL: calls above, puts below.\n"
+                   "4) Stop past the breakout candles, target 1.5× the risk, stop to breakeven at 1R. One trade a day, closed by 3:50 PM.\n\n"
+                   f"Old setups are off. Fresh ${START_BALANCE:,.0f} paper bankroll, so the new strategy gets a clean scorecard.")
 
     # 4) status reply
     if tg and st.pop("_status_requested", False):
@@ -3046,11 +3411,14 @@ details {{ color:var(--muted) }} .fine {{ color:var(--muted); font-size:12px; ma
 <section><h2>Watchlist</h2><div class="pairs">{''.join(pair_card(p) for p in PAIRS)}</div></section>
 <section><h2>Big news ahead</h2><ul class="news">{news_rows}</ul><p class="fine">No new trades from {NEWS_BEFORE_MIN} min before to {NEWS_AFTER_MIN} min after these.</p></section>
 {learning_html(st)}
+{orb5_panel(st)}
 <section><h2>Who called it?</h2><p class="fine">{html.escape(learn_line)}</p><div class="tbl"><table><tr><th>Voter</th><th>Called it</th><th>Vote weight</th><th>Right / scored</th></tr>{board_rows}</table></div></section>
 <section><h2>Recent closed trades</h2><div class="tbl"><table><tr><th>Contract</th><th>Type</th><th>Qty</th><th>Result</th></tr>{closed_rows}</table></div></section>
 <details><summary>Scan log</summary><ul>{''.join(f'<li>{html.escape(l)}</li>' for l in log)}</ul></details>
-<p class="fine">Strategy: on 15-minute stock charts, the EMA20/EMA50 trend sets the direction (it must agree with the 1-hour trend); a fresh crossover,
-a pullback to the EMA20, or a break of the 9:30–10:00 opening range creates a setup. Bullish setups buy a call, bearish setups buy a put
+<p class="fine">Strategy: Easter's 5-minute opening range breakout on {', '.join(PAIRS)}. The 9:30–10:00 ET high and low are marked; from 10:00 to 12:00 a strong 5-minute candle
+(body at least {ORB5_BODY:.0%} of its range) must close outside the range, and the next candle must hold outside without touching it and make a new high (calls) or low (puts).
+Entry at that close; stop past the breakout candles; target {ORB5_RR:g}× the risk on the stock; stop to breakeven at {ORB5_BE_AT:g}R; one trade a day, closed by 3:50 PM ET.
+Exits follow the stock's price, not the option's %, with a safety sale if the option loses {ORB5_OPT_SAFETY:.0%}. The contract
 (0DTE on SPY/QQQ/IWM before 1:30 PM, otherwise {WEEKLY_DAYS[0]}–{WEEKLY_DAYS[1]} day weeklies, delta {DELTA_RANGE[0]}–{DELTA_RANGE[1]}, spread under {MAX_SPREAD_PCT:.0%}).
 Each trade is sized so a full stop (−{OPT_STOP:.0%} on the option) costs about {RISK_PCT:.0%} of the bankroll; target +{OPT_TARGET:.0%}; at +{PARTIAL_AT:.0%} it sells half (or locks +{LOCK_AT:.0%} on a single contract) and the rest runs toward +{RUNNER_TARGET:.0%} with a stop {TRAIL_GIVEBACK:.0%} below its best price;
 0DTE is sold by 3:40 PM ET; weeklies can be held overnight (stops are only checked while the market is open, so a gap at the open can fill past the stop)
