@@ -96,11 +96,24 @@ def setups(sym, m5, tf, v):
         c1, c2 = T[k - 1], T[k]
         if c1["day"] != c2["day"] or c2["i0"] <= busy:
             continue
-        if c2["h"] > c1["h"] and c1["l"] < c2["c"] < c1["h"] and not (c2["l"] < c1["l"]):
+        if v["entry"] == "push50":                     # live version: no peeking at C2's close
+            d = None
+            for j in range(c2["i0"], c2["i1"] + 1):
+                up, dn = m5[j]["h"] > c1["h"], m5[j]["l"] < c1["l"]
+                if up != dn:
+                    d = -1 if up else 1
+                break_ = up or dn
+                if break_:
+                    break
+            if d is None:
+                continue
+        elif c2["h"] > c1["h"] and c1["l"] < c2["c"] < c1["h"] and not (c2["l"] < c1["l"]):
             d = -1
         elif c2["l"] < c1["l"] and c1["l"] < c2["c"] < c1["h"] and not (c2["h"] > c1["h"]):
             d = 1
         else:
+            continue
+        if v.get("am") and m5[c2["i0"]]["m"] >= 690:
             continue
         if v.get("color") and ((c1["c"] <= c1["o"]) if d == -1 else (c1["c"] >= c1["o"])):
             continue                                   # Easter's filter: green C1 for shorts, red C1 for longs
@@ -132,6 +145,8 @@ def setups(sym, m5, tf, v):
             if touched is not None:
                 for j in range(max(touched, c2["i0"] + 1), c2["i1"] + 1):
                     x, p = m5[j], m5[j - 1]
+                    if (x["l"] < c1["l"]) if d == -1 else (x["h"] > c1["h"]):
+                        break
                     crt5 = (x["h"] > p["h"] and x["c"] < p["h"] and x["c"] < x["o"]) if d == -1 else (x["l"] < p["l"] and x["c"] > p["l"] and x["c"] > x["o"])
                     bos = j >= 3 and ((x["c"] < min(m5[q]["l"] for q in range(j - 3, j))) if d == -1 else (x["c"] > max(m5[q]["h"] for q in range(j - 3, j))))
                     if crt5 or bos:
@@ -155,6 +170,13 @@ def setups(sym, m5, tf, v):
 
 
 VERSIONS = {
+    "LIVE 15m · Easter's version": {"tf": 15, "entry": "push50"},
+    "LIVE 15m · Easter's version · 9:30-11:30 only": {"tf": 15, "entry": "push50", "am": True},
+    "LIVE 15m · Easter's version · all out at body": {"tf": 15, "entry": "push50", "tp": "tp1"},
+    "LIVE 15m · Easter's version · all out at CRT low": {"tf": 15, "entry": "push50", "tp": "tp2"},
+    "LIVE 1H · Easter's version": {"tf": 60, "entry": "push50"},
+}
+OLD = {
     "15m CRT · enter on C2 close": {"tf": 15, "entry": "close"},
     "15m CRT · TBS entry on 5m": {"tf": 15, "entry": "tbs"},
     "15m CRT · Easter's 50% push + 5m confirm": {"tf": 15, "entry": "push50"},
