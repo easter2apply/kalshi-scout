@@ -1,0 +1,906 @@
+{
+ "versions": {
+  "15m CRT \u00b7 enter on C2 close": {
+   "all": {
+    "n": 11753,
+    "per_week": 113.0,
+    "win": 0.532,
+    "avg_r": -0.089,
+    "total_r": -1043.1,
+    "t": -7.61,
+    "worst_streak": 11,
+    "train": -0.105,
+    "unseen": -0.057,
+    "longs": -0.043,
+    "shorts": -0.13
+   },
+   "by_market": {
+    "NQ (QQQ)": {
+     "n": 2387,
+     "per_week": 23.0,
+     "win": 0.558,
+     "avg_r": -0.071,
+     "total_r": -169.4,
+     "t": -3.28,
+     "worst_streak": 8,
+     "train": -0.068,
+     "unseen": -0.078,
+     "longs": -0.017,
+     "shorts": -0.117
+    },
+    "ES (SPY)": {
+     "n": 2402,
+     "per_week": 23.1,
+     "win": 0.541,
+     "avg_r": -0.087,
+     "total_r": -208.1,
+     "t": -3.88,
+     "worst_streak": 8,
+     "train": -0.098,
+     "unseen": -0.065,
+     "longs": -0.059,
+     "shorts": -0.111
+    },
+    "RTY (IWM)": {
+     "n": 2308,
+     "per_week": 22.2,
+     "win": 0.515,
+     "avg_r": -0.1,
+     "total_r": -231.3,
+     "t": -4.01,
+     "worst_streak": 9,
+     "train": -0.109,
+     "unseen": -0.083,
+     "longs": -0.05,
+     "shorts": -0.149
+    },
+    "YM (DIA)": {
+     "n": 2279,
+     "per_week": 21.9,
+     "win": 0.532,
+     "avg_r": -0.036,
+     "total_r": -81.0,
+     "t": -0.97,
+     "worst_streak": 11,
+     "train": -0.088,
+     "unseen": 0.058,
+     "longs": 0.007,
+     "shorts": -0.077
+    },
+    "GC (GLD)": {
+     "n": 2377,
+     "per_week": 22.9,
+     "win": 0.512,
+     "avg_r": -0.149,
+     "total_r": -353.2,
+     "t": -6.59,
+     "worst_streak": 10,
+     "train": -0.163,
+     "unseen": -0.121,
+     "longs": -0.097,
+     "shorts": -0.194
+    }
+   }
+  },
+  "15m CRT \u00b7 TBS entry on 5m": {
+   "all": {
+    "n": 1017,
+    "per_week": 9.8,
+    "win": 0.612,
+    "avg_r": -0.047,
+    "total_r": -47.3,
+    "t": -2.08,
+    "worst_streak": 7,
+    "train": -0.017,
+    "unseen": -0.099,
+    "longs": -0.046,
+    "shorts": -0.047
+   },
+   "by_market": {
+    "NQ (QQQ)": {
+     "n": 220,
+     "per_week": 2.1,
+     "win": 0.664,
+     "avg_r": -0.008,
+     "total_r": -1.7,
+     "t": -0.16,
+     "worst_streak": 4,
+     "train": 0.035,
+     "unseen": -0.084,
+     "longs": -0.058,
+     "shorts": 0.043
+    },
+    "ES (SPY)": {
+     "n": 190,
+     "per_week": 1.8,
+     "win": 0.632,
+     "avg_r": -0.056,
+     "total_r": -10.7,
+     "t": -1.05,
+     "worst_streak": 4,
+     "train": -0.024,
+     "unseen": -0.117,
+     "longs": 0.016,
+     "shorts": -0.138
+    },
+    "RTY (IWM)": {
+     "n": 193,
+     "per_week": 1.9,
+     "win": 0.627,
+     "avg_r": 0.042,
+     "total_r": 8.2,
+     "t": 0.85,
+     "worst_streak": 6,
+     "train": 0.059,
+     "unseen": 0.01,
+     "longs": -0.056,
+     "shorts": 0.146
+    },
+    "YM (DIA)": {
+     "n": 204,
+     "per_week": 2.0,
+     "win": 0.603,
+     "avg_r": -0.067,
+     "total_r": -13.8,
+     "t": -1.25,
+     "worst_streak": 5,
+     "train": -0.002,
+     "unseen": -0.173,
+     "longs": -0.103,
+     "shorts": -0.026
+    },
+    "GC (GLD)": {
+     "n": 210,
+     "per_week": 2.0,
+     "win": 0.533,
+     "avg_r": -0.139,
+     "total_r": -29.3,
+     "t": -3.2,
+     "worst_streak": 7,
+     "train": -0.151,
+     "unseen": -0.117,
+     "longs": -0.021,
+     "shorts": -0.226
+    }
+   }
+  },
+  "15m CRT \u00b7 Easter's 50% push + 5m confirm": {
+   "all": {
+    "n": 2984,
+    "per_week": 28.7,
+    "win": 0.643,
+    "avg_r": 0.031,
+    "total_r": 91.5,
+    "t": 1.82,
+    "worst_streak": 7,
+    "train": 0.025,
+    "unseen": 0.041,
+    "longs": 0.077,
+    "shorts": -0.016
+   },
+   "by_market": {
+    "NQ (QQQ)": {
+     "n": 628,
+     "per_week": 6.0,
+     "win": 0.65,
+     "avg_r": 0.046,
+     "total_r": 28.6,
+     "t": 1.28,
+     "worst_streak": 6,
+     "train": 0.04,
+     "unseen": 0.057,
+     "longs": 0.106,
+     "shorts": -0.017
+    },
+    "ES (SPY)": {
+     "n": 631,
+     "per_week": 6.1,
+     "win": 0.662,
+     "avg_r": 0.03,
+     "total_r": 18.7,
+     "t": 0.86,
+     "worst_streak": 7,
+     "train": 0.006,
+     "unseen": 0.072,
+     "longs": 0.036,
+     "shorts": 0.023
+    },
+    "RTY (IWM)": {
+     "n": 600,
+     "per_week": 5.8,
+     "win": 0.628,
+     "avg_r": -0.009,
+     "total_r": -5.5,
+     "t": -0.26,
+     "worst_streak": 6,
+     "train": 0.012,
+     "unseen": -0.052,
+     "longs": 0.035,
+     "shorts": -0.056
+    },
+    "YM (DIA)": {
+     "n": 548,
+     "per_week": 5.3,
+     "win": 0.641,
+     "avg_r": 0.013,
+     "total_r": 7.3,
+     "t": 0.33,
+     "worst_streak": 6,
+     "train": 0.011,
+     "unseen": 0.018,
+     "longs": 0.048,
+     "shorts": -0.023
+    },
+    "GC (GLD)": {
+     "n": 577,
+     "per_week": 5.5,
+     "win": 0.633,
+     "avg_r": 0.073,
+     "total_r": 42.3,
+     "t": 1.68,
+     "worst_streak": 7,
+     "train": 0.058,
+     "unseen": 0.099,
+     "longs": 0.175,
+     "shorts": -0.011
+    }
+   }
+  },
+  "15m CRT \u00b7 Easter's version + color filter": {
+   "all": {
+    "n": 2499,
+    "per_week": 24.0,
+    "win": 0.631,
+    "avg_r": -0.003,
+    "total_r": -8.7,
+    "t": -0.19,
+    "worst_streak": 7,
+    "train": -0.011,
+    "unseen": 0.011,
+    "longs": 0.045,
+    "shorts": -0.052
+   },
+   "by_market": {
+    "NQ (QQQ)": {
+     "n": 523,
+     "per_week": 5.0,
+     "win": 0.623,
+     "avg_r": -0.011,
+     "total_r": -5.7,
+     "t": -0.28,
+     "worst_streak": 6,
+     "train": -0.016,
+     "unseen": -0.001,
+     "longs": 0.032,
+     "shorts": -0.054
+    },
+    "ES (SPY)": {
+     "n": 524,
+     "per_week": 5.0,
+     "win": 0.647,
+     "avg_r": -0.001,
+     "total_r": -0.5,
+     "t": -0.03,
+     "worst_streak": 6,
+     "train": -0.028,
+     "unseen": 0.048,
+     "longs": 0.001,
+     "shorts": -0.003
+    },
+    "RTY (IWM)": {
+     "n": 507,
+     "per_week": 4.9,
+     "win": 0.633,
+     "avg_r": -0.017,
+     "total_r": -8.4,
+     "t": -0.43,
+     "worst_streak": 5,
+     "train": 0.006,
+     "unseen": -0.061,
+     "longs": 0.052,
+     "shorts": -0.092
+    },
+    "YM (DIA)": {
+     "n": 464,
+     "per_week": 4.5,
+     "win": 0.629,
+     "avg_r": -0.019,
+     "total_r": -8.8,
+     "t": -0.46,
+     "worst_streak": 6,
+     "train": -0.032,
+     "unseen": 0.006,
+     "longs": 0.031,
+     "shorts": -0.074
+    },
+    "GC (GLD)": {
+     "n": 481,
+     "per_week": 4.6,
+     "win": 0.622,
+     "avg_r": 0.031,
+     "total_r": 14.8,
+     "t": 0.66,
+     "worst_streak": 7,
+     "train": 0.015,
+     "unseen": 0.058,
+     "longs": 0.118,
+     "shorts": -0.042
+    }
+   }
+  },
+  "15m CRT \u00b7 TBS \u00b7 all out at 50%": {
+   "all": {
+    "n": 1023,
+    "per_week": 9.8,
+    "win": 0.655,
+    "avg_r": -0.08,
+    "total_r": -81.9,
+    "t": -3.98,
+    "worst_streak": 6,
+    "train": -0.056,
+    "unseen": -0.123,
+    "longs": -0.076,
+    "shorts": -0.084
+   },
+   "by_market": {
+    "NQ (QQQ)": {
+     "n": 221,
+     "per_week": 2.1,
+     "win": 0.697,
+     "avg_r": -0.039,
+     "total_r": -8.6,
+     "t": -0.88,
+     "worst_streak": 5,
+     "train": -0.008,
+     "unseen": -0.093,
+     "longs": -0.076,
+     "shorts": -0.002
+    },
+    "ES (SPY)": {
+     "n": 190,
+     "per_week": 1.8,
+     "win": 0.642,
+     "avg_r": -0.105,
+     "total_r": -20.0,
+     "t": -2.2,
+     "worst_streak": 3,
+     "train": -0.078,
+     "unseen": -0.155,
+     "longs": -0.058,
+     "shorts": -0.159
+    },
+    "RTY (IWM)": {
+     "n": 194,
+     "per_week": 1.9,
+     "win": 0.686,
+     "avg_r": 0.007,
+     "total_r": 1.4,
+     "t": 0.17,
+     "worst_streak": 6,
+     "train": 0.023,
+     "unseen": -0.023,
+     "longs": -0.081,
+     "shorts": 0.099
+    },
+    "YM (DIA)": {
+     "n": 206,
+     "per_week": 2.0,
+     "win": 0.631,
+     "avg_r": -0.125,
+     "total_r": -25.7,
+     "t": -2.65,
+     "worst_streak": 6,
+     "train": -0.071,
+     "unseen": -0.213,
+     "longs": -0.144,
+     "shorts": -0.103
+    },
+    "GC (GLD)": {
+     "n": 212,
+     "per_week": 2.0,
+     "win": 0.618,
+     "avg_r": -0.137,
+     "total_r": -29.0,
+     "t": -3.24,
+     "worst_streak": 5,
+     "train": -0.146,
+     "unseen": -0.12,
+     "longs": -0.008,
+     "shorts": -0.23
+    }
+   }
+  },
+  "15m CRT \u00b7 TBS \u00b7 all out at CRT low": {
+   "all": {
+    "n": 999,
+    "per_week": 9.6,
+    "win": 0.474,
+    "avg_r": -0.004,
+    "total_r": -3.9,
+    "t": -0.11,
+    "worst_streak": 8,
+    "train": 0.047,
+    "unseen": -0.096,
+    "longs": -0.034,
+    "shorts": 0.026
+   },
+   "by_market": {
+    "NQ (QQQ)": {
+     "n": 213,
+     "per_week": 2.0,
+     "win": 0.502,
+     "avg_r": 0.082,
+     "total_r": 17.6,
+     "t": 1.0,
+     "worst_streak": 7,
+     "train": 0.127,
+     "unseen": 0.003,
+     "longs": 0.013,
+     "shorts": 0.151
+    },
+    "ES (SPY)": {
+     "n": 186,
+     "per_week": 1.8,
+     "win": 0.478,
+     "avg_r": -0.022,
+     "total_r": -4.1,
+     "t": -0.27,
+     "worst_streak": 8,
+     "train": -0.046,
+     "unseen": 0.021,
+     "longs": 0.16,
+     "shorts": -0.229
+    },
+    "RTY (IWM)": {
+     "n": 190,
+     "per_week": 1.8,
+     "win": 0.505,
+     "avg_r": 0.098,
+     "total_r": 18.7,
+     "t": 1.11,
+     "worst_streak": 7,
+     "train": 0.133,
+     "unseen": 0.029,
+     "longs": -0.18,
+     "shorts": 0.389
+    },
+    "YM (DIA)": {
+     "n": 203,
+     "per_week": 2.0,
+     "win": 0.448,
+     "avg_r": -0.05,
+     "total_r": -10.2,
+     "t": -0.62,
+     "worst_streak": 5,
+     "train": 0.093,
+     "unseen": -0.286,
+     "longs": -0.127,
+     "shorts": 0.036
+    },
+    "GC (GLD)": {
+     "n": 207,
+     "per_week": 2.0,
+     "win": 0.44,
+     "avg_r": -0.125,
+     "total_r": -25.8,
+     "t": -1.73,
+     "worst_streak": 8,
+     "train": -0.077,
+     "unseen": -0.212,
+     "longs": -0.036,
+     "shorts": -0.189
+    }
+   }
+  },
+  "1H CRT \u00b7 enter on C2 close": {
+   "all": {
+    "n": 2623,
+    "per_week": 25.2,
+    "win": 0.533,
+    "avg_r": -0.054,
+    "total_r": -142.9,
+    "t": -2.19,
+    "worst_streak": 8,
+    "train": -0.065,
+    "unseen": -0.033,
+    "longs": -0.038,
+    "shorts": -0.069
+   },
+   "by_market": {
+    "NQ (QQQ)": {
+     "n": 527,
+     "per_week": 5.1,
+     "win": 0.562,
+     "avg_r": -0.014,
+     "total_r": -7.4,
+     "t": -0.27,
+     "worst_streak": 6,
+     "train": 0.027,
+     "unseen": -0.094,
+     "longs": 0.001,
+     "shorts": -0.026
+    },
+    "ES (SPY)": {
+     "n": 526,
+     "per_week": 5.1,
+     "win": 0.536,
+     "avg_r": -0.041,
+     "total_r": -21.4,
+     "t": -0.7,
+     "worst_streak": 7,
+     "train": -0.1,
+     "unseen": 0.089,
+     "longs": 0.03,
+     "shorts": -0.102
+    },
+    "RTY (IWM)": {
+     "n": 501,
+     "per_week": 4.8,
+     "win": 0.483,
+     "avg_r": -0.098,
+     "total_r": -49.0,
+     "t": -1.68,
+     "worst_streak": 8,
+     "train": -0.113,
+     "unseen": -0.066,
+     "longs": -0.02,
+     "shorts": -0.169
+    },
+    "YM (DIA)": {
+     "n": 557,
+     "per_week": 5.4,
+     "win": 0.526,
+     "avg_r": -0.07,
+     "total_r": -38.7,
+     "t": -1.31,
+     "worst_streak": 6,
+     "train": -0.123,
+     "unseen": 0.038,
+     "longs": -0.07,
+     "shorts": -0.069
+    },
+    "GC (GLD)": {
+     "n": 512,
+     "per_week": 4.9,
+     "win": 0.557,
+     "avg_r": -0.051,
+     "total_r": -26.3,
+     "t": -0.9,
+     "worst_streak": 8,
+     "train": -0.011,
+     "unseen": -0.136,
+     "longs": -0.122,
+     "shorts": 0.018
+    }
+   }
+  },
+  "1H CRT \u00b7 TBS entry on 5m": {
+   "all": {
+    "n": 930,
+    "per_week": 8.9,
+    "win": 0.606,
+    "avg_r": -0.016,
+    "total_r": -14.7,
+    "t": -0.56,
+    "worst_streak": 7,
+    "train": -0.053,
+    "unseen": 0.048,
+    "longs": -0.068,
+    "shorts": 0.032
+   },
+   "by_market": {
+    "NQ (QQQ)": {
+     "n": 204,
+     "per_week": 2.0,
+     "win": 0.618,
+     "avg_r": -0.028,
+     "total_r": -5.6,
+     "t": -0.49,
+     "worst_streak": 4,
+     "train": 0.023,
+     "unseen": -0.113,
+     "longs": -0.055,
+     "shorts": -0.005
+    },
+    "ES (SPY)": {
+     "n": 178,
+     "per_week": 1.7,
+     "win": 0.635,
+     "avg_r": 0.025,
+     "total_r": 4.5,
+     "t": 0.37,
+     "worst_streak": 4,
+     "train": -0.012,
+     "unseen": 0.092,
+     "longs": 0.028,
+     "shorts": 0.023
+    },
+    "RTY (IWM)": {
+     "n": 186,
+     "per_week": 1.8,
+     "win": 0.575,
+     "avg_r": -0.018,
+     "total_r": -3.4,
+     "t": -0.27,
+     "worst_streak": 5,
+     "train": -0.042,
+     "unseen": 0.02,
+     "longs": -0.057,
+     "shorts": 0.024
+    },
+    "YM (DIA)": {
+     "n": 183,
+     "per_week": 1.8,
+     "win": 0.601,
+     "avg_r": 0.002,
+     "total_r": 0.3,
+     "t": 0.02,
+     "worst_streak": 7,
+     "train": -0.116,
+     "unseen": 0.183,
+     "longs": -0.074,
+     "shorts": 0.083
+    },
+    "GC (GLD)": {
+     "n": 179,
+     "per_week": 1.7,
+     "win": 0.603,
+     "avg_r": -0.059,
+     "total_r": -10.5,
+     "t": -0.95,
+     "worst_streak": 7,
+     "train": -0.125,
+     "unseen": 0.079,
+     "longs": -0.19,
+     "shorts": 0.045
+    }
+   }
+  },
+  "1H CRT \u00b7 Easter's 50% push + 5m confirm": {
+   "all": {
+    "n": 1113,
+    "per_week": 10.7,
+    "win": 0.642,
+    "avg_r": 0.004,
+    "total_r": 4.5,
+    "t": 0.16,
+    "worst_streak": 7,
+    "train": -0.014,
+    "unseen": 0.04,
+    "longs": 0.012,
+    "shorts": -0.004
+   },
+   "by_market": {
+    "NQ (QQQ)": {
+     "n": 223,
+     "per_week": 2.1,
+     "win": 0.673,
+     "avg_r": 0.005,
+     "total_r": 1.1,
+     "t": 0.1,
+     "worst_streak": 7,
+     "train": -0.017,
+     "unseen": 0.045,
+     "longs": 0.027,
+     "shorts": -0.021
+    },
+    "ES (SPY)": {
+     "n": 232,
+     "per_week": 2.2,
+     "win": 0.668,
+     "avg_r": 0.038,
+     "total_r": 8.8,
+     "t": 0.67,
+     "worst_streak": 5,
+     "train": 0.078,
+     "unseen": -0.05,
+     "longs": 0.093,
+     "shorts": -0.026
+    },
+    "RTY (IWM)": {
+     "n": 214,
+     "per_week": 2.1,
+     "win": 0.621,
+     "avg_r": -0.06,
+     "total_r": -12.9,
+     "t": -1.34,
+     "worst_streak": 4,
+     "train": -0.122,
+     "unseen": 0.086,
+     "longs": -0.007,
+     "shorts": -0.126
+    },
+    "YM (DIA)": {
+     "n": 221,
+     "per_week": 2.1,
+     "win": 0.638,
+     "avg_r": 0.047,
+     "total_r": 10.4,
+     "t": 0.74,
+     "worst_streak": 6,
+     "train": 0.037,
+     "unseen": 0.066,
+     "longs": 0.017,
+     "shorts": 0.077
+    },
+    "GC (GLD)": {
+     "n": 223,
+     "per_week": 2.1,
+     "win": 0.605,
+     "avg_r": -0.013,
+     "total_r": -2.9,
+     "t": -0.23,
+     "worst_streak": 7,
+     "train": -0.05,
+     "unseen": 0.058,
+     "longs": -0.088,
+     "shorts": 0.054
+    }
+   }
+  },
+  "1H CRT \u00b7 TBS \u00b7 all out at CRT low": {
+   "all": {
+    "n": 909,
+    "per_week": 8.7,
+    "win": 0.411,
+    "avg_r": -0.034,
+    "total_r": -30.9,
+    "t": -0.85,
+    "worst_streak": 12,
+    "train": -0.085,
+    "unseen": 0.054,
+    "longs": -0.133,
+    "shorts": 0.056
+   },
+   "by_market": {
+    "NQ (QQQ)": {
+     "n": 198,
+     "per_week": 1.9,
+     "win": 0.414,
+     "avg_r": -0.043,
+     "total_r": -8.5,
+     "t": -0.53,
+     "worst_streak": 6,
+     "train": 0.051,
+     "unseen": -0.207,
+     "longs": -0.256,
+     "shorts": 0.127
+    },
+    "ES (SPY)": {
+     "n": 175,
+     "per_week": 1.7,
+     "win": 0.429,
+     "avg_r": 0.048,
+     "total_r": 8.4,
+     "t": 0.49,
+     "worst_streak": 8,
+     "train": -0.0,
+     "unseen": 0.133,
+     "longs": 0.003,
+     "shorts": 0.086
+    },
+    "RTY (IWM)": {
+     "n": 181,
+     "per_week": 1.7,
+     "win": 0.409,
+     "avg_r": -0.025,
+     "total_r": -4.4,
+     "t": -0.27,
+     "worst_streak": 10,
+     "train": -0.061,
+     "unseen": 0.035,
+     "longs": -0.046,
+     "shorts": -0.002
+    },
+    "YM (DIA)": {
+     "n": 180,
+     "per_week": 1.7,
+     "win": 0.406,
+     "avg_r": -0.044,
+     "total_r": -7.9,
+     "t": -0.49,
+     "worst_streak": 10,
+     "train": -0.185,
+     "unseen": 0.173,
+     "longs": -0.16,
+     "shorts": 0.083
+    },
+    "GC (GLD)": {
+     "n": 175,
+     "per_week": 1.7,
+     "win": 0.4,
+     "avg_r": -0.105,
+     "total_r": -18.5,
+     "t": -1.22,
+     "worst_streak": 12,
+     "train": -0.242,
+     "unseen": 0.17,
+     "longs": -0.206,
+     "shorts": -0.024
+    }
+   }
+  },
+  "30m CRT \u00b7 TBS entry on 5m": {
+   "all": {
+    "n": 1043,
+    "per_week": 10.0,
+    "win": 0.628,
+    "avg_r": -0.039,
+    "total_r": -41.2,
+    "t": -1.66,
+    "worst_streak": 6,
+    "train": -0.044,
+    "unseen": -0.031,
+    "longs": -0.042,
+    "shorts": -0.037
+   },
+   "by_market": {
+    "NQ (QQQ)": {
+     "n": 243,
+     "per_week": 2.3,
+     "win": 0.654,
+     "avg_r": -0.045,
+     "total_r": -10.8,
+     "t": -0.93,
+     "worst_streak": 5,
+     "train": -0.02,
+     "unseen": -0.097,
+     "longs": -0.062,
+     "shorts": -0.032
+    },
+    "ES (SPY)": {
+     "n": 202,
+     "per_week": 1.9,
+     "win": 0.634,
+     "avg_r": -0.056,
+     "total_r": -11.4,
+     "t": -1.09,
+     "worst_streak": 3,
+     "train": -0.087,
+     "unseen": -0.0,
+     "longs": -0.052,
+     "shorts": -0.061
+    },
+    "RTY (IWM)": {
+     "n": 193,
+     "per_week": 1.9,
+     "win": 0.622,
+     "avg_r": -0.016,
+     "total_r": -3.1,
+     "t": -0.29,
+     "worst_streak": 5,
+     "train": -0.087,
+     "unseen": 0.12,
+     "longs": -0.023,
+     "shorts": -0.01
+    },
+    "YM (DIA)": {
+     "n": 186,
+     "per_week": 1.8,
+     "win": 0.656,
+     "avg_r": 0.044,
+     "total_r": 8.1,
+     "t": 0.75,
+     "worst_streak": 4,
+     "train": 0.134,
+     "unseen": -0.12,
+     "longs": 0.052,
+     "shorts": 0.034
+    },
+    "GC (GLD)": {
+     "n": 219,
+     "per_week": 2.1,
+     "win": 0.575,
+     "avg_r": -0.109,
+     "total_r": -23.9,
+     "t": -2.05,
+     "worst_streak": 6,
+     "train": -0.142,
+     "unseen": -0.046,
+     "longs": -0.13,
+     "shorts": -0.095
+    }
+   }
+  }
+ }
+}
