@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 1000.0,
-  "broker_equity": 100036.35,
-  "nav": 1100.0,
+  "broker_equity": 100057.35,
+  "nav": 1133.0,
   "options_level": 3,
-  "unrealized": 100.0,
-  "updated": 1793026817.654101
+  "unrealized": 133.0,
+  "updated": 1793027114.995197
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -4485,8 +4485,8 @@
  },
  "last_daily": "2026-10-25",
  "last_deploy": 1793026827.506,
- "last_full_run": 1793026817.654101,
- "last_run": 1793026817.654101,
+ "last_full_run": 1793027114.995197,
+ "last_run": 1793027114.995197,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -5606,9 +5606,16 @@
       250.6,
       250.15,
       250.22
+     ],
+     [
+      "11:00",
+      250.22,
+      250.38,
+      250.15,
+      250.15
      ]
     ],
-    "checked": 1793026817.654101,
+    "checked": 1793027114.995197,
     "entered": false,
     "events": [
      {
@@ -5624,7 +5631,7 @@
       "txt": "Breakout failed: price came back to the range high"
      }
     ],
-    "last": 250.22,
+    "last": 250.15,
     "orh": 250.42,
     "orl": 247.29,
     "pair": "AMZN",
@@ -5764,9 +5771,16 @@
       524.36,
       524.03,
       524.36
+     ],
+     [
+      "11:00",
+      523.99,
+      524.32,
+      523.99,
+      524.32
      ]
     ],
-    "checked": 1793026817.654101,
+    "checked": 1793027114.995197,
     "entered": true,
     "events": [
      {
@@ -5788,7 +5802,7 @@
       "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 524.36,
+    "last": 524.315,
     "orh": 524.13,
     "orl": 522.71,
     "pair": "DIA",
@@ -5942,9 +5956,16 @@
       767.25,
       766.75,
       767.06
+     ],
+     [
+      "11:00",
+      767.01,
+      767.73,
+      766.92,
+      767.36
      ]
     ],
-    "checked": 1793026817.654101,
+    "checked": 1793027114.995197,
     "entered": true,
     "events": [
      {
@@ -5960,7 +5981,7 @@
       "txt": "LONG at 765.66, stop 763.44, target 769.00"
      }
     ],
-    "last": 767.06,
+    "last": 767.36,
     "orh": 764.27,
     "orl": 761.69,
     "pair": "SPY",
@@ -6275,7 +6296,7 @@
   }
  },
  "paused": null,
- "peak": 1100.0,
+ "peak": 1133.0,
  "record": {
   "losses": 0,
   "pl": 0.0,
@@ -6706,7 +6727,7 @@
     "target": 769.0024999999998
    },
    "pair": "SPY",
-   "price": 3.32,
+   "price": 3.65,
    "qty": 1,
    "qty0": 1,
    "risk": 92.8,
@@ -6717,7 +6738,7 @@
    "tp": 999.0,
    "tp_on": false,
    "units": 1,
-   "upl": 100.0,
+   "upl": 133.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
