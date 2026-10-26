@@ -5,7 +5,7 @@
   "nav": 1000.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793010011.60764
+  "updated": 1793010311.835186
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -1563,6 +1563,10 @@
   ],
   [
    1793009411,
+   1000.0
+  ],
+  [
+   1793010312,
    1000.0
   ]
  ],
@@ -4510,8 +4514,8 @@
  },
  "last_daily": "2026-10-25",
  "last_deploy": 1793009713.2048342,
- "last_full_run": 1793010011.60764,
- "last_run": 1793010011.60764,
+ "last_full_run": 1793010311.835186,
+ "last_run": 1793010311.835186,
  "last_vote": {
   "approved": false,
   "ask": 0,
