@@ -5,7 +5,7 @@
   "nav": 1000.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1792994415.627774
+  "updated": 1792994710.237977
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -4442,8 +4442,8 @@
  },
  "last_daily": "2026-10-25",
  "last_deploy": 1792994416.3800378,
- "last_full_run": 1792994415.627774,
- "last_run": 1792994415.627774,
+ "last_full_run": 1792994710.237977,
+ "last_run": 1792994710.237977,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -5429,7 +5429,7 @@
     "title": "BOJ Press Conference"
    }
   ],
-  "fetched": 1792972818.0762382
+  "fetched": 1792994711.618786
  },
  "old_records": [
   {
