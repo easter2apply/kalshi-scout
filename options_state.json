@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 1000.0,
-  "broker_equity": 99866.35,
-  "nav": 936.0,
+  "broker_equity": 99867.35,
+  "nav": 933.0,
   "options_level": 3,
-  "unrealized": -64.0,
-  "updated": 1793030421.138223
+  "unrealized": -67.0,
+  "updated": 1793030711.144761
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -1741,47 +1741,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "Clean read: ADX 36 (needs 18).",
-     "vote": true,
-     "who": "The Quant"
-    },
-    {
-     "say": "Not on my watch: Paused (drawdown over 35%).",
-     "vote": false,
-     "who": "Risk"
-    },
-    {
-     "say": "Feel that push? MACD with us (up).",
-     "vote": true,
-     "who": "Momentum"
-    },
-    {
-     "say": "Timing's right. RSI 62.",
-     "vote": true,
-     "who": "Time"
-    },
-    {
-     "say": "Something's off. 1-hour trend disagrees.",
-     "vote": false,
-     "who": "Doubt"
-    },
-    {
-     "say": "Sources say we're clear: No headlines today; StockTwits 6 bullish / 0 bearish.",
-     "vote": true,
-     "who": "The Reporter"
-    }
-   ],
-   "ok": false,
-   "t": 1792159222.794374,
-   "text": null,
-   "title": "IWM CALL (crossover 15m)",
-   "verdict": "REJECTED 4\u20132. Logged on paper so we learn whether we were right.",
-   "who": null
-  },
   {
    "kind": "scan",
    "lines": [
@@ -3916,6 +3875,16 @@
    "title": "DIA ORB signal finished",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1793030715.0628078,
+   "text": "\ud83d\ude34 AMZN: No setup by 12:00 ET. Done for the day.",
+   "title": "AMZN: no setup today",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -4500,9 +4469,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-25",
- "last_deploy": 1793029818.0973485,
- "last_full_run": 1793030421.138223,
- "last_run": 1793030421.138223,
+ "last_deploy": 1793030715.9169884,
+ "last_full_run": 1793030711.144761,
+ "last_run": 1793030711.144761,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -5706,9 +5675,16 @@
       248.98,
       248.58,
       248.58
+     ],
+     [
+      "12:00",
+      248.51,
+      248.73,
+      248.46,
+      248.72
      ]
     ],
-    "checked": 1793030421.138223,
+    "checked": 1793030711.144761,
     "entered": false,
     "events": [
      {
@@ -5722,19 +5698,26 @@
       "mins": 620,
       "t": "10:20",
       "txt": "Breakout failed: price came back to the range high"
+     },
+     {
+      "kind": "none",
+      "mins": 720,
+      "t": "12:00",
+      "txt": "No setup by 12:00 ET. Done for the day"
      }
     ],
-    "last": 248.58,
+    "last": 248.72,
     "orh": 250.42,
     "orl": 247.29,
     "pair": "AMZN",
-    "phase": "wait",
+    "phase": "none",
     "sent": [
      "range",
      "615:pend",
-     "620:fail"
+     "620:fail",
+     "720:none"
     ],
-    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
+    "status": "No setup today",
     "trade": null
    },
    "DIA": {
@@ -5948,9 +5931,16 @@
       522.78,
       522.41,
       522.46
+     ],
+     [
+      "12:00",
+      522.41,
+      522.59,
+      522.41,
+      522.53
      ]
     ],
-    "checked": 1793030421.138223,
+    "checked": 1793030711.144761,
     "entered": true,
     "events": [
      {
@@ -5972,7 +5962,7 @@
       "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 522.46,
+    "last": 522.53,
     "orh": 524.13,
     "orl": 522.71,
     "pair": "DIA",
@@ -6210,9 +6200,16 @@
       766.11,
       765.16,
       765.22
+     ],
+     [
+      "12:00",
+      765.21,
+      765.37,
+      764.99,
+      765.19
      ]
     ],
-    "checked": 1793030421.138223,
+    "checked": 1793030711.144761,
     "entered": true,
     "events": [
      {
@@ -6228,7 +6225,7 @@
       "txt": "LONG at 765.66, stop 763.44, target 769.00"
      }
     ],
-    "last": 765.22,
+    "last": 765.19,
     "orh": 764.27,
     "orl": 761.69,
     "pair": "SPY",
@@ -6969,7 +6966,7 @@
     "target": 769.0024999999998
    },
    "pair": "SPY",
-   "price": 1.68,
+   "price": 1.65,
    "qty": 1,
    "qty0": 1,
    "risk": 92.8,
@@ -6980,7 +6977,7 @@
    "tp": 999.0,
    "tp_on": false,
    "units": 1,
-   "upl": -64.0,
+   "upl": -67.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
