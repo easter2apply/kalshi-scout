@@ -5,7 +5,7 @@
   "nav": 1000.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793021415.387087
+  "updated": 1793021710.846392
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -4592,8 +4592,8 @@
  },
  "last_daily": "2026-10-25",
  "last_deploy": 1793021422.7791739,
- "last_full_run": 1793021415.387087,
- "last_run": 1793021415.387087,
+ "last_full_run": 1793021710.846392,
+ "last_run": 1793021710.846392,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -5636,45 +5636,69 @@
   "date": "2026-10-26",
   "pairs": {
    "AMZN": {
-    "candles": [],
-    "checked": 1793021415.387087,
+    "candles": [
+     [
+      "9:30",
+      249.45,
+      250.42,
+      247.95,
+      248.42
+     ]
+    ],
+    "checked": 1793021710.846392,
     "entered": false,
     "events": [],
-    "last": null,
-    "orh": null,
-    "orl": null,
+    "last": 248.42,
+    "orh": 250.42,
+    "orl": 247.95,
     "pair": "AMZN",
     "phase": "building",
     "sent": [],
-    "status": "Waiting for the 9:30 ET open",
+    "status": "Building the opening range until 10:00 ET",
     "trade": null
    },
    "DIA": {
-    "candles": [],
-    "checked": 1793021415.387087,
+    "candles": [
+     [
+      "9:30",
+      523.93,
+      524.13,
+      523.29,
+      523.43
+     ]
+    ],
+    "checked": 1793021710.846392,
     "entered": false,
     "events": [],
-    "last": null,
-    "orh": null,
-    "orl": null,
+    "last": 523.43,
+    "orh": 524.13,
+    "orl": 523.29,
     "pair": "DIA",
     "phase": "building",
     "sent": [],
-    "status": "Waiting for the 9:30 ET open",
+    "status": "Building the opening range until 10:00 ET",
     "trade": null
    },
    "SPY": {
-    "candles": [],
-    "checked": 1793021415.387087,
+    "candles": [
+     [
+      "9:30",
+      762.26,
+      762.96,
+      761.69,
+      762.7
+     ]
+    ],
+    "checked": 1793021710.846392,
     "entered": false,
     "events": [],
-    "last": null,
-    "orh": null,
-    "orl": null,
+    "last": 762.7,
+    "orh": 762.96,
+    "orl": 761.69,
     "pair": "SPY",
     "phase": "building",
     "sent": [],
-    "status": "Waiting for the 9:30 ET open",
+    "status": "Building the opening range until 10:00 ET",
     "trade": null
    }
   }
