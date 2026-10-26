@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 1000.0,
-  "broker_equity": 99881.35,
-  "nav": 952.0,
+  "broker_equity": 99874.35,
+  "nav": 945.0,
   "options_level": 3,
-  "unrealized": -48.0,
-  "updated": 1793024711.157133
+  "unrealized": -55.0,
+  "updated": 1793025019.066607
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -1717,22 +1717,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "scan",
-   "lines": [
-    {
-     "say": "\u25b2 $275.73, ADX 35, RSI 74: crossover 15m setup",
-     "vote": null,
-     "who": "IWM"
-    }
-   ],
-   "ok": null,
-   "t": 1792158915.5273318,
-   "text": null,
-   "title": "Scanned 1 stock: 1 setup on the latest candle",
-   "verdict": null,
-   "who": null
-  },
   {
    "kind": "vote",
    "lines": [
@@ -3898,6 +3882,16 @@
    "title": "AMZN breakout failed",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": false,
+   "t": 1793025029.9894152,
+   "text": "\ud83d\uded1 DIA ORB signal finished on DIA: stop on DIA (-1.0R). No option was held (signal only).",
+   "title": "DIA ORB signal finished",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -4482,9 +4476,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-25",
- "last_deploy": 1793024728.161353,
- "last_full_run": 1793024711.157133,
- "last_run": 1793024711.157133,
+ "last_deploy": 1793025030.9072475,
+ "last_full_run": 1793025019.066607,
+ "last_run": 1793025019.066607,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -5555,9 +5549,16 @@
       250.78,
       250.24,
       250.28
+     ],
+     [
+      "10:25",
+      250.2,
+      250.5,
+      249.96,
+      250.21
      ]
     ],
-    "checked": 1793024711.157133,
+    "checked": 1793025019.066607,
     "entered": false,
     "events": [
      {
@@ -5573,7 +5574,7 @@
       "txt": "Breakout failed: price came back to the range high"
      }
     ],
-    "last": 250.28,
+    "last": 250.21,
     "orh": 250.42,
     "orl": 247.29,
     "pair": "AMZN",
@@ -5664,9 +5665,16 @@
       525.57,
       524.9,
       524.9
+     ],
+     [
+      "10:25",
+      524.47,
+      524.66,
+      524.44,
+      524.61
      ]
     ],
-    "checked": 1793024711.157133,
+    "checked": 1793025019.066607,
     "entered": true,
     "events": [
      {
@@ -5680,19 +5688,26 @@
       "mins": 620,
       "t": "10:20",
       "txt": "LONG at 524.90, stop 524.71, target 525.18"
+     },
+     {
+      "kind": "sl",
+      "mins": 625,
+      "t": "10:25",
+      "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 524.9,
+    "last": 524.61,
     "orh": 524.13,
     "orl": 522.71,
     "pair": "DIA",
     "paper_only": true,
-    "phase": "long",
+    "phase": "done",
     "sent": [
      "range",
-     "615:pend"
+     "615:pend",
+     "exit:625"
     ],
-    "status": "LONG trade open",
+    "status": "Trade finished: -1.0R",
     "trade": {
      "be": false,
      "dir": 1,
@@ -5700,9 +5715,9 @@
      "entry_label": "10:20",
      "entry_mins": 620,
      "entry_t": "2026-10-26T14:20:00",
-     "exit_mins": null,
+     "exit_mins": 625,
      "one_r": 0.18999999999994088,
-     "result": null,
+     "result": -1.0,
      "stop": 524.71,
      "stop0": 524.71,
      "target": 525.185
@@ -5786,9 +5801,16 @@
       765.78,
       764.93,
       764.96
+     ],
+     [
+      "10:25",
+      764.82,
+      765.02,
+      764.33,
+      764.75
      ]
     ],
-    "checked": 1793024711.157133,
+    "checked": 1793025019.066607,
     "entered": true,
     "events": [
      {
@@ -5804,7 +5826,7 @@
       "txt": "LONG at 765.66, stop 763.44, target 769.00"
      }
     ],
-    "last": 764.955,
+    "last": 764.755,
     "orh": 764.27,
     "orl": 761.69,
     "pair": "SPY",
@@ -5885,11 +5907,11 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 31.298359895583133,
-   "atr_pips": 0.9675983842021321,
-   "bar": "2026-10-26T14:00:00",
-   "chg": 0.7379478597495752,
-   "close": 249.815,
+   "adx": 31.631432053389524,
+   "atr_pips": 0.9681270708541244,
+   "bar": "2026-10-26T14:15:00",
+   "chg": 0.8972316874004453,
+   "close": 250.21,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -5904,18 +5926,18 @@
      "MACD against us (down)"
     ]
    },
-   "rsi": 56.573999845637,
+   "rsi": 59.4839914711852,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
   },
   "DIA": {
-   "adx": 22.152743236995452,
-   "atr_pips": 0.8553913106477861,
-   "bar": "2026-10-26T14:00:00",
-   "chg": 0.6300768175846034,
-   "close": 524.65,
+   "adx": 22.912812183979014,
+   "atr_pips": 0.8750062169234598,
+   "bar": "2026-10-26T14:15:00",
+   "chg": 0.6224046493339608,
+   "close": 524.61,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
@@ -5930,7 +5952,7 @@
      "MACD against us (down)"
     ]
    },
-   "rsi": 62.026224540816266,
+   "rsi": 61.681115168477405,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -6092,11 +6114,11 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 22.841327744614585,
-   "atr_pips": 1.3367733229808152,
-   "bar": "2026-10-26T14:00:00",
-   "chg": 0.6330363370753912,
-   "close": 764.64,
+   "adx": 23.769426005725695,
+   "atr_pips": 1.3448609427077833,
+   "bar": "2026-10-26T14:15:00",
+   "chg": 0.648171301475324,
+   "close": 764.755,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -6111,7 +6133,7 @@
      "MACD against us (down)"
     ]
    },
-   "rsi": 64.24537278432842,
+   "rsi": 64.65644760493859,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -6521,18 +6543,18 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.63,
-   "p": "764.64",
+   "c": 0.65,
+   "p": "764.75",
    "s": "SPY"
   },
   {
-   "c": 0.63,
-   "p": "524.65",
+   "c": 0.62,
+   "p": "524.61",
    "s": "DIA"
   },
   {
-   "c": 0.74,
-   "p": "249.81",
+   "c": 0.9,
+   "p": "250.21",
    "s": "AMZN"
   }
  ],
@@ -6550,7 +6572,7 @@
     "target": 769.0024999999998
    },
    "pair": "SPY",
-   "price": 1.84,
+   "price": 1.77,
    "qty": 1,
    "qty0": 1,
    "risk": 92.8,
@@ -6561,7 +6583,7 @@
    "tp": 999.0,
    "tp_on": false,
    "units": 1,
-   "upl": -48.0,
+   "upl": -55.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
