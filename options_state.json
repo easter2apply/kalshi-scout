@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 1000.0,
-  "broker_equity": 99895.35,
-  "nav": 959.0,
+  "broker_equity": 99878.35,
+  "nav": 945.0,
   "options_level": 3,
-  "unrealized": -41.0,
-  "updated": 1793038212.517343
+  "unrealized": -55.0,
+  "updated": 1793038511.454274
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -4506,8 +4506,8 @@
  },
  "last_daily": "2026-10-25",
  "last_deploy": 1793037915.4968455,
- "last_full_run": 1793038212.517343,
- "last_run": 1793038212.517343,
+ "last_full_run": 1793038511.454274,
+ "last_run": 1793038511.454274,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -5484,7 +5484,7 @@
     "title": "BOJ Press Conference"
    }
   ],
-  "fetched": 1793016616.0572731
+  "fetched": 1793038512.1651247
  },
  "old_records": [
   {
@@ -5893,9 +5893,16 @@
       249.44,
       249.29,
       249.35
+     ],
+     [
+      "2:10",
+      249.31,
+      249.38,
+      248.94,
+      249.04
      ]
     ],
-    "checked": 1793038212.517343,
+    "checked": 1793038511.454274,
     "entered": false,
     "events": [
      {
@@ -5917,7 +5924,7 @@
       "txt": "No setup by 12:00 ET. Done for the day"
      }
     ],
-    "last": 249.35,
+    "last": 249.04,
     "orh": 250.42,
     "orl": 247.29,
     "pair": "AMZN",
@@ -6291,7 +6298,7 @@
       523.09
      ]
     ],
-    "checked": 1793038212.517343,
+    "checked": 1793038511.454274,
     "entered": true,
     "events": [
      {
@@ -6733,9 +6740,16 @@
       765.96,
       765.64,
       765.88
+     ],
+     [
+      "2:10",
+      765.85,
+      765.98,
+      765.35,
+      765.57
      ]
     ],
-    "checked": 1793038212.517343,
+    "checked": 1793038511.454274,
     "entered": true,
     "events": [
      {
@@ -6751,7 +6765,7 @@
       "txt": "LONG at 765.66, stop 763.44, target 769.00"
      }
     ],
-    "last": 765.88,
+    "last": 765.57,
     "orh": 764.27,
     "orl": 761.69,
     "pair": "SPY",
@@ -6832,34 +6846,33 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 17.188897538416352,
-   "atr_pips": 0.7998774200504458,
-   "bar": "2026-10-26T17:45:00",
-   "chg": 0.574631530132864,
-   "close": 249.41,
+   "adx": 16.204916304167277,
+   "atr_pips": 0.7870290335959883,
+   "bar": "2026-10-26T18:00:00",
+   "chg": 0.425428957396608,
+   "close": 249.04,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": -1,
     "in_trade": false,
     "of": 6,
-    "passed": 4,
+    "passed": 5,
     "session": true,
     "tf": "M15",
     "waiting": [
-     "a pullback to the trend line or a fresh crossover",
-     "ADX 17 (needs 18)"
+     "ADX 16 (needs 18)"
     ]
    },
-   "rsi": 51.129591250039034,
-   "setup": null,
+   "rsi": 47.247763424834055,
+   "setup": "pullback 15m",
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
   },
   "DIA": {
-   "adx": 14.625517208641,
-   "atr_pips": 0.7100012438701698,
+   "adx": 14.625516668484215,
+   "atr_pips": 0.7100012447599032,
    "bar": "2026-10-26T17:45:00",
    "chg": 0.33086225580927425,
    "close": 523.09,
@@ -6877,7 +6890,7 @@
      "ADX 15 (needs 18)"
     ]
    },
-   "rsi": 50.500833110964784,
+   "rsi": 50.50083309607521,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -7039,25 +7052,26 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 19.49483751205441,
-   "atr_pips": 1.1907750766641334,
-   "bar": "2026-10-26T17:45:00",
-   "chg": 0.8054433228485324,
-   "close": 765.95,
+   "adx": 18.424963394016668,
+   "atr_pips": 1.160719714429552,
+   "bar": "2026-10-26T18:00:00",
+   "chg": 0.7554321361357157,
+   "close": 765.57,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": true,
     "of": 6,
-    "passed": 5,
+    "passed": 4,
     "session": true,
     "tf": "M15",
     "waiting": [
+     "MACD against us (up)",
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 58.331257757892025,
+   "rsi": 55.93705107463666,
    "setup": "pullback 15m",
    "spread_pips": 0,
    "tradeable": true,
@@ -7467,8 +7481,8 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.81,
-   "p": "765.95",
+   "c": 0.76,
+   "p": "765.57",
    "s": "SPY"
   },
   {
@@ -7477,8 +7491,8 @@
    "s": "DIA"
   },
   {
-   "c": 0.57,
-   "p": "249.41",
+   "c": 0.43,
+   "p": "249.04",
    "s": "AMZN"
   }
  ],
@@ -7496,7 +7510,7 @@
     "target": 769.0024999999998
    },
    "pair": "SPY",
-   "price": 1.91,
+   "price": 1.77,
    "qty": 1,
    "qty0": 1,
    "risk": 92.8,
@@ -7507,7 +7521,7 @@
    "tp": 999.0,
    "tp_on": false,
    "units": 1,
-   "upl": -41.0,
+   "upl": -55.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
