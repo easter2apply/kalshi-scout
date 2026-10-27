@@ -1,11 +1,11 @@
 {
  "account": {
-  "balance": 908.0,
-  "broker_equity": 99928.23,
-  "nav": 996.0,
+  "balance": 1003.0,
+  "broker_equity": 99934.21,
+  "nav": 1003.0,
   "options_level": 3,
-  "unrealized": 88.0,
-  "updated": 1793115912.699801
+  "unrealized": 0,
+  "updated": 1793116211.576277
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -4782,8 +4782,8 @@
  },
  "last_daily": "2026-10-26",
  "last_deploy": 1793115922.4376113,
- "last_full_run": 1793115912.699801,
- "last_run": 1793115912.699801,
+ "last_full_run": 1793116211.576277,
+ "last_run": 1793116211.576277,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -5992,9 +5992,16 @@
       252.4,
       251.9,
       252.4
+     ],
+     [
+      "11:45",
+      252.38,
+      252.38,
+      252.06,
+      252.19
      ]
     ],
-    "checked": 1793115912.699801,
+    "checked": 1793116211.576277,
     "entered": true,
     "events": [
      {
@@ -6010,7 +6017,7 @@
       "txt": "LONG at 252.18, stop 251.29, target 253.50"
      }
     ],
-    "last": 252.395,
+    "last": 252.185,
     "orh": 251.27,
     "orl": 248.73,
     "pair": "AMZN",
@@ -6219,9 +6226,16 @@
       524.17,
       523.87,
       523.88
+     ],
+     [
+      "11:45",
+      523.86,
+      523.91,
+      523.59,
+      523.62
      ]
     ],
-    "checked": 1793115912.699801,
+    "checked": 1793116211.576277,
     "entered": false,
     "events": [
      {
@@ -6237,7 +6251,7 @@
       "txt": "Breakdown failed: price came back to the range low"
      }
     ],
-    "last": 523.88,
+    "last": 523.615,
     "orh": 523.9,
     "orl": 522.155,
     "pair": "DIA",
@@ -6440,9 +6454,16 @@
       770.35,
       769.66,
       770.34
+     ],
+     [
+      "11:45",
+      770.34,
+      770.42,
+      770.03,
+      770.24
      ]
     ],
-    "checked": 1793115912.699801,
+    "checked": 1793116211.576277,
     "entered": true,
     "events": [
      {
@@ -6470,7 +6491,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 770.34,
+    "last": 770.24,
     "orh": 768.265,
     "orl": 765.8,
     "pair": "SPY",
@@ -6768,7 +6789,7 @@
    "prec": 2,
    "ready": {
     "dir": 1,
-    "in_trade": true,
+    "in_trade": false,
     "of": 6,
     "passed": 3,
     "session": true,
