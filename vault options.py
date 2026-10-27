@@ -4,7 +4,7 @@ Vault Options — a day-trading options bot for Alpaca, with signals you can cop
 
 Every 5 minutes during market hours it:
   1. reads your phone commands from Telegram (/status, /pause, /resume, /closeall, /testtrade, /live)
-  2. manages open options trades: target, stop, breakeven, and everything closed before the bell
+  2. manages open options trades: target, stop, breakeven, 0DTE closed before the bell, weeklies held until the day before expiry
   3. on each new 15-minute candle, the council votes on stock setups (trend pullbacks, crossovers,
      and opening-range breakouts) for the watchlist
   4. when approved, it buys a CALL (bullish) or PUT (bearish): 0DTE on SPY/QQQ/IWM in the morning,
@@ -31,21 +31,35 @@ import urllib.request
 from zoneinfo import ZoneInfo
 
 # ─────────────────────────── SETTINGS (edit these) ───────────────────────────
-PAIRS = ["SPY", "QQQ", "IWM", "AAPL", "NVDA", "AMD", "TSLA", "AMZN", "META", "PLTR", "SOFI"]   # the watchlist
+PAIRS = ["SPY", "DIA", "AMZN", "IWM"]   # opening range breakout watchlist: SPY, DIA, AMZN tested positive in both halves of 2 years
+SIGNAL_ONLY = {"IWM"}       # on probation: alerts + scorekeeping only, no money spent (IWM tested -0.07R). Remove from this set to let it trade
 ZERO_DTE = {"SPY", "QQQ", "IWM"}   # these may use same-day (0DTE) contracts in the morning
-START_BALANCE = 250.00       # the bot trades as if the account holds this much
+START_BALANCE = 1000.00      # the bot trades as if the account holds this much (raised from $250 so SPY, DIA and AMZN contracts fit)
 RISK_PCT = 0.10              # a full stop-out costs about 10% of the bankroll
 OPT_STOP = 0.40              # sell if the option loses 40% of what we paid
 OPT_TARGET = 0.60            # sell if the option gains 60% (1.5 : 1 reward : risk)
 BREAKEVEN_AT = 0.40          # once up 40%, the stop moves to the entry price
+HER_EXITS = True             # Easter's exits: at +30% the stop locks +30%; 2+ contracts sell half at +50% and the rest
+LOCK_PROFIT_AT = 0.30        #   targets +60%; 1 contract trails 25% below its best price (never below +30%)
+HALF_AT = 0.50
+HALF_TARGET = 0.60
+NO_CHASE = 0.50              # skip if the option already costs 50%+ more than its first price today,
+                             #   and never a second trade in the same direction on the same day
+PARTIAL = False              # (old exits, off) take some profit early, let the rest run:
+PARTIAL_AT = 0.30            #   at +30%: sell half (2+ contracts) and move the stop to entry,
+LOCK_AT = 0.10               #   or with 1 contract, lock in +10% instead
+RUNNER_TARGET = 1.20         #   the rest aims for +120%...
+TRAIL_GIVEBACK = 0.25        #   ...with a trailing stop 25% below its best price
 MAX_CONTRACTS = 3            # never more than 3 contracts on one trade
 MAX_OPEN_TRADES = 2          # never more than 2 trades at once (one per stock)
 MAX_SPREAD_PCT = 0.15        # skip contracts whose bid/ask spread is over 15% of the price
-DELTA_RANGE = (0.25, 0.55)   # how far from the money: 0.5 ≈ at the money, 0.25 ≈ cheaper, further out
+DELTA_RANGE = (0.15, 0.55)   # how far from the money: 0.5 ≈ at the money, 0.15 ≈ cheapest. It takes the closest-to-the-money contract the budget allows, and only goes further out when it has to
 WEEKLY_DAYS = (2, 10)        # weeklies: 2–10 days to expiration
 ZERO_DTE_UNTIL = (13, 30)    # 0DTE entries only before 1:30 PM ET
 ENTRY_WINDOW = ((9, 45), (15, 0))   # new trades 9:45 AM – 3:00 PM ET
-FLATTEN_AT = (15, 40)        # day trading: everything is sold by 3:40 PM ET
+FLATTEN_AT = (15, 40)        # 0DTE and expiring trades are sold by 3:40 PM ET
+REPORTER = True              # 6th council member: earnings calendar, headlines, StockTwits crowd (options only)
+HOLD_WEEKLIES = True         # weeklies can be held overnight; they're sold by 3:40 PM the trading day before they expire
 DAILY_LOSS_LIMIT = 0.20      # stop opening trades for the day after a 20% drop (two full losses)
 MAX_DRAWDOWN = 0.35          # pause the bot entirely after a 35% drop from the peak
 STREAK_HALF = 5              # after 5 losses in a row, trade half size
@@ -77,7 +91,17 @@ BENCH_MIN = 20               # a stock + setup combo is benched if its last 20 r
 REPORT_HOUR_ET = 16          # daily report after the 4 PM close
 WEEKLY_DAY = 4               # weekly report on Friday (Mon=0)
 
-ORB = True                   # opening-range breakout: the 9:30–10:00 box, breakouts until 11:30 AM ET
+STRATEGY = "orb5"            # Easter's 5-minute opening range breakout (from the IWM Day Signal page) is the only strategy
+OLD_SETUPS = False           # the old 15-min pullback/crossover/breakout setups are off (they tested negative)
+ORB5 = True                  # mark 9:30–10:00 high/low, then watch 5-min candles 10:00–12:00 for a confirmed breakout
+ORB5_BODY = 0.60             # breakout candle: body at least 60% of its range, closing outside the box
+ORB5_RR = 1.5                # target = 1.5 × the risk (entry to stop) on IWM itself
+ORB5_BE_AT = 1.0             # at +1R on IWM the stop moves to entry
+ORB5_END = (12, 0)           # no new breakouts after 12:00 ET
+ORB5_EOD = (15, 50)          # an ORB trade still open at 3:50 PM ET is closed (it's a day trade)
+ORB5_OPT_SAFETY = 0.70       # option safety net: sell if the option itself loses 70% (fast gaps)
+ORB5_FRESH_MIN = 12          # only act on an entry signal from the last 12 minutes (no late entries)
+ORB = False                  # (old 15-min opening breakout, replaced by ORB5)
 ORB_WINDOW = ((10, 0), (11, 30))
 FULL_SCAN_MIN = 5
 DEPLOY_EVERY_MIN = 14
@@ -90,10 +114,11 @@ DATA_API = "https://data.alpaca.markets"
 OPTION_FEED = os.environ.get("ALPACA_OPTION_FEED", "indicative")   # free plan: indicative; paid plan: opra
 STOCK_FEED = os.environ.get("ALPACA_STOCK_FEED", "iex")             # free plan: iex; paid plan: sip
 NAMES = {s: s for s in PAIRS}
-VOTERS = ["The Quant", "Risk", "Momentum", "Time", "Doubt"]
+VOTERS = ["The Quant", "Risk", "Momentum", "Time", "Doubt", "The Reporter"]
 ROLES = {"The Quant": "trend strength (ADX)", "Risk": "contract price, spread and loss limits",
          "Momentum": "MACD is with the move", "Time": "not overextended, inside trading hours",
-         "Doubt": "the 1-hour trend agrees"}
+         "Doubt": "the 1-hour trend agrees",
+         "The Reporter": "no earnings before expiry; headlines and chatter don't fight the trade"}
 CLOCK = {}                   # filled from Alpaca's market clock each run (holidays, early closes)
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -160,7 +185,7 @@ class Alpaca:
         """Completed bars per symbol as {t, o, h, l, c} (t = bar start, UTC ISO)."""
         start = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=days)).strftime("%Y-%m-%dT%H:%M:%SZ")
         out, token = {s: [] for s in symbols}, None
-        step = {"15Min": 900, "1Hour": 3600}[timeframe]
+        step = {"5Min": 300, "15Min": 900, "1Hour": 3600}[timeframe]
         for _ in range(20):
             p = {"symbols": ",".join(symbols), "timeframe": timeframe, "start": start, "limit": 10000,
                  "feed": STOCK_FEED, "adjustment": "raw", "sort": "asc"}
@@ -233,8 +258,8 @@ class Alpaca:
     def cancel(self, oid):
         return self.t("DELETE", f"/v2/orders/{oid}", tries=1)
 
-    def close(self, contract):
-        return self.t("DELETE", f"/v2/positions/{contract}", tries=1)
+    def close(self, contract, qty=None):
+        return self.t("DELETE", f"/v2/positions/{contract}", params={"qty": str(qty)} if qty else None, tries=1)
 
 
 def parse_occ(sym):
@@ -434,6 +459,158 @@ def council(a, spread, risk_ok, risk_why, now_utc, pair=None):
     return v
 
 
+# ───────────────────────────── The Reporter (news check, options only) ──────────
+EARNINGS_URL = "https://api.nasdaq.com/api/calendar/earnings"
+STOCKTWITS_URL = "https://api.stocktwits.com/api/2/streams/symbol/{s}.json"
+EARNINGS_DAYS = 14           # look this far ahead on the earnings calendar (refreshed every 12 hours)
+HEADLINE_HOURS = 6           # headlines from the last 6 hours count
+FRESH_MIN = 45               # a big headline in the last 45 minutes can block a trade on its own
+ETFS = {"SPY", "QQQ", "IWM", "DIA"}
+BULL_WORDS = ("beat", "beats", "tops", "upgrade", "raises", "raised", "record", "surge", "soar", "jump", "rall", "approval",
+              "approved", "buyback", "partnership", "outperform", "strong demand", "exceeds", "higher", "gains", "bullish")
+BEAR_WORDS = ("miss", "downgrade", "cuts", "lowers", "plunge", "sink", "falls", "tumble", "slump", "lawsuit", "probe",
+              "investigation", "recall", "halt", "bankrupt", "layoff", "offering", "dilut", "warns", "weak", "underperform",
+              "delay", "lower", "drops", "bearish", "selloff", "sell-off")
+BIG_WORDS = ("halt", "fda", "sec ", "doj", "merger", "acquire", "acquisition", "buyout", "bankrupt", "guidance",
+             "earnings", "results", "offering", "tariff", "ceo", "lawsuit", "probe")
+
+
+def load_earnings(st, log):
+    """Upcoming earnings dates for the watchlist from Nasdaq's public calendar, cached for 12 hours."""
+    E = st.get("earnings") or {}
+    if time.time() - E.get("fetched", 0) < 12 * 3600:
+        return E
+    out, ok = {}, 0
+    day = dt.datetime.now(LOCAL_TZ).date()
+    want = {p for p in PAIRS if p not in ETFS}
+    for k in range(EARNINGS_DAYS + 1):
+        d = day + dt.timedelta(days=k)
+        if d.weekday() >= 5:
+            continue
+        try:
+            j = http("GET", EARNINGS_URL, params={"date": d.isoformat()}, tries=2,
+                     headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Safari/605.1.15",
+                              "Accept": "application/json, text/plain, */*", "Origin": "https://www.nasdaq.com",
+                              "Referer": "https://www.nasdaq.com/"})
+            ok += 1
+        except ApiError as e:
+            log.append(f"Reporter: earnings calendar unavailable for {d} ({str(e)[:60]})")
+            continue
+        for row in ((j.get("data") or {}).get("rows") or []):
+            sym = (row.get("symbol") or "").upper()
+            if sym in want:
+                t = (row.get("time") or "").lower()
+                when = "after" if "after" in t else "before" if "pre" in t else "unknown"
+                out.setdefault(sym, []).append({"date": d.isoformat(), "when": when})
+        time.sleep(0.3)
+    if ok:
+        E = {"fetched": time.time(), "dates": out, "days_checked": ok}
+        st["earnings"] = E
+    return E
+
+
+def earnings_hit(st, pair, sell_by_et):
+    """The first earnings release between now and when we'd have to sell, or None. (Already-released ones don't count.)"""
+    now_et = dt.datetime.now(LOCAL_TZ)
+    for e in (st.get("earnings") or {}).get("dates", {}).get(pair, []):
+        d = dt.date.fromisoformat(e["date"])
+        hour = 16 if e["when"] == "after" else 8                 # after the close, or before the open (unknown = assume before)
+        release = dt.datetime(d.year, d.month, d.day, hour, 5 if hour == 16 else 0, tzinfo=LOCAL_TZ)
+        if now_et < release <= sell_by_et:
+            return e, release
+    return None
+
+
+def headlines(api, pair, log):
+    """Recent Benzinga headlines for this symbol from Alpaca's news feed (same API keys)."""
+    start = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=HEADLINE_HOURS)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    try:
+        j = api.d("/v1beta1/news", {"symbols": pair, "start": start, "limit": 20, "sort": "desc"})
+    except ApiError as e:
+        log.append(f"Reporter: news feed unavailable ({str(e)[:60]})")
+        return None
+    out = []
+    for n in j.get("news", []) or []:
+        try:
+            t = dt.datetime.fromisoformat(n.get("created_at", "").replace("Z", "+00:00")).timestamp()
+        except ValueError:
+            continue
+        text = f"{n.get('headline', '')} {n.get('summary', '')}".lower()
+        score = sum(w in text for w in BULL_WORDS) - sum(w in text for w in BEAR_WORDS)
+        out.append({"t": t, "headline": (n.get("headline") or "").strip(), "score": score,
+                    "big": any(w in text for w in BIG_WORDS), "n_syms": len(n.get("symbols") or [])})
+    return out
+
+
+def crowd_mood(pair, log):
+    """StockTwits: how many recent posts are tagged Bullish vs Bearish (public, no key). None if unavailable."""
+    try:
+        j = http("GET", STOCKTWITS_URL.format(s=pair), tries=1, headers={"User-Agent": "Mozilla/5.0"})
+    except ApiError:
+        return None
+    bull = bear = 0
+    for m in (j.get("messages") or [])[:30]:
+        b = (((m.get("entities") or {}).get("sentiment")) or {}).get("basic")
+        bull += b == "Bullish"
+        bear += b == "Bearish"
+    return {"bull": bull, "bear": bear}
+
+
+def reporter_vote(st, api, pair, d, pick, now_utc, log):
+    """(vote, why, hard_veto). Earnings before we'd sell is a hard NO; fresh headlines or a crowd leaning hard against us are a NO."""
+    if not REPORTER:
+        return None, "off", False
+    e_now = dt.datetime.now(LOCAL_TZ)
+    zero = bool(pick and pick.get("zero")) or (pick is None and pair in ETFS)
+    if pick and not zero:
+        exp = dt.date.fromisoformat(pick["exp"])
+        last = exp - dt.timedelta(days=1)
+        while last.weekday() >= 5:
+            last -= dt.timedelta(days=1)
+        sell_by = dt.datetime(last.year, last.month, last.day, 15, 40, tzinfo=LOCAL_TZ) if HOLD_WEEKLIES else \
+            e_now.replace(hour=15, minute=40)
+    elif pick is None and not zero:
+        sell_by = e_now + dt.timedelta(days=WEEKLY_DAYS[1])          # no contract yet: assume a full-length weekly
+    else:
+        sell_by = e_now.replace(hour=15, minute=40)
+    side = "calls" if d == 1 else "puts"
+    if pair not in ETFS:
+        hit = earnings_hit(st, pair, sell_by)
+        if hit:
+            e, rel = hit
+            return (False, f"{pair} reports earnings {rel:%a %b} {rel.day} {'after the close' if e['when'] == 'after' else 'before the open'}, "
+                           f"before we'd sell. Too much gap risk", True)
+    news = headlines(api, pair, log)
+    crowd = crowd_mood(pair, log)
+    if news is None and crowd is None:
+        return None, "couldn't reach the news feeds this time", False
+    now_ts = time.time()
+    against = [n for n in (news or []) if n["score"] * d < 0]
+    fresh_big = [n for n in against if n["big"] and now_ts - n["t"] <= FRESH_MIN * 60 and n["n_syms"] <= 3]
+    if fresh_big:
+        n = fresh_big[0]
+        return False, f"fresh headline against our {side}: \"{n['headline'][:70]}\"", False
+    net = sum(n["score"] for n in (news or []) if n["n_syms"] <= 3)
+    if net * d <= -3:
+        return False, f"today's headlines lean the other way ({len(against)} against our {side})", False
+    if crowd and crowd["bull"] + crowd["bear"] >= 8:
+        lean = (crowd["bull"] - crowd["bear"]) / (crowd["bull"] + crowd["bear"])
+        if lean * d <= -0.5:
+            return False, (f"StockTwits crowd is {crowd['bear'] if d == 1 else crowd['bull']} to "
+                           f"{crowd['bull'] if d == 1 else crowd['bear']} {'bearish' if d == 1 else 'bullish'}"), False
+    bits = []
+    if pair not in ETFS:
+        bits.append("no earnings before we'd sell" if (st.get("earnings") or {}).get("days_checked") else "earnings calendar unavailable")
+    if news:
+        agree = [n for n in news if n["score"] * d > 0]
+        bits.append(f"{len(news)} headline{'s' if len(news) > 1 else ''} today" + (f", {len(agree)} on our side" if agree else ", none against us"))
+    elif news is not None:
+        bits.append("no headlines today")
+    if crowd and crowd["bull"] + crowd["bear"]:
+        bits.append(f"StockTwits {crowd['bull']} bullish / {crowd['bear']} bearish")
+    return True, "; ".join(bits) or "quiet news", False
+
+
 def opening_range(pair, m15, h1a, now_utc):
     """A breakout of today's 9:30–10:00 ET range on a completed 15-min candle, or None."""
     if not ORB or not m15:
@@ -461,6 +638,169 @@ def opening_range(pair, m15, h1a, now_utc):
     return {"time": last["t"], "setup": "opening breakout", "trend": d, "close": last["c"], "atr": size,
             "sl_price": (top + bot) / 2, "box": (bot, top), "size": size, "body": body,
             "h1_trend": h1a["trend"], "h1_adx": h1a["adx"] or 0, "rsi": h1a.get("rsi")}
+
+
+def orb5(bars, complete):
+    """Easter's opening range breakout on one session's completed 5-min bars ({mins,label,o,h,l,c}, ascending).
+    Same rules as the IWM Day Signal page: 9:30–10:00 box; 10:00–12:00 a strong candle (60%+ body) closes outside;
+    the next candle must stay outside without touching the line and make a new extreme; entry at its close;
+    stop past the breakout candles; target 1.5R; stop to breakeven at 1R; one trade a day."""
+    r = {"phase": "wait", "status": "", "events": [], "orh": None, "orl": None, "trade": None, "box_bars": 0}
+    box = [b for b in bars if 570 <= b["mins"] < 600]
+    r["box_bars"] = len(box)
+    if box:
+        r["orh"], r["orl"] = max(b["h"] for b in box), min(b["l"] for b in box)
+    if len(box) < 6:
+        r["phase"] = "building"
+        r["status"] = "Building the opening range until 10:00 ET" if box else "Waiting for the 9:30 ET open"
+        return r
+    orh, orl = r["orh"], r["orl"]
+    end = ORB5_END[0] * 60 + ORB5_END[1]
+    r["status"] = f"Range set. Watching for a strong 5-min close outside it until {ORB5_END[0] % 12 or 12}:{ORB5_END[1]:02d} ET"
+    dirn, bH, bL, pos, traded, t, closed_note, pend = 0, 0.0, 0.0, 0, False, None, False, ""
+
+    def ev(b, txt, kind):
+        r["events"].append({"t": b["label"], "mins": b["mins"], "txt": txt, "kind": kind})
+
+    for b in bars:
+        if b["mins"] < 600:
+            continue
+        in_win = b["mins"] < end
+        sig = 0
+        if not traded and pos == 0 and in_win:
+            if dirn == -1:
+                if b["h"] < orl and b["l"] < bL:
+                    sig = -1
+                elif b["h"] >= orl:
+                    dirn = 0; ev(b, "Breakdown failed: price came back to the range low", "fail")
+                else:
+                    bH = max(bH, b["h"])
+            elif dirn == 1:
+                if b["l"] > orh and b["h"] > bH:
+                    sig = 1
+                elif b["l"] <= orh:
+                    dirn = 0; ev(b, "Breakout failed: price came back to the range high", "fail")
+                else:
+                    bL = min(bL, b["l"])
+            if dirn == 0 and not sig:
+                rg = b["h"] - b["l"]
+                if b["c"] < orl and rg > 0 and b["c"] < b["o"] and (b["o"] - b["c"]) / rg >= ORB5_BODY:
+                    dirn, bH, bL = -1, b["h"], b["l"]
+                    pend = "Strong close below the range low. Waiting for the next candle to hold below and make a new low"
+                    ev(b, pend, "pend")
+                elif b["c"] > orh and rg > 0 and b["c"] > b["o"] and (b["c"] - b["o"]) / rg >= ORB5_BODY:
+                    dirn, bH, bL = 1, b["h"], b["l"]
+                    pend = "Strong close above the range high. Waiting for the next candle to hold above and make a new high"
+                    ev(b, pend, "pend")
+        if sig:
+            pos, traded, dirn = sig, True, 0
+            entry = b["c"]
+            stop = bH if sig < 0 else bL
+            one_r = abs(stop - entry)
+            t = {"dir": sig, "entry": entry, "stop0": stop, "stop": stop, "one_r": one_r, "target": entry + sig * ORB5_RR * one_r,
+                 "be": False, "result": None, "entry_mins": b["mins"], "entry_label": b["label"], "entry_t": b["t"], "exit_mins": None}
+            ev(b, f"{'LONG' if sig > 0 else 'SHORT'} at {entry:.2f}, stop {stop:.2f}, target {t['target']:.2f}", "entry")
+            continue
+        if not traded and not in_win and not closed_note:
+            closed_note, dirn = True, 0
+            ev(b, f"No setup by {ORB5_END[0] % 12 or 12}:{ORB5_END[1]:02d} ET. Done for the day", "none")
+        if pos != 0:
+            sgn = pos
+            if (b["h"] >= t["stop"]) if sgn < 0 else (b["l"] <= t["stop"]):
+                pos = 0; t["result"] = 0.0 if t["be"] else -1.0; t["exit_mins"] = b["mins"]
+                ev(b, "Stopped at breakeven: 0R" if t["be"] else "Stop hit: −1R", "be_exit" if t["be"] else "sl")
+            else:
+                if not t["be"] and ((b["l"] <= t["entry"] - ORB5_BE_AT * t["one_r"]) if sgn < 0 else (b["h"] >= t["entry"] + ORB5_BE_AT * t["one_r"])):
+                    t["be"], t["stop"] = True, t["entry"]
+                    ev(b, f"1R reached. Stop moves to breakeven at {t['entry']:.2f}", "be")
+                if (b["l"] <= t["target"]) if sgn < 0 else (b["h"] >= t["target"]):
+                    pos = 0; t["result"] = ORB5_RR; t["exit_mins"] = b["mins"]
+                    ev(b, f"Target hit: +{ORB5_RR:g}R", "tp")
+    last = bars[-1] if bars else None
+    if pos != 0 and complete and last and last["mins"] >= 955:
+        t["result"] = (last["c"] - t["entry"]) * t["dir"] / t["one_r"]; t["exit_mins"] = last["mins"]; pos = 0
+        ev(last, f"Closed at 4:00 PM ET: {t['result']:+.1f}R", "eod")
+    r["trade"] = t
+    if t:
+        if t["result"] is None:
+            r["phase"] = "long" if t["dir"] > 0 else "short"
+            r["status"] = f"{'LONG' if t['dir'] > 0 else 'SHORT'} trade open" + (", stop at breakeven" if t["be"] else "")
+        else:
+            r["phase"] = "done"; r["status"] = f"Trade finished: {t['result']:+.1f}R"
+    elif dirn != 0:
+        r["phase"] = "pending"; r["status"] = pend
+    elif closed_note:
+        r["phase"] = "none"; r["status"] = "No setup today"
+    return r
+
+
+def council_orb5(o, t, risk_ok, risk_why, news_hit, now_utc, pair):
+    """The council's take on an ORB entry. The rules already decided the trade; Risk can still veto."""
+    v = {}
+    size = o["orh"] - o["orl"]
+    pct = size / t["entry"] * 100
+    ok_size = 0.15 <= pct <= 2.5
+    v["The Quant"] = (ok_size, f"opening range is ${size:.2f} ({pct:.2f}% of the price)" + ("" if ok_size else ", too " + ("small" if pct < 0.15 else "wild")))
+    v["Risk"] = (False, risk_why) if not risk_ok else (True, "contract and limits OK")
+    v["Momentum"] = (True, f"strong {'green' if t['dir'] > 0 else 'red'} 5-min close outside the range, then the next candle held and made a new {'high' if t['dir'] > 0 else 'low'}")
+    e = et(now_utc)
+    v["Time"] = ((10, 0) <= (e.hour, e.minute) <= (12, 15), f"entry at {t['entry_label']} ET, inside the 10:00–12:00 window")
+    v["Doubt"] = (news_hit is None, f"big news right now: {news_label(news_hit)}" if news_hit else f"stop ${abs(t['entry'] - t['stop0']):.2f} away, target 1.5× that")
+    return v
+
+
+def orb5_panel(st):
+    """Today's opening ranges: a chart for each ticker with a signal or a breakout watch, one line for the rest."""
+    oa = st.get("orb5") or {}
+    if not oa.get("date") or not oa.get("pairs"):
+        return ""
+    e = html.escape
+
+    def chart(o, t):
+        cs = o.get("candles") or []
+        if not cs or not o.get("orh"):
+            return ""
+        W, H, pad, LBL = 420, 190, 8, 104
+        hi = max([c[2] for c in cs] + [o["orh"]] + ([t["target"], t["stop0"]] if t else []))
+        lo = min([c[3] for c in cs] + [o["orl"]] + ([t["target"], t["stop0"]] if t else []))
+        sp = (hi - lo) or 1
+        y = lambda v: pad + (hi - v) / sp * (H - 2 * pad)
+        n = len(cs); step = (W - LBL) / max(n, 1); bw = max(2, step * 0.6)
+        parts = []
+        for i, (lab, op, h, l, c) in enumerate(cs):
+            x = 4 + step * (i + 0.5); col = "#45e39b" if c >= op else "#ff6378"
+            parts.append(f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{y(h):.1f}" y2="{y(l):.1f}" stroke="{col}"/>'
+                         f'<rect x="{x - bw / 2:.1f}" y="{y(max(op, c)):.1f}" width="{bw:.1f}" height="{max(1, y(min(op, c)) - y(max(op, c))):.1f}" fill="{col}"/>')
+        lines = [("Range high", o["orh"], "#8fb0d6"), ("Range low", o["orl"], "#8fb0d6")]
+        if t:
+            lines += [("Target", t["target"], "#45e39b"), ("Entry" + (" = stop" if t.get("be") else ""), t["entry"], "#c9cde4")]
+            if not t.get("be"):
+                lines.append(("Stop", t["stop"], "#ff6378"))
+        last_y = -99
+        for name, v, col in sorted(lines, key=lambda z: -z[1]):
+            ly = y(v); ty = max(ly + 4, last_y + 13); last_y = ty
+            parts.append(f'<line x1="0" x2="{W - LBL + 2}" y1="{ly:.1f}" y2="{ly:.1f}" stroke="{col}" stroke-dasharray="5 4"/>'
+                         f'<text x="{W - LBL + 6}" y="{ty:.1f}" fill="{col}" font-size="10.5">{name} {v:.2f}</text>')
+        return f'<svg viewBox="0 0 {W} {H + 6}" width="100%" role="img" aria-label="5-minute candles with the opening range">{"".join(parts)}</svg>'
+
+    big, small = [], []
+    for pair, o in sorted(oa["pairs"].items()):
+        t = o.get("trade")
+        if t or o.get("phase") == "pending":
+            tr = ""
+            if t:
+                res = "" if t.get("result") is None else f" · result {t['result']:+.1f}R"
+                tr = (f'<p><b>{"CALLS" if t["dir"] > 0 else "PUTS"}</b> from {t["entry"]:.2f} · stop {t["stop"]:.2f}'
+                      f'{" (breakeven)" if t.get("be") else ""} · target {t["target"]:.2f}{res}</p>')
+            rows = "".join(f'<li><span class="t">{e(x["t"])}</span> {e(x["txt"])}</li>' for x in o.get("events", []))
+            big.append(f'<h3>{e(pair)} · range {o["orl"]:.2f}–{o["orh"]:.2f} · now {o.get("last") or 0:.2f}</h3>'
+                       f'<p class="fine">{e(o.get("status", ""))}</p>{chart(o, t)}{tr}<ul class="fine">{rows}</ul>')
+        else:
+            rng = f'{o["orl"]:.2f}–{o["orh"]:.2f}' if o.get("orh") else "building"
+            small.append(f'<tr><td>{e(pair)}</td><td>{rng}</td><td>{o.get("last") or 0:.2f}</td><td>{e(o.get("status", ""))}</td></tr>')
+    tbl = (f'<div class="tbl"><table><tr><th>Ticker</th><th>Range</th><th>Now</th><th>Status</th></tr>{"".join(small)}</table></div>'
+           if small else "")
+    return f'<section><h2>Opening range breakout · {e(oa["date"])}</h2>{"".join(big)}{tbl}</section>'
 
 
 def council_orb(b, risk_ok, risk_why, now_utc, pair, inf=None):
@@ -580,6 +920,66 @@ def fmt_price(x, prec=2):
 def tick_up(p):
     step = 0.05 if p >= 3 else 0.01
     return math.ceil(p / step - 1e-9) * step
+
+
+def her_exits(api, st, meta, bid, tg, log):
+    """Easter's exit rules. The stop (−OPT_STOP) and the end-of-day sale are handled by the main loop."""
+    name, entry = contract_name(meta["sym"]), meta["entry"]
+    if not meta.get("locked") and bid >= entry * (1 + LOCK_PROFIT_AT):
+        meta["locked"] = True
+        meta["sl"] = max(meta["sl"], round(entry * (1 + LOCK_PROFIT_AT), 2))
+        if meta.get("qty0", meta["qty"]) < 2:
+            meta["trail"], meta["peak"] = True, bid
+        st["_changed"] = True
+        feed_add(st, "event", f"{meta['pair']} profit locked", who="Risk", ok=True,
+                 text=f"{name} is up {LOCK_PROFIT_AT:.0%}. Stop raised to ${meta['sl']:.2f}, so this trade can't lose now.")
+        if tg:
+            tg.say(f"🔐 {name} is up {LOCK_PROFIT_AT:.0%}. Stop raised to ${meta['sl']:.2f} (locks +{LOCK_PROFIT_AT:.0%})"
+                   + (". Half comes off at +50%." if meta["qty"] >= 2 else " and now follows the price up (25% below its best).")
+                   + f"\n\n👉 Robinhood: if you copied it, move your stop to ${meta['sl']:.2f}.")
+    if meta.get("locked") and meta["qty"] >= 2 and not meta.get("half") and bid >= entry * (1 + HALF_AT):
+        n = meta["qty"] // 2
+        try:
+            res = api.close(meta["sym"], n)
+            o = wait_fill(api, res["id"]) if res.get("id") else {}
+            px = float(o.get("filled_avg_price") or 0) or bid
+        except ApiError as e:
+            log.append(f"{meta['sym']}: couldn't sell half ({e})")
+            return
+        banked = round((px - entry) * 100 * n, 2)
+        meta.update(half=True, qty=meta["qty"] - n, tp=round(entry * (1 + HALF_TARGET), 2), tp_on=True)
+        meta["banked"] = round(meta.get("banked", 0) + banked, 2)
+        meta["sold_early"] = meta.get("sold_early", 0) + n
+        st["record"]["pl"] = round(st["record"]["pl"] + banked, 2)
+        st["_changed"] = True
+        feed_add(st, "event", f"{meta['pair']} took profit", who="Risk", ok=True,
+                 text=f"Sold {n} of {name} at ${px:.2f} ({money(banked)}). The rest aims for ${meta['tp']:.2f}.")
+        if tg:
+            tg.say(f"💰 TOOK PROFIT on {name}: sold {n} at ${px:.2f} ({money(banked)}). The other {meta['qty']} aims for "
+                   f"${meta['tp']:.2f} (+{HALF_TARGET:.0%}); stop stays at ${meta['sl']:.2f}.\n\n"
+                   f"👉 Robinhood: if you copied it, sell {n} now and set a limit sell at ${meta['tp']:.2f} on the rest.")
+
+
+def first_price_today(api, sym, now_utc):
+    """The option's first traded price today (None if Alpaca has no bars for it yet)."""
+    e = et(now_utc)
+    start = dt.datetime(e.year, e.month, e.day, 9, 30, tzinfo=LOCAL_TZ).astimezone(dt.timezone.utc)
+    try:
+        j = api.d("/v1beta1/options/bars", {"symbols": sym, "timeframe": "1Min", "limit": 5,
+                                            "start": start.strftime("%Y-%m-%dT%H:%M:%SZ")})
+        bars = (j.get("bars") or {}).get(sym) or []
+        return float(bars[0]["o"]) if bars else None
+    except (ApiError, KeyError, ValueError):
+        return None
+
+
+def gap_fade_holds():
+    """Contracts the Gap Fade bot holds (same Alpaca account): never buy those, so neither bot sells the other's."""
+    try:
+        t = json.load(open("gap_state.json", encoding="utf-8")).get("trade")
+        return {t["sym"]} if t else set()
+    except (OSError, ValueError):
+        return set()
 
 
 def pick_contract(api, pair, d, price, budget, now_utc):
@@ -779,6 +1179,75 @@ def plan(st, now=None):
     return "manage" if st.get("trades") else "skip"
 
 
+def next_weekday(d):
+    d += dt.timedelta(days=1)
+    while d.weekday() >= 5:
+        d += dt.timedelta(days=1)
+    return d
+
+
+def must_sell_today(meta, today_s):
+    """0DTE (or anything when holding is off) goes by the end of today; weeklies go the trading day before they expire."""
+    exp = meta.get("exp")
+    if not HOLD_WEEKLIES or not exp or exp <= today_s:
+        return True
+    return next_weekday(dt.date.fromisoformat(today_s)) >= dt.date.fromisoformat(exp)
+
+
+def sell_by_text(exp, zero):
+    if zero or not HOLD_WEEKLIES:
+        return "Out by 3:40 PM today no matter what."
+    last = dt.date.fromisoformat(exp) - dt.timedelta(days=1)
+    while last.weekday() >= 5:
+        last -= dt.timedelta(days=1)
+    return f"Can be held overnight. Sold by 3:40 PM {last:%a %b} {last.day} at the latest (the day before it expires)."
+
+
+def take_partial(api, st, meta, bid, now, tg, log):
+    """At +PARTIAL_AT: bank half (or lock a small profit on 1 contract) and let the rest run on a trailing stop."""
+    name = contract_name(meta["sym"])
+    meta["partial"] = True
+    meta["trail"] = True
+    meta["breakeven"] = True
+    meta["peak"] = bid
+    meta["tp"] = round(meta["entry"] * (1 + RUNNER_TARGET), 2)
+    if meta["qty"] >= 2:
+        n = meta["qty"] // 2
+        try:
+            res = api.close(meta["sym"], n)
+            o = wait_fill(api, res["id"]) if res.get("id") else {}
+            px = float(o.get("filled_avg_price") or 0) or bid
+        except ApiError as e:
+            log.append(f"{meta['sym']}: couldn't sell half ({e})")
+            meta["partial"] = False; meta["trail"] = False
+            return
+        banked = round((px - meta["entry"]) * 100 * n, 2)
+        meta["qty"] -= n
+        meta["banked"] = round(meta.get("banked", 0) + banked, 2)
+        meta["sold_early"] = meta.get("sold_early", 0) + n
+        st["record"]["pl"] = round(st["record"]["pl"] + banked, 2)       # booked now so the bankroll shows it
+        meta["sl"] = meta["entry"]
+        st["_changed"] = True
+        feed_add(st, "event", f"{meta['pair']} took profit", who="Risk", ok=True,
+                 text=f"Sold {n} of {name} at ${px:.2f} ({money(banked)}). The rest rides with the stop at entry.")
+        log.append(f"{meta['pair']}: sold {n} of {meta['sym']} at {px:.2f} (+{PARTIAL_AT:.0%} partial)")
+        if tg:
+            tg.say(f"💰 TOOK PROFIT on {name}: sold {n} of {n + meta['qty']} at ${px:.2f} ({money(banked)})\n"
+                   f"The other {meta['qty']} keeps running: stop moved to ${meta['entry']:.2f} (can't lose now), "
+                   f"aiming for ${meta['tp']:.2f}, with a stop that follows the price up.\n\n"
+                   f"👉 Robinhood: if you copied it, sell {n} of your {n + meta['qty']} contracts now (limit near ${px:.2f}) "
+                   f"and set a stop at ${meta['entry']:.2f} on the rest.")
+    else:
+        meta["sl"] = round(meta["entry"] * (1 + LOCK_AT), 2)
+        st["_changed"] = True
+        feed_add(st, "event", f"{meta['pair']} profit locked", who="Risk", ok=True,
+                 text=f"{name} is up {PARTIAL_AT:.0%}. Stop raised to ${meta['sl']:.2f} (+{LOCK_AT:.0%}) and it now trails the price.")
+        if tg:
+            tg.say(f"🔐 {name} is up {PARTIAL_AT:.0%}. Locked in a profit: stop raised to ${meta['sl']:.2f} (+{LOCK_AT:.0%}). "
+                   f"Letting it run toward ${meta['tp']:.2f} with a stop that follows the price up.\n\n"
+                   f"👉 Robinhood: if you copied it, set a stop at ${meta['sl']:.2f}.")
+
+
 def close_trade(api, st, tid, meta, why, price_hint, now, tg, log):
     """Sell the contract at market and book the result."""
     try:
@@ -793,12 +1262,13 @@ def close_trade(api, st, tid, meta, why, price_hint, now, tg, log):
             if tg:
                 tg.say(f"⚠️ Couldn't sell {contract_name(meta['sym'])}: {e}\nPlease close it in the app.")
             return False
-    pl = round((exit_px - meta["entry"]) * 100 * meta["qty"], 2)
+    rest = round((exit_px - meta["entry"]) * 100 * meta["qty"], 2)
+    pl = round(rest + meta.get("banked", 0), 2)                    # includes any half sold early
     won = pl > 0
     meta.update(pl=pl, exit=exit_px, why=why, closed=now.isoformat()[:19], closed_ts=now.timestamp())
     st["closed"].append(meta)
     st["_changed"] = True
-    rec = st["record"]; rec["wins" if won else "losses"] += 1; rec["pl"] = round(rec["pl"] + pl, 2)
+    rec = st["record"]; rec["wins" if won else "losses"] += 1; rec["pl"] = round(rec["pl"] + rest, 2)   # the early half was booked already
     score(st, meta.get("votes", {}), won, True)
     meta["r"] = round(pl / meta["risk"], 2) if meta.get("risk") else 0
     for note_ in streak_update(st, meta["r"], now.timestamp()):
@@ -813,9 +1283,10 @@ def close_trade(api, st, tid, meta, why, price_hint, now, tg, log):
     st["trades"].pop(tid, None)
     log.append(f"{meta['pair']}: CLOSED {meta['sym']} ({why}) {money(pl)}")
     if tg:
-        icon = {"target": "🎯", "stop": "🛑", "breakeven": "🔒", "end of day": "🔔", "expired": "⌛"}.get(why, "⚪")
+        icon = {"target": "🎯", "stop": "🛑", "breakeven": "🔒", "end of day": "🔔", "expired": "⌛", "trailing stop": "📈"}.get(why, "⚪")
+        early = (f" (plus {meta['sold_early']} sold earlier for {money(meta['banked'])})" if meta.get("sold_early") else "")
         tg.say(f"{'✅' if won else '❌'} SOLD {contract_name(meta['sym'])} ({icon} {why})\n"
-               f"Bought ${meta['entry']:.2f} → sold ${exit_px:.2f} × {meta['qty']}\n"
+               f"Bought ${meta['entry']:.2f} → sold ${exit_px:.2f} × {meta['qty']}{early}\n"
                f"Result: {money(pl)}  ·  Record {rec['wins']}W–{rec['losses']}L, total {money(rec['pl'])}\n\n"
                f"👉 Robinhood: if you copied it, sell your {contract_name(meta['sym'])} now (limit near ${exit_px:.2f}).")
     return True
@@ -863,6 +1334,12 @@ def run(log, full=True):
     if START_BALANCE and st.get("start_balance") != START_BALANCE:
         st.update(start_balance=START_BALANCE, peak=START_BALANCE, day={}, equity=[],
                   record={"wins": 0, "losses": 0, "pl": 0.0})
+    if st.get("strategy") != STRATEGY:            # new strategy = fresh paper bankroll; the old record is kept for reference
+        st.setdefault("old_records", []).append({"strategy": st.get("strategy") or "council setups", "record": st.get("record"),
+                                                 "until": now.isoformat()[:19]})
+        st.update(strategy=STRATEGY, record={"wins": 0, "losses": 0, "pl": 0.0}, peak=START_BALANCE, paused=None,
+                  equity=[], day={}, streak={"losses": 0, "half": False, "wins_since": 0, "until": 0})
+        st["_strategy_switched"] = True
     bal = START_BALANCE + st["record"]["pl"]
     unreal = sum(m.get("upl", 0) for m in st["trades"].values())
     nav = bal + unreal
@@ -888,7 +1365,7 @@ def run(log, full=True):
                        if on else "🔇 Live council is OFF. You'll still get trades, closes and reports.")
             elif cmd == "/pause":
                 feed_add(st, "event", "Paused", who="Chair", text="You paused new trades. Open trades are still managed.")
-                st["paused"] = "by you"; tg.say("⏸ Paused. No new trades. Open ones are still managed and closed by 3:40. /resume to restart.")
+                st["paused"] = "by you"; tg.say("⏸ Paused. No new trades. Open ones are still managed (stops and targets). /resume to restart.")
             elif cmd == "/resume":
                 st["paused"] = None; st["peak"] = nav; tg.say("▶️ Resumed. Back to normal trading.")
                 if st.get("streak", {}).get("until", 0) > time.time():
@@ -918,7 +1395,7 @@ def run(log, full=True):
             tg.say(f"✅ Vault Options is connected ({ALPACA_ENV.upper()} account, trading a ${nav:,.0f} bankroll).\n\n"
                    f"Watchlist: {', '.join(PAIRS)}. Every 5 minutes during market hours the council looks for setups and, "
                    "when it approves, I buy a CALL (bullish) or PUT (bearish). 0DTE on SPY/QQQ/IWM before 1:30 PM, "
-                   "weeklies otherwise. Everything is sold by 3:40 PM.\n\n"
+                   "weeklies otherwise. 0DTE is sold by 3:40 PM; weeklies can be held overnight and are sold the day before they expire.\n\n"
                    "Each BUY text has the exact contract so you can copy it on Robinhood.\n\n"
                    "Commands:\n/status – bankroll and open trades\n/pause – stop new trades\n/resume – start again\n"
                    "/closeall – sell everything now\n/live – every council debate on or off\n"
@@ -941,6 +1418,8 @@ def run(log, full=True):
             tg.say(f"🛑 Bankroll is down {MAX_DRAWDOWN:.0%} from its peak. I've paused new trades. Review things, then send /resume.")
 
     news = load_news(st, log)
+    if full and REPORTER:
+        load_earnings(st, log)
     today = day_stats(st, nav)
     e_now = et(now)
     is_open = market_open_now(now)
@@ -958,6 +1437,11 @@ def run(log, full=True):
             bid = q.get("bid") or meta.get("price") or meta["entry"]
             meta["price"] = bid
             meta["upl"] = round((bid - meta["entry"]) * 100 * meta["qty"], 2)
+            if meta.get("trail") and bid:
+                meta["peak"] = max(meta.get("peak", bid), bid)
+                trail_sl = round(meta["peak"] * (1 - TRAIL_GIVEBACK), 2)
+                if trail_sl > meta["sl"]:
+                    meta["sl"] = trail_sl
             if pos is not None and meta["sym"] not in pos:
                 close_trade(api, st, tid, meta, "expired" if meta.get("exp", "9") < today_s else "closed outside the bot",
                             bid if meta.get("exp", "9") >= today_s else 0.0, now, tg, log)
@@ -965,13 +1449,22 @@ def run(log, full=True):
             if not is_open:
                 continue
             zero = meta.get("exp") == today_s
-            flat = (e_now.hour, e_now.minute) >= (FLATTEN_AT if not zero else (15, 30))
+            flat = (e_now.hour, e_now.minute) >= (FLATTEN_AT if not zero else (15, 30)) and must_sell_today(meta, today_s)
             if st.get("_closeall") or flat:
                 close_trade(api, st, tid, meta, "end of day" if flat else "closed by you", bid, now, tg, log)
-            elif bid >= meta["tp"]:
+            elif meta.get("tp_on", True) and bid >= meta["tp"]:
                 close_trade(api, st, tid, meta, "target", bid, now, tg, log)
             elif bid <= meta["sl"]:
-                close_trade(api, st, tid, meta, "breakeven" if meta.get("breakeven") else "stop", bid, now, tg, log)
+                why_ = ("trailing stop" if meta.get("trail") and meta["sl"] > meta["entry"] else
+                        "locked profit" if meta.get("locked") and meta["sl"] > meta["entry"] else
+                        "breakeven" if meta.get("breakeven") else "stop")
+                close_trade(api, st, tid, meta, why_, bid, now, tg, log)
+            elif meta.get("orb5"):
+                pass                                          # exits come from the ORB rules on IWM itself (below)
+            elif PARTIAL and not meta.get("partial") and bid >= meta["entry"] * (1 + PARTIAL_AT):
+                take_partial(api, st, meta, bid, now, tg, log)
+            elif HER_EXITS:
+                her_exits(api, st, meta, bid, tg, log)
             elif not meta.get("breakeven") and bid >= meta["entry"] * (1 + BREAKEVEN_AT):
                 meta["breakeven"] = True; meta["sl"] = meta["entry"]
                 feed_add(st, "event", f"{meta['pair']} stop to breakeven", who="Risk",
@@ -1048,6 +1541,8 @@ def run(log, full=True):
             elif age > SHADOW_DAYS:
                 st["shadow"].remove(sh)
 
+        if not OLD_SETUPS:
+            tfs = []
         for tf, a, _candles in tfs:
             bar_key = f"{pair}:{tf}"
             if st["last_bar"].get(bar_key) == a["time"]:
@@ -1084,6 +1579,18 @@ def run(log, full=True):
                 pick, why_not = pick_contract(api, pair, d, a["close"], budget, now)
                 if not pick:
                     reasons.append(why_not)
+                elif pick["sym"] in gap_fade_holds():
+                    pick = None
+                    reasons.append("the Gap Fade bot already holds that exact contract")
+                elif NO_CHASE and f"{pair}:{d}" in st.get("dirs_today", {}).get(today_s, []):
+                    pick = None
+                    reasons.append("already traded this direction today (no chasing)")
+                elif NO_CHASE:
+                    fp = first_price_today(api, pick["sym"], now)
+                    if fp and pick["ask"] >= fp * (1 + NO_CHASE):
+                        reasons.append(f"chasing: the option already costs ${pick['ask']:.2f}, "
+                                       f"{pick['ask'] / fp - 1:.0%} above its first price today (${fp:.2f})")
+                        pick = None
             today["setups"] += 1
             if tf == "ORB":
                 st.setdefault("lb_done", {})[pair] = today_s
@@ -1092,13 +1599,15 @@ def run(log, full=True):
                 votes = council(a, 0, not reasons, "; ".join(reasons), now, pair)
             if pick and votes["Risk"][0]:
                 votes["Risk"] = (True, f"{contract_name(pick['sym'])} at ${pick['ask']:.2f}, spread {pick['spread']:.0%}")
+            rv, rwhy, rhard = reporter_vote(st, api, pair, d, pick, now, log)
+            votes["The Reporter"] = (rv, rwhy)
             under = a["close"]
             if a.get("sl_price") is not None:
                 u_sl = a["sl_price"]; u_tp = under + d * (TARGET_ATR / STOP_ATR) * abs(under - u_sl)
             else:
                 u_sl = under - d * STOP_ATR * a["atr"]; u_tp = under + d * TARGET_ATR * a["atr"]
             yes, no = tally(votes)
-            ok = approved(votes, voter_weights(st)) and pick is not None
+            ok = approved(votes, voter_weights(st)) and pick is not None and not rhard   # earnings = hard veto
             label = f"{pair} {'CALL' if d == 1 else 'PUT'} ({a['setup']})"
             st["last_vote"] = {"label": label, "side": "CALL" if d == 1 else "PUT", "approved": ok, "when": ts,
                                "url": "https://app.alpaca.markets/", "ask": 0, "edge": 0,
@@ -1152,7 +1661,9 @@ def run(log, full=True):
             tid = str(res["id"])
             st["trades"][tid] = {"pair": pair, "sym": pick["sym"], "dir": d, "qty": qty, "units": qty, "entry": fill_px,
                                  "sl": sl, "tp": tp, "exp": pick["exp"], "opened": now.isoformat()[:19], "risk": risk_usd,
-                                 "votes": plain_votes, "setup": a["setup"], "tf": tf, "price": fill_px, "upl": 0.0}
+                                 "votes": plain_votes, "setup": a["setup"], "tf": tf, "price": fill_px, "upl": 0.0,
+                                 "qty0": qty, "tp_on": not HER_EXITS}
+            st["dirs_today"] = {today_s: st.get("dirs_today", {}).get(today_s, []) + [f"{pair}:{d}"]}
             open_pairs.add(pair)
             today["approved"] += 1
             today["opened"] += 1
@@ -1163,8 +1674,14 @@ def run(log, full=True):
                 zero_txt = "Expires TODAY (0DTE). " if pick["zero"] else ""
                 tg.say(f"{'🟢 CALL' if d == 1 else '🔴 PUT'} {pair}: {a['setup']}\n\n"
                        f"Bought {qty} × {contract_name(pick['sym'])} at ${fill_px:.2f} (${fill_px * 100 * qty:,.0f} total)\n"
-                       f"🎯 Sell at ${tp:.2f} (+{OPT_TARGET:.0%})\n🛑 Sell at ${sl:.2f} (−{OPT_STOP:.0%}), max loss ≈ ${risk_usd:,.0f}\n"
-                       f"🔔 {zero_txt}Out by 3:40 PM no matter what.\n\n"
+                       + (f"🔐 At ${fill_px * (1 + LOCK_PROFIT_AT):.2f} (+{LOCK_PROFIT_AT:.0%}) the stop locks +{LOCK_PROFIT_AT:.0%}"
+                          + (f"; at ${fill_px * (1 + HALF_AT):.2f} (+{HALF_AT:.0%}) sell half, the rest aims for ${fill_px * (1 + HALF_TARGET):.2f}\n"
+                             if qty >= 2 else ", then it follows the price up (25% below its best)\n") if HER_EXITS else
+                          f"🎯 Sell at ${tp:.2f} (+{OPT_TARGET:.0%})\n")
+                       + f"🛑 Sell at ${sl:.2f} (−{OPT_STOP:.0%}), max loss ≈ ${risk_usd:,.0f}\n"
+                       + (f"💰 At ${fill_px * (1 + PARTIAL_AT):.2f} (+{PARTIAL_AT:.0%}): " + (f"sell {qty // 2}, let the rest run" if qty >= 2 else f"lock in +{LOCK_AT:.0%} and let it run")
+                          + f" (aims for +{RUNNER_TARGET:.0%} with a trailing stop)\n" if PARTIAL else "")
+                       + f"🔔 {zero_txt}{sell_by_text(pick['exp'], pick['zero'])}\n\n"
                        f"👉 Robinhood: search {pair} → Trade → Trade Options → Buy → "
                        f"{'Call' if d == 1 else 'Put'} → expiration {dt.date.fromisoformat(pick['exp']):%b} {dt.date.fromisoformat(pick['exp']).day} → "
                        f"strike ${pick['strike']:g} → limit ${limit:.2f} or less, {qty} contract{'s' if qty > 1 else ''}. "
@@ -1190,7 +1707,195 @@ def run(log, full=True):
             else:
                 what = "trending, waiting for a pullback"
             notes.append({"who": pr, "vote": None, "say": f"{arrow} ${pp['close']:,.2f}, ADX {(pp.get('adx') or 0):.0f}, RSI {(pp.get('rsi') or 0):.0f}: {what}"})
-        feed_add(st, "scan", f"Scanned {len(notes)} stock{'s' if len(notes) != 1 else ''}: {setups} setup{'s' if setups != 1 else ''} on the latest candle", lines=notes)
+        if OLD_SETUPS:
+            feed_add(st, "scan", f"Scanned {len(notes)} stock{'s' if len(notes) != 1 else ''}: {setups} setup{'s' if setups != 1 else ''} on the latest candle", lines=notes)
+
+    # 3a) Easter's 5-minute opening range breakout
+    if ORB5 and is_open:
+        try:
+            m5s = api.bars(pairs, "5Min", 1)
+        except ApiError as e:
+            m5s = {}
+            log.append(f"5-min bars unavailable ({e})")
+        for pair in pairs:
+            bars = []
+            for x in m5s.get(pair, []):
+                e_ = et(x["t"])
+                if e_.date() == e_now.date():
+                    bars.append({"mins": e_.hour * 60 + e_.minute, "label": e_.strftime("%I:%M").lstrip("0"), "t": x["t"],
+                                 "o": x["o"], "h": x["h"], "l": x["l"], "c": x["c"]})
+            r = orb5(bars, False)
+            o5all = st.setdefault("orb5", {})
+            if o5all.get("date") != today_s or "pairs" not in o5all:
+                o5all.clear(); o5all.update(date=today_s, pairs={})
+            o5 = o5all["pairs"].setdefault(pair, {"sent": [], "entered": False})
+            o5.update(pair=pair, orh=r["orh"], orl=r["orl"], phase=r["phase"], status=r["status"], events=r["events"][-14:],
+                      trade=r["trade"], last=bars[-1]["c"] if bars else None, checked=now.timestamp(),
+                      candles=[[b["label"], round(b["o"], 2), round(b["h"], 2), round(b["l"], 2), round(b["c"], 2)] for b in bars[-80:]])
+            sent = o5["sent"]
+
+            def tell(key, text, feed_title=None, ok=None):
+                if key in sent:
+                    return
+                sent.append(key)
+                st["_changed"] = True
+                feed_add(st, "event", feed_title or f"{pair} opening range", who="The Quant", ok=ok, text=text)
+                if tg:
+                    tg.say(text)
+
+            if r["box_bars"] >= 6:
+                size = r["orh"] - r["orl"]
+                tell("range", f"📏 {pair} opening range is set (9:30–10:00 ET)\nHigh {r['orh']:.2f} · Low {r['orl']:.2f} · size ${size:.2f}\n\n"
+                              f"Watching 5-min candles until {ORB5_END[0] % 12 or 12}:{ORB5_END[1]:02d}. Signal = a strong candle closes outside "
+                              f"the range, then the next one holds outside and makes a new high (calls) or low (puts).",
+                     f"{pair} range set: {r['orl']:.2f}–{r['orh']:.2f}")
+            open_orb = next(((tid, m) for tid, m in st["trades"].items() if m.get("orb5") and m["pair"] == pair), None)
+            for ev_ in r["events"]:
+                key = f"{ev_['mins']}:{ev_['kind']}"
+                k = ev_["kind"]
+                if k == "pend":
+                    tell(key, f"👀 {pair} {ev_['t']} ET: {ev_['txt']}.", f"{pair} breakout watch")
+                elif k == "fail":
+                    tell(key, f"↩️ {pair} {ev_['t']} ET: {ev_['txt']}. No trade, still watching.", f"{pair} breakout failed", False)
+                elif k == "none":
+                    tell(key, f"😴 {pair}: {ev_['txt']}.", f"{pair}: no setup today")
+                elif k == "be":
+                    if open_orb:
+                        open_orb[1]["orb5"]["be"] = True
+                    tell(key, f"🔒 {pair} {ev_['t']} ET: {ev_['txt']} ({pair} level). The trade can't lose on {pair}'s move now.", f"{pair} stop to breakeven", True)
+            t = r["trade"]
+            # entry
+            if t and not o5.get("entered"):
+                o5["entered"] = True
+                d = t["dir"]
+                ts = now.timestamp()
+                end_dt = dt.datetime.fromisoformat(t["entry_t"]).replace(tzinfo=dt.timezone.utc) + dt.timedelta(minutes=5)
+                late = (now - end_dt).total_seconds() / 60 > ORB5_FRESH_MIN
+                head = (f"{'🟢 CALLS' if d == 1 else '🔴 PUTS'} SIGNAL · {pair} opening range breakout ({t['entry_label']} ET)\n"
+                        f"{pair} entry {t['entry']:.2f} · stop {t['stop0']:.2f} · target {t['target']:.2f} (1.5R)\n"
+                        f"Breakeven: when {pair} reaches {t['entry'] + d * ORB5_BE_AT * t['one_r']:.2f}, the stop moves to {t['entry']:.2f}")
+                reasons = []
+                if late:
+                    reasons.append(f"signal was {int((now - end_dt).total_seconds() // 60)} min old when I saw it (no late entries)")
+                if st.get("paused"):
+                    reasons.append(f"paused ({st['paused']})")
+                if streak_status(st, ts) == "timeout":
+                    reasons.append(f"cooling off after {st['streak']['losses']} losses in a row")
+                if st["day"].get("halted"):
+                    reasons.append("daily loss limit hit")
+                if len(st["trades"]) >= MAX_OPEN_TRADES:
+                    reasons.append(f"{MAX_OPEN_TRADES} trades already open")
+                if pair in SIGNAL_ONLY:
+                    reasons.insert(0, f"{pair} is signal-only while it proves itself live")
+                hit = next((e for e in news if e["cur"] == "USD" and e["t"] - NEWS_BEFORE_MIN * 60 <= ts <= e["t"] + NEWS_AFTER_MIN * 60), None)
+                budget = nav * RISK_PCT * (0.5 if streak_status(st, ts) != "normal" else 1) / OPT_STOP
+                pick = None
+                if not reasons:
+                    pick, why_not = pick_contract(api, pair, d, t["entry"], budget, now)
+                    if not pick:
+                        reasons.append(why_not)
+                    elif pick["sym"] in gap_fade_holds():
+                        pick = None; reasons.append("the Gap Fade bot already holds that exact contract")
+                votes = council_orb5(r, t, not reasons, "; ".join(reasons), hit, now, pair)
+                if pick:
+                    votes["Risk"] = (True, f"{contract_name(pick['sym'])} at ${pick['ask']:.2f}, spread {pick['spread']:.0%}")
+                rv, rwhy, rhard = reporter_vote(st, api, pair, d, pick, now, log)
+                votes["The Reporter"] = (rv, rwhy)
+                yes, no = tally(votes)
+                ok = pick is not None and votes["Risk"][0] is True and hit is None and not rhard
+                today["setups"] += 1
+                label = f"{pair} {'CALL' if d == 1 else 'PUT'} (opening range breakout)"
+                vote_text = "\n".join(f"{'✅' if o_ else '❌' if o_ is False else '➖'} {n}: {why}" for n, (o_, why) in votes.items())
+                st["last_vote"] = {"label": label, "side": "CALL" if d == 1 else "PUT", "approved": ok, "when": ts,
+                                   "url": "https://app.alpaca.markets/", "ask": 0, "edge": 0,
+                                   "detail": (f"{contract_name(pick['sym'])} @ ${pick['ask']:.2f}" if pick else f"{pair} ${t['entry']:,.2f}")
+                                             + f" · stock stop {t['stop0']:,.2f} · target {t['target']:,.2f}",
+                                   "votes": {n: [o_, why] for n, (o_, why) in votes.items()},
+                                   "chart": {"closes": [b["c"] for b in bars[-60:]], "entry": t["entry"], "sl": t["stop0"],
+                                             "tp": t["target"], "prec": 2, "tf": "5m"}}
+                vote_entry = feed_add(st, "vote", label,
+                                      lines=[{"who": n, "vote": o_, "say": say(n, o_, why, t["entry_t"] + pair)} for n, (o_, why) in votes.items()],
+                                      verdict=(f"APPROVED {yes}–{no}. Buying {contract_name(pick['sym'])}." if ok else
+                                               f"SIGNAL ONLY {yes}–{no}: {'; '.join(reasons) or 'news or earnings'}. Tracked on {pair}'s levels."), ok=ok)
+                if not ok:
+                    today["rejected"] += 1
+                    o5["paper_only"] = True
+                    idea = ""
+                    if pair in SIGNAL_ONLY and len(reasons) == 1:
+                        try:
+                            sug, _ = pick_contract(api, pair, d, t["entry"], budget, now)
+                        except Exception:
+                            sug = None
+                        if sug:
+                            idea = (f"\nIf you want to take it yourself: {contract_name(sug['sym'])} around ${sug['ask']:.2f} "
+                                    f"(${sug['ask'] * 100:,.0f} per contract).")
+                    if tg:
+                        tg.say(head + f"\n\n⚠️ The bot is NOT buying this one: {'; '.join(reasons) or (news_label(hit) if hit else 'earnings/news veto')}.{idea}\n"
+                                      f"I'll still track it on {pair} and tell you how it ends.\n\nCouncil {yes}–{no}:\n{vote_text}")
+                else:
+                    limit = tick_up(pick["ask"])
+                    try:
+                        res = api.buy(pick["sym"], pick["qty"], limit)
+                        o = wait_fill(api, res["id"])
+                    except ApiError as e:
+                        o, res = None, None
+                        log.append(f"{pair}: order rejected ({e})")
+                        vote_entry["verdict"] = f"APPROVED {yes}–{no}, but the order was rejected: {e}"
+                        if tg:
+                            tg.say(head + f"\n\n⚠️ Alpaca rejected {contract_name(pick['sym'])}: {e}")
+                    filled_qty = int(float((o or {}).get("filled_qty") or 0))
+                    if o is not None and o.get("status") != "filled":
+                        try:
+                            api.cancel(res["id"])
+                        except ApiError:
+                            pass
+                    if o is not None and (o.get("status") == "filled" or filled_qty):
+                        fill_px = float(o.get("filled_avg_price") or limit)
+                        qty = filled_qty or pick["qty"]
+                        risk_usd = round(fill_px * OPT_STOP * 100 * qty, 2)
+                        tid = str(res["id"])
+                        st["trades"][tid] = {"pair": pair, "sym": pick["sym"], "dir": d, "qty": qty, "units": qty, "entry": fill_px,
+                                             "sl": round(fill_px * (1 - ORB5_OPT_SAFETY), 2), "tp": 999.0, "tp_on": False,
+                                             "exp": pick["exp"], "opened": now.isoformat()[:19], "risk": risk_usd,
+                                             "votes": {n: o_ for n, (o_, _) in votes.items()}, "setup": "opening range breakout",
+                                             "tf": "5m", "price": fill_px, "upl": 0.0, "qty0": qty,
+                                             "orb5": {"date": today_s, "entry": t["entry"], "stop": t["stop0"], "target": t["target"], "be": False}}
+                        today["approved"] += 1; today["opened"] += 1
+                        vote_entry["verdict"] = f"APPROVED {yes}–{no}. Bought {qty} × {contract_name(pick['sym'])} at ${fill_px:.2f}."
+                        log.append(f"{pair}: OPENED {qty} × {pick['sym']} @ {fill_px:.2f} (ORB)")
+                        if tg:
+                            tg.say(head + f"\n\nBought {qty} × {contract_name(pick['sym'])} at ${fill_px:.2f} (${fill_px * 100 * qty:,.0f}) on the paper account.\n"
+                                          f"Exits follow {pair}'s levels above, not the option's %. Closed by 3:50 PM ET either way.\n\n"
+                                          f"👉 Robinhood: search {pair} → Trade → Trade Options → Buy → {'Call' if d == 1 else 'Put'} → "
+                                          f"expiration {dt.date.fromisoformat(pick['exp']):%b} {dt.date.fromisoformat(pick['exp']).day} → strike ${pick['strike']:g} → "
+                                          f"limit ${limit:.2f} or less. Skip it if it's already above ${limit * 1.1:.2f}.\n\nCouncil {yes}–{no}:\n{vote_text}")
+                    elif o is not None:
+                        vote_entry["verdict"] = f"APPROVED {yes}–{no}, but it didn't fill at ${limit:.2f}. Canceled."
+                        if tg:
+                            tg.say(head + f"\n\n⚠️ {contract_name(pick['sym'])} didn't fill at ${limit:.2f}. Canceled; tracking on {pair} only.")
+                        o5["paper_only"] = True
+            # exits on IWM's levels
+            open_orb = next(((tid, m) for tid, m in st["trades"].items() if m.get("orb5") and m["pair"] == pair), None)
+            if t and t["result"] is not None:
+                why_ = {ORB5_RR: f"target +{ORB5_RR:g}R on {pair}", -1.0: f"stop on {pair}", 0.0: f"breakeven on {pair}"}.get(t["result"], f"{pair} rule exit")
+                if open_orb:
+                    tid, meta = open_orb
+                    close_trade(api, st, tid, meta, why_, meta.get("price") or meta["entry"], now, tg, log)
+                    sent.append(f"exit:{t['exit_mins']}")
+                else:
+                    icon = "🎯" if t["result"] > 0 else "🛑" if t["result"] < 0 else "🔒"
+                    extra = ""
+                    if pair in SIGNAL_ONLY and f"exit:{t['exit_mins']}" not in sent:
+                        pr = st.setdefault("probation", {}).setdefault(pair, {"n": 0, "wins": 0, "r": 0.0})
+                        pr["n"] += 1; pr["wins"] += t["result"] > 0; pr["r"] = round(pr["r"] + t["result"], 2)
+                        extra = (f"\n📋 {pair} signal-only record: {pr['n']} signals, {pr['wins']} wins, {pr['r']:+.1f}R total "
+                                 f"({pr['r'] / pr['n']:+.2f}R each). After 20+ signals, if it's positive, it can start trading for real.")
+                    tell(f"exit:{t['exit_mins']}", f"{icon} {pair} ORB signal finished on {pair}: {why_} ({t['result']:+.1f}R). "
+                                                   f"No option was held{' (signal only)' if o5.get('paper_only') else ''}." + extra,
+                         f"{pair} ORB signal finished", t["result"] > 0)
+            elif open_orb and (e_now.hour, e_now.minute) >= ORB5_EOD:
+                tid, meta = open_orb
+                close_trade(api, st, tid, meta, "end of day (ORB is a day trade)", meta.get("price") or meta["entry"], now, tg, log)
 
     # 3b) test trade on request
     if st.get("test_pending"):
@@ -1228,6 +1933,17 @@ def run(log, full=True):
             if tg:
                 tg.say(msg)
             st["test_pending"] = False
+
+    if st.pop("_strategy_switched", False):
+        feed_add(st, "event", "New strategy", who="Chair", ok=True,
+                 text=f"Vault Options now trades only Easter's 5-minute opening range breakout on {', '.join(PAIRS)}. Fresh ${START_BALANCE:,.0f} paper bankroll.")
+        if tg:
+            tg.say(f"🔄 Vault Options has a new strategy: the 5-minute opening range breakout on {', '.join(PAIRS)}.\n\n"
+                   "1) 9:30–10:00 ET: I mark the high and low and text you the levels.\n"
+                   "2) 10:00–12:00: I watch every 5-min candle. A strong candle (60%+ body) closing outside the range starts a watch.\n"
+                   "3) If the next candle holds outside and makes a new high (or low), that's the SIGNAL: calls above, puts below.\n"
+                   "4) Stop past the breakout candles, target 1.5× the risk, stop to breakeven at 1R. One trade a day, closed by 3:50 PM.\n\n"
+                   f"Old setups are off. Fresh ${START_BALANCE:,.0f} paper bankroll, so the new strategy gets a clean scorecard.")
 
     # 4) status reply
     if tg and st.pop("_status_requested", False):
@@ -1281,6 +1997,8 @@ PERSONA = {   # how each agent talks: (YES lines, NO lines); {why} is the actual
                   ["No juice here. {why}.", "Stalling out: {why}.", "Nothing pushing it. {why}."]),
     "Time":      (["Timing's right. {why}.", "Good window. {why}.", "Clock agrees: {why}."],
                   ["Not now. {why}.", "Bad timing: {why}.", "Wait for it. {why}."]),
+    "The Reporter": (["Checked the wires: {why}.", "Nothing in the press to scare me. {why}.", "Sources say we're clear: {why}."],
+                     ["Hold the presses. {why}.", "Breaking: {why}.", "My sources say no. {why}."]),
     "Doubt":     (["...fine. {why}. I'll allow it.", "Hm. {why}. I can't argue.", "Begrudgingly yes: {why}."],
                   ["Something's off. {why}.", "I don't buy it: {why}.", "Too convenient. {why}."]),
 }
@@ -1557,12 +2275,65 @@ CHARACTERS = {
              '<path d="M50 54 h12" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/>'
              '<circle cx="50" cy="54" r="3.5" fill="var(--ink)"/>'
              '<rect x="44" y="10" width="12" height="9" rx="2" fill="var(--c-time)"/>'),
+    "The Reporter": ("--c-rep", '<rect x="22" y="30" width="56" height="62" rx="8" fill="var(--c-rep)"/>'
+                     '<path d="M14 30 h72 l-8 -12 h-56 z" fill="var(--ink)"/><rect x="30" y="8" width="40" height="12" rx="3" fill="var(--ink)"/>'
+                     '<rect x="56" y="11" width="13" height="7" fill="#fff"/><circle cx="41" cy="50" r="4" fill="var(--ink)"/>'
+                     '<circle cx="59" cy="50" r="4" fill="var(--ink)"/><path d="M42 68 q8 5 16 0" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>'
+                     '<rect x="66" y="62" width="22" height="28" rx="2" fill="#fff" stroke="var(--ink)" stroke-width="2"/>'
+                     '<path d="M70 70 h14 M70 76 h14 M70 82 h10" stroke="var(--ink)" stroke-width="2"/>'),
     "Doubt": ("--c-doubt", '<ellipse cx="50" cy="56" rx="30" ry="38" fill="var(--c-doubt)"/>'
               '<circle cx="40" cy="48" r="4" fill="var(--ink)"/><circle cx="60" cy="48" r="4" fill="var(--ink)"/>'
               '<path d="M32 36 l14 -2 M54 32 l14 6" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>'
               '<path d="M42 70 h16" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>'
               '<path d="M68 64 q10 -2 10 8" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>'),
 }
+
+
+def office_chatter(st):
+    """What each council member says around the office, from live state: (lines per member, two-person chats)."""
+    lines = {n: [] for n in VOTERS}
+    dialogs = []
+    rec = st.get("record", {"wins": 0, "losses": 0, "pl": 0.0})
+    for m in list(st.get("trades", {}).values())[:2]:
+        nm = contract_name(m["sym"])
+        upl = m.get("upl", 0) or 0
+        lines["The Quant"].append(f"{nm} is {money(upl)} right now.")
+        lines["Risk"].append(f"Stop on {nm} is ${m.get('sl', 0):.2f}. Not moving it the wrong way.")
+        if m.get("locked"):
+            lines["Risk"].append(f"{nm} has profit locked in. Breathe easy.")
+        dialogs.append(["Momentum", f"{nm} is moving!", "Doubt", "Moving is not the same as working. Let's see the close."]
+                       if upl >= 0 else ["Doubt", f"{nm} is under water.", "The Quant", "One trade. The edge shows up over many."])
+    if not st.get("trades"):
+        lines["Momentum"].append("Nothing open. IWM better give us something soon.")
+    if rec["wins"] + rec["losses"]:
+        lines["Doubt"].append(f"{rec['wins']}W–{rec['losses']}L so far. Prove it's not luck.")
+        lines["The Quant"].append(f"Total so far: {money(rec['pl'])}.")
+        dialogs.append(["The Quant", f"We're {rec['wins']}W–{rec['losses']}L.", "Risk", "And no blowups. That's the job."])
+    if st.get("paused"):
+        lines["Risk"].append(f"We're paused: {st['paused']}. Nobody trades.")
+    e = et(dt.datetime.now(dt.timezone.utc))
+    if (e.hour, e.minute) < (10, 0):
+        lines["Time"].append("First half hour is wild. I like to let it settle.")
+    elif (e.hour, e.minute) >= (15, 0):
+        lines["Time"].append("Late in the day. 0DTE gets jumpy now.")
+    try:
+        g = json.load(open("gap_state.json", encoding="utf-8"))
+        day = g.get("days", {}).get(e.date().isoformat(), {})
+        if day.get("gap") is not None:
+            lines["The Reporter"].append(f"IWM opened {day['gap']:+.2f}% from yesterday. Boomer's watching that gap.")
+            dialogs.append(["The Reporter", f"IWM gapped {day['gap']:+.2f}% this morning.", "Time", "Boomer handles gaps. We wait for our own setup."])
+    except (OSError, ValueError):
+        pass
+    lv = st.get("last_vote")
+    if lv:
+        short = (lv.get("label") or "the last one").split(" (")[0]
+        for n, v in (lv.get("votes") or {}).items():
+            ok, why = (v if isinstance(v, (list, tuple)) else (v, ""))
+            if n in lines and ok is not None and why:
+                reason = why.split(";")[0].split(",")[0].strip()
+                reason = reason if len(reason) <= 48 else reason[:46].rsplit(" ", 1)[0] + "…"
+                lines[n].append(f"I voted {'YES' if ok else 'NO'} on {short}: {reason}.")
+    return lines, dialogs
 
 
 def council_room(state):
@@ -1599,9 +2370,13 @@ def council_room(state):
     else:
         docket = "<span>No trade on the table yet.</span><small>The council votes when a market clears your minimum edge.</small>"
         stamp = ""
+    talk, dialogs = office_chatter(state)
     data = json.dumps({"voters": voters, "verdict": verdict, "approved": bool(lv and lv["approved"]),
                        "title": (lv or {}).get("label"), "chart": (lv or {}).get("chart"),
-                       "ticker": state.get("ticker", []), "recess": state.get("recess")})
+                       "ticker": state.get("ticker", []), "recess": state.get("recess"),
+                       "chatter": talk, "dialogs": dialogs, "lastVoteT": int(lv["when"]) if lv else 0,
+                       "scanT": int(state.get("last_run") or time.time()), "nextVote": 0, "parties": [],
+                       "bot": "Vault Options", "key": "vop"})
     script = ROOM_JS.replace("__DATA__", data.replace("</", "<\\/"))
     return f"""<section class="room" id="room3d" aria-label="Council room">
   <div class="roomhead">
@@ -1623,7 +2398,8 @@ def council_room(state):
     <span class="mood-msg" id="moodmsg" aria-live="polite"></span>
   </div>
   {f'<p class="mood-tg">Want it on the record? <a href="https://t.me/{state["bot_username"]}?start=happy" target="_blank" rel="noopener">Send 🥂 to the bot</a> · <a href="https://t.me/{state["bot_username"]}?start=unhappy" target="_blank" rel="noopener">send 👎</a></p>' if state.get("bot_username") else ''}
-  <p class="hint">Each member walks to the speaking ring to cast a vote, then The Chair rules. Tap a member to read their reasoning. Drag to look around.</p>
+  <div class="roomctl"><button type="button" id="callOrder">📣 Call a meeting</button></div>
+  <p class="hint">Each member works in their own office and chats in the hallway. When a vote happens they walk to the conference room, vote one by one (YES/NO over their heads), and the Trade Vote screen shows the result. Tap anyone to hear from them.</p>
   <script>(function(){{var msg=document.getElementById('moodmsg'),room=document.getElementById('room3d'),busy=0;
     var lines={{cheers:['🥂 Cheers, Commander! The council raises a glass.','🥂 To the next one!','🥂 Hooah! Drinks are on The Quant.'],
                sad:['😔 Understood, Commander. We’ll tighten up.','😔 Heard. Back to the drawing board.','😔 Noted. Discipline over hope.']}};
@@ -1643,651 +2419,499 @@ def council_room(state):
 ROOM_JS = r"""
 (function () {
   var D = __DATA__;
-  if (D.recess) D.verdict = null;          // court adjourned: everyone stays seated
   var room = document.getElementById('room3d'), stage = document.getElementById('stage3d'), tip = document.getElementById('tip3d');
   var stampEl = stage.querySelector('.stamp3d');
   if (!window.THREE) return;
   var renderer;
-  try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false }); } catch (e) { return; }
+  try { renderer = new THREE.WebGLRenderer({ antialias: true }); } catch (e) { return; }
   if (!renderer.getContext()) return;
   room.classList.add('is3d');
-  var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var small = (stage.clientWidth || 360) < 520;
-  renderer.setPixelRatio(Math.min(small ? 1.75 : 2, window.devicePixelRatio || 1));
-  renderer.setClearColor(0x05060d, 1);
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   stage.insertBefore(renderer.domElement, stage.firstChild);
+  var KEY = D.key || 'vault';
+  var BOT = D.bot || 'Vault';
+  var sc = new THREE.Scene(); sc.background = new THREE.Color(0x0f1324);
+  var cam = new THREE.OrthographicCamera(-12, 12, 10, -10, 0.1, 200);
+  var hemi = new THREE.HemisphereLight(0xe6eeff, 0x40342a, 0.85); sc.add(hemi);
+  var sun = new THREE.DirectionalLight(0xfff1dc, 0.75); sun.position.set(-8, 30, 12); sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -16, right: 16, top: 16, bottom: -16 }); sc.add(sun);
+  function M(c, o) { return new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.75, metalness: 0.04 }, o || {})); }
+  function box(w, h, d, m, x, y, z, p) { var b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); b.position.set(x, y, z); b.castShadow = b.receiveShadow = true; (p || sc).add(b); return b; }
+  function cyl(r1, r2, h, m, x, y, z, p, s) { var b = new THREE.Mesh(new THREE.CylinderGeometry(r1, r2, h, s || 18), m); b.position.set(x, y, z); b.castShadow = true; (p || sc).add(b); return b; }
+  function sph(r, m, x, y, z, p) { var b = new THREE.Mesh(new THREE.SphereGeometry(r, 18, 14), m); b.position.set(x, y, z); b.castShadow = true; (p || sc).add(b); return b; }
+  function canvasTex(w, h, draw) { var c = document.createElement('canvas'); c.width = w; c.height = h; var g = c.getContext('2d'); draw(g, w, h); var t = new THREE.CanvasTexture(c); t.anisotropy = 4; t.userData = { c: c, g: g, draw: draw }; return t; }
+  function plane(w, h, tex, x, y, z, rx, ry) { var m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: tex })); m.position.set(x, y, z); m.rotation.set(rx || 0, ry || 0, 0); sc.add(m); return m; }
+  function font(g, s, w) { g.font = (w || 700) + ' ' + s + 'px system-ui,-apple-system,Segoe UI,sans-serif'; }
 
-  var scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x05060d, 11, 24);
-  var cam = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-  var world = new THREE.Group(); scene.add(world);
-
-  // ── lighting: dim room, hard key light with shadows, colored rims, glow from the holotable
-  scene.add(new THREE.HemisphereLight(0x8aa2ff, 0x140c24, 0.6)); scene.add(new THREE.AmbientLight(0x404a70, 0.35));
-  var key = new THREE.SpotLight(0xdcebff, 2.3, 28, 0.7, 0.5, 1.0);
-  key.position.set(-2.5, 9.5, 5.5); key.target.position.set(0, 0.5, -1.6);
-  key.castShadow = true; key.shadow.mapSize.set(small ? 1024 : 2048, small ? 1024 : 2048); key.shadow.bias = -0.0004;
-  key.shadow.camera.near = 3; key.shadow.camera.far = 22;
-  scene.add(key); scene.add(key.target);
-  var rimC = new THREE.DirectionalLight(0x22d3ee, 0.8); rimC.position.set(-6, 3, -6); scene.add(rimC);
-  var rimM = new THREE.DirectionalLight(0xc026d3, 0.65); rimM.position.set(6, 3, -5); scene.add(rimM);
-  var holoLight = new THREE.PointLight(0x38e1ff, 1.0, 7, 2); holoLight.position.set(0, 1.5, 1.0); scene.add(holoLight);
-  var verdictLight = new THREE.PointLight(0x53f0a6, 0, 12, 2); verdictLight.position.set(0, 3.5, 0.5); scene.add(verdictLight);
-
-  var METAL = new THREE.MeshStandardMaterial({ color: 0x2a2f45, metalness: 0.9, roughness: 0.28 });
-  var METAL2 = new THREE.MeshStandardMaterial({ color: 0x40465f, metalness: 0.85, roughness: 0.35 });
-  var STEEL = new THREE.MeshStandardMaterial({ color: 0x1a1f30, metalness: 0.8, roughness: 0.35 });
-  var GLASS = new THREE.MeshStandardMaterial({ color: 0x2a3b66, metalness: 0.1, roughness: 0.05, transparent: true, opacity: 0.28 });
-  function glowMat(c) { return new THREE.MeshBasicMaterial({ color: c }); }
-  function basic(c, o) { return new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: o === undefined ? 1 : o, depthWrite: false }); }
-  function addv(c, o) { return new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: o, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide }); }
-  function M(g, m) { return new THREE.Mesh(g, m); }
-  function at(m, x, y, z) { m.position.set(x, y, z); world.add(m); return m; }
-  function shadowy(o, cast, recv) { o.traverse(function (k) { if (k.isMesh) { k.castShadow = cast; k.receiveShadow = recv; } }); return o; }
-
-  // soft glow sprite (fake bloom)
-  var GLOW = (function () {
-    var c = document.createElement('canvas'); c.width = c.height = 128; var x = c.getContext('2d');
-    var g = x.createRadialGradient(64, 64, 0, 64, 64, 64);
-    g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.25, 'rgba(255,255,255,0.55)'); g.addColorStop(1, 'rgba(255,255,255,0)');
-    x.fillStyle = g; x.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c);
-  })();
-  function glow(color, size, opacity) {
-    var s = new THREE.Sprite(new THREE.SpriteMaterial({ map: GLOW, color: color, transparent: true, opacity: opacity || 0.8,
-      depthWrite: false, blending: THREE.AdditiveBlending }));
-    s.scale.set(size, size, 1); return s;
-  }
-
-  // ── floor: mirror underneath, translucent tech tiles on top
-  if (THREE.Reflector) {
-    var mirror = new THREE.Reflector(new THREE.PlaneGeometry(30, 30), {
-      textureWidth: Math.round((stage.clientWidth || 360) * (small ? 0.6 : 0.9)),
-      textureHeight: Math.round((stage.clientWidth || 360) * (small ? 0.45 : 0.6)), color: 0x6a7090 });
-    mirror.rotation.x = -Math.PI / 2; at(mirror, 0, -0.002, 0);
-  }
-  var tileTex = (function () {
-    var c = document.createElement('canvas'); c.width = c.height = 256; var x = c.getContext('2d');
-    x.fillStyle = 'rgba(10,12,24,0.86)'; x.fillRect(0, 0, 256, 256);
-    x.strokeStyle = 'rgba(56,225,255,0.18)'; x.lineWidth = 2; x.strokeRect(1, 1, 254, 254);
-    x.strokeStyle = 'rgba(56,225,255,0.07)'; x.lineWidth = 1; x.strokeRect(64, 64, 128, 128);
-    var t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(15, 15); return t;
-  })();
-  var tiles = M(new THREE.PlaneGeometry(30, 30), new THREE.MeshStandardMaterial({ map: tileTex, transparent: true, roughness: 0.4, metalness: 0.5,
-    opacity: THREE.Reflector ? 0.9 : 1 }));
-  tiles.rotation.x = -Math.PI / 2; tiles.receiveShadow = true; at(tiles, 0, 0, 0);
-
-  // ── curved data wall with a scrolling ticker
-  function dataWallTex() {
-    var c = document.createElement('canvas'); c.width = 1024; c.height = 256; var x = c.getContext('2d');
-    x.fillStyle = '#070a16'; x.fillRect(0, 0, 1024, 256);
-    for (var p = 0; p < 16; p++) {                       // little chart panels
-      var px = p * 64 + 4, py = 18 + (p % 2) * 112;
-      x.strokeStyle = 'rgba(56,225,255,0.25)'; x.strokeRect(px, py, 56, 96);
-      x.beginPath(); var v = 50 + (p * 13 % 30);
-      for (var i = 0; i < 12; i++) { v += Math.sin(p * 7 + i * 1.7) * 7; x.lineTo(px + 4 + i * 4.4, py + 20 + v * 0.8 % 70); }
-      x.strokeStyle = p % 3 ? 'rgba(56,225,255,0.7)' : 'rgba(192,38,211,0.7)'; x.lineWidth = 1.5; x.stroke();
-      x.fillStyle = 'rgba(160,190,255,0.45)'; x.font = '9px monospace'; x.fillText((1 + (p * 0.037)).toFixed(4), px + 4, py + 92);
-    }
-    var t = new THREE.CanvasTexture(c); t.wrapS = THREE.RepeatWrapping; t.repeat.set(-2, 1); return t;
-  }
-  var wallTex = dataWallTex();
-  var wall = M(new THREE.CylinderGeometry(9, 9, 5.2, 64, 1, true, Math.PI * 0.62, Math.PI * 0.76),
-    new THREE.MeshBasicMaterial({ map: wallTex, side: THREE.BackSide }));
-  at(wall, 0, 2.6, 1.5);
-  var tickerText = (D.ticker && D.ticker.length) ? D.ticker.map(function (t) {
-    return t.s + ' ' + t.p + ' ' + (t.c >= 0 ? '▲' : '▼') + Math.abs(t.c).toFixed(2) + '%'; }).join('     ') : (D.recess ? 'COURT ADJOURNED  ·  ' + D.recess.toUpperCase() : 'THE COUNCIL  ·  IN SESSION');
-  var tickCanvas = document.createElement('canvas'); tickCanvas.width = 2048; tickCanvas.height = 64;
-  (function () {
-    var x = tickCanvas.getContext('2d'); x.fillStyle = '#0b1022'; x.fillRect(0, 0, 2048, 64);
-    x.fillStyle = 'rgba(56,225,255,0.9)'; x.fillRect(0, 0, 2048, 2); x.fillRect(0, 62, 2048, 2);
-    x.font = '600 30px ui-monospace, Menlo, monospace'; x.textBaseline = 'middle';
-    var s = tickerText + '     ·     ', w = x.measureText(s).width, n = Math.max(1, Math.floor(2048 / w)), step = 2048 / n;
-    for (var rep = 0; rep < n; rep++) {
-      var pos = rep * step;
-      s.split(/(▲[\d.]+%|▼[\d.]+%)/).forEach(function (pt) { if (!pt) return; x.fillStyle = pt[0] === '▲' ? '#53f0a6' : pt[0] === '▼' ? '#ff6b7c' : '#cfe3ff';
-        x.fillText(pt, pos, 34); pos += x.measureText(pt).width; });
-    }
-  })();
-  var tickTex = new THREE.CanvasTexture(tickCanvas); tickTex.wrapS = THREE.RepeatWrapping; tickTex.repeat.set(-2, 1);
-  var ticker = M(new THREE.CylinderGeometry(8.9, 8.9, 0.42, 64, 1, true, Math.PI * 0.62, Math.PI * 0.76),
-    new THREE.MeshBasicMaterial({ map: tickTex, side: THREE.BackSide }));
-  at(ticker, 0, 4.45, 1.5);
-  // ceiling ring + pillars
-  var ring = M(new THREE.TorusGeometry(6.5, 0.05, 8, 96), addv(0x38e1ff, 0.6)); ring.rotation.x = Math.PI / 2; at(ring, 0, 6.2, -1.2);
-  [-1, 1].forEach(function (sd) {
-    for (var k = 0; k < 2; k++) {
-      var px = sd * (5.2 + k * 1.6), pz = -2.8 + k * 1.8;
-      at(shadowy(M(new THREE.BoxGeometry(0.35, 6.4, 0.35), STEEL), true, true), px, 3.2, pz);
-      at(M(new THREE.BoxGeometry(0.04, 5.8, 0.04), glowMat(sd < 0 ? 0x22d3ee : 0xc026d3)), px + (sd < 0 ? 0.19 : -0.19), 3.2, pz + 0.19);
-    }
-  });
-
-  // ── holotable at the center with the live chart hologram above it
-  var table = new THREE.Group(); table.position.set(0, 0, 1.0); table.scale.setScalar(0.78); world.add(table);
-  table.add(shadowy(M(new THREE.CylinderGeometry(1.15, 1.3, 0.12, 6), STEEL), true, true)).position.y = 0.86;
-  table.add(shadowy(M(new THREE.CylinderGeometry(0.5, 0.75, 0.8, 6), METAL2), true, true)).position.y = 0.4;
-  var rim = M(new THREE.TorusGeometry(1.17, 0.018, 6, 6), glowMat(0x38e1ff)); rim.rotation.x = Math.PI / 2; rim.rotation.z = Math.PI / 6; rim.position.y = 0.93; table.add(rim);
-  var lens = M(new THREE.CircleGeometry(0.85, 6), addv(0x38e1ff, 0.35)); lens.rotation.x = -Math.PI / 2; lens.position.y = 0.935; table.add(lens);
-  var beam = M(new THREE.CylinderGeometry(1.9, 0.7, 3.4, 6, 1, true), addv(0x38e1ff, 0.045)); beam.position.y = 2.6; table.add(beam);
-  table.add(glow(0x38e1ff, 2.6, 0.55)).position.y = 1.0;
-
-  function chartTexture() {
-    var W = 1024, H = 560, c = document.createElement('canvas'); c.width = W; c.height = H; var x = c.getContext('2d');
-    x.fillStyle = 'rgba(8,30,48,0.35)'; x.fillRect(0, 0, W, H);
-    x.strokeStyle = 'rgba(56,225,255,0.9)'; x.lineWidth = 4; x.strokeRect(6, 6, W - 12, H - 12);
-    for (var gy = 1; gy < 5; gy++) { x.strokeStyle = 'rgba(56,225,255,0.12)'; x.lineWidth = 1; x.beginPath(); x.moveTo(30, 90 + gy * 88); x.lineTo(W - 30, 90 + gy * 88); x.stroke(); }
-    x.fillStyle = '#cff6ff'; x.font = '700 46px ui-monospace, Menlo, monospace'; x.textBaseline = 'middle';
-    x.fillText(D.recess ? 'THE COUNCIL' : D.title ? String(D.title).slice(0, 34) : 'COURT IN RECESS', 34, 50);
-    var ch = D.chart;
-    if (D.recess) {
-      x.fillStyle = 'rgba(8,30,48,0.6)'; x.fillRect(12, 80, W - 24, H - 92);
-      x.fillStyle = '#f4c84a'; x.font = '800 64px ui-monospace, Menlo, monospace'; x.textAlign = 'center';
-      x.fillText('COURT ADJOURNED', W / 2, H / 2 - 10);
-      x.fillStyle = '#cff6ff'; x.font = '500 38px ui-monospace, Menlo, monospace'; x.fillText(String(D.recess), W / 2, H / 2 + 60);
-      x.textAlign = 'left';
-    } else if (ch && ch.closes && ch.closes.length > 2) {
-      var vals = ch.closes.slice(), lv = [ch.entry, ch.sl, ch.tp].filter(function (v) { return v != null; });
-      var lo = Math.min.apply(null, vals.concat(lv)), hi = Math.max.apply(null, vals.concat(lv)), pad = (hi - lo) * 0.08 || 1e-4;
-      lo -= pad; hi += pad;
-      var X = function (i) { return 40 + i / (vals.length - 1) * (W - 260); }, Y = function (v) { return 110 + (hi - v) / (hi - lo) * (H - 150); };
-      x.beginPath(); vals.forEach(function (v, i) { if (i) x.lineTo(X(i), Y(v)); else x.moveTo(X(i), Y(v)); });
-      x.lineTo(X(vals.length - 1), H - 30); x.lineTo(X(0), H - 30); x.closePath();
-      var gr = x.createLinearGradient(0, 110, 0, H); gr.addColorStop(0, 'rgba(56,225,255,0.35)'); gr.addColorStop(1, 'rgba(56,225,255,0)');
-      x.fillStyle = gr; x.fill();
-      x.beginPath(); vals.forEach(function (v, i) { if (i) x.lineTo(X(i), Y(v)); else x.moveTo(X(i), Y(v)); });
-      x.strokeStyle = '#7ff3ff'; x.lineWidth = 5; x.lineJoin = 'round'; x.stroke();
-      function level(v, col, name) {
-        if (v == null) return; x.setLineDash([16, 10]); x.strokeStyle = col; x.lineWidth = 3;
-        x.beginPath(); x.moveTo(40, Y(v)); x.lineTo(W - 220, Y(v)); x.stroke(); x.setLineDash([]);
-        x.fillStyle = col; x.font = '600 30px ui-monospace, Menlo, monospace'; x.fillText(name + ' ' + v.toFixed(ch.prec || 5), W - 212, Y(v));
-      }
-      level(ch.tp, '#53f0a6', 'TP'); level(ch.entry, '#ffffff', 'IN'); level(ch.sl, '#ff6b7c', 'SL');
-    } else {
-      x.fillStyle = 'rgba(207,246,255,0.7)'; x.font = '500 34px ui-monospace, Menlo, monospace';
-      x.fillText(D.title ? 'live chart appears with the next vote' : 'waiting for a setup…', 34, H / 2 + 20);
-    }
-    return new THREE.CanvasTexture(c);
-  }
-  var holo = new THREE.Group(); holo.position.set(0, 3.7, 0.6); world.add(holo);
-  var holoMat = new THREE.MeshBasicMaterial({ map: chartTexture(), transparent: true, opacity: 0.95, depthWrite: false,
-    blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
-  var holoPlane = M(new THREE.PlaneGeometry(3.0, 1.64), holoMat); holo.add(holoPlane);
-  var scan = M(new THREE.PlaneGeometry(3.0, 0.03), addv(0x9ff8ff, 0.5)); scan.position.z = 0.01; holo.add(scan);
-
-  // ── The Chair's raised dais at the back
-  var dais = at(shadowy(M(new THREE.CylinderGeometry(1.6, 1.9, 0.8, 8), STEEL), true, true), 0, 0.4, -5.9);
-  var daisRim = M(new THREE.TorusGeometry(1.62, 0.03, 6, 8), glowMat(0xf4c84a)); daisRim.rotation.x = Math.PI / 2; at(daisRim, 0, 0.81, -5.9);
-  var bench = at(shadowy(M(new THREE.BoxGeometry(2.6, 1.0, 0.5), STEEL), true, true), 0, 1.3, -5.05);
-  at(M(new THREE.BoxGeometry(2.62, 0.05, 0.05), glowMat(0xf4c84a)), 0, 1.78, -4.79);
-  var plateC = document.createElement('canvas'); plateC.width = 512; plateC.height = 64;
-  (function () { var x = plateC.getContext('2d'); x.fillStyle = '#0b0e1c'; x.fillRect(0, 0, 512, 64);
-    x.fillStyle = '#f4c84a'; x.font = '700 30px ui-monospace, Menlo, monospace'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('THE CHAIR', 256, 33); })();
-  at(M(new THREE.PlaneGeometry(1.3, 0.16), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(plateC) })), 0, 1.45, -4.79);
-
-  var judge = new THREE.Group(); judge.position.set(0, 0.8, -5.75); world.add(judge);
-  var ROBE = new THREE.MeshStandardMaterial({ color: 0x1b2433, roughness: 0.7, metalness: 0.1 });
-  judge.add(shadowy(M(new THREE.ConeGeometry(0.46, 1.6, 24), ROBE), true, false)).position.y = 1.0;
-  var trim = M(new THREE.TorusGeometry(0.2, 0.025, 8, 24), glowMat(0xf4c84a)); trim.rotation.x = Math.PI / 2; trim.position.y = 1.72; judge.add(trim);
-  var jhead = new THREE.Group(); jhead.position.y = 1.96; judge.add(jhead);
-  var JSKIN = new THREE.MeshStandardMaterial({ color: 0xa86b45, roughness: 0.65 });
-  jhead.add(shadowy(M(new THREE.SphereGeometry(0.24, 24, 16), JSKIN), true, false));
-  [-1, 1].forEach(function (sd) { var e = M(new THREE.SphereGeometry(0.03, 8, 6), new THREE.MeshBasicMaterial({ color: 0x111111 })); e.position.set(sd * 0.085, 0.02, 0.215); jhead.add(e);
-    var br = M(new THREE.BoxGeometry(0.1, 0.025, 0.02), new THREE.MeshStandardMaterial({ color: 0xdddddd })); br.position.set(sd * 0.085, 0.09, 0.22); jhead.add(br); });
-  var jcap = M(new THREE.CylinderGeometry(0.28, 0.23, 0.13, 28), new THREE.MeshStandardMaterial({ color: 0x1b2433, roughness: 0.6 })); jcap.position.y = 0.21; jhead.add(jcap);
-  var braid = M(new THREE.CylinderGeometry(0.235, 0.235, 0.05, 28), new THREE.MeshStandardMaterial({ color: 0xd9b44a, metalness: 0.85, roughness: 0.3 })); braid.position.y = 0.16; jhead.add(braid);
-  var jpeak = M(new THREE.CylinderGeometry(0.18, 0.18, 0.015, 24, 1, false, -Math.PI / 2, Math.PI), new THREE.MeshStandardMaterial({ color: 0x0b0b0e })); jpeak.position.set(0, 0.14, 0.13); jpeak.rotation.x = 0.25; jhead.add(jpeak);
-  var halo = new THREE.Group(); jhead.add(halo);
-  [-1, 1].forEach(function (sd) { for (var k = 0; k < 4; k++) { var star = M(new THREE.OctahedronGeometry(0.025, 0), new THREE.MeshBasicMaterial({ color: 0xf4c84a }));
-    star.position.set(sd * (0.36 + k * 0.0) , 1.62 + 0, 0.05 - k * 0.06); judge.add(star); } });
-  var arm = new THREE.Group(); arm.position.set(0.32, 1.55, 0.12); judge.add(arm);
-  var fore = M(new THREE.CylinderGeometry(0.05, 0.045, 0.5, 10), ROBE); fore.rotation.x = Math.PI / 2; fore.position.z = 0.25; arm.add(fore);
-  var gavel = new THREE.Group(); gavel.position.set(0, 0, 0.5); arm.add(gavel);
-  var gh = M(new THREE.CylinderGeometry(0.02, 0.02, 0.42, 8), METAL2); gh.rotation.x = Math.PI / 2; gh.position.z = 0.15; gavel.add(gh);
-  var ghead = M(new THREE.CylinderGeometry(0.075, 0.075, 0.24, 16), glowMat(0xf4c84a)); ghead.rotation.z = Math.PI / 2; ghead.position.z = 0.36; gavel.add(ghead);
-  var gglow = glow(0xf4c84a, 0.5, 0.0); gglow.position.z = 0.36; gavel.add(gglow);
-
-  // ── atmosphere: light shafts and drifting dust
-  [[-3.0, -2.3], [0, -3.4], [3.0, -2.3], [0, 1.0]].forEach(function (p, i) {
-    var shaft = M(new THREE.CylinderGeometry(0.15, i === 3 ? 1.5 : 0.95, 6.2, 24, 1, true), addv(i === 3 ? 0x38e1ff : 0xbfd4ff, i === 3 ? 0.035 : 0.045));
-    at(shaft, p[0], 3.1, p[1]);
-  });
-  var dustN = small ? 220 : 380, dustG = new THREE.BufferGeometry(), dp = new Float32Array(dustN * 3);
-  for (var di = 0; di < dustN; di++) { dp[di * 3] = (Math.random() - 0.5) * 9; dp[di * 3 + 1] = Math.random() * 5.5; dp[di * 3 + 2] = (Math.random() - 0.7) * 7; }
-  dustG.setAttribute('position', new THREE.BufferAttribute(dp, 3));
-  var dust = new THREE.Points(dustG, new THREE.PointsMaterial({ color: 0xbfe9ff, size: 0.035, transparent: true, opacity: 0.55,
-    depthWrite: false, blending: THREE.AdditiveBlending }));
-  world.add(dust);
-
-  // ── the council as little military officers: big heads, uniforms, unique headgear and insignia
-  var COLORS = { 'The Quant': 0x3ee6a1, 'Risk': 0xff5468, 'Momentum': 0xffb03b, 'Time': 0x4cb7ff, 'Doubt': 0xc9a7ff };
-  function std(c, r, m) { return new THREE.MeshStandardMaterial({ color: c, roughness: r === undefined ? 0.75 : r, metalness: m || 0 }); }
-  var BOOT = std(0x15130f, 0.45, 0.2), GOLD = std(0xd9b44a, 0.3, 0.85), BLACK = std(0x0b0b0e, 0.6), WHITE = std(0xf2f2ee, 0.5);
-  var EYE = new THREE.MeshBasicMaterial({ color: 0x111111 });
-  function bar(parent, w, h, x, y, z, rz, mat) { var b = M(new THREE.BoxGeometry(w, h, 0.03), mat); b.position.set(x, y, z); b.rotation.z = rz || 0; parent.add(b); return b; }
-  // two-part limb: shoulder/hip → elbow/knee → hand/boot
-  function limb(g, x, y, len, r, mat, endMat) {
-    var piv = new THREE.Group(); piv.position.set(x, y, 0);
-    var half = len / 2, leg = y < 1.0;
-    var up = M(new THREE.CylinderGeometry(r * 1.08, r * 0.95, half, 12), mat); up.position.y = -half / 2; piv.add(up);
-    var joint = new THREE.Group(); joint.position.y = -half; piv.add(joint);
-    joint.add(M(new THREE.SphereGeometry(r * 1.0, 10, 8), mat));
-    var lo = M(new THREE.CylinderGeometry(r * 0.95, r * 0.85, half, 12), leg ? BOOT : mat); lo.position.y = -half / 2; joint.add(lo);
-    if (leg) { var boot = M(new THREE.BoxGeometry(r * 2.3, r * 1.3, r * 3.8), BOOT); boot.position.set(0, -half - r * 0.25, r * 0.9); joint.add(boot); }
-    else { var hand = M(new THREE.SphereGeometry(r * 1.15, 10, 8), endMat); hand.position.y = -half - r * 0.3; joint.add(hand); }
-    piv.userData.joint = joint;
-    g.add(piv); return piv;
-  }
-  // shared body: boots, trousers, tunic, belt, collar, big head with eyes/brows/mouth
-  function soldier(g, u, o) {
-    var TUNIC = std(o.tunic, 0.8), PANTS = std(o.pants || o.tunic, 0.8), SKIN = std(o.skin, 0.65);
-    var w = o.wide || 1;
-    u.legL = limb(g, -0.1 * w, 0.62, 0.6, 0.065 * w, PANTS); u.legR = limb(g, 0.1 * w, 0.62, 0.6, 0.065 * w, PANTS);
-    var torso = M(new THREE.BoxGeometry(0.44 * w, 0.58, 0.28 * Math.max(1, w * 0.9)), TUNIC); torso.position.y = 0.93; g.add(torso);
-    var belly = M(new THREE.BoxGeometry(0.46 * w, 0.08, 0.3 * Math.max(1, w * 0.9)), BLACK); belly.position.y = 0.72; g.add(belly);
-    var buckle = M(new THREE.BoxGeometry(0.07, 0.06, 0.02), GOLD); buckle.position.set(0, 0.72, 0.16 * Math.max(1, w * 0.9)); g.add(buckle);
-    for (var b = 0; b < 3; b++) { var btn = M(new THREE.SphereGeometry(0.018, 8, 6), GOLD); btn.position.set(0, 0.84 + b * 0.1, 0.145 * Math.max(1, w * 0.9)); g.add(btn); }
-    [-1, 1].forEach(function (sd) {                                   // epaulettes
-      var ep = M(new THREE.BoxGeometry(0.13, 0.03, 0.2), o.epaulette ? GOLD : TUNIC); ep.position.set(sd * 0.2 * w, 1.23, 0); g.add(ep);
-    });
-    var badge = M(new THREE.BoxGeometry(0.08, 0.06, 0.02), new THREE.MeshBasicMaterial({ color: u.col }));   // unit patch in their color
-    badge.position.set(-0.12 * w, 1.06, 0.145 * Math.max(1, w * 0.9)); g.add(badge); u.patch = badge;
-    if (o.medals) for (var m = 0; m < o.medals; m++) {
-      var md = M(new THREE.BoxGeometry(0.035, 0.05, 0.02), [GOLD, std(0xb03a2e), std(0x2e5cb0)][m % 3]);
-      md.position.set(0.07 * w + m * 0.045, 1.07, 0.145 * Math.max(1, w * 0.9)); g.add(md);
-    }
-    u.armL = limb(g, -0.27 * w, 1.2, 0.56, 0.055 * w, TUNIC, SKIN); u.armR = limb(g, 0.27 * w, 1.2, 0.56, 0.055 * w, TUNIC, SKIN);
-    var neck = M(new THREE.CylinderGeometry(0.07, 0.08, 0.08, 12), SKIN); neck.position.y = 1.27; g.add(neck);
-    var head = new THREE.Group(); head.position.y = 1.5; g.add(head); u.head = head;
-    var skull = M(new THREE.SphereGeometry(0.235, 28, 20), SKIN); skull.scale.set(1, 1.05, 0.98); head.add(skull);
-    [-1, 1].forEach(function (sd) { var ear = M(new THREE.SphereGeometry(0.05, 10, 8), SKIN); ear.position.set(sd * 0.235, 0, 0); ear.scale.set(0.5, 1, 0.8); head.add(ear); });
-    u.glows = [];
-    [-1, 1].forEach(function (sd) {
-      var e = M(new THREE.SphereGeometry(0.03, 10, 8), EYE); e.position.set(sd * 0.085, 0.02, 0.215); head.add(e); u.glows.push(e);
-      var br = bar(head, 0.09, 0.022, sd * 0.085, 0.09 + (o.browUp && sd > 0 ? 0.03 : 0), 0.22, sd * (o.browTilt || 0), BLACK);
-    });
-    var mouth = M(new THREE.BoxGeometry(o.mouthW || 0.08, 0.018, 0.02), std(0x5a2a22)); mouth.position.set(o.mouthX || 0, -0.1, 0.22); mouth.rotation.z = o.mouthTilt || 0; head.add(mouth); u.mouth = mouth;
-    var nose = M(new THREE.SphereGeometry(0.028, 8, 6), SKIN); nose.position.set(0, -0.03, 0.235); head.add(nose);
-    return { head: head, TUNIC: TUNIC, SKIN: SKIN };
-  }
-  var BUILD = {
-    // intelligence officer: olive uniform, beret, round glasses, tablet
-    'The Quant': function (g, u, col) {
-      var s = soldier(g, u, { tunic: 0x4b5a3a, skin: 0xe0ac69, medals: 1 }), h = s.head;
-      var beret = M(new THREE.SphereGeometry(0.25, 20, 12, 0, Math.PI * 2, 0, Math.PI / 2), std(0x1f5e3a)); beret.scale.set(1.05, 0.45, 1.05);
-      beret.position.set(0.03, 0.12, -0.01); beret.rotation.z = -0.25; h.add(beret);
-      var flash = M(new THREE.BoxGeometry(0.05, 0.05, 0.02), GOLD); flash.position.set(-0.11, 0.18, 0.18); h.add(flash);
-      [-1, 1].forEach(function (sd) { var lens = M(new THREE.TorusGeometry(0.05, 0.008, 6, 20), BLACK); lens.position.set(sd * 0.085, 0.02, 0.23); h.add(lens); });
-      var tab = M(new THREE.BoxGeometry(0.2, 0.26, 0.02), BLACK); tab.position.set(0, -0.06, 0.08); tab.rotation.x = -0.8;
-      var scr = M(new THREE.PlaneGeometry(0.17, 0.22), new THREE.MeshBasicMaterial({ color: col })); scr.position.z = 0.012; tab.add(scr);
-      u.armL.userData.joint.add(tab);
-    },
-    // military police / drill sergeant: broad, campaign hat, red armband, scowl
-    'Risk': function (g, u, col) {
-      var s = soldier(g, u, { tunic: 0x6b5a3e, pants: 0x4a3f2c, skin: 0x8d5524, wide: 1.22, browTilt: 0.35, mouthW: 0.1, medals: 2 }), h = s.head;
-      var brim = M(new THREE.CylinderGeometry(0.4, 0.4, 0.02, 32), std(0x8a6a3a)); brim.position.y = 0.14; h.add(brim);
-      var crown = M(new THREE.ConeGeometry(0.2, 0.22, 4), std(0x8a6a3a)); crown.position.y = 0.26; crown.rotation.y = Math.PI / 4; h.add(crown);
-      var band = M(new THREE.CylinderGeometry(0.21, 0.21, 0.04, 20), BLACK); band.position.y = 0.17; h.add(band);
-      var arm = M(new THREE.CylinderGeometry(0.075, 0.075, 0.1, 12), new THREE.MeshStandardMaterial({ color: 0xc0262e, roughness: 0.7 }));
-      arm.position.y = -0.1; u.armL.add(arm);
-      var mp = M(new THREE.BoxGeometry(0.05, 0.04, 0.005), WHITE); mp.position.set(0, -0.1, 0.078); u.armL.add(mp);
-      var whistle = M(new THREE.CylinderGeometry(0.012, 0.012, 0.05, 8), GOLD); whistle.position.set(0.1, 1.12, 0.17); whistle.rotation.z = 1.2; g.add(whistle);
-    },
-    // paratrooper: lean, helmet with goggles, forward-leaning, speed lines when walking
-    'Momentum': function (g, u, col) {
-      var s = soldier(g, u, { tunic: 0x5a4a32, pants: 0x4d4030, skin: 0xc68642, mouthW: 0.1, mouthTilt: -0.15, browUp: true }), h = s.head;
-      var helm = M(new THREE.SphereGeometry(0.27, 24, 14, 0, Math.PI * 2, 0, Math.PI / 2), std(0x4f5a34, 0.85)); helm.position.y = 0.04; h.add(helm);
-      var rim = M(new THREE.TorusGeometry(0.27, 0.02, 6, 32), std(0x4f5a34, 0.85)); rim.rotation.x = Math.PI / 2; rim.position.y = 0.04; h.add(rim);
-      var strap = M(new THREE.BoxGeometry(0.5, 0.035, 0.02), BLACK); strap.position.set(0, 0.17, 0.2); h.add(strap);
-      [-1, 1].forEach(function (sd) { var gg = M(new THREE.CylinderGeometry(0.055, 0.055, 0.04, 16), new THREE.MeshBasicMaterial({ color: col })); gg.rotation.x = Math.PI / 2; gg.position.set(sd * 0.08, 0.17, 0.22); h.add(gg); });
-      var pack = M(new THREE.BoxGeometry(0.34, 0.4, 0.14), std(0x3d4529)); pack.position.set(0, 0.95, -0.21); g.add(pack);
-      u.trail = [];
-      for (var i = 0; i < 4; i++) { var tp = M(new THREE.SphereGeometry(0.045 - i * 0.008, 8, 6), basic(col, 0.7 - i * 0.15)); world.add(tp); u.trail.push(tp); }
-    },
-    // navy officer / timekeeper: white peaked cap, navy tunic, glowing wristwatch, stout
-    'Time': function (g, u, col) {
-      var s = soldier(g, u, { tunic: 0x1c2a4a, skin: 0xf1c27d, wide: 1.12, epaulette: true, medals: 2 }), h = s.head;
-      var cap = M(new THREE.CylinderGeometry(0.26, 0.22, 0.12, 28), WHITE); cap.position.y = 0.2; h.add(cap);
-      var band = M(new THREE.CylinderGeometry(0.225, 0.225, 0.05, 28), BLACK); band.position.y = 0.15; h.add(band);
-      var peak = M(new THREE.CylinderGeometry(0.17, 0.17, 0.015, 24, 1, false, -Math.PI / 2, Math.PI), BLACK); peak.position.set(0, 0.13, 0.12); peak.rotation.x = 0.25; h.add(peak);
-      var crest = M(new THREE.SphereGeometry(0.035, 10, 8), GOLD); crest.position.set(0, 0.17, 0.225); h.add(crest);
-      var watch = M(new THREE.CylinderGeometry(0.06, 0.06, 0.03, 16), new THREE.MeshBasicMaterial({ color: col })); watch.rotation.z = Math.PI / 2;
-      watch.position.set(0.06, -0.2, 0); u.armL.userData.joint.add(watch);
-      var hands = new THREE.Group(); hands.position.set(0.078, -0.2, 0); hands.rotation.y = Math.PI / 2; u.armL.userData.joint.add(hands); u.hands = hands;
-      bar(hands, 0.008, 0.045, 0, 0.02, 0, 0, BLACK);
-    },
-    // grizzled colonel: garrison cap tilted, grey mustache, monocle, lots of medals
-    'Doubt': function (g, u, col) {
-      var s = soldier(g, u, { tunic: 0x3a3f4a, skin: 0x5c3a21, medals: 4, browUp: true, mouthX: 0.03, mouthTilt: -0.2, epaulette: true }), h = s.head;
-      var cap = M(new THREE.BoxGeometry(0.3, 0.1, 0.4), std(0x2c313b)); cap.position.set(0.04, 0.24, 0); cap.rotation.z = -0.3; h.add(cap);
-      var pip = M(new THREE.BoxGeometry(0.04, 0.04, 0.02), GOLD); pip.position.set(-0.08, 0.27, 0.19); h.add(pip);
-      var stache = M(new THREE.BoxGeometry(0.16, 0.035, 0.04), std(0x9a9a9a)); stache.position.set(0, -0.065, 0.225); h.add(stache);
-      var mono = M(new THREE.TorusGeometry(0.05, 0.01, 6, 20), GOLD); mono.position.set(0.085, 0.02, 0.235); h.add(mono);
-      var chain = M(new THREE.CylinderGeometry(0.004, 0.004, 0.25, 4), GOLD); chain.position.set(0.12, -0.1, 0.22); chain.rotation.z = 0.3; h.add(chain);
-      head_tilt = h; h.rotation.z = 0.12;
-    }
+  // ── the cast: fresh business-casual looks
+  var LOOK = {
+    'The Quant':    { c: '#3ee6a1', skin: 0x8d5a3b, top: 0x1f3a5f, under: 0xffffff, pants: 0x2e3440, hair: 0x15100c, style: 'short', glasses: 1, tie: 0x3ee6a1,
+                      lines: ['Running the numbers again.', 'ADX says trend. I listen to ADX.', 'Data over feelings, always.', 'Three backtests agree. I like that.'] },
+    'Risk':         { c: '#ff5468', skin: 0xe0b18f, top: 0x4a4f63, under: 0xf3e9dc, pants: 0x24262e, hair: 0x6b3f22, style: 'bun', scarf: 0xff5468,
+                      lines: ['Where is the stop? Always ask where the stop is.', 'Protect the bankroll first.', 'Small size, long life.', 'No trade is also a position.'] },
+    'Momentum':     { c: '#ffb03b', skin: 0x5c3a21, top: 0xffb03b, under: 0x2b2b2b, pants: 0x3b3f4a, hair: 0x0c0c0c, style: 'fade', sneakers: 1, cardigan: 1,
+                      lines: ['I can feel a move coming.', 'MACD is warming up!', 'Trend is your friend, let’s ride it.', 'Who’s ready? I’m ready.'] },
+    'Time':         { c: '#4cb7ff', skin: 0xf1c9a5, top: 0x6e4b8b, under: 0xf6efe4, pants: 0x2b2f3a, hair: 0xd1a24f, style: 'long',
+                      lines: ['Right setup, wrong hour is still wrong.', 'London and New York overlap is where the action is.', 'Patience. The clock matters.', 'Too stretched. Let it come back to us.'] },
+    'Doubt':        { c: '#c9a7ff', skin: 0xc68642, top: 0x2a2f3a, under: 0xc9a7ff, pants: 0x3a3a3a, hair: 0x2b1d14, style: 'curly', glasses: 1, vest: 1,
+                      lines: ['Convince me.', 'I’ve seen this fake-out before.', 'What does the bigger chart say?', 'Somebody has to ask the hard question.'] },
+    'The Reporter': { c: '#f472b6', skin: 0xa86b45, top: 0x8a6a4a, under: 0xffffff, pants: 0x2a2a2a, hair: 0x1b1410, style: 'ponytail', badge: 1,
+                      lines: ['Checking the earnings calendar.', 'Headlines are quiet… too quiet.', 'StockTwits crowd is loud today.', 'Breaking: nothing breaking. Yet.'] },
+    'The Chair':    { c: '#f4c84a', skin: 0x7a4a2c, top: 0x111827, under: 0xffffff, pants: 0x111827, hair: 0x222222, style: 'bun', tie: 0xf4c84a,
+                      lines: ['Let’s keep it disciplined, team.', 'One good trade beats ten rushed ones.', 'Remember the rules: analyze, discuss, vote.', 'Coffee’s fresh. Charts are fresher.'] }
   };
-  var head_tilt;
-  function agent(name) {
-    var col = COLORS[name] || 0xffffff, g = new THREE.Group(), u = g.userData;
-    u.col = col;
-    (BUILD[name] || BUILD['Doubt'])(g, u, col);
-    var halo = M(new THREE.RingGeometry(0.34, 0.42, 40), basic(col, 0.45)); halo.rotation.x = -Math.PI / 2; halo.position.y = 0.02; g.add(halo); u.halo = halo;
+  var CREW = D.voters.map(function (v) { return v.name; }).concat(['The Chair']);
+  var N = D.voters.length;
+
+  function person(L) {
+    var g = new THREE.Group(), skin = M(L.skin), top = M(L.top), under = M(L.under), pants = M(L.pants), shoe = M(L.sneakers ? 0xf2f2f2 : 0x1b1b1b);
+    var body = new THREE.Group(); g.add(body);
+    var hips = new THREE.Group(); hips.position.y = 0.92; body.add(hips);
+    var legs = [];
+    [-0.14, 0.14].forEach(function (x) {
+      var leg = new THREE.Group(); leg.position.set(x, 0, 0); hips.add(leg);
+      cyl(0.11, 0.1, 0.5, pants, 0, -0.25, 0, leg);
+      var knee = new THREE.Group(); knee.position.y = -0.5; leg.add(knee);
+      cyl(0.095, 0.085, 0.42, pants, 0, -0.21, 0, knee);
+      box(0.18, 0.09, 0.3, shoe, 0, -0.44, 0.06, knee);
+      legs.push({ leg: leg, knee: knee });
+    });
+    var torso = new THREE.Group(); torso.position.y = 0.92; body.add(torso);
+    cyl(0.3, 0.27, 0.7, (L.vest || L.cardigan) ? under : top, 0, 0.36, 0, torso);
+    if (L.vest || L.cardigan) { var v = cyl(0.31, 0.28, 0.6, top, 0, 0.33, 0, torso); v.scale.z = 1.02; box(0.12, 0.55, 0.05, under, 0, 0.36, 0.29, torso); }
+    else box(0.16, 0.42, 0.05, under, 0, 0.45, 0.27, torso);
+    sph(0.3, (L.vest || L.cardigan) ? under : top, 0, 0.7, 0, torso).scale.y = 0.55;
+    if (L.tie) box(0.07, 0.36, 0.04, M(L.tie), 0, 0.48, 0.3, torso);
+    if (L.scarf) { var s_ = new THREE.Mesh(new THREE.TorusGeometry(0.17, 0.05, 8, 18), M(L.scarf)); s_.rotation.x = Math.PI / 2; s_.position.y = 0.8; torso.add(s_); }
+    if (L.badge) { box(0.12, 0.16, 0.02, M(0xffffff), 0.14, 0.42, 0.3, torso); box(0.02, 0.32, 0.02, M(0xf472b6), 0.1, 0.62, 0.29, torso); }
+    var arms = [];
+    [-1, 1].forEach(function (s) {
+      var sh = new THREE.Group(); sh.position.set(s * 0.37, 0.68, 0); torso.add(sh);
+      cyl(0.085, 0.08, 0.4, top, 0, -0.2, 0, sh);
+      var el = new THREE.Group(); el.position.y = -0.4; sh.add(el);
+      cyl(0.075, 0.07, 0.36, top, 0, -0.18, 0, el);
+      sph(0.085, skin, 0, -0.4, 0, el);
+      arms.push({ sh: sh, el: el, s: s });
+    });
+    cyl(0.09, 0.1, 0.12, skin, 0, 0.82, 0, torso);
+    var head = new THREE.Group(); head.position.y = 1.07; torso.add(head);
+    var hm = sph(0.24, skin, 0, 0, 0, head); hm.scale.set(0.95, 1.06, 1);
+    var eyeM = M(0x101010);
+    [-0.085, 0.085].forEach(function (x) { sph(0.03, eyeM, x, 0.03, 0.215, head); });
+    var smile = new THREE.Mesh(new THREE.TorusGeometry(0.055, 0.013, 6, 12, Math.PI), M(0x5a2a1a)); smile.rotation.z = Math.PI; smile.position.set(0, -0.08, 0.22); head.add(smile);
+    var hair = M(L.hair);
+    if (L.style === 'short' || L.style === 'fade') { var h1 = new THREE.Mesh(new THREE.SphereGeometry(L.style === 'fade' ? 0.245 : 0.25, 18, 12, 0, Math.PI * 2, 0, Math.PI / 2.3), hair); h1.position.y = 0.05; head.add(h1); }
+    else if (L.style === 'curly') { for (var k = 0; k < 9; k++) { var a = k / 9 * Math.PI * 2; sph(0.1, hair, Math.cos(a) * 0.17, 0.16 + (k % 2) * 0.03, Math.sin(a) * 0.15 - 0.02, head); } sph(0.16, hair, 0, 0.2, 0, head); }
+    else if (L.style === 'bun') { var h2 = new THREE.Mesh(new THREE.SphereGeometry(0.25, 18, 12, 0, Math.PI * 2, 0, Math.PI / 2.1), hair); h2.position.y = 0.03; head.add(h2); sph(0.11, hair, 0, 0.2, -0.14, head); }
+    else if (L.style === 'ponytail') { var h3 = new THREE.Mesh(new THREE.SphereGeometry(0.25, 18, 12, 0, Math.PI * 2, 0, Math.PI / 2.1), hair); h3.position.y = 0.03; head.add(h3); var pt = cyl(0.06, 0.03, 0.34, hair, 0, -0.08, -0.26, head); pt.rotation.x = 0.4; }
+    else { var h4 = new THREE.Mesh(new THREE.SphereGeometry(0.255, 18, 12, 0, Math.PI * 2, 0, Math.PI / 1.8), hair); h4.position.y = 0.02; head.add(h4); box(0.46, 0.4, 0.12, hair, 0, -0.14, -0.14, head); }
+    if (L.glasses) { var gm = M(0x111111); [-0.085, 0.085].forEach(function (x) { var r_ = new THREE.Mesh(new THREE.TorusGeometry(0.055, 0.012, 6, 16), gm); r_.position.set(x, 0.03, 0.225); head.add(r_); }); }
+    g.userData = { legs: legs, arms: arms, torso: torso, hips: hips, head: head, body: body };
+    g.scale.setScalar(1.4);
     return g;
   }
+  function pose(g, sit, walk, t, extra) {
+    var u = g.userData, s = Math.sin(t * 9) * walk;
+    u.legs.forEach(function (l, i) {
+      var sg = i ? -s : s;
+      l.leg.rotation.x = -sit * 1.45 + sg * 0.6;
+      l.knee.rotation.x = sit * 1.45 + Math.max(0, -sg) * 0.6;
+    });
+    var dropY = sit * 0.42;
+    u.hips.position.y = 0.92 - dropY; u.torso.position.y = 0.92 - dropY;
+    u.arms.forEach(function (a, i) {
+      var sg = i ? -s : s;
+      a.sh.rotation.x = sg * 0.6 - sit * 0.55; a.el.rotation.x = -sit * 0.7; a.sh.rotation.z = a.s * 0.06;
+    });
+    if (extra === 'cheer') u.arms.forEach(function (a) { a.sh.rotation.z = a.s * 2.6; a.sh.rotation.x = 0; a.el.rotation.x = 0; });
+    if (extra === 'shrug') u.arms.forEach(function (a) { a.sh.rotation.z = a.s * 0.7; a.el.rotation.x = -1.2; });
+    if (extra === 'type') u.arms.forEach(function (a, i) { a.sh.rotation.x = -0.9; a.el.rotation.x = -0.6 + Math.sin(t * 14 + i * 2) * 0.12; });
+    if (extra === 'talk') u.arms.forEach(function (a, i) { if (i) { a.sh.rotation.x = -0.6 + Math.sin(t * 5) * 0.3; a.el.rotation.x = -0.9; } });
+    u.head.rotation.x = extra === 'sad' ? 0.45 : 0;
+  }
 
-  // ── member stations in an arc behind the holotable
-  var people = [], signs = [], rings = [], N = D.voters.length;
-  var SPEAK = new THREE.Vector3(1.75, 0, 2.55);
-  function seatPos(i) {
-    var a = (200 + i * (140 / Math.max(1, N - 1))) * Math.PI / 180;
-    return new THREE.Vector3(Math.cos(a) * 3.5, 0, Math.sin(a) * 2.0 - 1.45);
+  // ── the building
+  var X0 = -11.5, X1 = 11.5, BLOCK_TOP = -11.5, HALL_A = -7.2, HALL_B = -4.8, BLOCK_BOT = -0.8, CONF_BOT = 9.2;
+  var carpet = M(0x4a5170, { roughness: 0.95 }), hallF = M(0x6d7488), wood = M(0x8a6a4a, { roughness: 0.55 }), navy = M(0x1f2a4a), wallC = M(0xdcd9d2), partM = M(0x2c3a63), trim = M(0xb08a5a);
+  box(X1 - X0, 0.1, BLOCK_BOT - BLOCK_TOP, hallF, 0, -0.05, (BLOCK_TOP + BLOCK_BOT) / 2);
+  box(X1 - X0, 0.1, CONF_BOT - BLOCK_BOT, M(0x1c2440, { roughness: 0.95 }), 0, -0.05, (BLOCK_BOT + CONF_BOT) / 2);
+  // outer walls
+  box(X1 - X0 + 0.3, 1.2, 0.25, navy, 0, 0.6, BLOCK_TOP);
+  box(0.25, 1.2, CONF_BOT - BLOCK_TOP, navy, X0, 0.6, (BLOCK_TOP + CONF_BOT) / 2);
+  box(0.25, 1.2, CONF_BOT - BLOCK_TOP, navy, X1, 0.6, (BLOCK_TOP + CONF_BOT) / 2);
+  box(X1 - X0 + 0.3, 1.2, 0.25, navy, 0, 0.6, CONF_BOT);
+  // wall between offices and conference room, with a door at the right
+  var DOOR_X = 9.9;
+  box(DOOR_X - 0.9 - X0, 1.2, 0.25, navy, (X0 + DOOR_X - 0.9) / 2, 0.6, BLOCK_BOT);
+  box(X1 - (DOOR_X + 0.9), 1.2, 0.25, navy, (X1 + DOOR_X + 0.9) / 2, 0.6, BLOCK_BOT);
+  // windows on the left
+  for (var wz = -10.5; wz < -1.5; wz += 2.2) box(0.08, 0.9, 1.7, M(0x8fb7e6, { emissive: 0x3a6ea8, emissiveIntensity: 0.6 }), X0 + 0.14, 0.7, wz);
+  // lobby (left) with the Chair's desk
+  var LOBBY_X = -6.6;
+  box(X0 + 0.2 - LOBBY_X, 0.02, 4.2, M(0x55607f), (X0 + LOBBY_X) / 2, 0.01, -2.9);
+  box(2.6, 0.75, 0.9, wood, -9.0, 0.38, -9.7);
+  var signTex = canvasTex(512, 160, function (g, w, h) { g.fillStyle = '#16204a'; g.fillRect(0, 0, w, h); g.strokeStyle = '#f4c84a'; g.lineWidth = 6; g.strokeRect(6, 6, w - 12, h - 12);
+    font(g, 34, 800); g.fillStyle = '#f4c84a'; g.fillText('📈 ' + BOT.toUpperCase(), 28, 66); font(g, 46, 900); g.fillStyle = '#fff'; g.fillText('TRADE ROOM', 28, 126); });
+  plane(3.6, 1.12, signTex, -9.1, 0.03, -11.0, -Math.PI / 2, 0);
+  // couches in the lobby
+  box(0.7, 0.45, 2.2, M(0x1b1f2a), X0 + 0.7, 0.23, -3.2); box(2.0, 0.45, 0.7, M(0x1b1f2a), -9.0, 0.23, -1.6);
+  cyl(0.45, 0.45, 0.4, wood, -9.3, 0.2, -3.1);
+  // right wall motto
+  var mottoTex = canvasTex(256, 512, function (g, w, h) { g.fillStyle = '#16204a'; g.fillRect(0, 0, w, h); font(g, 36, 800); g.fillStyle = '#fff';
+    ['ANALYZE', 'DISCUSS', 'VOTE', 'PROFIT'].forEach(function (t, i) { g.fillText(t, 28, 110 + i * 82); }); g.fillStyle = '#3ee6a1'; font(g, 48, 900); g.fillText('↗', 28, 470); });
+  plane(1.5, 3.0, mottoTex, 10.6, 0.04, -9.3, -Math.PI / 2, 0);
+  // offices along the hallway
+  var OFF_X0 = -6.4, OFF_X1 = 8.6, nTop = Math.ceil(N / 2), nBot = N - nTop;
+  var monitorTex = [], seats = {}, offices = [];
+  function makeOffice(i, row, k, n) {
+    var w = (OFF_X1 - OFF_X0) / n, x0 = OFF_X0 + k * w, cx = x0 + w / 2;
+    var top = row === 0, zBack = top ? BLOCK_TOP : BLOCK_BOT, zFront = top ? HALL_A : HALL_B, cz = (zBack + zFront) / 2;
+    box(w - 0.2, 0.02, Math.abs(zBack - zFront) - 0.2, carpet, cx, 0.01, cz);
+    box(0.18, 1.0, Math.abs(zBack - zFront), partM, x0, 0.5, cz); if (k === n - 1) box(0.18, 1.0, Math.abs(zBack - zFront), partM, x0 + w, 0.5, cz);
+    // front wall with a door gap
+    var gap = 1.1, seg = (w - gap) / 2;
+    box(seg, 1.0, 0.16, partM, x0 + seg / 2, 0.5, zFront); box(seg, 1.0, 0.16, partM, x0 + w - seg / 2, 0.5, zFront);
+    var doorLeaf = box(0.06, 0.95, gap * 0.9, trim, x0 + seg + 0.05, 0.48, zFront + (top ? -gap * 0.45 : gap * 0.45));
+    // desk against the back wall
+    var dz = zBack + (top ? 0.9 : -0.9);
+    box(2.0, 0.08, 0.95, wood, cx, 0.78, dz); box(0.08, 0.76, 0.85, M(0x6b5238), cx - 0.92, 0.38, dz); box(0.08, 0.76, 0.85, M(0x6b5238), cx + 0.92, 0.38, dz);
+    var name = D.voters[i].name, L = LOOK[name] || LOOK['The Quant'];
+    var mt = canvasTex(256, 160, function (g, w2, h2) { g.fillStyle = '#0b1022'; g.fillRect(0, 0, w2, h2); font(g, 20, 800); g.fillStyle = L.c; g.fillText(name, 10, 26);
+      g.strokeStyle = L.c; g.lineWidth = 3; g.beginPath(); var y = 110; for (var q = 0; q <= 24; q++) { y += Math.sin(q * 0.7 + i) * 7 + (Math.random() - 0.5) * 6; g.lineTo(10 + q * 9.6, Math.max(40, Math.min(150, y))); } g.stroke(); });
+    var mon = plane(0.95, 0.6, mt, cx, 1.22, dz + (top ? -0.25 : 0.25), 0, top ? 0 : Math.PI);
+    mon.rotation.x = top ? -0.5 : 0.5; monitorTex.push(mt);
+    box(0.5, 0.03, 0.2, M(0x2a2a2a), cx, 0.83, dz + (top ? 0.2 : -0.2));
+    cyl(0.07, 0.06, 0.13, M(0xffffff), cx + 0.7, 0.88, dz);
+    // plant + chair
+    cyl(0.18, 0.14, 0.35, M(0xd8d2c4), x0 + w - 0.45, 0.18, zBack + (top ? 0.45 : -0.45)); sph(0.34, M(0x2f8a4a), x0 + w - 0.45, 0.6, zBack + (top ? 0.45 : -0.45));
+    var chairZ = dz + (top ? 1.05 : -1.05);
+    box(0.62, 0.08, 0.58, M(0x22262f), cx, 0.52, chairZ); box(0.62, 0.62, 0.08, M(0x22262f), cx, 0.85, chairZ + (top ? 0.3 : -0.3));
+    // name plate on the floor at the door (readable from above)
+    var pl = canvasTex(256, 64, function (g, w2, h2) { g.fillStyle = '#0d1322'; g.fillRect(0, 0, w2, h2); g.fillStyle = L.c; g.fillRect(0, 0, 8, h2); font(g, 28, 800); g.fillStyle = '#fff'; g.fillText(name, 18, 42); });
+    plane(1.7, 0.42, pl, cx, 0.03, zFront + (top ? 0.45 : -0.45), -Math.PI / 2, 0);
+    seats[name] = { pos: new THREE.Vector3(cx, 0, chairZ), face: top ? Math.PI : 0, door: new THREE.Vector3(x0 + seg + gap / 2, 0, zFront), cx: cx, top: top };
+    offices.push({ name: name, cx: cx, top: top });
   }
-  function screenTex(name, col) {
-    var c = document.createElement('canvas'); c.width = 256; c.height = 96; var x = c.getContext('2d');
-    var hex = '#' + col.toString(16).padStart(6, '0');
-    x.fillStyle = '#081020'; x.fillRect(0, 0, 256, 96); x.strokeStyle = hex; x.lineWidth = 4; x.strokeRect(2, 2, 252, 92);
-    x.fillStyle = hex; x.font = '700 26px ui-monospace, Menlo, monospace'; x.textAlign = 'center'; x.textBaseline = 'middle';
-    x.fillText(name.toUpperCase(), 128, 36);
-    x.fillStyle = 'rgba(207,230,255,0.6)'; x.font = '500 16px ui-monospace, Menlo, monospace'; x.fillText('COUNCIL MEMBER', 128, 68);
-    return new THREE.CanvasTexture(c);
+  for (var i = 0; i < N; i++) { if (i < nTop) makeOffice(i, 0, i, nTop); else makeOffice(i, 1, i - nTop, Math.max(1, nBot)); }
+  seats['The Chair'] = { pos: new THREE.Vector3(-9.0, 0, -8.75), face: Math.PI, door: new THREE.Vector3(LOBBY_X, 0, (HALL_A + HALL_B) / 2), cx: -9, top: true };
+  // hallway plants + water cooler
+  [[-6.0, HALL_A + 0.4], [2.0, HALL_B - 0.35], [8.9, HALL_A + 0.4]].forEach(function (p) { cyl(0.2, 0.16, 0.4, M(0xd8d2c4), p[0], 0.2, p[1]); sph(0.36, M(0x2f8a4a), p[0], 0.65, p[1]); });
+  cyl(0.22, 0.22, 1.0, M(0xe8eef6), 10.8, 0.5, -6.0); cyl(0.2, 0.2, 0.45, M(0x9fd3ff, { transparent: true, opacity: 0.8 }), 10.8, 1.2, -6.0);
+
+  // ── conference room
+  var TC = new THREE.Vector3(0, 0, 4.3), TA = 4.4, TB = 1.75;
+  var tbl = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 0.12, 64), M(0x4a2f1f, { roughness: 0.35 })); tbl.scale.set(TA, 1, TB); tbl.position.set(TC.x, 0.8, TC.z); tbl.castShadow = tbl.receiveShadow = true; sc.add(tbl);
+  cyl(0.5, 0.7, 0.75, M(0x222222), TC.x, 0.38, TC.z);
+  sph(0.3, M(0x2f8a4a), TC.x, 1.05, TC.z);
+  // vote screen (left wall) and rules board (right wall)
+  var voteState = { yes: 0, no: 0, verdict: null, title: D.title || 'No trade on the table', counting: false, note: '' };
+  var voteTex = canvasTex(512, 720, function () {});
+  function drawVote() {
+    var g = voteTex.userData.g, w = 512, h = 720;
+    g.fillStyle = '#0b1230'; g.fillRect(0, 0, w, h); g.fillStyle = '#38e1ff'; g.fillRect(0, 0, w, 10);
+    font(g, 54, 900); g.fillStyle = '#fff'; g.fillText('TRADE VOTE', 40, 92);
+    font(g, 28, 700); g.fillStyle = '#c9d3f5';
+    var t = voteState.title || '', lines = [], cur = '';
+    t.split(' ').forEach(function (wd) { if ((cur + ' ' + wd).length > 24) { lines.push(cur); cur = wd; } else cur = (cur ? cur + ' ' : '') + wd; }); if (cur) lines.push(cur);
+    lines.slice(0, 3).forEach(function (l, k) { g.fillText(l, 40, 150 + k * 36); });
+    font(g, 120, 900); g.fillStyle = '#3ee6a1'; g.fillText(String(voteState.yes), 60, 400); g.fillStyle = '#ff5468'; g.fillText(String(voteState.no), 330, 400);
+    font(g, 34, 800); g.fillStyle = '#3ee6a1'; g.fillText('YES', 64, 450); g.fillStyle = '#ff5468'; g.fillText('NO', 336, 450);
+    g.fillStyle = '#ffffff33'; g.fillRect(250, 300, 4, 160);
+    if (voteState.verdict) { var ok = /APPROVED/.test(voteState.verdict); g.fillStyle = ok ? '#3ee6a1' : '#ff5468'; g.fillRect(30, 520, w - 60, 110); font(g, 46, 900); g.fillStyle = '#0b1230'; g.fillText(voteState.verdict, 52, 592); }
+    else { font(g, 30, 700); g.fillStyle = '#8f97b8'; g.fillText(voteState.note || '', 40, 590); }
+    voteTex.needsUpdate = true;
   }
-  function signTex(text, color) {
-    var c = document.createElement('canvas'); c.width = 256; c.height = 112; var x = c.getContext('2d');
-    x.fillStyle = 'rgba(6,10,24,0.85)'; x.fillRect(0, 0, 256, 112);
-    x.strokeStyle = color; x.lineWidth = 4; x.strokeRect(4, 4, 248, 104);
-    x.fillStyle = color; x.fillRect(4, 4, 248, 6);
-    x.font = '700 50px ui-monospace, SFMono-Regular, Menlo, monospace'; x.textAlign = 'center'; x.textBaseline = 'middle';
-    x.fillText(text, 128, 62);
-    return new THREE.CanvasTexture(c);
-  }
-  D.voters.forEach(function (v, i) {
-    var seat = seatPos(i);
-    var face = Math.atan2(-seat.x, -seat.z);
-    var g = agent(v.name), u = g.userData;
-    u.i = i; u.seat = seat; u.faceSeat = face; u.yaw = face; u.phase = i * 1.37;
-    u.hip = u.legL ? u.legL.position.y : 0.6; u.prev = seat.clone(); u.blinkAt = 1 + i * 0.9;
-    // glow parts: the colored visor/face meshes, plus a halo sprite in front of the face
-    u.glows = u.glows || [];
-    var fg = glow(u.col, 0.35, 0.4); if (u.patch) { fg.position.copy(u.patch.position); fg.position.z += 0.03; g.add(fg); } u.faceGlow = fg;
-    shadowy(g, true, false);
-    g.position.copy(seat); world.add(g); people.push(g);
-    // station: sleek chair + console with a screen and a floor ring that lights with the vote
-    var st = new THREE.Group(); st.position.copy(seat); st.rotation.y = face; world.add(st);
-    var seatTop = 0.5;
-    st.add(shadowy(M(new THREE.BoxGeometry(0.66, 0.08, 0.58), STEEL), true, true)).position.set(0, seatTop - 0.04, -0.05);
-    var back = M(new THREE.BoxGeometry(0.62, 1.45, 0.06), GLASS); back.position.set(0, seatTop + 0.66, -0.36); st.add(back);
-    st.add(M(new THREE.BoxGeometry(0.03, 1.45, 0.07), glowMat(u.col))).position.set(-0.31, seatTop + 0.66, -0.36);
-    st.add(M(new THREE.BoxGeometry(0.03, 1.45, 0.07), glowMat(u.col))).position.set(0.31, seatTop + 0.66, -0.36);
-    st.add(shadowy(M(new THREE.CylinderGeometry(0.06, 0.12, seatTop - 0.08, 10), METAL2), true, true)).position.set(0, (seatTop - 0.08) / 2, -0.05);
-    var con = new THREE.Group(); con.position.set(0.62, 0, -0.2); con.scale.setScalar(0.8); st.add(con);
-    con.add(shadowy(M(new THREE.BoxGeometry(0.16, 0.9, 0.16), STEEL), true, true)).position.y = 0.45;
-    var scr = M(new THREE.PlaneGeometry(0.64, 0.24), new THREE.MeshBasicMaterial({ map: screenTex(v.name, u.col) }));
-    scr.position.set(0, 1.02, 0.06); scr.rotation.x = -0.35; con.add(scr);
-    var ringMat = addv(0x334466, 0.5);
-    var fr = M(new THREE.RingGeometry(0.46, 0.56, 48), ringMat); fr.rotation.x = -Math.PI / 2; fr.position.y = 0.012; st.add(fr);
-    var rg = glow(0xffffff, 1.6, 0); rg.position.y = 0.2; st.add(rg);
-    rings.push({ mat: ringMat, glow: rg, vote: v.vote });
-    var word = v.vote === true ? 'YES' : v.vote === false ? 'NO' : 'PASS';
-    var color = v.vote === true ? '#53f0a6' : v.vote === false ? '#ff6b7c' : '#a99fc9';
-    var sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: signTex(word, color), transparent: true, depthWrite: false }));
-    sp.scale.set(0.001, 0.001, 1); world.add(sp); signs.push(sp);
+  plane(3.2, 4.5, voteTex, X0 + 1.9, 0.04, 4.3, -Math.PI / 2, 0); box(3.4, 0.06, 4.7, M(0x0a0e1c), X0 + 1.9, 0.0, 4.3);
+  var rulesTex = canvasTex(400, 520, function (g, w, h) { g.fillStyle = '#f7f7f2'; g.fillRect(0, 0, w, h); g.strokeStyle = '#9aa2c2'; g.lineWidth = 8; g.strokeRect(4, 4, w - 8, h - 8);
+    font(g, 40, 900); g.fillStyle = '#16204a'; g.fillText('TRADE RULES', 34, 72); font(g, 34, 700);
+    ['1. Analyze', '2. Discuss', '3. Vote', '4. Execute'].forEach(function (t, k) { g.fillText(t, 44, 150 + k * 70); }); font(g, 54, 900); g.fillStyle = '#3ee6a1'; g.fillText('↗', 300, 470); });
+  plane(2.4, 3.1, rulesTex, X1 - 1.6, 0.04, 4.6, -Math.PI / 2, 0);
+  [[X0 + 1.0, 0.6], [X0 + 1.0, 8.2], [X1 - 1.0, 8.2], [X1 - 1.0, 0.6]].forEach(function (p) { cyl(0.22, 0.17, 0.45, M(0xd8d2c4), p[0], 0.22, p[1]); sph(0.42, M(0x2f8a4a), p[0], 0.75, p[1]); });
+  // seats around the table: voters + the Chair (Chair at the head, near the screen)
+  var confSeats = {};
+  CREW.forEach(function (name, k) {
+    var ang = name === 'The Chair' ? Math.PI : -Math.PI + (k + 1) * (2 * Math.PI / (N + 1));
+    var pos = new THREE.Vector3(TC.x + Math.cos(ang) * (TA + 0.75), 0, TC.z + Math.sin(ang) * (TB + 0.75));
+    confSeats[name] = { pos: pos, face: Math.atan2(TC.x - pos.x, TC.z - pos.z), ang: ang,
+                        ring: new THREE.Vector3(TC.x + Math.cos(ang) * (TA + 1.7), 0, TC.z + Math.sin(ang) * (TB + 1.5)) };
+    var ch = new THREE.Group(); ch.position.copy(pos); ch.rotation.y = confSeats[name].face; sc.add(ch);
+    box(0.62, 0.08, 0.58, M(0x1b1f2a), 0, 0.52, 0, ch); box(0.62, 0.6, 0.08, M(0x1b1f2a), 0, 0.84, -0.32, ch);
+    var paper = box(0.32, 0.01, 0.42, M(0xffffff), 0, 0.87, 0, sc); paper.position.set(TC.x + Math.cos(ang) * (TA - 0.55), 0.87, TC.z + Math.sin(ang) * (TB - 0.35)); paper.rotation.y = -ang;
   });
-  // ── commander's reactions: 🥂 cheers / 👎 disappointed
-  var GLASS = new THREE.MeshStandardMaterial({ color: 0xe8f4ff, transparent: true, opacity: 0.55, roughness: 0.05, metalness: 0.1 });
-  var BUBBLY = new THREE.MeshBasicMaterial({ color: 0xf6d36b });
-  people.forEach(function (g) {
-    var u = g.userData; if (!u.armR) return;
-    var gl = new THREE.Group(); gl.visible = false;
-    var bowl = M(new THREE.CylinderGeometry(0.06, 0.035, 0.12, 14, 1, true), GLASS); bowl.position.y = 0.1; gl.add(bowl);
-    var fizz = M(new THREE.CylinderGeometry(0.052, 0.034, 0.08, 14), BUBBLY); fizz.position.y = 0.08; gl.add(fizz);
-    var stem = M(new THREE.CylinderGeometry(0.008, 0.008, 0.08, 6), GLASS); stem.position.y = 0.0; gl.add(stem);
-    var foot = M(new THREE.CylinderGeometry(0.035, 0.035, 0.008, 12), GLASS); foot.position.y = -0.04; gl.add(foot);
-    gl.position.set(0, -0.38, 0.04); gl.rotation.x = Math.PI; gl.scale.setScalar(1.7);      // hand points down the arm; flip so the glass stands up when raised
-    u.armR.userData.joint.add(gl); u.glass = gl;
+
+  // ── people
+  var people = CREW.map(function (name) {
+    var g = person(LOOK[name] || LOOK['The Quant']); sc.add(g);
+    var s = seats[name]; var u = g.userData;
+    u.name = name; u.pos = s.pos.clone(); u.face = s.face; u.rot = s.face; u.sit = 1; u.route = []; u.wantSit = true; u.where = 'desk'; u.task = null; u.used = {};
+    g.position.copy(u.pos); g.rotation.y = u.rot; return g;
   });
-  var confN = 260, confG = new THREE.BufferGeometry(), cp = new Float32Array(confN * 3), cc = new Float32Array(confN * 3), cv = [];
-  var palette = [[0.33, 0.94, 0.65], [0.96, 0.78, 0.29], [0.22, 0.88, 1.0], [1.0, 0.42, 0.49], [0.79, 0.65, 1.0]];
-  for (var ci = 0; ci < confN; ci++) { var pc = palette[ci % 5]; cc[ci * 3] = pc[0]; cc[ci * 3 + 1] = pc[1]; cc[ci * 3 + 2] = pc[2]; cv.push([0, 0, 0]); cp[ci * 3 + 1] = -50; }
-  confG.setAttribute('position', new THREE.BufferAttribute(cp, 3)); confG.setAttribute('color', new THREE.BufferAttribute(cc, 3));
-  var confetti = new THREE.Points(confG, new THREE.PointsMaterial({ size: 0.07, vertexColors: true, transparent: true, depthWrite: false }));
-  world.add(confetti);
-  function burst() {
-    for (var b = 0; b < confN; b++) {
-      cp[b * 3] = (Math.random() - 0.5) * 1.2; cp[b * 3 + 1] = 2.6 + Math.random() * 0.4; cp[b * 3 + 2] = -0.6 + (Math.random() - 0.5) * 1.2;
-      var a = Math.random() * Math.PI * 2, sp_ = 1.2 + Math.random() * 2.4;
-      cv[b] = [Math.cos(a) * sp_, 2 + Math.random() * 3, Math.sin(a) * sp_];
+  function P(name) { return people[CREW.indexOf(name)]; }
+  var HALL_Z = (HALL_A + HALL_B) / 2;
+  function pathToConf(name) {
+    var s = seats[name], c = confSeats[name], pts = [], AISLE = BLOCK_BOT + 1.0;
+    pts.push(s.door.clone()); pts.push(new THREE.Vector3(s.door.x, 0, HALL_Z));
+    pts.push(new THREE.Vector3(DOOR_X, 0, HALL_Z)); pts.push(new THREE.Vector3(DOOR_X, 0, AISLE));
+    if (Math.sin(c.ang) <= 0.05) pts.push(new THREE.Vector3(c.ring.x, 0, AISLE));
+    else { var sx = c.ring.x >= 0 ? TA + 2.0 : -(TA + 2.0); pts.push(new THREE.Vector3(sx, 0, AISLE)); pts.push(new THREE.Vector3(sx, 0, c.ring.z)); }
+    pts.push(c.ring.clone()); pts.push(c.pos.clone()); return pts;
+  }
+  function pathToDesk(name) { return pathToConf(name).reverse().slice(1).concat([seats[name].pos.clone()]); }
+  function walk(name, pts, face, sitAfter, where) { var u = P(name).userData; u.route = pts; u.face = face; u.wantSit = sitAfter; u.where = where; u.sitDelay = 0; }
+  function toConf(name) { walk(name, pathToConf(name), confSeats[name].face, true, 'conf'); }
+  function toDesk(name) { var u = P(name).userData; if (u.where === 'desk' && !u.route.length) return; walk(name, u.where === 'conf' ? pathToDesk(name) : [seats[name].door.clone(), seats[name].pos.clone()], seats[name].face, true, 'desk'); }
+  function settled(name) { var u = P(name).userData; return !u.route.length && u.sit > 0.95; }
+
+  // ── speech bubbles + vote tags
+  var bubWrap = document.createElement('div'); bubWrap.className = 'bubbles'; stage.appendChild(bubWrap);
+  var pill = document.createElement('div'); pill.className = 'phasepill'; stage.appendChild(pill);
+  var banner = document.createElement('div'); banner.className = 'partybanner'; banner.hidden = true; stage.appendChild(banner);
+  var bubs = [], tags = {}, V = new THREE.Vector3();
+  function colorOf(name) { return (LOOK[name] || {}).c || '#fff'; }
+  function speak(name, text, dur) {
+    if (!text) return;
+    bubs = bubs.filter(function (b) { if (b.name === name) { b.el.remove(); return false; } return true; });
+    while (bubs.length >= 3) bubs.shift().el.remove();
+    if (text.length > 96) text = text.slice(0, 94).replace(/\s+\S*$/, '') + '…';
+    var el = document.createElement('div'); el.className = 'bub'; el.style.setProperty('--bc', colorOf(name));
+    var b = document.createElement('b'); b.textContent = name; el.appendChild(b); el.appendChild(document.createTextNode(text));
+    bubWrap.appendChild(el); requestAnimationFrame(function () { el.classList.add('on'); });
+    var len = dur || Math.min(6, 2.4 + text.length * 0.045);
+    bubs.push({ name: name, el: el, until: performance.now() / 1000 + len });
+    P(name).userData.talkUntil = performance.now() / 1000 + Math.min(len, 2.6);
+  }
+  function tag(name, vote) {
+    if (tags[name]) tags[name].remove();
+    if (vote === undefined) { delete tags[name]; return; }
+    var el = document.createElement('div'); el.className = 'vtag ' + (vote === true ? 'yes' : vote === false ? 'no' : 'abs');
+    el.textContent = vote === true ? 'YES' : vote === false ? 'NO' : '—'; bubWrap.appendChild(el); tags[name] = el;
+  }
+  function screenPos(name, lift) {
+    P(name).userData.head.getWorldPosition(V); V.y += lift; V.project(cam);
+    var W = stage.clientWidth, H = renderer.domElement.clientHeight; return { x: (V.x + 1) / 2 * W, y: (1 - V.y) / 2 * H, W: W, H: H };
+  }
+  function placeOverlays(nowP) {
+    var placed = [];
+    bubs = bubs.filter(function (b) {
+      if (nowP > b.until) { b.el.classList.remove('on'); setTimeout(function () { b.el.remove(); }, 300); return false; }
+      var s = screenPos(b.name, 0.5), bw = b.el.offsetWidth || 130, bh = b.el.offsetHeight || 40;
+      var left = Math.max(4, Math.min(s.W - bw - 4, s.x - bw / 2)), top = Math.max(bh + 4, Math.min(s.H - 4, s.y - 6));
+      placed.forEach(function (p) { if (left < p.r && left + bw > p.l && top > p.t - bh - 4 && top - bh < p.t + 4) top = Math.max(bh + 4, p.t - p.h - 6); });
+      placed.push({ l: left, r: left + bw, t: top, h: bh });
+      b.el.style.left = left + 'px'; b.el.style.top = top + 'px'; b.el.style.setProperty('--tx', Math.max(12, Math.min(bw - 12, s.x - left)) + 'px');
+      return true;
+    });
+    Object.keys(tags).forEach(function (name) { var s = screenPos(name, 0.25), el = tags[name]; el.style.left = (s.x - 18) + 'px'; el.style.top = (s.y - 14) + 'px'; });
+  }
+  function lineFor(name) {
+    var live = ((D.chatter || {})[name] || []).slice(), pool = live.length ? (Math.random() < 0.75 ? live : live.concat((LOOK[name] || {}).lines || [])) : ((LOOK[name] || {}).lines || []);
+    var u = P(name).userData, fresh = pool.filter(function (l) { return !u.used[l]; });
+    if (!fresh.length) { u.used = {}; fresh = pool; }
+    var l = fresh[Math.floor(Math.random() * fresh.length)]; u.used[l] = 1; return l;
+  }
+  function sget(k, ses) { try { return (ses ? sessionStorage : localStorage).getItem(KEY + k); } catch (e) { return null; } }
+  function sset(k, v, ses) { try { (ses ? sessionStorage : localStorage).setItem(KEY + k, v); } catch (e) {} }
+  function sdel(k, ses) { try { (ses ? sessionStorage : localStorage).removeItem(KEY + k); } catch (e) {} }
+
+  // ── phases: work (at desks) → assemble (walk to the conference room) → hearing (vote) → back to work; party; recess
+  var phase = { name: 'work', t: 0 }, nextChat = 2, nowS = function () { return Date.now() / 1000; }, confetti = [];
+  function startWork(t, msg) { phase = { name: 'work', t: t }; CREW.forEach(function (n) { tag(n); toDesk(n); }); if (msg) speak('The Chair', msg, 3.5); stampEl.classList.remove('show'); voteState.verdict = null; voteState.note = nextNote(); drawVote(); }
+  function startAssemble(t, then, msg) { phase = { name: 'assemble', t: t, then: then, readyAt: t + CREW.length * 0.35 + 0.8 }; CREW.forEach(function (n, k) { setTimeout(function () { toConf(n); }, k * 350); }); speak('The Chair', msg || 'Conference room, everyone. We have a setup.', 3.5); }
+  function startHearing(t) {
+    voteState = { yes: 0, no: 0, verdict: null, title: D.title || 'Last trade', note: '' }; drawVote();
+    phase = { name: 'hearing', t: t, step: -1, nextAt: t + 1.2 };
+    CREW.forEach(function (n) { var u = P(n).userData, c = confSeats[n]; if (u.pos.distanceTo(c.pos) > 0.05 || u.route.length) { u.pos.copy(c.pos); u.rot = u.face = c.face; u.route = []; u.wantSit = true; u.sit = 1; } u.where = 'conf'; });
+    sset('Heard', String(D.lastVoteT));
+  }
+  function hearingTick(t) {
+    if (t < phase.nextAt) return;
+    phase.step++;
+    if (phase.step === 0) { speak('The Chair', 'Order. On the table: ' + (D.title || 'the last setup') + '.', 4); phase.nextAt = t + 3.6; return; }
+    var i = phase.step - 1;
+    if (i < N) {
+      var v = D.voters[i]; tag(v.name, v.vote);
+      if (v.vote === true) voteState.yes++; else if (v.vote === false) voteState.no++; drawVote();
+      speak(v.name, (v.vote === true ? 'YES. ' : v.vote === false ? 'NO. ' : 'Pass. ') + (v.why || ''), 4.2);
+      phase.nextAt = t + 2.8; return;
     }
-    confG.attributes.position.needsUpdate = true;
+    if (i === N) {
+      voteState.verdict = D.verdict; drawVote(); stampEl.classList.add('show');
+      speak('The Chair', D.approved ? (D.verdict + '. We’re in. Risk, set the stop.') : (D.verdict + '. We pass on this one.'), 4.5);
+      if (D.approved) CREW.forEach(function (n) { P(n).userData.cheerUntil = t + 2.5; });
+      phase.nextAt = t + 6; return;
+    }
+    startWork(t, 'Back to your desks. Good meeting.');
   }
-  var react = null, REACT_LEN = 5.0;
-  window.councilReact = function (kind) { react = { kind: kind, t: performance.now() / 1000, burst: false }; };
-  var cheerLight = new THREE.PointLight(0xf6d36b, 0, 10, 2); cheerLight.position.set(0, 2.6, -0.6); scene.add(cheerLight);
+  function startParty(t, Pt) {
+    phase = { name: 'party', t: t }; sset('Party', String(Pt.t));
+    banner.textContent = ''; var h = document.createElement('b'); h.textContent = Pt.kind === 'win' ? '🎉 THE THEORY WORKED' : Pt.kind === 'comeback' ? '🎉 COMEBACK' : '🎉 THEORY PROVEN'; banner.appendChild(h);
+    var a = document.createElement('span'); a.textContent = Pt.title || ''; banner.appendChild(a); var c = document.createElement('small'); c.textContent = Pt.detail || ''; banner.appendChild(c); banner.hidden = false;
+    CREW.forEach(function (n) { toConf(n); });
+    for (var k = 0; k < 120; k++) { var m = new THREE.Mesh(new THREE.PlaneGeometry(0.16, 0.26), new THREE.MeshBasicMaterial({ color: [0x3ee6a1, 0xf4c84a, 0x38e1ff, 0xff4fd8, 0xff5468][k % 5], side: 2 }));
+      m.position.set(TC.x + (Math.random() - 0.5) * 12, 4 + Math.random() * 6, TC.z + (Math.random() - 0.5) * 6); m.userData.v = (0.02 + Math.random() * 0.03); sc.add(m); confetti.push(m); }
+  }
+  function endParty(t) { banner.hidden = true; confetti.forEach(function (m) { sc.remove(m); }); confetti = []; startWork(t, 'Okay okay, back to work. Great job, team.'); }
+  function nextNote() { if (D.recess) return 'Off duty · market closed'; var nv = D.nextVote || 0, s = Math.max(0, Math.round(nv - nowS())); return nv ? 'Next vote in ' + Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') : 'Waiting for a setup'; }
+  function phaseLabel() {
+    if (phase.name === 'hearing') return '⚖️ Vote in session';
+    if (phase.name === 'assemble') return '📣 Heading to the conference room';
+    if (phase.name === 'party') return '🎉 Party!';
+    if (phase.name === 'wait') return '🗳 Counting votes…';
+    if (D.recess) return '☕ Off duty · market closed';
+    return '💼 At their desks · ' + nextNote();
+  }
 
-  // speaking spot marker
-  var spot = M(new THREE.RingGeometry(0.42, 0.5, 48), addv(0xf4c84a, 0.5)); spot.rotation.x = -Math.PI / 2; at(spot, SPEAK.x, 0.013, SPEAK.z);
+  // dialogs: two officers meet in the hallway
+  function startDialog(t) {
+    var ds = (D.dialogs || []).filter(function (d) { return CREW.indexOf(d[0]) >= 0 && CREW.indexOf(d[2]) >= 0; });
+    if (!ds.length) return false;
+    var d = ds[Math.floor(Math.random() * ds.length)], a = d[0], b = d[2];
+    var mx = (seats[a].door.x + seats[b].door.x) / 2;
+    var pa = new THREE.Vector3(mx - 0.55, 0, HALL_Z), pb = new THREE.Vector3(mx + 0.55, 0, HALL_Z);
+    walk(a, [seats[a].door.clone(), new THREE.Vector3(seats[a].door.x, 0, HALL_Z), pa], Math.PI / 2, false, 'hall');
+    walk(b, [seats[b].door.clone(), new THREE.Vector3(seats[b].door.x, 0, HALL_Z), pb], -Math.PI / 2, false, 'hall');
+    phase.dialog = { a: a, b: b, l1: d[1], l2: d[3], stage: 0, t: t };
+    return true;
+  }
+  function workTick(t) {
+    var dg = phase.dialog;
+    if (dg) {
+      if (dg.stage === 0 && settled2(dg.a) && settled2(dg.b)) { speak(dg.a, dg.l1, 3.6); dg.stage = 1; dg.t = t; }
+      else if (dg.stage === 1 && t > dg.t + 3.4) { speak(dg.b, dg.l2, 3.8); dg.stage = 2; dg.t = t; }
+      else if (dg.stage === 2 && t > dg.t + 4.2) { toDesk(dg.a); toDesk(dg.b); phase.dialog = null; nextChat = t + 3; }
+      else if (t > dg.t + 30) { toDesk(dg.a); toDesk(dg.b); phase.dialog = null; }
+      return;
+    }
+    if (t > nextChat) {
+      if (!D.recess && Math.random() < 0.35 && startDialog(t)) return;
+      var who = CREW[Math.floor(Math.random() * CREW.length)];
+      speak(who, D.recess && Math.random() < 0.4 ? 'Market’s closed. Catching up on my notes.' : lineFor(who));
+      nextChat = t + 4.5 + Math.random() * 3.5;
+    }
+    // auto-assemble about a minute before a scheduled vote
+    var nv = D.nextVote || 0, ns = nowS();
+    if (!D.recess && nv && nv - ns < 60 && nv - ns > 0) { startAssemble(t, 'wait', 'Conference room in a minute, team. New candle coming.'); sset('Wait', String(nv), true); }
+  }
+  function settled2(name) { return !P(name).userData.route.length; }
+  function waitTick(t) {
+    var w = +(sget('Wait', true) || 0), ns = nowS();
+    voteState.note = 'Counting votes…'; if (Math.floor(t) % 2 === 0) drawVote();
+    if (w && ns > w + 75 && !phase.reloading) {
+      phase.reloading = true; var tries = +(sget('Tries', true) || 0); sset('Tries', String(tries + 1), true);
+      if (tries < 5) location.replace(location.pathname + '?r=' + Math.floor(ns)); else { sdel('Wait', true); startWork(t, 'Nothing new this candle. Back to work.'); }
+    }
+  }
 
-  // paths around the holotable (out on one lane, back on another)
-  var B = new THREE.Vector3(0, 0, -0.95), R = new THREE.Vector3(2.35, 0, 1.0);
-  function pathFor(u, back) {
-    var off = back ? -0.28 : 0.28, pts = [u.seat.clone()];
-    if (u.seat.x < 0.9) pts.push(B.clone().add(new THREE.Vector3(0, 0, off)));
-    pts.push(R.clone().add(new THREE.Vector3(off, 0, 0)));
-    pts.push(SPEAK.clone().add(new THREE.Vector3(0, 0, -0.1)));
-    return back ? pts.reverse() : pts;
+  // ── controls the page already has
+  window.councilReact = function (kind) {
+    var t = performance.now() / 1000;
+    CREW.forEach(function (n, k) { var u = P(n).userData; if (kind === 'cheers') u.cheerUntil = t + 2.5; else u.sadUntil = t + 3; });
+    var who = CREW[Math.floor(Math.random() * N)];
+    speak(who, kind === 'cheers' ? 'Thanks, Commander! 🥂' : 'Heard. We’ll tighten it up.', 3);
+  };
+  var callBtn = document.getElementById('callOrder'), partyBtn = document.getElementById('partyBtn');
+  if (callBtn) {
+    if (!D.verdict) callBtn.textContent = '📣 Call a meeting (no vote yet)';
+    callBtn.addEventListener('click', function () {
+      if (phase.name === 'hearing' || phase.name === 'assemble') return;
+      if (phase.name === 'party') { banner.hidden = true; confetti.forEach(function (m) { sc.remove(m); }); confetti = []; }
+      if (D.verdict) startAssemble(performance.now() / 1000, 'hearing', 'Meeting! Let’s go over the last vote.');
+      else { startAssemble(performance.now() / 1000, 'nothing', 'Quick meeting: nothing to vote on yet.'); }
+    });
   }
-  function along(pts, k) {
-    var L = 0, seg = []; for (var i = 1; i < pts.length; i++) { var d = pts[i].distanceTo(pts[i - 1]); seg.push(d); L += d; }
-    var want = k * L;
-    for (var j = 0; j < seg.length; j++) { if (want <= seg[j] || j === seg.length - 1) return pts[j].clone().lerp(pts[j + 1], Math.min(1, want / seg[j])); want -= seg[j]; }
-    return pts[pts.length - 1].clone();
-  }
-  people.forEach(function (g) { g.userData.out = pathFor(g.userData, false); g.userData.back = pathFor(g.userData, true); });
+  var lastParty = (D.parties || [])[(D.parties || []).length - 1];
+  if (partyBtn && lastParty) { partyBtn.hidden = false; partyBtn.addEventListener('click', function () { if (phase.name === 'work') startParty(performance.now() / 1000, lastParty); }); }
+
+  // tap an officer to see their last vote
+  var ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
+  renderer.domElement.addEventListener('click', function (e) {
+    var r = renderer.domElement.getBoundingClientRect(); ptr.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ptr, cam); var best = null;
+    people.forEach(function (g, k) { var hits = ray.intersectObject(g, true); if (hits.length && (!best || hits[0].distance < best.d)) best = { d: hits[0].distance, k: k }; });
+    if (!best) { tip.hidden = true; return; }
+    var name = CREW[best.k], v = D.voters.find(function (x) { return x.name === name; });
+    tip.innerHTML = ''; var b = document.createElement('b'); b.textContent = name; tip.appendChild(b);
+    var s1 = document.createElement('span'); s1.textContent = v ? ((v.vote === true ? 'Voted YES' : v.vote === false ? 'Voted NO' : 'No vote') + ': ' + (v.why || '')) : 'Runs the meeting'; tip.appendChild(s1);
+    if (v) { var s2 = document.createElement('small'); s2.textContent = v.acc || ''; tip.appendChild(s2); }
+    tip.hidden = false; clearTimeout(tip._t); tip._t = setTimeout(function () { tip.hidden = true; }, 6000);
+    speak(name, lineFor(name));
+  });
 
   // ── layout
   function size() {
-    var w = stage.clientWidth || 360, h = Math.round(Math.min(520, Math.max(320, w * 0.82)));
-    renderer.setSize(w, h); cam.aspect = w / h;
-    var narrow = w < 520;
-    cam.position.set(0, narrow ? 3.9 : 3.6, narrow ? 10.8 : 9.6); cam.lookAt(0, 1.9, -1.3);
-    cam.updateProjectionMatrix();
+    var w = stage.clientWidth || 360, h = Math.round(Math.min(680, Math.max(330, w * 0.92)));
+    renderer.setSize(w, h);
+    var halfW = 12.2, halfH = halfW * h / w;
+    if (halfH < 10.9) { halfH = 10.9; halfW = halfH * w / h; }
+    cam.left = -halfW; cam.right = halfW; cam.top = halfH; cam.bottom = -halfH;
+    cam.position.set(0, 40, 13); cam.lookAt(0, 0, -1.0); cam.updateProjectionMatrix();
   }
   size(); window.addEventListener('resize', size);
 
-  // ── interaction
-  var ray = new THREE.Raycaster(), ptr = new THREE.Vector2(), drag = null, turn = 0, picked = -1, canvas = renderer.domElement;
-  canvas.addEventListener('pointerdown', function (e) { drag = { x: e.clientX, t: turn, moved: 0 }; canvas.setPointerCapture(e.pointerId); });
-  canvas.addEventListener('pointermove', function (e) {
-    if (!drag) return; var dx = e.clientX - drag.x; drag.moved = Math.max(drag.moved, Math.abs(dx));
-    turn = Math.max(-0.7, Math.min(0.7, drag.t + dx * 0.005));
-  });
-  canvas.addEventListener('pointerup', function (e) {
-    var tap = drag && drag.moved < 6; drag = null; if (!tap) return;
-    var r = canvas.getBoundingClientRect();
-    ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
-    ray.setFromCamera(ptr, cam);
-    var hit = ray.intersectObjects(people, true)[0], o = hit && hit.object;
-    while (o && o.userData.i === undefined) o = o.parent;
-    show(o ? o.userData.i : -1);
-  });
-  function show(i) {
-    picked = (picked === i) ? -1 : i;
-    if (picked < 0) { tip.hidden = true; return; }
-    var v = D.voters[picked], word = v.vote === true ? 'YES' : v.vote === false ? 'NO' : 'abstained';
-    tip.textContent = '';
-    var b = document.createElement('b'); b.textContent = v.name + ' · ' + word; tip.appendChild(b);
-    var a = document.createElement('span'); a.textContent = v.why; tip.appendChild(a);
-    var c = document.createElement('small'); c.textContent = v.acc; tip.appendChild(c);
-    tip.hidden = false;
-  }
-  Array.prototype.forEach.call(room.querySelectorAll('.seat'), function (btn) {
-    btn.addEventListener('click', function () { show(+btn.getAttribute('data-i')); });
-  });
+  // ── boot
+  (function boot() {
+    var ns = nowS(), wait = +(sget('Wait', true) || 0);
+    voteState.note = nextNote(); drawVote();
+    var Pt = (D.parties || []).filter(function (p) { return p.t > +(sget('Party') || 0) && ns - p.t < 172800; }).pop();
+    if (D.recess) { hemi.intensity = 0.55; sun.intensity = 0.45; }
+    if (wait && !D.recess) {
+      sdel('Wait', true);
+      if (D.lastVoteT && D.lastVoteT >= wait - 120 && D.verdict) { sdel('Tries', true); startHearing(0); return; }
+      if ((D.scanT || 0) < wait && ns < wait + 420) { CREW.forEach(function (n) { var u = P(n).userData, c = confSeats[n]; u.pos.copy(c.pos); u.rot = u.face = c.face; u.where = 'conf'; }); sset('Wait', String(wait), true); phase = { name: 'wait', t: 0 }; return; }
+      sdel('Tries', true); startWork(0, 'No setups this candle. Back to work, team!'); return;
+    }
+    if (D.verdict && D.lastVoteT && ns - D.lastVoteT < 900 && sget('Heard') !== String(D.lastVoteT) && !D.recess) { startHearing(0); return; }
+    if (Pt) { startParty(0, Pt); return; }
+    startWork(0);
+  })();
 
-  // ── choreography: stand → walk around the table to the speaking spot → vote → walk back → sit → gavel
-  var WALK = 2.2, STAGGER = 4.2, START = 1.0, TURN = 0.5 + WALK + 1.4 + WALK + 0.5;
-  var VERDICT_AT = START + (N - 1) * STAGGER + TURN + 0.4, CYCLE = VERDICT_AT + 6.5;
-  var VCOL = new THREE.Color(D.approved ? 0x53f0a6 : 0xff6b7c), CYAN = new THREE.Color(0x38e1ff);
-  function clamp(x) { return Math.max(0, Math.min(1, x)); }
-  function smooth(x) { x = clamp(x); return x * x * (3 - 2 * x); }
-  function pop(x) { x = clamp(x); var c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); }
-  function plan(i, c) {
-    var u = people[i].userData, tau = c - (START + i * STAGGER), t1 = 0.5, t2 = t1 + WALK, t3 = t2 + 1.4, t4 = t3 + WALK;
-    if (!D.verdict || tau < 0) return { pos: u.seat, sit: 1 };
-    if (tau < t1) return { pos: u.seat, sit: 1 - smooth(tau / t1) };
-    if (tau < t2) return { pos: along(u.out, smooth((tau - t1) / WALK)), sit: 0 };
-    if (tau < t3) return { pos: u.out[u.out.length - 1], sit: 0, at: true, k: tau - t2, spoke: tau > t2 + 0.25 };
-    if (tau < t4) return { pos: along(u.back, smooth((tau - t3) / WALK)), sit: 0, spoke: true };
-    return { pos: u.seat, sit: smooth((tau - t4) / 0.5), spoke: true };
-  }
-  var t0 = performance.now(), lastT = 0;
-  function frame(now) {
-    if (!stage.offsetParent) { requestAnimationFrame(frame); return; }   // hidden (collapsed section): skip work
-    var t = (now - t0) / 1000, dt = Math.min(0.05, t - lastT); lastT = t;
-    var c = still ? CYCLE - 3 : (D.verdict ? t % CYCLE : 0);
-    var deliberating = D.verdict && c < CYCLE - 0.6;
-    var verdictOn = D.verdict && c >= VERDICT_AT + 0.45 && c < CYCLE - 0.6;
-    if (stampEl) stampEl.classList.toggle('show', !!verdictOn);
-    world.rotation.y += (turn + (still ? 0 : Math.sin(t * 0.12) * 0.05) - world.rotation.y) * 0.06;
-
-    var speaker = -1;
-    people.forEach(function (g, i) {
-      var u = g.userData, p = plan(i, c);
-      if (react && now / 1000 - react.t < REACT_LEN) p = { pos: u.seat, sit: 1 };   // reactions pause the hearing
-      if (p.at) speaker = i;
-      u.prev.copy(g.position);
-      var drop = (u.hip - 0.52) * p.sit;
-      g.position.set(p.pos.x, -drop, p.pos.z);
-      var vx = (g.position.x - u.prev.x) / Math.max(dt, 1e-3), vz = (g.position.z - u.prev.z) / Math.max(dt, 1e-3);
-      var speed = Math.hypot(vx, vz);
-      var target = p.at ? Math.atan2(cam.position.x - g.position.x, cam.position.z - g.position.z) - world.rotation.y
-                 : speed > 0.15 ? Math.atan2(vx, vz) : u.faceSeat;
-      var d = Math.atan2(Math.sin(target - u.yaw), Math.cos(target - u.yaw)); u.yaw += d * 0.12; g.rotation.y = u.yaw;
-      var stride = Math.min(1, speed / 0.9), ph = t * 8 + u.phase, sw = Math.sin(ph) * 0.6 * stride;
-      if (u.legL) {
-        u.legL.rotation.x = sw - 1.45 * p.sit; u.legR.rotation.x = -sw - 1.45 * p.sit;
-        u.legL.userData.joint.rotation.x = Math.max(0, -Math.sin(ph)) * 0.9 * stride + 1.45 * p.sit;
-        u.legR.userData.joint.rotation.x = Math.max(0, Math.sin(ph)) * 0.9 * stride + 1.45 * p.sit;
-      }
-      var raise = p.at ? pop((p.k - 0.15) / 0.45) * (1 - smooth((p.k - 1.1) / 0.3)) : 0;
-      if (u.armL) { u.armL.rotation.x = -sw * 0.7 - 0.45 * p.sit; u.armL.userData.joint.rotation.x = -0.25 * stride - 0.9 * p.sit; }
-      if (u.armR) { u.armR.rotation.x = sw * 0.7 * (1 - raise) - raise * 2.8 - 0.45 * p.sit;
-        u.armR.userData.joint.rotation.x = (-0.25 * stride - 0.9 * p.sit) * (1 - raise) - 0.15 * raise; }
-      g.position.y += Math.abs(Math.sin(ph)) * 0.03 * stride;
-      if (u.head) u.head.rotation.y = p.at ? 0 : (still ? 0 : 0.4 * Math.sin(t * 0.5 + u.phase * 3)) * (p.sit > 0.5 ? 1 : 0.3);
-      if (u.spin) u.spin.rotation.z = t * 1.8;
-      if (u.gyro) { u.gyro.rotation.y = t * 1.4; u.gyro.rotation.x = t * 0.7; }
-      if (u.hands) u.hands.rotation.z = -t * 1.2;
-      if (u.trail) u.trail.forEach(function (tp, k) {
-        var bk = 0.25 + k * 0.16;
-        tp.position.set(g.position.x - Math.sin(u.yaw) * bk * (0.3 + stride), 1.2 - k * 0.05, g.position.z - Math.cos(u.yaw) * bk * (0.3 + stride));
-        tp.visible = stride > 0.2;
-      });
-      // blink + speaking pulse
-      if (!still && t > u.blinkAt) { u.blinkAt = t + 2.5 + ((i * 1.7 + t) % 3); u.blinkEnd = t + 0.12; }
-      var blink = (!still && u.blinkEnd && t < u.blinkEnd) ? 0.15 : 1;
-      var talk = p.at && p.k > 0.25 && p.k < 1.3 ? 0.5 + 0.5 * Math.sin(t * 22) : 0;
-      u.glows.forEach(function (m) { m.scale.y = blink; });
-      u.faceGlow.material.opacity = 0.25 + talk * 0.6; u.faceGlow.scale.setScalar(0.3 + talk * 0.3);
-      if (u.mouth) u.mouth.scale.y = 1 + talk * 3.5;
-      var rk = react ? now / 1000 - react.t : 99;
-      if (rk < REACT_LEN) {
-        var fade = 1 - smooth((rk - (REACT_LEN - 0.8)) / 0.8), lift = smooth(rk / 0.6) * fade;
-        if (react.kind === 'cheers') {
-          var standUp = smooth(rk / 0.5) * fade;
-          g.position.y = -drop * (1 - standUp) + Math.abs(Math.sin(rk * 7 + i)) * 0.09 * lift;
-          if (u.legL) { u.legL.rotation.x *= 1 - standUp; u.legR.rotation.x *= 1 - standUp;
-            u.legL.userData.joint.rotation.x *= 1 - standUp; u.legR.userData.joint.rotation.x *= 1 - standUp; }
-          var toast = rk > 1.3 && rk < 1.7 ? 0.35 : 0;            // everyone leans in to clink
-          if (u.armR) { u.armR.rotation.x = -2.5 * lift + 0.15 * Math.sin(rk * 5 + i) * lift + toast * lift;
-            u.armR.userData.joint.rotation.x = -0.25 * lift; }
-          if (u.armL) { u.armL.rotation.x = -0.6 * lift * (0.5 + 0.5 * Math.sin(rk * 6 + i)); }
-          if (u.head) { u.head.rotation.x = -0.15 * lift; }
-          if (u.mouth) u.mouth.scale.set(1 + lift * 0.6, 1 + lift * 3, 1);
-          if (u.glass) u.glass.visible = lift > 0.05;
-          var face = Math.atan2(-g.position.x, -0.6 - g.position.z); var dd = Math.atan2(Math.sin(face - u.yaw), Math.cos(face - u.yaw));
-          u.yaw += dd * 0.1 * lift; g.rotation.y = u.yaw;
-        } else {
-          if (u.head) { u.head.rotation.x = 0.4 * lift; u.head.rotation.y = Math.sin(rk * 9 + i) * 0.35 * lift * (rk < 2.2 ? 1 : 0.3); }
-          if (u.armR) u.armR.rotation.x *= 1 - lift; if (u.armL) u.armL.rotation.x *= 1 - lift;
-          if (u.mouth) u.mouth.scale.set(1 - 0.3 * lift, 1, 1);
+  // ── loop
+  var last = performance.now() / 1000, t0 = last;
+  function tick() {
+    var now = performance.now() / 1000, dt = Math.min(0.05, now - last), t = now - t0; last = now;
+    people.forEach(function (g) {
+      var u = g.userData, walking = 0;
+      if (u.route.length) {
+        u.sit = Math.max(0, u.sit - dt * 3);
+        if (u.sit < 0.05) {
+          var tgt = u.route[0], d = tgt.clone().sub(u.pos); d.y = 0; var L = d.length(), step = 3.2 * dt;
+          if (L <= step) { u.pos.copy(tgt); u.route.shift(); } else { u.pos.add(d.multiplyScalar(step / L)); u.rot = Math.atan2(tgt.x - u.pos.x, tgt.z - u.pos.z); walking = 1; }
         }
       } else {
-        if (u.head) u.head.rotation.x = 0;
-        if (u.glass) u.glass.visible = false;
+        var dr = u.face - u.rot; while (dr > Math.PI) dr -= 2 * Math.PI; while (dr < -Math.PI) dr += 2 * Math.PI; u.rot += dr * Math.min(1, dt * 6);
+        if (u.wantSit) u.sit = Math.min(1, u.sit + dt * 2.5); else u.sit = Math.max(0, u.sit - dt * 3);
       }
-      u.halo.visible = p.sit < 0.5;
-      var sel = picked === i ? 1.08 : 1; g.scale.setScalar(g.scale.x + (sel - g.scale.x) * 0.2);
-      u.halo.material.opacity = picked === i ? 0.95 : 0.4;
-      // vote sign + station ring
-      var sp = signs[i], showSign = deliberating && (p.spoke || (still && D.verdict)) && !(react && now / 1000 - react.t < REACT_LEN);
-      var k = showSign ? (p.at ? pop((p.k - 0.25) / 0.4) : 0.72) : 0;
-      sp.position.set(g.position.x, (p.at ? 2.35 : 2.1) + g.position.y + (p.sit ? -0.1 : 0), g.position.z);
-      sp.scale.set(0.8 * k + 0.001, 0.35 * k + 0.001, 1);
-      var rr = rings[i], lit = showSign && rr.vote !== null && rr.vote !== undefined;
-      var lc = rr.vote === true ? 0x53f0a6 : 0xff6b7c;
-      rr.mat.color.setHex(lit ? lc : 0x334466); rr.mat.opacity = lit ? 0.85 : 0.35;
-      rr.glow.material.color.setHex(lc); rr.glow.material.opacity = lit ? 0.35 + 0.1 * Math.sin(t * 4) : 0;
+      if (walking) { var dr2 = u.rot - g.rotation.y; while (dr2 > Math.PI) dr2 -= 2 * Math.PI; while (dr2 < -Math.PI) dr2 += 2 * Math.PI; g.rotation.y += dr2 * Math.min(1, dt * 12); }
+      else g.rotation.y = u.rot;
+      g.position.copy(u.pos);
+      var extra = now < (u.cheerUntil || 0) ? 'cheer' : now < (u.sadUntil || 0) ? 'sad' : now < (u.talkUntil || 0) ? 'talk' : (u.where === 'desk' && u.sit > 0.9 && phase.name === 'work') ? 'type' : (phase.name === 'party' && !u.route.length ? 'cheer' : null);
+      if (extra === 'cheer' && u.sit < 0.5) g.position.y = Math.abs(Math.sin(t * 7 + u.pos.x)) * 0.25;
+      pose(g, u.sit, walking, t, extra);
     });
-
-    var rkk = react ? now / 1000 - react.t : 99;
-    if (react && react.kind === 'cheers' && rkk > 1.45 && !react.burst) { react.burst = true; burst(); }
-    if (rkk < REACT_LEN + 3) {
-      var cpos = confG.attributes.position;
-      for (var b = 0; b < confN; b++) {
-        if (cp[b * 3 + 1] < -10) continue;
-        cv[b][1] -= 6 * dt; cv[b][0] *= 0.985; cv[b][2] *= 0.985;
-        cp[b * 3] += cv[b][0] * dt; cp[b * 3 + 1] += Math.max(cv[b][1], -1.2) * dt; cp[b * 3 + 2] += cv[b][2] * dt;
-        if (cp[b * 3 + 1] < 0.02) { cp[b * 3 + 1] = 0.02; cv[b] = [0, 0, 0]; }
-      }
-      cpos.needsUpdate = true;
-      confetti.material.opacity = rkk < REACT_LEN ? 1 : Math.max(0, 1 - (rkk - REACT_LEN) / 3);
-    } else if (confetti.material.opacity > 0) {
-      confetti.material.opacity = 0; for (var b2 = 0; b2 < confN; b2++) cp[b2 * 3 + 1] = -50; confG.attributes.position.needsUpdate = true;
+    if (phase.name === 'work') workTick(t);
+    else if (phase.name === 'assemble') {
+      if (t > phase.readyAt && CREW.every(function (n) { return settled(n) && P(n).userData.where === 'conf'; })) { if (phase.then === 'hearing') startHearing(t); else if (phase.then === 'wait') phase = { name: 'wait', t: t }; else startWork(t, 'Nothing to vote on. As you were.'); }
     }
-    var clink = react && react.kind === 'cheers' ? Math.max(0, 1 - Math.abs(rkk - 1.5) / 0.6) : 0;
-    cheerLight.intensity = clink * 4;
-    if (react && react.kind === 'sad' && rkk < REACT_LEN) { holoLight.color.lerp(new THREE.Color(0xff6b7c), 0.08); }
-
-    // The Chair follows the speaker, then swings the gavel
-    var look = speaker >= 0 ? Math.atan2(people[speaker].position.x - judge.position.x, people[speaker].position.z - judge.position.z) * 0.6
-             : (still ? 0 : 0.25 * Math.sin(t * 0.35));
-    if (react && rkk < REACT_LEN) look = react.kind === 'cheers' ? 0 : Math.sin(rkk * 8) * 0.4 * (1 - rkk / REACT_LEN);
-    jhead.rotation.y += (look - jhead.rotation.y) * 0.08;
-    jhead.rotation.x = react && react.kind === 'cheers' && rkk < REACT_LEN ? Math.sin(rkk * 6) * 0.15 : 0;
-    halo.rotation.z = t * 0.6;
-    var gt = D.verdict ? (c - VERDICT_AT) : -1;
-    var swing = gt < 0 ? 0 : gt < 0.35 ? -smooth(gt / 0.35) * 1.1 : gt < 0.5 ? -1.1 + smooth((gt - 0.35) / 0.15) * 1.5 : 0.4 - smooth((gt - 0.5) / 0.6) * 0.4;
-    arm.rotation.x = still ? 0 : swing;
-    var flash = verdictOn ? Math.max(0, 1 - (c - VERDICT_AT - 0.45) / 1.6) : 0;
-    gglow.material.opacity = flash * 0.9;
-    verdictLight.color.copy(VCOL); verdictLight.intensity = verdictOn ? 0.6 + flash * 3.5 : 0;
-    var hc = verdictOn ? VCOL : CYAN;
-    holoLight.color.lerp(hc, 0.1); rim.material.color.lerp(hc, 0.1); lens.material.color.lerp(hc, 0.1);
-    beam.material.color.lerp(hc, 0.1); beam.material.opacity = 0.07 + flash * 0.12;
-
-    // hologram: faces the viewer, gentle hover, scanline + flicker
-    holo.rotation.y = -world.rotation.y * 0.85;
-    holo.position.y = 3.7 + (still ? 0 : Math.sin(t * 1.1) * 0.04);
-    holoMat.opacity = still ? 0.95 : 0.88 + 0.07 * Math.sin(t * 13) * Math.sin(t * 3.1);
-    scan.position.y = still ? -0.3 : ((t * 0.5) % 1) * 1.64 - 0.82;
-    wallTex.offset.x = still ? 0 : t * 0.004; tickTex.offset.x = still ? 0 : t * 0.02;
-    var pos = dust.geometry.attributes.position;
-    if (!still) { for (var q = 0; q < dustN; q++) { var yy = pos.getY(q) + 0.12 * dt; pos.setY(q, yy > 5.6 ? 0.1 : yy); pos.setX(q, pos.getX(q) + Math.sin(t + q) * 0.0015); } pos.needsUpdate = true; }
-
-    renderer.render(scene, cam);
-    requestAnimationFrame(frame);
+    else if (phase.name === 'hearing') hearingTick(t);
+    else if (phase.name === 'wait') waitTick(t);
+    else if (phase.name === 'party') { confetti.forEach(function (m) { m.position.y -= m.userData.v * 60 * dt; m.rotation.x += dt * 4; m.rotation.z += dt * 3; if (m.position.y < 0.05) m.position.y = 6 + Math.random() * 4; }); if (t > phase.t + 14) endParty(t); }
+    if (Math.floor(t) !== Math.floor(t - dt) && phase.name === 'work') { voteState.note = nextNote(); drawVote(); }
+    pill.textContent = phaseLabel(); pill.className = 'phasepill ' + phase.name;
+    renderer.render(sc, cam); placeOverlays(now);
+    requestAnimationFrame(tick);
   }
-  requestAnimationFrame(frame);
+  window.__office = { people: people, ph: function () { return phase; } };
+  requestAnimationFrame(tick);
 })();
+
 """
 
 
 
 # ───────────────────────────── Dashboard ─────────────────────────────────────
 
-FEED_COLORS = {"The Quant": "#3ee6a1", "Risk": "#ff5468", "Momentum": "#ffb03b", "Time": "#4cb7ff", "Doubt": "#c9a7ff",
+FEED_COLORS = {"The Quant": "#3ee6a1", "Risk": "#ff5468", "Momentum": "#ffb03b", "Time": "#4cb7ff", "Doubt": "#c9a7ff", "The Reporter": "#ff7ac8",
                "Chair": "#f4c84a"}
 
 
@@ -2374,12 +2998,12 @@ def recess_panel(st):
     if market_open_now(now):
         early = (e.hour, e.minute) < ENTRY_WINDOW[0]
         return f"""<section class="recess night"><div><span class="rb">{'OPENING BELL' if early else 'LAST HOUR'}</span>
-          <b>{'The council lets the first 15 minutes settle before trading.' if early else 'No new trades after 3:00 PM. Open trades are still managed and sold by 3:40.'}</b>
+          <b>{'The council lets the first 15 minutes settle before trading.' if early else 'No new trades after 3:00 PM. Same-day options are sold by 3:40; weeklies can stay open overnight.'}</b>
           <p>{'First votes at 9:45 AM ET.' if early else 'Back tomorrow at 9:45 AM ET.'}</p></div></section>"""
     resume = t.astimezone(LOCAL_TZ)
     return f"""<section class="recess"><div><span class="rb">⚖️ COURT IS OUT OF SESSION</span>
       <b>The stock market is closed. The council resumes after the opening bell.</b>
-      <p>First votes {resume.strftime('%a %I:%M %p').replace(' 0', ' ')} ET. Every trade is closed before the bell, so nothing is held overnight.</p></div>
+      <p>First votes {resume.strftime('%a %I:%M %p').replace(' 0', ' ')} ET. {held_text(st)}</p></div>
       <div class="rc" id="rc" data-t="{int(t.timestamp())}">--:--:--</div>
       <script>(function(){{var e=document.getElementById('rc'),t=+e.dataset.t;function f(){{var s=Math.max(0,Math.round(t-Date.now()/1000));
       var d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60),x=s%60;
@@ -2515,6 +3139,14 @@ def alpaca_banner(st):
            "<b>ALPACA_SECRET_KEY</b> secrets." if e.get("keys") else html.escape(e["text"]))
     return (f'<section style="border:2px solid #ff5468;border-radius:14px;padding:14px 16px;background:#2a1220;color:#ffd7dc">'
             f'<b style="color:#ff8a98">⚠️ Not trading: can\'t log in to Alpaca</b> (last try {when} ET)<br>{fix}</section>')
+
+
+def held_text(st):
+    n = len(st.get("trades", {}))
+    if not n:
+        return "Nothing is being held overnight."
+    return (f"{n} weekly option{'s are' if n > 1 else ' is'} being held overnight. Stops and targets resume at the open "
+            "(a gap can fill past the stop).")
 
 
 def build_html(st, log):
@@ -2680,7 +3312,7 @@ details {{ color:var(--muted) }} .fine {{ color:var(--muted); font-size:12px; ma
   .tbl td.mkt, .tbl td.empty {{ grid-column:1/-1 }}
   .tbl td[data-l]::before {{ content:attr(data-l); display:block; font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted) }}
 }}
-.room {{ --ink:#1b1430; --c-quant:#7ccf8a; --c-risk:#e8565b; --c-mom:#f2a23c; --c-time:#5aa7e0; --c-doubt:#d9c3a5;
+.room {{ --ink:#1b1430; --c-quant:#7ccf8a; --c-risk:#e8565b; --c-mom:#f2a23c; --c-time:#5aa7e0; --c-doubt:#d9c3a5; --c-rep:#ff8fcf;
   background:radial-gradient(120% 90% at 50% 0%, #3a2a6b 0%, #1d1538 60%, #140f28 100%); color:#efe9ff;
   border-radius:14px; padding:16px; overflow:hidden; display:grid; gap:12px }}
 .roomhead {{ display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:end }}
@@ -2689,7 +3321,7 @@ details {{ color:var(--muted) }} .fine {{ color:var(--muted); font-size:12px; ma
 .overall small {{ color:#c9bdf0; font-size:11px }}
 .overall .lbl {{ font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#b6a8e6 }}
 .stage {{ display:none; position:relative; border-radius:10px; overflow:hidden; touch-action:pan-y }}
-.stage canvas {{ display:block; width:100% !important; cursor:grab }}
+.stage canvas {{ display:block; width:100% !important; cursor:pointer }}
 .is3d .stage {{ display:block }}
 .is3d .table, .is3d .char, .is3d .seat .sign {{ display:none }}
 .is3d .seats {{ margin-top:-4px }}
@@ -2713,6 +3345,32 @@ details {{ color:var(--muted) }} .fine {{ color:var(--muted); font-size:12px; ma
 .tip3d {{ position:absolute; left:10px; top:10px; max-width:min(260px, 70%); display:grid; gap:3px; background:#2b2150ee;
   border:1px solid #6a58b8; border-radius:10px; padding:8px 10px; font-size:12px; color:#efe9ff }}
 .tip3d[hidden] {{ display:none }}
+.bubbles {{ position:absolute; inset:0; pointer-events:none; overflow:hidden }}
+.bub {{ position:absolute; max-width:min(150px, 46%); padding:6px 9px 7px; border-radius:12px; background:#0d1322f0; color:#eaf2ff;
+  font:600 11.5px/1.3 ui-sans-serif,-apple-system,"Segoe UI",sans-serif; border:1.5px solid var(--bc); box-shadow:0 6px 16px #0009;
+  transform:translateY(-100%) scale(.6); transform-origin:var(--tx, 50%) 100%; opacity:0; transition:opacity .22s, transform .28s cubic-bezier(.2,1.5,.4,1) }}
+.bub.on {{ opacity:1; transform:translateY(-100%) scale(1) }}
+.bub::after {{ content:""; position:absolute; bottom:-6px; left:var(--tx, 50%); width:10px; height:10px; background:#0d1322;
+  border-right:1.5px solid var(--bc); border-bottom:1.5px solid var(--bc); transform:translateX(-50%) rotate(45deg) }}
+.bub b {{ display:block; font-size:9.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--bc); margin-bottom:1px }}
+.vtag {{ position:absolute; font:800 11px/1 ui-sans-serif,-apple-system,sans-serif; padding:4px 7px; border-radius:7px; pointer-events:none; box-shadow:0 3px 10px #0007 }}
+.vtag.yes {{ background:#3ee6a1; color:#062a1c }} .vtag.no {{ background:#ff5468; color:#fff }} .vtag.abs {{ background:#9aa2c2; color:#111 }}
+.phasepill {{ position:absolute; left:10px; bottom:10px; pointer-events:none; font:700 11px/1 ui-sans-serif,-apple-system,sans-serif;
+  color:#eaf2ff; background:#0d1322cc; border:1px solid #38e1ff66; padding:6px 9px; border-radius:99px; letter-spacing:.02em }}
+.phasepill.hearing {{ border-color:#f4c84a; color:#f4c84a }} .phasepill.party {{ border-color:#ff4fd8; color:#ffd84a }}
+.phasepill.wait, .phasepill.assemble {{ border-color:#ffb03b; color:#ffd59a }}
+.partybanner {{ position:absolute; top:10px; left:50%; transform:translateX(-50%); width:max-content; max-width:calc(100% - 20px); text-align:center;
+  pointer-events:none; background:linear-gradient(135deg,#3a1450ee,#14304aee); border:1.5px solid #ffd84a; border-radius:12px; padding:8px 14px;
+  color:#fff; box-shadow:0 0 24px #ff4fd855; animation:bannerIn .5s cubic-bezier(.2,1.5,.4,1) both }}
+.partybanner b {{ display:block; color:#ffd84a; font:800 12px/1.2 ui-sans-serif,-apple-system,sans-serif; letter-spacing:.12em }}
+.partybanner span {{ display:block; font-weight:700; font-size:14px; margin-top:2px }} .partybanner small {{ color:#cfe3ff; font-size:11.5px }}
+@keyframes bannerIn {{ from {{ opacity:0; transform:translate(-50%,-12px) scale(.8) }} }}
+.roomctl {{ display:flex; gap:8px; flex-wrap:wrap }}
+.roomctl button {{ font:700 13px/1 ui-sans-serif,-apple-system,sans-serif; color:#efe9ff; background:#2b2150; border:1px solid #6a58b8;
+  border-radius:99px; padding:9px 13px; cursor:pointer }}
+.roomctl button:focus-visible {{ outline:2px solid #f4c84a; outline-offset:2px }}
+@media (prefers-reduced-motion: reduce) {{ .bub, .partybanner {{ transition:none; animation:none }} }}
+
 .tip3d b {{ font-size:13px }} .tip3d small {{ color:#b6a8e6 }}
 .docket {{ display:grid; gap:2px; min-width:0 }}
 .docket .stale {{ color:#f4c84a; margin-top:4px }} .docket .stale[hidden] {{ display:none }}
@@ -2728,7 +3386,8 @@ details {{ color:var(--muted) }} .fine {{ color:var(--muted); font-size:12px; ma
 .stamp {{ font:800 15px/1 ui-sans-serif,-apple-system,sans-serif; letter-spacing:.08em; padding:7px 12px; border-radius:6px;
   border:3px solid currentColor; transform:rotate(-6deg) scale(0); animation:stamp .35s 2.5s cubic-bezier(.2,1.6,.4,1) both }}
 .stamp.ok {{ color:#6ff0a8 }} .stamp.rej {{ color:#ff8a8e }}
-.seats {{ display:grid; grid-template-columns:repeat(5,1fr); gap:6px }}
+.navlinks a {{ color:#38e1ff; font-weight:600; text-decoration:none }}
+.seats {{ display:grid; grid-template-columns:repeat(6,1fr); gap:6px }}
 .seat {{ all:unset; cursor:pointer; display:grid; justify-items:center; gap:3px; text-align:center; position:relative; min-width:0 }}
 .seat:focus-visible {{ outline:2px solid #f4c84a; outline-offset:4px; border-radius:8px }}
 .char {{ width:min(76px,100%); height:auto; animation:bob 2.6s calc(var(--i) * .3s) ease-in-out infinite; filter:drop-shadow(0 6px 6px #0006) }}
@@ -2749,7 +3408,8 @@ details {{ color:var(--muted) }} .fine {{ color:var(--muted); font-size:12px; ma
 @media (max-width:720px) {{ .nm {{ font-size:11px }} .acc {{ font-size:10px }}
   .roomhead {{ grid-template-columns:1fr; gap:10px }} .overall {{ border-right:0; padding-right:0; border-bottom:1px solid #4a3a85; padding-bottom:10px }} }}
 </style></head><body><div class="wrap">
-<header><div><h1>Vault Options</h1><p>Updated {updated} · day-trading calls and puts on 15-minute setups{f" · started with ${START_BALANCE:,.0f}" if START_BALANCE else ""}</p></div>
+<header><div><h1>Vault Options</h1><p>Updated {updated} · day-trading calls and puts on 15-minute setups{f" · started with ${START_BALANCE:,.0f}" if START_BALANCE else ""}</p>
+  <p class="navlinks"><a href="hq.html">🏛 HQ: all bots</a> · <a href="inspector.html">🕵️ Inspector's options report</a> · <a href="gap.html">🔄 Gap Fade (IWM)</a> · <a href="dinner.html">🍽 Dinner Table ETF</a></p></div>
   <div><span class="badge {mode.lower()}">{mode}</span> {f'<span class="badge paused">PAUSED · {html.escape(paused)}</span>' if paused else ''}</div></header>
 {alpaca_banner(st)}
 {council_room(st)}
@@ -2769,14 +3429,18 @@ details {{ color:var(--muted) }} .fine {{ color:var(--muted); font-size:12px; ma
 <section><h2>Watchlist</h2><div class="pairs">{''.join(pair_card(p) for p in PAIRS)}</div></section>
 <section><h2>Big news ahead</h2><ul class="news">{news_rows}</ul><p class="fine">No new trades from {NEWS_BEFORE_MIN} min before to {NEWS_AFTER_MIN} min after these.</p></section>
 {learning_html(st)}
+{orb5_panel(st)}
 <section><h2>Who called it?</h2><p class="fine">{html.escape(learn_line)}</p><div class="tbl"><table><tr><th>Voter</th><th>Called it</th><th>Vote weight</th><th>Right / scored</th></tr>{board_rows}</table></div></section>
 <section><h2>Recent closed trades</h2><div class="tbl"><table><tr><th>Contract</th><th>Type</th><th>Qty</th><th>Result</th></tr>{closed_rows}</table></div></section>
 <details><summary>Scan log</summary><ul>{''.join(f'<li>{html.escape(l)}</li>' for l in log)}</ul></details>
-<p class="fine">Strategy: on 15-minute stock charts, the EMA20/EMA50 trend sets the direction (it must agree with the 1-hour trend); a fresh crossover,
-a pullback to the EMA20, or a break of the 9:30–10:00 opening range creates a setup. Bullish setups buy a call, bearish setups buy a put
+<p class="fine">Strategy: Easter's 5-minute opening range breakout on {', '.join(PAIRS)}. The 9:30–10:00 ET high and low are marked; from 10:00 to 12:00 a strong 5-minute candle
+(body at least {ORB5_BODY:.0%} of its range) must close outside the range, and the next candle must hold outside without touching it and make a new high (calls) or low (puts).
+Entry at that close; stop past the breakout candles; target {ORB5_RR:g}× the risk on the stock; stop to breakeven at {ORB5_BE_AT:g}R; one trade a day, closed by 3:50 PM ET.
+Exits follow the stock's price, not the option's %, with a safety sale if the option loses {ORB5_OPT_SAFETY:.0%}. The contract
 (0DTE on SPY/QQQ/IWM before 1:30 PM, otherwise {WEEKLY_DAYS[0]}–{WEEKLY_DAYS[1]} day weeklies, delta {DELTA_RANGE[0]}–{DELTA_RANGE[1]}, spread under {MAX_SPREAD_PCT:.0%}).
-Each trade is sized so a full stop (−{OPT_STOP:.0%} on the option) costs about {RISK_PCT:.0%} of the bankroll; target +{OPT_TARGET:.0%}; stop moves to entry at +{BREAKEVEN_AT:.0%};
-everything is sold by 3:40 PM ET. Limits: {MAX_OPEN_TRADES} open trades, {DAILY_LOSS_LIMIT:.0%} daily loss stop, {MAX_DRAWDOWN:.0%} drawdown pause, half size after {STREAK_HALF} straight losses.
+Each trade is sized so a full stop (−{OPT_STOP:.0%} on the option) costs about {RISK_PCT:.0%} of the bankroll; target +{OPT_TARGET:.0%}; at +{PARTIAL_AT:.0%} it sells half (or locks +{LOCK_AT:.0%} on a single contract) and the rest runs toward +{RUNNER_TARGET:.0%} with a stop {TRAIL_GIVEBACK:.0%} below its best price;
+0DTE is sold by 3:40 PM ET; weeklies can be held overnight (stops are only checked while the market is open, so a gap at the open can fill past the stop)
+and are sold by 3:40 PM the trading day before they expire. Limits: {MAX_OPEN_TRADES} open trades, {DAILY_LOSS_LIMIT:.0%} daily loss stop, {MAX_DRAWDOWN:.0%} drawdown pause, half size after {STREAK_HALF} straight losses.
 Stops and targets are checked every 5 minutes, so fast moves can fill worse than planned. Options can lose most or all of their value quickly,
 and most short-term options traders lose money. Rejected setups are scored on the stock's own price so "Who called it?" learns from both sides.
 This is software, not financial advice.</p>
