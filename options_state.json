@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 908.0,
-  "broker_equity": 99873.23,
-  "nav": 945.0,
+  "broker_equity": 99854.23,
+  "nav": 926.0,
   "options_level": 3,
-  "unrealized": 37.0,
-  "updated": 1793115015.947825
+  "unrealized": 18.0,
+  "updated": 1793115310.676948
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -4737,9 +4737,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-26",
- "last_deploy": 1793114417.7333698,
- "last_full_run": 1793115015.947825,
- "last_run": 1793115015.947825,
+ "last_deploy": 1793115316.2936077,
+ "last_full_run": 1793115310.676948,
+ "last_run": 1793115310.676948,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -5919,9 +5919,16 @@
       251.9,
       251.71,
       251.81
+     ],
+     [
+      "11:30",
+      251.75,
+      251.8,
+      251.59,
+      251.59
      ]
     ],
-    "checked": 1793115015.947825,
+    "checked": 1793115310.676948,
     "entered": true,
     "events": [
      {
@@ -5937,7 +5944,7 @@
       "txt": "LONG at 252.18, stop 251.29, target 253.50"
      }
     ],
-    "last": 251.81,
+    "last": 251.595,
     "orh": 251.27,
     "orl": 248.73,
     "pair": "AMZN",
@@ -6125,9 +6132,16 @@
       523.65,
       523.57,
       523.65
+     ],
+     [
+      "11:30",
+      523.58,
+      523.61,
+      523.43,
+      523.61
      ]
     ],
-    "checked": 1793115015.947825,
+    "checked": 1793115310.676948,
     "entered": false,
     "events": [
      {
@@ -6143,7 +6157,7 @@
       "txt": "Breakdown failed: price came back to the range low"
      }
     ],
-    "last": 523.65,
+    "last": 523.61,
     "orh": 523.9,
     "orl": 522.155,
     "pair": "DIA",
@@ -6325,9 +6339,16 @@
       769.7,
       769.4,
       769.64
+     ],
+     [
+      "11:30",
+      769.6,
+      769.6,
+      769.25,
+      769.37
      ]
     ],
-    "checked": 1793115015.947825,
+    "checked": 1793115310.676948,
     "entered": true,
     "events": [
      {
@@ -6349,7 +6370,7 @@
       "txt": "1R reached. Stop moves to breakeven at 768.71"
      }
     ],
-    "last": 769.64,
+    "last": 769.37,
     "orh": 768.265,
     "orl": 765.8,
     "pair": "SPY",
@@ -7095,7 +7116,7 @@
     "target": 770.0775000000001
    },
    "pair": "SPY",
-   "price": 1.97,
+   "price": 1.78,
    "qty": 1,
    "qty0": 1,
    "risk": 64.0,
@@ -7106,7 +7127,7 @@
    "tp": 999.0,
    "tp_on": false,
    "units": 1,
-   "upl": 37.0,
+   "upl": 18.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
