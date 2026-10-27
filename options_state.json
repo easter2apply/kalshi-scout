@@ -5,7 +5,7 @@
   "nav": 908.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793110814.121165
+  "updated": 1793111111.657163
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -2052,6 +2052,10 @@
   [
    1793110212,
    908.0
+  ],
+  [
+   1793111112,
+   908.0
   ]
  ],
  "errors": [
@@ -2137,47 +2141,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "Clean read: ADX 28 (needs 18).",
-     "vote": true,
-     "who": "The Quant"
-    },
-    {
-     "say": "Not on my watch: Paused (drawdown over 35%).",
-     "vote": false,
-     "who": "Risk"
-    },
-    {
-     "say": "Feel that push? MACD with us (down).",
-     "vote": true,
-     "who": "Momentum"
-    },
-    {
-     "say": "Timing's right. RSI 33.",
-     "vote": true,
-     "who": "Time"
-    },
-    {
-     "say": "...fine. 1-hour trend agrees. I'll allow it.",
-     "vote": true,
-     "who": "Doubt"
-    },
-    {
-     "say": "My sources say no. StockTwits crowd is 7 to 1 bullish.",
-     "vote": false,
-     "who": "The Reporter"
-    }
-   ],
-   "ok": false,
-   "t": 1792167314.3923836,
-   "text": null,
-   "title": "IWM PUT (crossover 15m)",
-   "verdict": "REJECTED 4\u20132. Logged on paper so we learn whether we were right.",
-   "who": null
-  },
   {
    "kind": "scan",
    "lines": [
@@ -4207,6 +4170,16 @@
    "title": "AMZN range set: 248.73\u2013251.27",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1793111115.4706345,
+   "text": "\ud83d\udc40 DIA 10:20 ET: Strong close below the range low. Waiting for the next candle to hold below and make a new low.",
+   "title": "DIA breakout watch",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -4797,9 +4770,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-26",
- "last_deploy": 1793110517.56093,
- "last_full_run": 1793110814.121165,
- "last_run": 1793110814.121165,
+ "last_deploy": 1793111116.4377568,
+ "last_full_run": 1793111111.657163,
+ "last_run": 1793111111.657163,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -5873,12 +5846,19 @@
       249.83,
       249.53,
       249.62
+     ],
+     [
+      "10:20",
+      249.62,
+      250.09,
+      249.51,
+      249.94
      ]
     ],
-    "checked": 1793110814.121165,
+    "checked": 1793111111.657163,
     "entered": false,
     "events": [],
-    "last": 249.615,
+    "last": 249.94,
     "orh": 251.27,
     "orl": 248.73,
     "pair": "AMZN",
@@ -5960,20 +5940,35 @@
       522.6,
       522.36,
       522.37
+     ],
+     [
+      "10:20",
+      522.01,
+      522.06,
+      521.88,
+      521.88
      ]
     ],
-    "checked": 1793110814.121165,
+    "checked": 1793111111.657163,
     "entered": false,
-    "events": [],
-    "last": 522.37,
+    "events": [
+     {
+      "kind": "pend",
+      "mins": 620,
+      "t": "10:20",
+      "txt": "Strong close below the range low. Waiting for the next candle to hold below and make a new low"
+     }
+    ],
+    "last": 521.88,
     "orh": 523.9,
     "orl": 522.155,
     "pair": "DIA",
-    "phase": "wait",
+    "phase": "pending",
     "sent": [
-     "range"
+     "range",
+     "620:pend"
     ],
-    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
+    "status": "Strong close below the range low. Waiting for the next candle to hold below and make a new low",
     "trade": null
    },
    "SPY": {
@@ -6047,12 +6042,19 @@
       765.93,
       765.34,
       765.45
+     ],
+     [
+      "10:20",
+      765.41,
+      765.97,
+      765.21,
+      765.89
      ]
     ],
-    "checked": 1793110814.121165,
+    "checked": 1793111111.657163,
     "entered": false,
     "events": [],
-    "last": 765.445,
+    "last": 765.89,
     "orh": 768.265,
     "orl": 765.8,
     "pair": "SPY",
