@@ -1,0 +1,88 @@
+{
+ "AMZN": {
+  "price": 253.145,
+  "single": {
+   "sym": "AMZN261030C00277500",
+   "bid": 2.06,
+   "ask": 2.17,
+   "delta": 0.1754,
+   "spread": 0.05200945626477535,
+   "qty": 1,
+   "exp": "2026-10-30",
+   "strike": 277.5,
+   "type": "call",
+   "zero": false
+  },
+  "single_why": null,
+  "spread": {
+   "sym": "AMZN261030C00255000",
+   "short": "AMZN261030C00257500",
+   "bid": 1.0000000000000009,
+   "ask": 1.52,
+   "delta": 0.4956,
+   "spread": 0.34210526315789397,
+   "qty": 1,
+   "exp": "2026-10-30",
+   "strike": 255.0,
+   "short_strike": 257.5,
+   "type": "call",
+   "zero": false,
+   "width": 2.5
+  },
+  "spread_why": null
+ },
+ "DIA": {
+  "price": 523.22,
+  "single": {
+   "sym": "DIA261030C00526000",
+   "bid": 1.91,
+   "ask": 2.14,
+   "delta": 0.3756,
+   "spread": 0.11358024691358035,
+   "qty": 1,
+   "exp": "2026-10-30",
+   "strike": 526.0,
+   "type": "call",
+   "zero": false
+  },
+  "single_why": null,
+  "spread": {
+   "sym": "DIA261030C00522500",
+   "short": "DIA261030C00526000",
+   "bid": 1.5699999999999998,
+   "ask": 2.03,
+   "delta": 0.5479,
+   "spread": 0.22660098522167488,
+   "qty": 1,
+   "exp": "2026-10-30",
+   "strike": 522.5,
+   "short_strike": 526.0,
+   "type": "call",
+   "zero": false,
+   "width": 3.5
+  },
+  "spread_why": null
+ },
+ "order": {
+  "status": "accepted",
+  "order_class": "mleg",
+  "type": "limit",
+  "limit_price": "0.01",
+  "qty": "1"
+ },
+ "legs": [
+  {
+   "symbol": "AMZN261030C00255000",
+   "side": "buy",
+   "position_intent": "buy_to_open",
+   "status": "accepted"
+  },
+  {
+   "symbol": "AMZN261030C00257500",
+   "side": "sell",
+   "position_intent": "sell_to_open",
+   "status": "accepted"
+  }
+ ],
+ "cancel": "ok"
+}
