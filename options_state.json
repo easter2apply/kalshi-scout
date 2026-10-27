@@ -5,7 +5,7 @@
   "nav": 1003.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793117414.357202
+  "updated": 1793117712.530511
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -2210,47 +2210,6 @@
  ],
  "feed": [
   {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "Doesn't pass my screen: ADX 17 (needs 18).",
-     "vote": false,
-     "who": "The Quant"
-    },
-    {
-     "say": "Not on my watch: Paused (drawdown over 35%).",
-     "vote": false,
-     "who": "Risk"
-    },
-    {
-     "say": "Feel that push? MACD with us (down).",
-     "vote": true,
-     "who": "Momentum"
-    },
-    {
-     "say": "Timing's right. RSI 47.",
-     "vote": true,
-     "who": "Time"
-    },
-    {
-     "say": "...fine. 1-hour trend agrees. I'll allow it.",
-     "vote": true,
-     "who": "Doubt"
-    },
-    {
-     "say": "Sources say we're clear: 1 headline today, none against us; StockTwits 5 bullish / 0 bearish.",
-     "vote": true,
-     "who": "The Reporter"
-    }
-   ],
-   "ok": false,
-   "t": 1792429219.7527657,
-   "text": null,
-   "title": "IWM PUT (pullback 15m)",
-   "verdict": "REJECTED 4\u20132. Logged on paper so we learn whether we were right.",
-   "who": null
-  },
-  {
    "kind": "scan",
    "lines": [
     {
@@ -4156,6 +4115,16 @@
    "title": "DIA: no setup today",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": true,
+   "t": 1793117717.2258713,
+   "text": "\ud83d\udd12 AMZN 12:10 ET: 1R reached. Stop moves to breakeven at 252.18 (AMZN level). The trade can't lose on AMZN's move now.",
+   "title": "AMZN stop to breakeven",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -4752,9 +4721,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-26",
- "last_deploy": 1793117125.0543299,
- "last_full_run": 1793117414.357202,
- "last_run": 1793117414.357202,
+ "last_deploy": 1793117718.1203198,
+ "last_full_run": 1793117712.530511,
+ "last_run": 1793117712.530511,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -5998,9 +5967,16 @@
       253.05,
       252.47,
       253.05
+     ],
+     [
+      "12:10",
+      253.06,
+      253.34,
+      252.98,
+      253.18
      ]
     ],
-    "checked": 1793117414.357202,
+    "checked": 1793117712.530511,
     "entered": true,
     "events": [
      {
@@ -6014,9 +5990,15 @@
       "mins": 660,
       "t": "11:00",
       "txt": "LONG at 252.18, stop 251.29, target 253.50"
+     },
+     {
+      "kind": "be",
+      "mins": 730,
+      "t": "12:10",
+      "txt": "1R reached. Stop moves to breakeven at 252.18"
      }
     ],
-    "last": 253.05,
+    "last": 253.18,
     "orh": 251.27,
     "orl": 248.73,
     "pair": "AMZN",
@@ -6024,11 +6006,12 @@
     "phase": "long",
     "sent": [
      "range",
-     "655:pend"
+     "655:pend",
+     "730:be"
     ],
-    "status": "LONG trade open",
+    "status": "LONG trade open, stop at breakeven",
     "trade": {
-     "be": false,
+     "be": true,
      "dir": 1,
      "entry": 252.175,
      "entry_label": "11:00",
@@ -6037,7 +6020,7 @@
      "exit_mins": null,
      "one_r": 0.8850000000000193,
      "result": null,
-     "stop": 251.29,
+     "stop": 252.175,
      "stop0": 251.29,
      "target": 253.50250000000005
     }
@@ -6260,9 +6243,16 @@
       523.96,
       523.74,
       523.74
+     ],
+     [
+      "12:10",
+      523.66,
+      523.7,
+      523.51,
+      523.53
      ]
     ],
-    "checked": 1793117414.357202,
+    "checked": 1793117712.530511,
     "entered": false,
     "events": [
      {
@@ -6290,7 +6280,7 @@
       "txt": "No setup by 12:00 ET. Done for the day"
      }
     ],
-    "last": 523.74,
+    "last": 523.53,
     "orh": 523.9,
     "orl": 522.155,
     "pair": "DIA",
@@ -6530,9 +6520,16 @@
       770.72,
       770.26,
       770.3
+     ],
+     [
+      "12:10",
+      770.25,
+      770.27,
+      770.14,
+      770.2
      ]
     ],
-    "checked": 1793117414.357202,
+    "checked": 1793117712.530511,
     "entered": true,
     "events": [
      {
@@ -6560,7 +6557,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 770.3,
+    "last": 770.2,
     "orh": 768.265,
     "orl": 765.8,
     "pair": "SPY",
@@ -6643,51 +6640,52 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 22.694047764119013,
-   "atr_pips": 0.8374815579161673,
-   "bar": "2026-10-27T15:45:00",
-   "chg": 1.160036928511225,
-   "close": 252.02,
+   "adx": 24.700494756949166,
+   "atr_pips": 0.8723043037771505,
+   "bar": "2026-10-27T16:00:00",
+   "chg": 1.6256572873600175,
+   "close": 253.18,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 5,
+    "passed": 4,
     "session": true,
     "tf": "M15",
     "waiting": [
+     "a pullback to the trend line or a fresh crossover",
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 65.07560171933636,
-   "setup": "crossover 15m",
+   "rsi": 70.79078840619167,
+   "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
   },
   "DIA": {
-   "adx": 14.122666245788258,
-   "atr_pips": 0.6757003492745876,
-   "bar": "2026-10-27T15:45:00",
-   "chg": 0.17397954306473223,
-   "close": 523.96,
+   "adx": 15.142351596056674,
+   "atr_pips": 0.6667217528889654,
+   "bar": "2026-10-27T16:00:00",
+   "chg": 0.09176942930886497,
+   "close": 523.53,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
     "dir": -1,
     "in_trade": false,
     "of": 6,
-    "passed": 1,
+    "passed": 3,
     "session": true,
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
-     "ADX 14 (needs 18)"
+     "ADX 15 (needs 18)"
     ]
    },
-   "rsi": 60.748906451655984,
+   "rsi": 55.389135519109374,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -6849,11 +6847,11 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 19.061972924618686,
-   "atr_pips": 1.0911463974375974,
-   "bar": "2026-10-27T15:45:00",
-   "chg": 0.7056748015289591,
-   "close": 770.625,
+   "adx": 20.731189130343587,
+   "atr_pips": 1.0782073690431129,
+   "bar": "2026-10-27T16:00:00",
+   "chg": 0.6501355810382596,
+   "close": 770.2,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -6868,7 +6866,7 @@
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 71.81166488776671,
+   "rsi": 68.48852227755316,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -7278,18 +7276,18 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.71,
-   "p": "770.62",
+   "c": 0.65,
+   "p": "770.20",
    "s": "SPY"
   },
   {
-   "c": 0.17,
-   "p": "523.96",
+   "c": 0.09,
+   "p": "523.53",
    "s": "DIA"
   },
   {
-   "c": 1.16,
-   "p": "252.02",
+   "c": 1.63,
+   "p": "253.18",
    "s": "AMZN"
   }
  ],
