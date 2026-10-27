@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 908.0,
-  "broker_equity": 99839.26,
-  "nav": 908.0,
+  "broker_equity": 99845.23,
+  "nav": 912.0,
   "options_level": 3,
-  "unrealized": 0,
-  "updated": 1793113219.035539
+  "unrealized": 4.0,
+  "updated": 1793113511.656189
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -602,8 +602,8 @@
    "benched": 0,
    "news": 0,
    "opened": 1,
-   "rejected": 0,
-   "setups": 1,
+   "rejected": 1,
+   "setups": 2,
    "start_nav": 908.0
   }
  },
@@ -2149,22 +2149,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "scan",
-   "lines": [
-    {
-     "say": "\u25bc $271.33, ADX 33, RSI 47: trending, waiting for a pullback",
-     "vote": null,
-     "who": "IWM"
-    }
-   ],
-   "ok": null,
-   "t": 1792418111.4790301,
-   "text": null,
-   "title": "Scanned 1 stock: 0 setups on the latest candle",
-   "verdict": null,
-   "who": null
-  },
   {
    "kind": "vote",
    "lines": [
@@ -4145,6 +4129,47 @@
    "title": "AMZN breakout watch",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "vote",
+   "lines": [
+    {
+     "say": "The data says go. Opening range is $2.54 (1.01% of the price).",
+     "vote": true,
+     "who": "The Quant"
+    },
+    {
+     "say": "Hard no. Cheapest good call costs $369, over the $228 budget.",
+     "vote": false,
+     "who": "Risk"
+    },
+    {
+     "say": "It's moving our way. Strong green 5-min close outside the range, then the next candle held and made a new high.",
+     "vote": true,
+     "who": "Momentum"
+    },
+    {
+     "say": "Clock agrees: Entry at 11:00 ET, inside the 10:00\u201312:00 window.",
+     "vote": true,
+     "who": "Time"
+    },
+    {
+     "say": "Begrudgingly yes: Stop $0.89 away, target 1.5\u00d7 that.",
+     "vote": true,
+     "who": "Doubt"
+    },
+    {
+     "say": "Breaking: AMZN reports earnings Thu Oct 29 after the close, before we'd sell. Too much gap risk.",
+     "vote": false,
+     "who": "The Reporter"
+    }
+   ],
+   "ok": false,
+   "t": 1793113513.9242942,
+   "text": null,
+   "title": "AMZN CALL (opening range breakout)",
+   "verdict": "SIGNAL ONLY 4\u20132: cheapest good call costs $369, over the $228 budget. Tracked on AMZN's levels.",
+   "who": null
   }
  ],
  "history": [
@@ -4736,70 +4761,71 @@
  },
  "last_daily": "2026-10-26",
  "last_deploy": 1793113229.1121547,
- "last_full_run": 1793113219.035539,
- "last_run": 1793113219.035539,
+ "last_full_run": 1793113511.656189,
+ "last_run": 1793113511.656189,
  "last_vote": {
-  "approved": true,
+  "approved": false,
   "ask": 0,
   "chart": {
    "closes": [
-    767.455,
-    768.165,
-    767.78,
-    766.36,
-    766.11,
-    766.19,
-    765.94,
-    765.95,
-    765.805,
-    765.445,
-    765.89,
-    766.62,
-    767.635,
-    767.425,
-    767.35,
-    767.815,
-    768.34,
-    768.705
+    251.04,
+    251.07,
+    250.825,
+    249.775,
+    249.02,
+    249.36,
+    249.335,
+    249.335,
+    249.81,
+    249.615,
+    249.94,
+    250.48,
+    251.22,
+    251.11,
+    250.995,
+    251.305,
+    251.32,
+    251.78,
+    252.175
    ],
-   "entry": 768.705,
+   "entry": 252.175,
    "prec": 2,
-   "sl": 767.79,
+   "sl": 251.29,
    "tf": "5m",
-   "tp": 770.0775000000001
+   "tp": 253.50250000000005
   },
-  "detail": "SPY $768 Call \u00b7 Oct 27 @ $1.63 \u00b7 stock stop 767.79 \u00b7 target 770.08",
+  "detail": "AMZN $252.18 \u00b7 stock stop 251.29 \u00b7 target 253.50",
   "edge": 0,
-  "label": "SPY CALL (opening range breakout)",
+  "label": "AMZN CALL (opening range breakout)",
   "side": "CALL",
   "url": "https://app.alpaca.markets/",
   "votes": {
    "Doubt": [
     true,
-    "stop $0.92 away, target 1.5\u00d7 that"
+    "stop $0.89 away, target 1.5\u00d7 that"
    ],
    "Momentum": [
     true,
     "strong green 5-min close outside the range, then the next candle held and made a new high"
    ],
    "Risk": [
-    true,
-    "SPY $768 Call \u00b7 Oct 27 at $1.63, spread 4%"
+    false,
+    "cheapest good call costs $369, over the $228 budget"
    ],
    "The Quant": [
     true,
-    "opening range is $2.47 (0.32% of the price)"
+    "opening range is $2.54 (1.01% of the price)"
    ],
    "The Reporter": [
-    true,
-    "20 headlines today, 1 on our side; StockTwits 9 bullish / 1 bearish"
+    false,
+    "AMZN reports earnings Thu Oct 29 after the close, before we'd sell. Too much gap risk"
    ],
    "Time": [
     true,
-    "entry at 10:55 ET, inside the 10:00\u201312:00 window"
+    "entry at 11:00 ET, inside the 10:00\u201312:00 window"
    ]
   },
-  "when": 1793113219.035539
+  "when": 1793113511.656189
  },
  "last_weekly": "2026-10-23",
  "lb_done": {
@@ -5874,29 +5900,56 @@
       251.78,
       251.29,
       251.78
+     ],
+     [
+      "11:00",
+      251.78,
+      252.19,
+      251.78,
+      252.18
      ]
     ],
-    "checked": 1793113219.035539,
-    "entered": false,
+    "checked": 1793113511.656189,
+    "entered": true,
     "events": [
      {
       "kind": "pend",
       "mins": 655,
       "t": "10:55",
       "txt": "Strong close above the range high. Waiting for the next candle to hold above and make a new high"
+     },
+     {
+      "kind": "entry",
+      "mins": 660,
+      "t": "11:00",
+      "txt": "LONG at 252.18, stop 251.29, target 253.50"
      }
     ],
-    "last": 251.78,
+    "last": 252.175,
     "orh": 251.27,
     "orl": 248.73,
     "pair": "AMZN",
-    "phase": "pending",
+    "paper_only": true,
+    "phase": "long",
     "sent": [
      "range",
      "655:pend"
     ],
-    "status": "Strong close above the range high. Waiting for the next candle to hold above and make a new high",
-    "trade": null
+    "status": "LONG trade open",
+    "trade": {
+     "be": false,
+     "dir": 1,
+     "entry": 252.175,
+     "entry_label": "11:00",
+     "entry_mins": 660,
+     "entry_t": "2026-10-27T15:00:00",
+     "exit_mins": null,
+     "one_r": 0.8850000000000193,
+     "result": null,
+     "stop": 251.29,
+     "stop0": 251.29,
+     "target": 253.50250000000005
+    }
    },
    "DIA": {
     "candles": [
@@ -6018,9 +6071,16 @@
       522.92,
       522.58,
       522.92
+     ],
+     [
+      "11:00",
+      523.27,
+      523.58,
+      523.27,
+      523.41
      ]
     ],
-    "checked": 1793113219.035539,
+    "checked": 1793113511.656189,
     "entered": false,
     "events": [
      {
@@ -6036,7 +6096,7 @@
       "txt": "Breakdown failed: price came back to the range low"
      }
     ],
-    "last": 522.925,
+    "last": 523.41,
     "orh": 523.9,
     "orl": 522.155,
     "pair": "DIA",
@@ -6176,9 +6236,16 @@
       768.81,
       768.28,
       768.71
+     ],
+     [
+      "11:00",
+      768.8,
+      769.35,
+      768.8,
+      769.13
      ]
     ],
-    "checked": 1793113219.035539,
+    "checked": 1793113511.656189,
     "entered": true,
     "events": [
      {
@@ -6194,7 +6261,7 @@
       "txt": "LONG at 768.71, stop 767.79, target 770.08"
      }
     ],
-    "last": 768.705,
+    "last": 769.13,
     "orh": 768.265,
     "orl": 765.8,
     "pair": "SPY",
@@ -6491,7 +6558,7 @@
    "prec": 2,
    "ready": {
     "dir": 1,
-    "in_trade": false,
+    "in_trade": true,
     "of": 6,
     "passed": 3,
     "session": true,
@@ -6940,7 +7007,7 @@
     "target": 770.0775000000001
    },
    "pair": "SPY",
-   "price": 1.6,
+   "price": 1.64,
    "qty": 1,
    "qty0": 1,
    "risk": 64.0,
@@ -6951,7 +7018,7 @@
    "tp": 999.0,
    "tp_on": false,
    "units": 1,
-   "upl": 0.0,
+   "upl": 4.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
