@@ -5,7 +5,7 @@
   "nav": 1003.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793116819.346495
+  "updated": 1793117116.403442
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -2206,22 +2206,6 @@
  ],
  "feed": [
   {
-   "kind": "scan",
-   "lines": [
-    {
-     "say": "\u25bc $271.78, ADX 19, RSI 51: trending, waiting for a pullback",
-     "vote": null,
-     "who": "IWM"
-    }
-   ],
-   "ok": null,
-   "t": 1792428912.7759726,
-   "text": null,
-   "title": "Scanned 1 stock: 0 setups on the latest candle",
-   "verdict": null,
-   "who": null
-  },
-  {
    "kind": "vote",
    "lines": [
     {
@@ -4158,6 +4142,16 @@
    "title": "DIA breakout watch",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1793117124.147844,
+   "text": "\ud83d\ude34 DIA: No setup by 12:00 ET. Done for the day.",
+   "title": "DIA: no setup today",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -4754,9 +4748,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-26",
- "last_deploy": 1793116827.7593422,
- "last_full_run": 1793116819.346495,
- "last_run": 1793116819.346495,
+ "last_deploy": 1793117125.0543299,
+ "last_full_run": 1793117116.403442,
+ "last_run": 1793117116.403442,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -5986,9 +5980,16 @@
       252.29,
       252.02,
       252.02
+     ],
+     [
+      "12:00",
+      252.16,
+      252.67,
+      252.16,
+      252.47
      ]
     ],
-    "checked": 1793116819.346495,
+    "checked": 1793117116.403442,
     "entered": true,
     "events": [
      {
@@ -6004,7 +6005,7 @@
       "txt": "LONG at 252.18, stop 251.29, target 253.50"
      }
     ],
-    "last": 252.02,
+    "last": 252.47,
     "orh": 251.27,
     "orl": 248.73,
     "pair": "AMZN",
@@ -6234,9 +6235,16 @@
       523.96,
       523.75,
       523.96
+     ],
+     [
+      "12:00",
+      524.0,
+      524.06,
+      524.0,
+      524.0
      ]
     ],
-    "checked": 1793116819.346495,
+    "checked": 1793117116.403442,
     "entered": false,
     "events": [
      {
@@ -6256,20 +6264,27 @@
       "mins": 715,
       "t": "11:55",
       "txt": "Strong close above the range high. Waiting for the next candle to hold above and make a new high"
+     },
+     {
+      "kind": "none",
+      "mins": 720,
+      "t": "12:00",
+      "txt": "No setup by 12:00 ET. Done for the day"
      }
     ],
-    "last": 523.96,
+    "last": 524.0,
     "orh": 523.9,
     "orl": 522.155,
     "pair": "DIA",
-    "phase": "pending",
+    "phase": "none",
     "sent": [
      "range",
      "620:pend",
      "625:fail",
-     "715:pend"
+     "715:pend",
+     "720:none"
     ],
-    "status": "Strong close above the range high. Waiting for the next candle to hold above and make a new high",
+    "status": "No setup today",
     "trade": null
    },
    "SPY": {
@@ -6483,9 +6498,16 @@
       770.64,
       770.35,
       770.62
+     ],
+     [
+      "12:00",
+      770.66,
+      771.05,
+      770.57,
+      770.68
      ]
     ],
-    "checked": 1793116819.346495,
+    "checked": 1793117116.403442,
     "entered": true,
     "events": [
      {
@@ -6513,7 +6535,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 770.625,
+    "last": 770.68,
     "orh": 768.265,
     "orl": 765.8,
     "pair": "SPY",
