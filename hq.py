@@ -1,5 +1,5 @@
 """
-Vault HQ: one page for every bot, plus a 9 AM morning brief on Telegram.
+Vault HQ: one page for every bot, a 9 AM morning brief on Telegram, and a Monday weekly report card.
 
 Runs inside the Vault Options workflow (every 5 minutes):
   python hq.py --out site/hq.html
@@ -30,9 +30,10 @@ BOTS = [
      "url": f"https://{OWNER}.github.io/kalshi-scout/gap.html", "hours": "market"},
     {"id": "fx", "name": "Vault FX", "icon": "💱", "raw": f"https://raw.githubusercontent.com/{OWNER}/vault-fx/main/fx_state.json",
      "start": 500.0, "url": f"https://{OWNER}.github.io/vault-fx/", "hours": "fx"},
-    {"id": "btc", "name": "Bitcoin Scout", "icon": "₿", "raw": f"https://raw.githubusercontent.com/{OWNER}/btc-scout/main/btc_state.json",
-     "start": 200.0, "url": f"https://{OWNER}.github.io/btc-scout/", "hours": "always"},
+    # Bitcoin Scout was shelved Oct 27, 2026 (400W-438L, coin-flip results)
 ]
+# What each bot's backtest said to expect per trade, so the weekly report can say if it's on track
+EXPECT = {"options": ("5-min opening range breakout", 0.06), "gap": ("IWM gap fade", 0.33), "fx": ("forex", 0.0)}
 
 
 def get_state(bot):
@@ -94,8 +95,9 @@ def summarize(bot, st, err, now):
     else:
         acct = st.get("account", {})
         nav = acct.get("nav")
+        start = st.get("start_balance") or bot["start"]
         out["bank"] = nav
-        out["total"] = (nav - bot["start"]) if nav is not None else None
+        out["total"] = (nav - start) if nav is not None else None
         start_nav = (st.get("day") or {}).get("start_nav")
         out["today"] = (nav - start_nav) if nav is not None and start_nav else None
         out["open"] = [f"{m.get('pair', '').replace('_', '/')} {('CALL' if m.get('dir') == 1 else 'PUT') if bot['id'] in ('options', 'gap') else ('BUY' if m.get('dir') == 1 else 'SELL')}"
@@ -202,6 +204,58 @@ def brief(rows, opt_state, now):
     return "\n".join(lines)
 
 
+def weekly(bots_states, now):
+    """Monday report card: last 7 days of closed trades for every bot, vs. what its backtest expects."""
+    e = now.astimezone(ET)
+    since = now.timestamp() - 7 * 86400
+    lines = [f"📊 Weekly report card · week ending {(e - dt.timedelta(days=1)):%b} {(e - dt.timedelta(days=1)).day}", ""]
+    tot_pl, tot_n = 0.0, 0
+    for bot, st in bots_states:
+        if st is None:
+            lines += [f"{bot['icon']} {bot['name']}: ⚠️ couldn't read its data", ""]
+            continue
+        wk = [t for t in st.get("closed", []) if (t.get("closed_ts") or 0) >= since]
+        n = len(wk)
+        pl = sum(t.get("pl") or 0 for t in wk)
+        wins = sum(1 for t in wk if (t.get("pl") or 0) > 0)
+        rs = [t["r"] for t in wk if t.get("r") is not None]
+        tot_pl += pl; tot_n += n
+        head = f"{bot['icon']} {bot['name']}: "
+        if not n:
+            head += "no trades this week"
+        else:
+            head += f"{n} trade{'s' if n != 1 else ''}, {wins}W–{n - wins}L, {money(pl)}"
+            if rs:
+                head += f" · {sum(rs) / len(rs):+.2f}R avg"
+        lines.append(head)
+        name, exp = EXPECT.get(bot["id"], ("", None))
+        if rs and exp is not None and len(rs) >= 3:
+            avg = sum(rs) / len(rs)
+            verdict = "✅ on track" if avg >= exp - 0.25 else "👀 below its backtest"
+            lines.append(f"   Backtest expects about {exp:+.2f}R per trade → {verdict}")
+        elif n and n < 3:
+            lines.append("   Too few trades this week to judge")
+        rec = st.get("record", {})
+        if rec:
+            lines.append(f"   Current strategy so far: {rec.get('wins', 0)}W–{rec.get('losses', 0)}L, {money(rec.get('pl', 0.0))}")
+        if st.get("paused"):
+            lines.append(f"   ⏸ Paused: {st['paused']}")
+        pr = st.get("probation") or {}
+        for sym, x in pr.items():
+            if x.get("n"):
+                lines.append(f"   📋 {sym} signal-only: {x['n']} signals, {x['wins']} wins, {x['r'] / x['n']:+.2f}R each"
+                             + (" → ready to go live? Ask Claude." if x["n"] >= 20 and x["r"] > 0 else ""))
+        best = max(wk, key=lambda t: t.get("pl") or 0, default=None)
+        worst = min(wk, key=lambda t: t.get("pl") or 0, default=None)
+        if best and (best.get("pl") or 0) > 0:
+            lines.append(f"   Best: {best.get('pair', '').replace('_', '/')} {money(best['pl'])}")
+        if worst and (worst.get("pl") or 0) < 0:
+            lines.append(f"   Worst: {worst.get('pair', '').replace('_', '/')} {money(worst['pl'])}")
+        lines.append("")
+    lines.append(f"All bots this week: {tot_n} trades, {money(tot_pl)}")
+    return "\n".join(lines)
+
+
 def send(text, chat):
     token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
     if not token or not chat:
@@ -218,13 +272,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="site/hq.html")
     ap.add_argument("--brief-now", action="store_true", help="send the morning brief right away (testing)")
+    ap.add_argument("--weekly-now", action="store_true", help="send the weekly report card right away (testing)")
     args = ap.parse_args()
     now = dt.datetime.now(dt.timezone.utc)
-    rows, opt_state = [], None
+    rows, opt_state, states = [], None, []
     for bot in BOTS:
         st, err = get_state(bot)
         if bot["id"] == "options":
             opt_state = st
+        states.append((bot, st))
         rows.append(summarize(bot, st, err, now))
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
     with open(args.out, "w", encoding="utf-8") as f:
@@ -246,6 +302,14 @@ def main():
                 print("Morning brief: no Telegram token or chat yet")
         except Exception as ex:
             print(f"Morning brief failed: {ex}")
+    if args.weekly_now or (e.weekday() == 0 and e.hour >= BRIEF_HOUR and hq.get("weekly_day") != day):
+        chat = os.environ.get("TELEGRAM_CHAT_ID", "").strip() or (opt_state or {}).get("chat_id")
+        try:
+            if send(weekly(states, now), chat):
+                hq["weekly_day"] = day
+                print("Weekly report sent")
+        except Exception as ex:
+            print(f"Weekly report failed: {ex}")
     with open(HQ_STATE, "w", encoding="utf-8") as f:
         json.dump(hq, f)
 

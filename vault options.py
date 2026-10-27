@@ -53,7 +53,10 @@ TRAIL_GIVEBACK = 0.25        #   ...with a trailing stop 25% below its best pric
 MAX_CONTRACTS = 3            # never more than 3 contracts on one trade
 MAX_OPEN_TRADES = 2          # never more than 2 trades at once (one per stock)
 MAX_SPREAD_PCT = 0.15        # skip contracts whose bid/ask spread is over 15% of the price
-DELTA_RANGE = (0.15, 0.55)   # how far from the money: 0.5 ≈ at the money, 0.15 ≈ cheapest. It takes the closest-to-the-money contract the budget allows, and only goes further out when it has to
+SPREADS = True              # when one contract is over budget, buy a call/put spread instead (buy one, sell a further one): about half the price
+SPREAD_MAX_LEG_SPREAD = 0.35  # skip a spread if the two legs' bid/ask gaps add up to more than 35% of its price
+DELTA_RANGE = (0.25, 0.55)   # how far from the money: 0.5 ≈ at the money, 0.25 ≈ cheaper, further out
+CHEAP_DELTA_MIN = 0.15       # last resort when neither a normal contract nor a spread fits the budget: go as far out as delta 0.15
 WEEKLY_DAYS = (2, 10)        # weeklies: 2–10 days to expiration
 ZERO_DTE_UNTIL = (13, 30)    # 0DTE entries only before 1:30 PM ET
 ENTRY_WINDOW = ((9, 45), (15, 0))   # new trades 9:45 AM – 3:00 PM ET
@@ -260,6 +263,20 @@ class Alpaca:
 
     def close(self, contract, qty=None):
         return self.t("DELETE", f"/v2/positions/{contract}", params={"qty": str(qty)} if qty else None, tries=1)
+
+    def buy_spread(self, long_sym, short_sym, qty, limit):
+        """Open a debit spread in one order: buy long_sym, sell short_sym, paying at most `limit` per spread."""
+        return self.t("POST", "/v2/orders", body={
+            "order_class": "mleg", "qty": str(qty), "type": "limit", "limit_price": f"{limit:.2f}", "time_in_force": "day",
+            "legs": [{"symbol": long_sym, "ratio_qty": "1", "side": "buy", "position_intent": "buy_to_open"},
+                     {"symbol": short_sym, "ratio_qty": "1", "side": "sell", "position_intent": "sell_to_open"}]}, tries=1)
+
+    def close_spread(self, long_sym, short_sym, qty):
+        """Close a debit spread in one market order (sell the long leg, buy back the short leg)."""
+        return self.t("POST", "/v2/orders", body={
+            "order_class": "mleg", "qty": str(qty), "type": "market", "time_in_force": "day",
+            "legs": [{"symbol": long_sym, "ratio_qty": "1", "side": "sell", "position_intent": "sell_to_close"},
+                     {"symbol": short_sym, "ratio_qty": "1", "side": "buy", "position_intent": "buy_to_close"}]}, tries=1)
 
 
 def parse_occ(sym):
@@ -982,7 +999,7 @@ def gap_fade_holds():
         return set()
 
 
-def pick_contract(api, pair, d, price, budget, now_utc):
+def pick_contract(api, pair, d, price, budget, now_utc, min_delta=None):
     """Best call (d=1) or put (d=-1) that fits the budget. Returns (contract dict, None) or (None, reason)."""
     e = et(now_utc)
     today = e.date()
@@ -1008,7 +1025,7 @@ def pick_contract(api, pair, d, price, budget, now_utc):
         delta = abs(c["delta"]) if c.get("delta") is not None else None
         dist = (c["strike"] - price) / price * d          # > 0 means out of the money
         if delta is not None:
-            if not (DELTA_RANGE[0] <= delta <= DELTA_RANGE[1]):
+            if not ((min_delta or DELTA_RANGE[0]) <= delta <= DELTA_RANGE[1]):
                 continue
         elif not (-0.01 <= dist <= 0.04):
             continue
@@ -1029,6 +1046,69 @@ def pick_contract(api, pair, d, price, budget, now_utc):
     qty = max(1, min(MAX_CONTRACTS, int(budget // (c["ask"] * 100))))
     return {"sym": sym, "bid": c["bid"], "ask": c["ask"], "delta": c.get("delta"), "spread": spread, "qty": qty,
             "exp": c["exp"], "strike": c["strike"], "type": c["type"], "zero": zero}, None
+
+
+def pick_spread(api, pair, d, price, target, budget, now_utc):
+    """Debit spread for when a single contract is too pricey: buy the closest-to-the-money contract and sell the one
+    nearest the ORB target (same expiration). Returns (spread dict, None) or (None, reason)."""
+    e = et(now_utc)
+    today = e.date()
+    zero = pair in ZERO_DTE and (e.hour, e.minute) < ZERO_DTE_UNTIL
+    lo_d, hi_d = (today, today) if zero else (today + dt.timedelta(days=WEEKLY_DAYS[0]), today + dt.timedelta(days=WEEKLY_DAYS[1]))
+    kind = "call" if d == 1 else "put"
+    try:
+        chain = api.chain(pair, kind, lo_d.isoformat(), hi_d.isoformat())
+    except ApiError as ex:
+        return None, f"no option quotes ({ex})"
+    by_exp = {}
+    for sym, c in chain.items():
+        if c["bid"] > 0 and c["ask"] >= c["bid"]:
+            by_exp.setdefault(c["exp"], []).append((sym, c))
+    best, cheapest = None, None
+    for exp, legs in sorted(by_exp.items()):
+        for lsym, lc in legs:
+            ldelta = abs(lc["delta"]) if lc.get("delta") is not None else None
+            dist = (lc["strike"] - price) / price * d
+            if (ldelta is not None and not (0.35 <= ldelta <= 0.65)) or (ldelta is None and not (-0.01 <= dist <= 0.01)):
+                continue
+            shorts = [(ssym, sc) for ssym, sc in legs if (sc["strike"] - lc["strike"]) * d > 0]
+            if not shorts:
+                continue
+            ssym, sc = min(shorts, key=lambda x: (abs(x[1]["strike"] - target), (x[1]["strike"] - lc["strike"]) * d))
+            debit = lc["ask"] - sc["bid"]
+            if debit <= 0.02:
+                continue
+            gaps = (lc["ask"] - lc["bid"]) + (sc["ask"] - sc["bid"])
+            if gaps / debit > SPREAD_MAX_LEG_SPREAD:
+                continue
+            cost = debit * 100
+            cheapest = cost if cheapest is None else min(cheapest, cost)
+            if cost > budget:
+                continue
+            key = (ldelta if ldelta is not None else 0.5, -exp_rank(exp, today))
+            if best is None or key > best[0]:
+                best = (key, lsym, lc, ssym, sc, debit, gaps / debit)
+    if not best:
+        if cheapest is not None:
+            return None, f"cheapest {kind} spread costs ${cheapest:,.0f}, over the ${budget:,.0f} budget"
+        return None, f"no {kind} spread with tight enough prices"
+    _, lsym, lc, ssym, sc, debit, gap = best
+    qty = max(1, min(MAX_CONTRACTS, int(budget // (debit * 100))))
+    return {"sym": lsym, "short": ssym, "bid": lc["bid"] - sc["ask"], "ask": round(debit, 2), "delta": lc.get("delta"),
+            "spread": gap, "qty": qty, "exp": lc["exp"], "strike": lc["strike"], "short_strike": sc["strike"],
+            "type": lc["type"], "zero": zero, "width": abs(sc["strike"] - lc["strike"])}, None
+
+
+def exp_rank(exp, today):
+    return (dt.date.fromisoformat(exp) - today).days
+
+
+def pick_name(pick):
+    """'SPY Oct 29 $770 call' or 'AMZN Oct 31 $250/$255 call spread'."""
+    if pick.get("short"):
+        e = dt.date.fromisoformat(pick["exp"])
+        return f"{pick['sym'][:len(pick['sym']) - 15]} {e:%b} {e.day} ${pick['strike']:g}/${pick['short_strike']:g} {pick['type']} spread"
+    return contract_name(pick["sym"])
 
 
 # ───────────────────────────── State ─────────────────────────────────────────
@@ -1251,9 +1331,21 @@ def take_partial(api, st, meta, bid, now, tg, log):
 def close_trade(api, st, tid, meta, why, price_hint, now, tg, log):
     """Sell the contract at market and book the result."""
     try:
-        res = api.close(meta["sym"])
-        o = wait_fill(api, res["id"]) if res.get("id") else {}
-        exit_px = float(o.get("filled_avg_price") or 0) or price_hint
+        if meta.get("short"):
+            try:
+                res = api.close_spread(meta["sym"], meta["short"], meta["qty"])
+                o = wait_fill(api, res["id"]) if res.get("id") else {}
+                exit_px = abs(float(o.get("filled_avg_price") or 0)) or price_hint
+            except ApiError as e1:                         # fall back to closing each leg on its own
+                log.append(f"{meta['sym']}: spread close order failed ({e1}), closing legs one by one")
+                r1 = api.close(meta["sym"]); o1 = wait_fill(api, r1["id"]) if r1.get("id") else {}
+                r2 = api.close(meta["short"]); o2 = wait_fill(api, r2["id"]) if r2.get("id") else {}
+                p1, p2 = float(o1.get("filled_avg_price") or 0), float(o2.get("filled_avg_price") or 0)
+                exit_px = round(p1 - p2, 2) if p1 else price_hint
+        else:
+            res = api.close(meta["sym"])
+            o = wait_fill(api, res["id"]) if res.get("id") else {}
+            exit_px = float(o.get("filled_avg_price") or 0) or price_hint
     except ApiError as e:
         if "position" in str(e).lower() and "not found" in str(e).lower():
             exit_px = price_hint                            # already gone (expired or closed by hand)
@@ -1262,6 +1354,7 @@ def close_trade(api, st, tid, meta, why, price_hint, now, tg, log):
             if tg:
                 tg.say(f"⚠️ Couldn't sell {contract_name(meta['sym'])}: {e}\nPlease close it in the app.")
             return False
+    nm = meta.get("name") or contract_name(meta["sym"])
     rest = round((exit_px - meta["entry"]) * 100 * meta["qty"], 2)
     pl = round(rest + meta.get("banked", 0), 2)                    # includes any half sold early
     won = pl > 0
@@ -1275,7 +1368,7 @@ def close_trade(api, st, tid, meta, why, price_hint, now, tg, log):
         if tg:
             tg.say(note_)
     feed_add(st, "event", f"{meta['pair']} closed", who="The Quant", ok=won,
-             text=f"{contract_name(meta['sym'])} sold at ${exit_px:.2f} ({why}): {money(pl)} ({meta['r']:+.2f}R). "
+             text=f"{nm} sold at ${exit_px:.2f} ({why}): {money(pl)} ({meta['r']:+.2f}R). "
                   f"Record {rec['wins']}W–{rec['losses']}L.")
     note = record_result(st, meta["pair"], meta.get("setup", "pullback"), meta["r"], approved_trade=True)
     if note and tg:
@@ -1285,10 +1378,10 @@ def close_trade(api, st, tid, meta, why, price_hint, now, tg, log):
     if tg:
         icon = {"target": "🎯", "stop": "🛑", "breakeven": "🔒", "end of day": "🔔", "expired": "⌛", "trailing stop": "📈"}.get(why, "⚪")
         early = (f" (plus {meta['sold_early']} sold earlier for {money(meta['banked'])})" if meta.get("sold_early") else "")
-        tg.say(f"{'✅' if won else '❌'} SOLD {contract_name(meta['sym'])} ({icon} {why})\n"
+        tg.say(f"{'✅' if won else '❌'} SOLD {nm} ({icon} {why})\n"
                f"Bought ${meta['entry']:.2f} → sold ${exit_px:.2f} × {meta['qty']}{early}\n"
                f"Result: {money(pl)}  ·  Record {rec['wins']}W–{rec['losses']}L, total {money(rec['pl'])}\n\n"
-               f"👉 Robinhood: if you copied it, sell your {contract_name(meta['sym'])} now (limit near ${exit_px:.2f}).")
+               f"👉 Robinhood: if you copied it, close your {nm} now (limit near ${exit_px:.2f}).")
     return True
 
 
@@ -1428,13 +1521,19 @@ def run(log, full=True):
     if st["trades"]:
         try:
             pos = api.positions()
-            qs = api.quotes([m["sym"] for m in st["trades"].values()])
+            qs = api.quotes([m["sym"] for m in st["trades"].values()] + [m["short"] for m in st["trades"].values() if m.get("short")])
         except ApiError as e:
             pos, qs = None, {}
             log.append(f"Couldn't read positions ({e})")
         for tid, meta in list(st["trades"].items()):
             q = qs.get(meta["sym"], {})
             bid = q.get("bid") or meta.get("price") or meta["entry"]
+            if meta.get("short"):                              # spread: value = long leg - short leg (mid prices)
+                qs_ = qs.get(meta["short"], {})
+                if q.get("bid") and q.get("ask") and qs_.get("ask"):
+                    bid = max(0.0, round((q["bid"] + q["ask"]) / 2 - (qs_.get("bid", 0) + qs_["ask"]) / 2, 2))
+                else:
+                    bid = meta.get("price") or meta["entry"]
             meta["price"] = bid
             meta["upl"] = round((bid - meta["entry"]) * 100 * meta["qty"], 2)
             if meta.get("trail") and bid:
@@ -1792,13 +1891,19 @@ def run(log, full=True):
                 pick = None
                 if not reasons:
                     pick, why_not = pick_contract(api, pair, d, t["entry"], budget, now)
+                    if not pick and SPREADS and "over the" in (why_not or ""):
+                        pick, why_sp = pick_spread(api, pair, d, t["entry"], t["target"], budget, now)
+                        if not pick:
+                            why_not += f"; {why_sp}"
+                    if not pick and "over the" in (why_not or ""):
+                        pick, _ = pick_contract(api, pair, d, t["entry"], budget, now, min_delta=CHEAP_DELTA_MIN)
                     if not pick:
                         reasons.append(why_not)
                     elif pick["sym"] in gap_fade_holds():
                         pick = None; reasons.append("the Gap Fade bot already holds that exact contract")
                 votes = council_orb5(r, t, not reasons, "; ".join(reasons), hit, now, pair)
                 if pick:
-                    votes["Risk"] = (True, f"{contract_name(pick['sym'])} at ${pick['ask']:.2f}, spread {pick['spread']:.0%}")
+                    votes["Risk"] = (True, f"{pick_name(pick)} at ${pick['ask']:.2f}, spread {pick['spread']:.0%}")
                 rv, rwhy, rhard = reporter_vote(st, api, pair, d, pick, now, log)
                 votes["The Reporter"] = (rv, rwhy)
                 yes, no = tally(votes)
@@ -1808,14 +1913,14 @@ def run(log, full=True):
                 vote_text = "\n".join(f"{'✅' if o_ else '❌' if o_ is False else '➖'} {n}: {why}" for n, (o_, why) in votes.items())
                 st["last_vote"] = {"label": label, "side": "CALL" if d == 1 else "PUT", "approved": ok, "when": ts,
                                    "url": "https://app.alpaca.markets/", "ask": 0, "edge": 0,
-                                   "detail": (f"{contract_name(pick['sym'])} @ ${pick['ask']:.2f}" if pick else f"{pair} ${t['entry']:,.2f}")
+                                   "detail": (f"{pick_name(pick)} @ ${pick['ask']:.2f}" if pick else f"{pair} ${t['entry']:,.2f}")
                                              + f" · stock stop {t['stop0']:,.2f} · target {t['target']:,.2f}",
                                    "votes": {n: [o_, why] for n, (o_, why) in votes.items()},
                                    "chart": {"closes": [b["c"] for b in bars[-60:]], "entry": t["entry"], "sl": t["stop0"],
                                              "tp": t["target"], "prec": 2, "tf": "5m"}}
                 vote_entry = feed_add(st, "vote", label,
                                       lines=[{"who": n, "vote": o_, "say": say(n, o_, why, t["entry_t"] + pair)} for n, (o_, why) in votes.items()],
-                                      verdict=(f"APPROVED {yes}–{no}. Buying {contract_name(pick['sym'])}." if ok else
+                                      verdict=(f"APPROVED {yes}–{no}. Buying {pick_name(pick)}." if ok else
                                                f"SIGNAL ONLY {yes}–{no}: {'; '.join(reasons) or 'news or earnings'}. Tracked on {pair}'s levels."), ok=ok)
                 if not ok:
                     today["rejected"] += 1
@@ -1833,16 +1938,19 @@ def run(log, full=True):
                         tg.say(head + f"\n\n⚠️ The bot is NOT buying this one: {'; '.join(reasons) or (news_label(hit) if hit else 'earnings/news veto')}.{idea}\n"
                                       f"I'll still track it on {pair} and tell you how it ends.\n\nCouncil {yes}–{no}:\n{vote_text}")
                 else:
-                    limit = tick_up(pick["ask"])
+                    limit = tick_up(pick["ask"]) if not pick.get("short") else round(pick["ask"] + 0.01, 2)
                     try:
-                        res = api.buy(pick["sym"], pick["qty"], limit)
+                        if pick.get("short"):
+                            res = api.buy_spread(pick["sym"], pick["short"], pick["qty"], limit)
+                        else:
+                            res = api.buy(pick["sym"], pick["qty"], limit)
                         o = wait_fill(api, res["id"])
                     except ApiError as e:
                         o, res = None, None
                         log.append(f"{pair}: order rejected ({e})")
                         vote_entry["verdict"] = f"APPROVED {yes}–{no}, but the order was rejected: {e}"
                         if tg:
-                            tg.say(head + f"\n\n⚠️ Alpaca rejected {contract_name(pick['sym'])}: {e}")
+                            tg.say(head + f"\n\n⚠️ Alpaca rejected {pick_name(pick)}: {e}")
                     filled_qty = int(float((o or {}).get("filled_qty") or 0))
                     if o is not None and o.get("status") != "filled":
                         try:
@@ -1850,7 +1958,7 @@ def run(log, full=True):
                         except ApiError:
                             pass
                     if o is not None and (o.get("status") == "filled" or filled_qty):
-                        fill_px = float(o.get("filled_avg_price") or limit)
+                        fill_px = abs(float(o.get("filled_avg_price") or limit)) or limit
                         qty = filled_qty or pick["qty"]
                         risk_usd = round(fill_px * OPT_STOP * 100 * qty, 2)
                         tid = str(res["id"])
@@ -1860,19 +1968,27 @@ def run(log, full=True):
                                              "votes": {n: o_ for n, (o_, _) in votes.items()}, "setup": "opening range breakout",
                                              "tf": "5m", "price": fill_px, "upl": 0.0, "qty0": qty,
                                              "orb5": {"date": today_s, "entry": t["entry"], "stop": t["stop0"], "target": t["target"], "be": False}}
+                        if pick.get("short"):
+                            st["trades"][tid].update(short=pick["short"], name=pick_name(pick), width=pick["width"])
                         today["approved"] += 1; today["opened"] += 1
-                        vote_entry["verdict"] = f"APPROVED {yes}–{no}. Bought {qty} × {contract_name(pick['sym'])} at ${fill_px:.2f}."
+                        vote_entry["verdict"] = f"APPROVED {yes}–{no}. Bought {qty} × {pick_name(pick)} at ${fill_px:.2f}."
                         log.append(f"{pair}: OPENED {qty} × {pick['sym']} @ {fill_px:.2f} (ORB)")
                         if tg:
-                            tg.say(head + f"\n\nBought {qty} × {contract_name(pick['sym'])} at ${fill_px:.2f} (${fill_px * 100 * qty:,.0f}) on the paper account.\n"
+                            rh = (f"👉 Robinhood: search {pair} → Trade → Trade Options → Buy → {'Call' if d == 1 else 'Put'} → "
+                                  f"expiration {dt.date.fromisoformat(pick['exp']):%b} {dt.date.fromisoformat(pick['exp']).day} → strike ${pick['strike']:g} → "
+                                  f"limit ${limit:.2f} or less. Skip it if it's already above ${limit * 1.1:.2f}.")
+                            if pick.get("short"):
+                                rh = (f"👉 Robinhood: search {pair} → Trade → Trade Options → tap Buy, then select TWO {'calls' if d == 1 else 'puts'} "
+                                      f"with expiration {dt.date.fromisoformat(pick['exp']):%b} {dt.date.fromisoformat(pick['exp']).day}: "
+                                      f"BUY the ${pick['strike']:g} and SELL the ${pick['short_strike']:g} ({'call debit' if d == 1 else 'put debit'} spread) → "
+                                      f"limit debit ${limit:.2f} or less. Max loss = what you pay; max gain = ${pick['width']:g} minus what you pay.")
+                            tg.say(head + f"\n\nBought {qty} × {pick_name(pick)} at ${fill_px:.2f} (${fill_px * 100 * qty:,.0f}) on the paper account.\n"
                                           f"Exits follow {pair}'s levels above, not the option's %. Closed by 3:50 PM ET either way.\n\n"
-                                          f"👉 Robinhood: search {pair} → Trade → Trade Options → Buy → {'Call' if d == 1 else 'Put'} → "
-                                          f"expiration {dt.date.fromisoformat(pick['exp']):%b} {dt.date.fromisoformat(pick['exp']).day} → strike ${pick['strike']:g} → "
-                                          f"limit ${limit:.2f} or less. Skip it if it's already above ${limit * 1.1:.2f}.\n\nCouncil {yes}–{no}:\n{vote_text}")
+                                          f"{rh}\n\nCouncil {yes}–{no}:\n{vote_text}")
                     elif o is not None:
                         vote_entry["verdict"] = f"APPROVED {yes}–{no}, but it didn't fill at ${limit:.2f}. Canceled."
                         if tg:
-                            tg.say(head + f"\n\n⚠️ {contract_name(pick['sym'])} didn't fill at ${limit:.2f}. Canceled; tracking on {pair} only.")
+                            tg.say(head + f"\n\n⚠️ {pick_name(pick)} didn't fill at ${limit:.2f}. Canceled; tracking on {pair} only.")
                         o5["paper_only"] = True
             # exits on IWM's levels
             open_orb = next(((tid, m) for tid, m in st["trades"].items() if m.get("orb5") and m["pair"] == pair), None)
