@@ -1,0 +1,422 @@
+{
+ "how": "Bar Lab: does Easter's CRT work better on volume or range candles than on time candles?\n\nBuilds three kinds of candles from the same 2 years of 1-minute SIP data (9:30-4:00 ET):\n  time   - normal 5-minute candles\n  volume - a new candle every N shares (N picked so there are as many candles as 5-min candles)\n  range  - a new candle once the candle's high-low reaches R dollars (R = the median 5-min candle range)\nCandles reset each morning. A candle only exists once it's finished, so no peeking ahead.\n\nCRT (same live rules as the futures test, entry on C2's close):\n  C2 trades past C1's high (or low) and closes back inside C1 without taking the other side.\n  Enter at C2's close. Stop = C2's wick. Half off at C1's 50%, stop to entry, rest at C1's far side.\n  Walked on 1-minute bars, flat by 3:55 PM. Cost: 1 cent per share each way.\n",
+ "by_symbol": {
+  "SPY": {
+   "bars_1m": 195230,
+   "volume_per_candle": 704757,
+   "range_per_candle": 0.56,
+   "time \u00b7 all day": {
+    "n": 3870,
+    "per_week": 37.2,
+    "win": 0.538,
+    "avg_r": -0.081,
+    "total_r": -315.1,
+    "t": -4.62,
+    "train": -0.084,
+    "unseen": -0.077,
+    "candles": 39059
+   },
+   "time \u00b7 first 2 hours": {
+    "n": 1269,
+    "per_week": 12.2,
+    "win": 0.573,
+    "avg_r": -0.011,
+    "total_r": -14.2,
+    "t": -0.34,
+    "train": -0.031,
+    "unseen": 0.029,
+    "candles": 39059
+   },
+   "volume \u00b7 all day": {
+    "n": 3368,
+    "per_week": 32.4,
+    "win": 0.546,
+    "avg_r": -0.058,
+    "total_r": -194.3,
+    "t": -2.89,
+    "train": -0.069,
+    "unseen": -0.032,
+    "candles": 31999
+   },
+   "volume \u00b7 first 2 hours": {
+    "n": 1246,
+    "per_week": 12.0,
+    "win": 0.55,
+    "avg_r": -0.08,
+    "total_r": -99.5,
+    "t": -2.75,
+    "train": -0.12,
+    "unseen": 0.01,
+    "candles": 31999
+   },
+   "range \u00b7 all day": {
+    "n": 3033,
+    "per_week": 29.2,
+    "win": 0.57,
+    "avg_r": -0.015,
+    "total_r": -46.7,
+    "t": -0.56,
+    "train": -0.015,
+    "unseen": -0.017,
+    "candles": 44222
+   },
+   "range \u00b7 first 2 hours": {
+    "n": 1282,
+    "per_week": 12.3,
+    "win": 0.544,
+    "avg_r": -0.081,
+    "total_r": -103.6,
+    "t": -2.61,
+    "train": -0.074,
+    "unseen": -0.093,
+    "candles": 44222
+   }
+  },
+  "QQQ": {
+   "bars_1m": 195147,
+   "volume_per_candle": 529075,
+   "range_per_candle": 0.68,
+   "time \u00b7 all day": {
+    "n": 3928,
+    "per_week": 37.8,
+    "win": 0.534,
+    "avg_r": -0.098,
+    "total_r": -385.0,
+    "t": -5.4,
+    "train": -0.103,
+    "unseen": -0.088,
+    "candles": 39027
+   },
+   "time \u00b7 first 2 hours": {
+    "n": 1292,
+    "per_week": 12.4,
+    "win": 0.554,
+    "avg_r": -0.024,
+    "total_r": -31.3,
+    "t": -0.67,
+    "train": -0.032,
+    "unseen": -0.009,
+    "candles": 39027
+   },
+   "volume \u00b7 all day": {
+    "n": 3410,
+    "per_week": 32.8,
+    "win": 0.54,
+    "avg_r": -0.068,
+    "total_r": -230.2,
+    "t": -3.46,
+    "train": -0.072,
+    "unseen": -0.058,
+    "candles": 32555
+   },
+   "volume \u00b7 first 2 hours": {
+    "n": 1328,
+    "per_week": 12.8,
+    "win": 0.538,
+    "avg_r": -0.063,
+    "total_r": -84.1,
+    "t": -1.99,
+    "train": -0.071,
+    "unseen": -0.049,
+    "candles": 32555
+   },
+   "range \u00b7 all day": {
+    "n": 3068,
+    "per_week": 29.5,
+    "win": 0.551,
+    "avg_r": -0.103,
+    "total_r": -315.8,
+    "t": -5.95,
+    "train": -0.097,
+    "unseen": -0.113,
+    "candles": 45569
+   },
+   "range \u00b7 first 2 hours": {
+    "n": 1371,
+    "per_week": 13.2,
+    "win": 0.533,
+    "avg_r": -0.097,
+    "total_r": -132.7,
+    "t": -3.43,
+    "train": -0.087,
+    "unseen": -0.113,
+    "candles": 45569
+   }
+  },
+  "IWM": {
+   "bars_1m": 194907,
+   "volume_per_candle": 379459,
+   "range_per_candle": 0.31,
+   "time \u00b7 all day": {
+    "n": 3820,
+    "per_week": 36.7,
+    "win": 0.481,
+    "avg_r": -0.149,
+    "total_r": -569.3,
+    "t": -7.62,
+    "train": -0.156,
+    "unseen": -0.136,
+    "candles": 38990
+   },
+   "time \u00b7 first 2 hours": {
+    "n": 1251,
+    "per_week": 12.0,
+    "win": 0.503,
+    "avg_r": -0.08,
+    "total_r": -99.7,
+    "t": -1.93,
+    "train": -0.071,
+    "unseen": -0.096,
+    "candles": 38990
+   },
+   "volume \u00b7 all day": {
+    "n": 3335,
+    "per_week": 32.1,
+    "win": 0.515,
+    "avg_r": -0.114,
+    "total_r": -379.3,
+    "t": -6.1,
+    "train": -0.142,
+    "unseen": -0.055,
+    "candles": 31634
+   },
+   "volume \u00b7 first 2 hours": {
+    "n": 1294,
+    "per_week": 12.4,
+    "win": 0.536,
+    "avg_r": -0.109,
+    "total_r": -140.8,
+    "t": -3.81,
+    "train": -0.13,
+    "unseen": -0.064,
+    "candles": 31634
+   },
+   "range \u00b7 all day": {
+    "n": 3066,
+    "per_week": 29.5,
+    "win": 0.507,
+    "avg_r": -0.115,
+    "total_r": -353.8,
+    "t": -5.84,
+    "train": -0.097,
+    "unseen": -0.147,
+    "candles": 45251
+   },
+   "range \u00b7 first 2 hours": {
+    "n": 1433,
+    "per_week": 13.8,
+    "win": 0.504,
+    "avg_r": -0.114,
+    "total_r": -163.4,
+    "t": -3.6,
+    "train": -0.058,
+    "unseen": -0.213,
+    "candles": 45251
+   }
+  },
+  "GLD": {
+   "bars_1m": 194807,
+   "volume_per_candle": 129780,
+   "range_per_candle": 0.32,
+   "time \u00b7 all day": {
+    "n": 3833,
+    "per_week": 36.9,
+    "win": 0.497,
+    "avg_r": -0.139,
+    "total_r": -532.4,
+    "t": -7.72,
+    "train": -0.167,
+    "unseen": -0.085,
+    "candles": 38956
+   },
+   "time \u00b7 first 2 hours": {
+    "n": 1293,
+    "per_week": 12.4,
+    "win": 0.533,
+    "avg_r": -0.085,
+    "total_r": -109.6,
+    "t": -2.75,
+    "train": -0.096,
+    "unseen": -0.062,
+    "candles": 38956
+   },
+   "volume \u00b7 all day": {
+    "n": 3154,
+    "per_week": 30.3,
+    "win": 0.483,
+    "avg_r": -0.148,
+    "total_r": -467.7,
+    "t": -7.22,
+    "train": -0.205,
+    "unseen": -0.028,
+    "candles": 30048
+   },
+   "volume \u00b7 first 2 hours": {
+    "n": 1238,
+    "per_week": 11.9,
+    "win": 0.503,
+    "avg_r": -0.147,
+    "total_r": -182.2,
+    "t": -4.55,
+    "train": -0.159,
+    "unseen": -0.123,
+    "candles": 30048
+   },
+   "range \u00b7 all day": {
+    "n": 2982,
+    "per_week": 28.7,
+    "win": 0.524,
+    "avg_r": -0.099,
+    "total_r": -294.9,
+    "t": -4.95,
+    "train": -0.082,
+    "unseen": -0.12,
+    "candles": 49759
+   },
+   "range \u00b7 first 2 hours": {
+    "n": 1346,
+    "per_week": 12.9,
+    "win": 0.528,
+    "avg_r": -0.105,
+    "total_r": -141.8,
+    "t": -3.48,
+    "train": -0.087,
+    "unseen": -0.131,
+    "candles": 49759
+   }
+  },
+  "DIA": {
+   "bars_1m": 194077,
+   "volume_per_candle": 53607,
+   "range_per_candle": 0.37,
+   "time \u00b7 all day": {
+    "n": 3706,
+    "per_week": 35.6,
+    "win": 0.52,
+    "avg_r": -0.113,
+    "total_r": -417.2,
+    "t": -6.09,
+    "train": -0.12,
+    "unseen": -0.099,
+    "candles": 38788
+   },
+   "time \u00b7 first 2 hours": {
+    "n": 1229,
+    "per_week": 11.8,
+    "win": 0.547,
+    "avg_r": -0.055,
+    "total_r": -67.1,
+    "t": -1.62,
+    "train": -0.082,
+    "unseen": -0.003,
+    "candles": 38788
+   },
+   "volume \u00b7 all day": {
+    "n": 3008,
+    "per_week": 28.9,
+    "win": 0.537,
+    "avg_r": -0.07,
+    "total_r": -210.5,
+    "t": -3.55,
+    "train": -0.097,
+    "unseen": -0.018,
+    "candles": 29552
+   },
+   "volume \u00b7 first 2 hours": {
+    "n": 1245,
+    "per_week": 12.0,
+    "win": 0.553,
+    "avg_r": -0.044,
+    "total_r": -54.7,
+    "t": -1.37,
+    "train": -0.078,
+    "unseen": 0.021,
+    "candles": 29552
+   },
+   "range \u00b7 all day": {
+    "n": 3002,
+    "per_week": 28.9,
+    "win": 0.529,
+    "avg_r": -0.113,
+    "total_r": -340.7,
+    "t": -6.25,
+    "train": -0.122,
+    "unseen": -0.099,
+    "candles": 43298
+   },
+   "range \u00b7 first 2 hours": {
+    "n": 1339,
+    "per_week": 12.9,
+    "win": 0.529,
+    "avg_r": -0.111,
+    "total_r": -148.4,
+    "t": -4.04,
+    "train": -0.145,
+    "unseen": -0.053,
+    "candles": 43298
+   }
+  }
+ },
+ "totals": {
+  "time \u00b7 all day": {
+   "n": 19157,
+   "per_week": 184.2,
+   "win": 0.514,
+   "avg_r": -0.116,
+   "total_r": -2218.9,
+   "t": -14.09,
+   "train": -0.125,
+   "unseen": -0.097
+  },
+  "time \u00b7 first 2 hours": {
+   "n": 6334,
+   "per_week": 60.9,
+   "win": 0.542,
+   "avg_r": -0.051,
+   "total_r": -322.0,
+   "t": -3.23,
+   "train": -0.062,
+   "unseen": -0.029
+  },
+  "volume \u00b7 all day": {
+   "n": 16275,
+   "per_week": 156.5,
+   "win": 0.524,
+   "avg_r": -0.091,
+   "total_r": -1482.1,
+   "t": -10.34,
+   "train": -0.116,
+   "unseen": -0.039
+  },
+  "volume \u00b7 first 2 hours": {
+   "n": 6351,
+   "per_week": 61.1,
+   "win": 0.536,
+   "avg_r": -0.088,
+   "total_r": -561.3,
+   "t": -6.41,
+   "train": -0.112,
+   "unseen": -0.041
+  },
+  "range \u00b7 all day": {
+   "n": 15151,
+   "per_week": 145.7,
+   "win": 0.536,
+   "avg_r": -0.089,
+   "total_r": -1351.9,
+   "t": -9.55,
+   "train": -0.082,
+   "unseen": -0.1
+  },
+  "range \u00b7 first 2 hours": {
+   "n": 6771,
+   "per_week": 65.1,
+   "win": 0.527,
+   "avg_r": -0.102,
+   "total_r": -689.9,
+   "t": -7.64,
+   "train": -0.09,
+   "unseen": -0.122
+  }
+ }
+}
