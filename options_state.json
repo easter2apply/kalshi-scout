@@ -5,7 +5,7 @@
   "nav": 1003.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793212812.822183
+  "updated": 1793213111.634764
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -4951,8 +4951,8 @@
  },
  "last_daily": "2026-10-27",
  "last_deploy": 1793212515.4364111,
- "last_full_run": 1793212812.822183,
- "last_run": 1793212812.822183,
+ "last_full_run": 1793213111.634764,
+ "last_run": 1793213111.634764,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -6413,9 +6413,16 @@
       254.1,
       253.21,
       253.44
+     ],
+     [
+      "2:40",
+      253.37,
+      253.91,
+      253.15,
+      253.53
      ]
     ],
-    "checked": 1793212812.822183,
+    "checked": 1793213111.634764,
     "entered": true,
     "events": [
      {
@@ -6443,7 +6450,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 253.44,
+    "last": 253.535,
     "orh": 255.36,
     "orl": 252.53,
     "pair": "AMZN",
@@ -6822,9 +6829,16 @@
       525.11,
       524.17,
       524.17
+     ],
+     [
+      "2:40",
+      524.55,
+      525.03,
+      524.39,
+      525.03
      ]
     ],
-    "checked": 1793212812.822183,
+    "checked": 1793213111.634764,
     "entered": true,
     "events": [
      {
@@ -6852,7 +6866,7 @@
       "txt": "Stopped at breakeven: 0R"
      }
     ],
-    "last": 524.17,
+    "last": 525.03,
     "orh": 524.3,
     "orl": 522.955,
     "pair": "DIA",
@@ -7315,9 +7329,16 @@
       773.33,
       771.28,
       771.81
+     ],
+     [
+      "2:40",
+      771.69,
+      773.27,
+      771.39,
+      772.1
      ]
     ],
-    "checked": 1793212812.822183,
+    "checked": 1793213111.634764,
     "entered": false,
     "events": [
      {
@@ -7327,7 +7348,7 @@
       "txt": "No setup by 12:00 ET. Done for the day"
      }
     ],
-    "last": 771.81,
+    "last": 772.1,
     "orh": 771.655,
     "orl": 769.27,
     "pair": "SPY",
@@ -7395,11 +7416,11 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 17.275946126069428,
-   "atr_pips": 0.6517904080283806,
-   "bar": "2026-10-28T18:15:00",
-   "chg": -0.10468308676845871,
-   "close": 252.88,
+   "adx": 17.932946287307804,
+   "atr_pips": 0.7048768084682385,
+   "bar": "2026-10-28T18:30:00",
+   "chg": 0.1540619012818686,
+   "close": 253.535,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -7410,38 +7431,35 @@
     "session": true,
     "tf": "M15",
     "waiting": [
-     "ADX 17 (needs 18)",
+     "ADX 18 (needs 18)",
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 51.51641233995377,
+   "rsi": 57.57150747346404,
    "setup": "pullback 15m",
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
   },
   "DIA": {
-   "adx": 31.39342927543874,
-   "atr_pips": 0.48803786285384626,
-   "bar": "2026-10-28T18:15:00",
-   "chg": 0.1137188945376758,
-   "close": 523.815,
+   "adx": 32.001555390944034,
+   "atr_pips": 0.5710351592107028,
+   "bar": "2026-10-28T18:30:00",
+   "chg": 0.34593478842550845,
+   "close": 525.03,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 4,
+    "passed": 6,
     "session": true,
     "tf": "M15",
-    "waiting": [
-     "a pullback to the trend line or a fresh crossover",
-     "MACD against us (up)"
-    ]
+    "waiting": []
    },
-   "rsi": 46.68885647013041,
-   "setup": null,
+   "rsi": 61.08365907198045,
+   "setup": "pullback 15m",
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
@@ -7602,26 +7620,25 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 18.221689969885652,
-   "atr_pips": 0.8565860932459737,
-   "bar": "2026-10-28T18:15:00",
-   "chg": 0.15460569052876974,
-   "close": 770.89,
+   "adx": 19.29626338119726,
+   "atr_pips": 1.0582585159387927,
+   "bar": "2026-10-28T18:30:00",
+   "chg": 0.3118097960244221,
+   "close": 772.1,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 4,
+    "passed": 5,
     "session": true,
     "tf": "M15",
     "waiting": [
-     "MACD against us (up)",
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 53.29666643916294,
+   "rsi": 62.067285797158135,
    "setup": "pullback 15m",
    "spread_pips": 0,
    "tradeable": true,
@@ -8031,18 +8048,18 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.15,
-   "p": "770.89",
+   "c": 0.31,
+   "p": "772.10",
    "s": "SPY"
   },
   {
-   "c": 0.11,
-   "p": "523.82",
+   "c": 0.35,
+   "p": "525.03",
    "s": "DIA"
   },
   {
-   "c": -0.1,
-   "p": "252.88",
+   "c": 0.15,
+   "p": "253.53",
    "s": "AMZN"
   }
  ],
