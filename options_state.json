@@ -5,7 +5,7 @@
   "nav": 1003.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793201711.051353
+  "updated": 1793202011.794983
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -4970,9 +4970,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-27",
- "last_deploy": 1793201121.8087027,
- "last_full_run": 1793201711.051353,
- "last_run": 1793201711.051353,
+ "last_deploy": 1793202031.3886259,
+ "last_full_run": 1793202011.794983,
+ "last_run": 1793202011.794983,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -6167,9 +6167,16 @@
       252.53,
       252.25,
       252.4
+     ],
+     [
+      "11:35",
+      252.35,
+      252.47,
+      252.28,
+      252.42
      ]
     ],
-    "checked": 1793201711.051353,
+    "checked": 1793202011.794983,
     "entered": true,
     "events": [
      {
@@ -6197,7 +6204,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 252.4,
+    "last": 252.42,
     "orh": 255.36,
     "orl": 252.53,
     "pair": "AMZN",
@@ -6387,9 +6394,16 @@
       524.71,
       524.34,
       524.71
+     ],
+     [
+      "11:35",
+      524.59,
+      524.59,
+      524.59,
+      524.59
      ]
     ],
-    "checked": 1793201711.051353,
+    "checked": 1793202011.794983,
     "entered": false,
     "events": [
      {
@@ -6399,7 +6413,7 @@
       "txt": "Strong close above the range high. Waiting for the next candle to hold above and make a new high"
      }
     ],
-    "last": 524.705,
+    "last": 524.59,
     "orh": 524.3,
     "orl": 522.955,
     "pair": "DIA",
@@ -6587,12 +6601,19 @@
       771.27,
       770.8,
       771.21
+     ],
+     [
+      "11:35",
+      771.17,
+      771.47,
+      771.04,
+      771.47
      ]
     ],
-    "checked": 1793201711.051353,
+    "checked": 1793202011.794983,
     "entered": false,
     "events": [],
-    "last": 771.21,
+    "last": 771.47,
     "orh": 771.655,
     "orl": 769.27,
     "pair": "SPY",
