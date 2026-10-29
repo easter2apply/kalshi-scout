@@ -1,11 +1,11 @@
 {
  "account": {
-  "balance": 966.0,
-  "broker_equity": 99886.06,
-  "nav": 957.0,
+  "balance": 954.0,
+  "broker_equity": 99885.04,
+  "nav": 954.0,
   "options_level": 3,
-  "unrealized": -9.0,
-  "updated": 1793288412.35215
+  "unrealized": 0,
+  "updated": 1793288712.628972
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -5213,8 +5213,8 @@
  },
  "last_daily": "2026-10-28",
  "last_deploy": 1793288423.3535573,
- "last_full_run": 1793288412.35215,
- "last_run": 1793288412.35215,
+ "last_full_run": 1793288712.628972,
+ "last_run": 1793288712.628972,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -6440,12 +6440,19 @@
       248.88,
       248.46,
       248.85
+     ],
+     [
+      "11:40",
+      248.86,
+      248.88,
+      248.35,
+      248.39
      ]
     ],
-    "checked": 1793288412.35215,
+    "checked": 1793288712.628972,
     "entered": false,
     "events": [],
-    "last": 248.855,
+    "last": 248.39,
     "orh": 248.36,
     "orl": 241.26,
     "pair": "AMZN",
@@ -6641,7 +6648,7 @@
       522.9
      ]
     ],
-    "checked": 1793288412.35215,
+    "checked": 1793288712.628972,
     "entered": true,
     "events": [
      {
@@ -6872,9 +6879,16 @@
       770.51,
       769.87,
       770.05
+     ],
+     [
+      "11:40",
+      769.99,
+      770.26,
+      769.82,
+      769.88
      ]
     ],
-    "checked": 1793288412.35215,
+    "checked": 1793288712.628972,
     "entered": true,
     "events": [
      {
@@ -6920,7 +6934,7 @@
       "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 770.05,
+    "last": 769.88,
     "orh": 769.39,
     "orl": 767.31,
     "pair": "SPY",
@@ -7006,11 +7020,11 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 35.34019494905254,
-   "atr_pips": 1.512651563419457,
-   "bar": "2026-10-29T15:15:00",
-   "chg": -2.528564136793748,
-   "close": 248.25,
+   "adx": 34.49339367261099,
+   "atr_pips": 1.470319309013655,
+   "bar": "2026-10-29T15:30:00",
+   "chg": -2.473595351211281,
+   "close": 248.39,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -7024,23 +7038,23 @@
      "a pullback to the trend line or a fresh crossover"
     ]
    },
-   "rsi": 41.71939613099594,
+   "rsi": 42.38641551673016,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
   },
   "DIA": {
-   "adx": 20.112192188376902,
-   "atr_pips": 0.8129622915831297,
-   "bar": "2026-10-29T15:15:00",
-   "chg": -0.31831351021652166,
-   "close": 522.97,
+   "adx": 18.712834592244516,
+   "atr_pips": 0.7856078420663591,
+   "bar": "2026-10-29T15:30:00",
+   "chg": -0.33070295821897183,
+   "close": 522.905,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
     "dir": -1,
-    "in_trade": true,
+    "in_trade": false,
     "of": 6,
     "passed": 4,
     "session": true,
@@ -7050,7 +7064,7 @@
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 46.7153665827014,
+   "rsi": 46.246322790000214,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -7212,27 +7226,27 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 15.797797626061476,
-   "atr_pips": 1.495719145782693,
-   "bar": "2026-10-29T15:15:00",
-   "chg": -0.2758067022323504,
-   "close": 770.15,
+   "adx": 14.720385010114002,
+   "atr_pips": 1.455667778136972,
+   "bar": "2026-10-29T15:30:00",
+   "chg": -0.3107681151913784,
+   "close": 769.88,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 4,
+    "passed": 3,
     "session": true,
     "tf": "M15",
     "waiting": [
-     "ADX 16 (needs 18)",
-     "1-hour trend disagrees"
+     "a pullback to the trend line or a fresh crossover",
+     "ADX 15 (needs 18)"
     ]
    },
-   "rsi": 49.81427942169948,
-   "setup": "pullback 15m",
+   "rsi": 48.23955788113078,
+   "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
@@ -7641,18 +7655,18 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": -0.28,
-   "p": "770.15",
+   "c": -0.31,
+   "p": "769.88",
    "s": "SPY"
   },
   {
-   "c": -0.32,
-   "p": "522.97",
+   "c": -0.33,
+   "p": "522.90",
    "s": "DIA"
   },
   {
-   "c": -2.53,
-   "p": "248.25",
+   "c": -2.47,
+   "p": "248.39",
    "s": "AMZN"
   }
  ],
