@@ -5,7 +5,7 @@
   "nav": 1003.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793284215.89796
+  "updated": 1793284511.502435
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -2860,6 +2860,10 @@
   [
    1793283611,
    1003.0
+  ],
+  [
+   1793284512,
+   1003.0
   ]
  ],
  "errors": [
@@ -2945,47 +2949,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "The data says go. ADX 22 (needs 18).",
-     "vote": true,
-     "who": "The Quant"
-    },
-    {
-     "say": "Hard no. Paused (drawdown over 35%).",
-     "vote": false,
-     "who": "Risk"
-    },
-    {
-     "say": "It's moving our way. MACD with us (up).",
-     "vote": true,
-     "who": "Momentum"
-    },
-    {
-     "say": "Clock agrees: RSI 52.",
-     "vote": true,
-     "who": "Time"
-    },
-    {
-     "say": "Too convenient. 1-hour trend disagrees.",
-     "vote": false,
-     "who": "Doubt"
-    },
-    {
-     "say": "Nothing in the press to scare me. 1 headline today, none against us; StockTwits 7 bullish / 1 bearish.",
-     "vote": true,
-     "who": "The Reporter"
-    }
-   ],
-   "ok": false,
-   "t": 1792684821.0344942,
-   "text": null,
-   "title": "IWM CALL (pullback 15m)",
-   "verdict": "REJECTED 4\u20132. Logged on paper so we learn whether we were right.",
-   "who": null
-  },
   {
    "kind": "scan",
    "lines": [
@@ -4553,6 +4516,16 @@
    "title": "SPY breakout failed",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1793284528.6439207,
+   "text": "\ud83d\udc40 SPY 10:30 ET: Strong close above the range high. Waiting for the next candle to hold above and make a new high.",
+   "title": "SPY breakout watch",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -5149,9 +5122,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-28",
- "last_deploy": 1793283924.8543522,
- "last_full_run": 1793284215.89796,
- "last_run": 1793284215.89796,
+ "last_deploy": 1793284529.4728637,
+ "last_full_run": 1793284511.502435,
+ "last_run": 1793284511.502435,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -6262,12 +6235,19 @@
       247.0,
       246.45,
       246.98
+     ],
+     [
+      "10:30",
+      246.91,
+      247.51,
+      246.84,
+      247.44
      ]
     ],
-    "checked": 1793284215.89796,
+    "checked": 1793284511.502435,
     "entered": false,
     "events": [],
-    "last": 246.98,
+    "last": 247.44,
     "orh": 248.36,
     "orl": 241.26,
     "pair": "AMZN",
@@ -6363,12 +6343,19 @@
       522.5,
       522.5,
       522.5
+     ],
+     [
+      "10:30",
+      522.78,
+      523.04,
+      522.72,
+      522.72
      ]
     ],
-    "checked": 1793284215.89796,
+    "checked": 1793284511.502435,
     "entered": false,
     "events": [],
-    "last": 522.5,
+    "last": 522.72,
     "orh": 522.905,
     "orl": 521.6,
     "pair": "DIA",
@@ -6464,9 +6451,16 @@
       769.48,
       768.66,
       769.38
+     ],
+     [
+      "10:30",
+      769.48,
+      770.05,
+      769.28,
+      770.04
      ]
     ],
-    "checked": 1793284215.89796,
+    "checked": 1793284511.502435,
     "entered": false,
     "events": [
      {
@@ -6492,21 +6486,28 @@
       "mins": 620,
       "t": "10:20",
       "txt": "Breakout failed: price came back to the range high"
+     },
+     {
+      "kind": "pend",
+      "mins": 630,
+      "t": "10:30",
+      "txt": "Strong close above the range high. Waiting for the next candle to hold above and make a new high"
      }
     ],
-    "last": 769.38,
+    "last": 770.04,
     "orh": 769.39,
     "orl": 767.31,
     "pair": "SPY",
-    "phase": "wait",
+    "phase": "pending",
     "sent": [
      "range",
      "600:pend",
      "605:fail",
      "615:pend",
-     "620:fail"
+     "620:fail",
+     "630:pend"
     ],
-    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
+    "status": "Strong close above the range high. Waiting for the next candle to hold above and make a new high",
     "trade": null
    }
   }
