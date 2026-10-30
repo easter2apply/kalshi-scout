@@ -1,11 +1,11 @@
 {
  "account": {
-  "balance": 954.0,
-  "broker_equity": 99819.9,
-  "nav": 884.0,
+  "balance": 890.0,
+  "broker_equity": 99820.88,
+  "nav": 890.0,
   "options_level": 3,
-  "unrealized": -70.0,
-  "updated": 1793371212.56533
+  "unrealized": 0,
+  "updated": 1793371513.605216
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -3447,22 +3447,6 @@
  ],
  "feed": [
   {
-   "kind": "scan",
-   "lines": [
-    {
-     "say": "\u25bc $274.12, ADX 18, RSI 37: crossover 15m setup",
-     "vote": null,
-     "who": "IWM"
-    }
-   ],
-   "ok": null,
-   "t": 1792765515.7937877,
-   "text": null,
-   "title": "Scanned 1 stock: 1 setup on the latest candle",
-   "verdict": null,
-   "who": null
-  },
-  {
    "kind": "vote",
    "lines": [
     {
@@ -4888,6 +4872,16 @@
    "title": "SPY closed",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": false,
+   "t": 1793371521.9252875,
+   "text": "\ud83d\uded1 DIA ORB signal finished on DIA: stop on DIA (-1.0R). No option was held (signal only).",
+   "title": "DIA ORB signal finished",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -5502,9 +5496,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-10-29",
- "last_deploy": 1793371218.9705474,
- "last_full_run": 1793371212.56533,
- "last_run": 1793371212.56533,
+ "last_deploy": 1793371522.8681645,
+ "last_full_run": 1793371513.605216,
+ "last_run": 1793371513.605216,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -6639,12 +6633,19 @@
       239.87,
       238.42,
       239.53
+     ],
+     [
+      "10:40",
+      239.47,
+      239.55,
+      238.87,
+      239.36
      ]
     ],
-    "checked": 1793371212.56533,
+    "checked": 1793371513.605216,
     "entered": false,
     "events": [],
-    "last": 239.535,
+    "last": 239.36,
     "orh": 240.17,
     "orl": 229.58,
     "pair": "AMZN",
@@ -6754,9 +6755,16 @@
       519.93,
       519.62,
       519.93
+     ],
+     [
+      "10:40",
+      519.99,
+      520.18,
+      519.9,
+      520.18
      ]
     ],
-    "checked": 1793371212.56533,
+    "checked": 1793371513.605216,
     "entered": true,
     "events": [
      {
@@ -6770,19 +6778,26 @@
       "mins": 610,
       "t": "10:10",
       "txt": "SHORT at 519.49, stop 520.10, target 518.58"
+     },
+     {
+      "kind": "sl",
+      "mins": 640,
+      "t": "10:40",
+      "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 519.93,
+    "last": 520.18,
     "orh": 521.98,
     "orl": 520.64,
     "pair": "DIA",
     "paper_only": true,
-    "phase": "short",
+    "phase": "done",
     "sent": [
      "range",
-     "605:pend"
+     "605:pend",
+     "exit:640"
     ],
-    "status": "SHORT trade open",
+    "status": "Trade finished: -1.0R",
     "trade": {
      "be": false,
      "dir": -1,
@@ -6790,9 +6805,9 @@
      "entry_label": "10:10",
      "entry_mins": 610,
      "entry_t": "2026-10-30T14:10:00",
-     "exit_mins": null,
+     "exit_mins": 640,
      "one_r": 0.6100000000000136,
-     "result": null,
+     "result": -1.0,
      "stop": 520.1,
      "stop0": 520.1,
      "target": 518.575
@@ -6897,9 +6912,16 @@
       759.88,
       758.24,
       759.49
+     ],
+     [
+      "10:40",
+      759.38,
+      760.09,
+      759.15,
+      759.9
      ]
     ],
-    "checked": 1793371212.56533,
+    "checked": 1793371513.605216,
     "entered": true,
     "events": [
      {
@@ -6921,7 +6943,7 @@
       "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 759.49,
+    "last": 759.9,
     "orh": 761.43,
     "orl": 759.48,
     "pair": "SPY",
@@ -7003,11 +7025,11 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 45.04609760201368,
-   "atr_pips": 2.175261301989107,
-   "bar": "2026-10-30T14:15:00",
-   "chg": -2.1927305546439118,
-   "close": 238.415,
+   "adx": 45.853932350230316,
+   "atr_pips": 2.175956923041235,
+   "bar": "2026-10-30T14:30:00",
+   "chg": -1.8050541516245393,
+   "close": 239.36,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -7021,18 +7043,18 @@
      "a pullback to the trend line or a fresh crossover"
     ]
    },
-   "rsi": 29.595767609449467,
+   "rsi": 33.80748980884918,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
   },
   "DIA": {
-   "adx": 22.083893177020297,
-   "atr_pips": 0.7170641573059113,
-   "bar": "2026-10-30T14:15:00",
-   "chg": -0.7211722396510792,
-   "close": 518.99,
+   "adx": 22.238315653348884,
+   "atr_pips": 0.7508452893380567,
+   "bar": "2026-10-30T14:30:00",
+   "chg": -0.49353431785141194,
+   "close": 520.18,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
@@ -7047,7 +7069,7 @@
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 29.339296318376057,
+   "rsi": 40.16282562460839,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -7209,26 +7231,26 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 28.92115753370474,
-   "atr_pips": 1.7843473343146854,
-   "bar": "2026-10-30T14:15:00",
-   "chg": -1.4776020481097876,
-   "close": 758.12,
+   "adx": 30.351919341800592,
+   "atr_pips": 1.8211796672641287,
+   "bar": "2026-10-30T14:30:00",
+   "chg": -1.2462800036387778,
+   "close": 759.9,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": -1,
-    "in_trade": true,
+    "in_trade": false,
     "of": 6,
-    "passed": 3,
+    "passed": 4,
     "session": true,
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
-     "RSI 24 (stretched)"
+     "1-hour trend disagrees"
     ]
    },
-   "rsi": 24.26206016581766,
+   "rsi": 31.832519730316974,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -7638,18 +7660,18 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": -1.48,
-   "p": "758.12",
+   "c": -1.25,
+   "p": "759.90",
    "s": "SPY"
   },
   {
-   "c": -0.72,
-   "p": "518.99",
+   "c": -0.49,
+   "p": "520.18",
    "s": "DIA"
   },
   {
-   "c": -2.19,
-   "p": "238.41",
+   "c": -1.81,
+   "p": "239.36",
    "s": "AMZN"
   }
  ],
