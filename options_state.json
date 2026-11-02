@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 833.0,
-  "broker_equity": 99835.66,
-  "nav": 903.9,
+  "broker_equity": 99856.66,
+  "nav": 921.0,
   "options_level": 3,
-  "unrealized": 70.9,
-  "updated": 1793633112.081127
+  "unrealized": 88.0,
+  "updated": 1793633416.612443
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -668,11 +668,51 @@
     "Time": true
    },
    "why": "stop on AMZN"
+  },
+  {
+   "closed": "2026-11-02T15:30:16",
+   "closed_ts": 1793633416.612443,
+   "dir": 1,
+   "entry": 2.0,
+   "exit": 2.38,
+   "exp": "2026-11-04",
+   "opened": "2026-11-02T15:15:16",
+   "orb5": {
+    "be": true,
+    "date": "2026-11-02",
+    "entry": 251.245,
+    "stop": 250.01,
+    "target": 253.09750000000003
+   },
+   "pair": "AMZN",
+   "pl": 38.0,
+   "price": 2.41,
+   "qty": 1,
+   "qty0": 1,
+   "r": 0.47,
+   "risk": 80.0,
+   "setup": "opening range breakout",
+   "sl": 0.6,
+   "sym": "AMZN261104C00255000",
+   "tf": "5m",
+   "tp": 999.0,
+   "tp_on": false,
+   "units": 1,
+   "upl": 41.0,
+   "votes": {
+    "Doubt": true,
+    "Momentum": true,
+    "Risk": true,
+    "The Quant": false,
+    "The Reporter": true,
+    "Time": true
+   },
+   "why": "target +1.5R on AMZN"
   }
  ],
  "council_record": {
-  "right": 60,
-  "total": 99
+  "right": 61,
+  "total": 100
  },
  "day": {
   "date": "2026-11-02",
@@ -802,8 +842,8 @@
    "benched": 0,
    "news": 0,
    "opened": 2,
-   "rejected": 0,
-   "setups": 2,
+   "rejected": 1,
+   "setups": 3,
    "start_nav": 833.0
   }
  },
@@ -4654,63 +4694,6 @@
    "kind": "scan",
    "lines": [
     {
-     "say": "\u25bc $276.01, ADX 8, RSI 54: trend too weak, waiting",
-     "vote": null,
-     "who": "IWM"
-    }
-   ],
-   "ok": null,
-   "t": 1792784420.42598,
-   "text": null,
-   "title": "Scanned 1 stock: 0 setups on the latest candle",
-   "verdict": null,
-   "who": null
-  },
-  {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "Data's too weak: ADX 8 (needs 18).",
-     "vote": false,
-     "who": "The Quant"
-    },
-    {
-     "say": "Blocked. Paused (drawdown over 35%).",
-     "vote": false,
-     "who": "Risk"
-    },
-    {
-     "say": "Engine's running: MACD with us (up).",
-     "vote": true,
-     "who": "Momentum"
-    },
-    {
-     "say": "Bad timing: RSI 52, outside trading hours.",
-     "vote": false,
-     "who": "Time"
-    },
-    {
-     "say": "I don't buy it: 1-hour trend disagrees.",
-     "vote": false,
-     "who": "Doubt"
-    },
-    {
-     "say": "Checked the wires: 2 headlines today, 1 on our side; StockTwits 3 bullish / 5 bearish.",
-     "vote": true,
-     "who": "The Reporter"
-    }
-   ],
-   "ok": false,
-   "t": 1792784718.8431184,
-   "text": null,
-   "title": "IWM CALL (crossover 15m)",
-   "verdict": "REJECTED 2\u20134. Logged on paper so we learn whether we were right.",
-   "who": null
-  },
-  {
-   "kind": "scan",
-   "lines": [
-    {
      "say": "\u25b2 $275.89, ADX 8, RSI 52: crossover 15m setup",
      "vote": null,
      "who": "IWM"
@@ -5895,6 +5878,57 @@
    "title": "AMZN stop to breakeven",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "vote",
+   "lines": [
+    {
+     "say": "Numbers check out: Opening range is $2.13 (0.41% of the price).",
+     "vote": true,
+     "who": "The Quant"
+    },
+    {
+     "say": "Blocked. 2 trades already open.",
+     "vote": false,
+     "who": "Risk"
+    },
+    {
+     "say": "Engine's running: Strong green 5-min close outside the range, then the next candle held and made a new high.",
+     "vote": true,
+     "who": "Momentum"
+    },
+    {
+     "say": "Good window. Entry at 10:25 ET, inside the 10:00\u201312:00 window.",
+     "vote": true,
+     "who": "Time"
+    },
+    {
+     "say": "Hm. Stop $0.19 away, target 1.5\u00d7 that. I can't argue.",
+     "vote": true,
+     "who": "Doubt"
+    },
+    {
+     "say": "Checked the wires: 1 headline today, none against us; StockTwits 6 bullish / 6 bearish.",
+     "vote": true,
+     "who": "The Reporter"
+    }
+   ],
+   "ok": false,
+   "t": 1793633422.823248,
+   "text": null,
+   "title": "DIA CALL (opening range breakout)",
+   "verdict": "SIGNAL ONLY 5\u20131: 2 trades already open. Tracked on DIA's levels.",
+   "who": null
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": true,
+   "t": 1793633424.1915662,
+   "text": "AMZN $255 Call \u00b7 Nov 4 sold at $2.38 (target +1.5R on AMZN): +$38.00 (+0.47R). Record 2W\u20135L.",
+   "title": "AMZN closed",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -6491,6 +6525,12 @@
    "t": 1793374229.04152,
    "trade": true,
    "won": false
+  },
+  {
+   "right": true,
+   "t": 1793633424.1915185,
+   "trade": true,
+   "won": true
   }
  ],
  "last_bar": {
@@ -6515,63 +6555,65 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-01",
- "last_deploy": 1793633115.806514,
- "last_full_run": 1793633112.081127,
- "last_run": 1793633112.081127,
+ "last_deploy": 1793633426.0927663,
+ "last_full_run": 1793633416.612443,
+ "last_run": 1793633416.612443,
  "last_vote": {
-  "approved": true,
+  "approved": false,
   "ask": 0,
   "chart": {
    "closes": [
-    759.45,
-    759.39,
-    759.94,
-    760.315,
-    760.08,
-    760.46,
-    760.28,
-    760.78,
-    761.65,
-    762.38
+    521.23,
+    521.39,
+    521.81,
+    522.235,
+    522.4,
+    522.85,
+    522.44,
+    522.13,
+    522.35,
+    522.79,
+    523.44,
+    523.21
    ],
-   "entry": 762.38,
+   "entry": 523.21,
    "prec": 2,
-   "sl": 760.55,
+   "sl": 523.02,
    "tf": "5m",
-   "tp": 765.125
+   "tp": 523.4950000000001
   },
-  "detail": "SPY $762 Call \u00b7 Nov 2 @ $1.88 \u00b7 stock stop 760.55 \u00b7 target 765.12",
+  "detail": "DIA $523.21 \u00b7 stock stop 523.02 \u00b7 target 523.50",
   "edge": 0,
-  "label": "SPY CALL (opening range breakout)",
+  "label": "DIA CALL (opening range breakout)",
   "side": "CALL",
   "url": "https://app.alpaca.markets/",
   "votes": {
    "Doubt": [
     true,
-    "stop $1.83 away, target 1.5\u00d7 that"
+    "stop $0.19 away, target 1.5\u00d7 that"
    ],
    "Momentum": [
     true,
     "strong green 5-min close outside the range, then the next candle held and made a new high"
    ],
    "Risk": [
-    true,
-    "SPY $762 Call \u00b7 Nov 2 at $1.88, spread 3%"
+    false,
+    "2 trades already open"
    ],
    "The Quant": [
     true,
-    "opening range is $1.81 (0.24% of the price)"
+    "opening range is $2.13 (0.41% of the price)"
    ],
    "The Reporter": [
     true,
-    "8 headlines today, none against us; StockTwits 9 bullish / 3 bearish"
+    "1 headline today, none against us; StockTwits 6 bullish / 6 bearish"
    ],
    "Time": [
     true,
-    "entry at 10:15 ET, inside the 10:00\u201312:00 window"
+    "entry at 10:25 ET, inside the 10:00\u201312:00 window"
    ]
   },
-  "when": 1793632822.898061
+  "when": 1793633416.612443
  },
  "last_weekly": "2026-10-30",
  "lb_done": {
@@ -6608,7 +6650,8 @@
     1.5
    ],
    "AMZN:opening range breakout": [
-    -0.73
+    -0.73,
+    0.47
    ],
    "AMZN:pullback 15m": [
     1.5,
@@ -7424,6 +7467,13 @@
     "r": -0.73,
     "setup": "opening range breakout",
     "t": 1793374229.0416207
+   },
+   {
+    "approved": true,
+    "pair": "AMZN",
+    "r": 0.47,
+    "setup": "opening range breakout",
+    "t": 1793633424.191574
    }
   ]
  },
@@ -7621,9 +7671,16 @@
       252.65,
       251.71,
       252.22
+     ],
+     [
+      "10:25",
+      252.19,
+      253.17,
+      252.05,
+      252.76
      ]
     ],
-    "checked": 1793633112.081127,
+    "checked": 1793633416.612443,
     "entered": true,
     "events": [
      {
@@ -7643,19 +7700,26 @@
       "mins": 620,
       "t": "10:20",
       "txt": "1R reached. Stop moves to breakeven at 251.25"
+     },
+     {
+      "kind": "tp",
+      "mins": 625,
+      "t": "10:25",
+      "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 252.225,
+    "last": 252.765,
     "orh": 251.085,
     "orl": 242.36,
     "pair": "AMZN",
-    "phase": "long",
+    "phase": "done",
     "sent": [
      "range",
      "605:pend",
-     "620:be"
+     "620:be",
+     "exit:625"
     ],
-    "status": "LONG trade open, stop at breakeven",
+    "status": "Trade finished: +1.5R",
     "trade": {
      "be": true,
      "dir": 1,
@@ -7663,9 +7727,9 @@
      "entry_label": "10:10",
      "entry_mins": 610,
      "entry_t": "2026-11-02T15:10:00",
-     "exit_mins": null,
+     "exit_mins": 625,
      "one_r": 1.2350000000000136,
-     "result": null,
+     "result": 1.5,
      "stop": 251.245,
      "stop0": 250.01,
      "target": 253.09750000000003
@@ -7749,29 +7813,56 @@
       523.48,
       523.02,
       523.44
+     ],
+     [
+      "10:25",
+      523.53,
+      523.68,
+      523.21,
+      523.21
      ]
     ],
-    "checked": 1793633112.081127,
-    "entered": false,
+    "checked": 1793633416.612443,
+    "entered": true,
     "events": [
      {
       "kind": "pend",
       "mins": 620,
       "t": "10:20",
       "txt": "Strong close above the range high. Waiting for the next candle to hold above and make a new high"
+     },
+     {
+      "kind": "entry",
+      "mins": 625,
+      "t": "10:25",
+      "txt": "LONG at 523.21, stop 523.02, target 523.50"
      }
     ],
-    "last": 523.44,
+    "last": 523.21,
     "orh": 522.88,
     "orl": 520.745,
     "pair": "DIA",
-    "phase": "pending",
+    "paper_only": true,
+    "phase": "long",
     "sent": [
      "range",
      "620:pend"
     ],
-    "status": "Strong close above the range high. Waiting for the next candle to hold above and make a new high",
-    "trade": null
+    "status": "LONG trade open",
+    "trade": {
+     "be": false,
+     "dir": 1,
+     "entry": 523.21,
+     "entry_label": "10:25",
+     "entry_mins": 625,
+     "entry_t": "2026-11-02T15:25:00",
+     "exit_mins": null,
+     "one_r": 0.19000000000005457,
+     "result": null,
+     "stop": 523.02,
+     "stop0": 523.02,
+     "target": 523.4950000000001
+    }
    },
    "SPY": {
     "candles": [
@@ -7851,9 +7942,16 @@
       763.55,
       762.24,
       763.47
+     ],
+     [
+      "10:25",
+      763.49,
+      763.84,
+      763.26,
+      763.63
      ]
     ],
-    "checked": 1793633112.081127,
+    "checked": 1793633416.612443,
     "entered": true,
     "events": [
      {
@@ -7869,7 +7967,7 @@
       "txt": "LONG at 762.38, stop 760.55, target 765.12"
      }
     ],
-    "last": 763.47,
+    "last": 763.63,
     "orh": 760.55,
     "orl": 758.74,
     "pair": "SPY",
@@ -7950,11 +8048,11 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 36.08783959191768,
-   "atr_pips": 2.0443781696682435,
-   "bar": "2026-11-02T15:00:00",
-   "chg": 4.535147392290252,
-   "close": 251.245,
+   "adx": 37.42121857775012,
+   "atr_pips": 2.03585115763908,
+   "bar": "2026-11-02T15:15:00",
+   "chg": 5.167571615802279,
+   "close": 252.765,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -7969,18 +8067,18 @@
      "MACD against us (down)"
     ]
    },
-   "rsi": 78.05849769910127,
+   "rsi": 79.95861353904837,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
   },
   "DIA": {
-   "adx": 40.971396333804805,
-   "atr_pips": 1.010531414048721,
-   "bar": "2026-11-02T15:00:00",
-   "chg": 1.0348162475822094,
-   "close": 522.35,
+   "adx": 41.226306890693756,
+   "atr_pips": 1.033350598687991,
+   "bar": "2026-11-02T15:15:00",
+   "chg": 1.2011605415860807,
+   "close": 523.21,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
@@ -7995,7 +8093,7 @@
      "MACD against us (down)"
     ]
    },
-   "rsi": 66.51144638257966,
+   "rsi": 69.08149725336438,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -8157,11 +8255,11 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 43.74876299961924,
-   "atr_pips": 1.756460289298791,
-   "bar": "2026-11-02T15:00:00",
-   "chg": 0.7846821574127918,
-   "close": 761.65,
+   "adx": 43.12395065782774,
+   "atr_pips": 1.7974274116933897,
+   "bar": "2026-11-02T15:15:00",
+   "chg": 1.0466839570211146,
+   "close": 763.63,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -8176,7 +8274,7 @@
      "MACD against us (down)"
     ]
    },
-   "rsi": 63.312177116930165,
+   "rsi": 67.65374191126912,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -8187,33 +8285,33 @@
  "peak": 1133.0,
  "record": {
   "losses": 5,
-  "pl": -167.0,
-  "wins": 1
+  "pl": -129.0,
+  "wins": 2
  },
  "scoreboard": {
   "Doubt": {
-   "right": 44,
-   "total": 99
+   "right": 45,
+   "total": 100
   },
   "Momentum": {
-   "right": 39,
-   "total": 99
+   "right": 40,
+   "total": 100
   },
   "Risk": {
-   "right": 51,
-   "total": 99
+   "right": 52,
+   "total": 100
   },
   "The Quant": {
    "right": 47,
-   "total": 99
+   "total": 100
   },
   "The Reporter": {
-   "right": 33,
-   "total": 74
+   "right": 34,
+   "total": 75
   },
   "Time": {
-   "right": 46,
-   "total": 99
+   "right": 47,
+   "total": 100
   }
  },
  "shadow": [
@@ -8579,63 +8677,29 @@
  "strategy": "orb5",
  "streak": {
   "half": false,
-  "losses": 4,
+  "losses": 0,
   "until": 0,
   "wins_since": 0
  },
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.78,
-   "p": "761.65",
+   "c": 1.05,
+   "p": "763.63",
    "s": "SPY"
   },
   {
-   "c": 1.03,
-   "p": "522.35",
+   "c": 1.2,
+   "p": "523.21",
    "s": "DIA"
   },
   {
-   "c": 4.54,
-   "p": "251.25",
+   "c": 5.17,
+   "p": "252.76",
    "s": "AMZN"
   }
  ],
  "trades": {
-  "1d6e39f8-4b80-4ada-965f-bbf338bbed28": {
-   "dir": 1,
-   "entry": 2.0,
-   "exp": "2026-11-04",
-   "opened": "2026-11-02T15:15:16",
-   "orb5": {
-    "be": true,
-    "date": "2026-11-02",
-    "entry": 251.245,
-    "stop": 250.01,
-    "target": 253.09750000000003
-   },
-   "pair": "AMZN",
-   "price": 2.029,
-   "qty": 1,
-   "qty0": 1,
-   "risk": 80.0,
-   "setup": "opening range breakout",
-   "sl": 0.6,
-   "sym": "AMZN261104C00255000",
-   "tf": "5m",
-   "tp": 999.0,
-   "tp_on": false,
-   "units": 1,
-   "upl": 2.9,
-   "votes": {
-    "Doubt": true,
-    "Momentum": true,
-    "Risk": true,
-    "The Quant": false,
-    "The Reporter": true,
-    "Time": true
-   }
-  },
   "40eec4d1-17cd-4d3a-afff-aa9bd160e182": {
    "dir": 1,
    "entry": 1.85,
@@ -8649,7 +8713,7 @@
     "target": 765.125
    },
    "pair": "SPY",
-   "price": 2.53,
+   "price": 2.32,
    "qty": 1,
    "qty0": 1,
    "risk": 74.0,
@@ -8660,7 +8724,7 @@
    "tp": 999.0,
    "tp_on": false,
    "units": 1,
-   "upl": 68.0,
+   "upl": 47.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
