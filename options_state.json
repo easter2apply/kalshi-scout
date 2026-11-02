@@ -1,11 +1,11 @@
 {
  "account": {
-  "balance": 833.0,
-  "broker_equity": 99856.66,
-  "nav": 921.0,
+  "balance": 871.0,
+  "broker_equity": 99805.64,
+  "nav": 877.0,
   "options_level": 3,
-  "unrealized": 88.0,
-  "updated": 1793633416.612443
+  "unrealized": 6.0,
+  "updated": 1793633711.436372
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -4605,6 +4605,10 @@
   [
    1793632823,
    838.0
+  ],
+  [
+   1793633711,
+   877.0
   ]
  ],
  "errors": [
@@ -4690,22 +4694,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "scan",
-   "lines": [
-    {
-     "say": "\u25b2 $275.89, ADX 8, RSI 52: crossover 15m setup",
-     "vote": null,
-     "who": "IWM"
-    }
-   ],
-   "ok": null,
-   "t": 1792785313.3115244,
-   "text": null,
-   "title": "Scanned 1 stock: 1 setup on the latest candle",
-   "verdict": null,
-   "who": null
-  },
   {
    "kind": "event",
    "lines": [],
@@ -5929,6 +5917,16 @@
    "title": "AMZN closed",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": false,
+   "t": 1793633714.7086425,
+   "text": "\ud83d\uded1 DIA ORB signal finished on DIA: stop on DIA (-1.0R). No option was held (signal only).",
+   "title": "DIA ORB signal finished",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -6555,9 +6553,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-01",
- "last_deploy": 1793633426.0927663,
- "last_full_run": 1793633416.612443,
- "last_run": 1793633416.612443,
+ "last_deploy": 1793633715.6695168,
+ "last_full_run": 1793633711.436372,
+ "last_run": 1793633711.436372,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -7678,9 +7676,16 @@
       253.17,
       252.05,
       252.76
+     ],
+     [
+      "10:30",
+      252.82,
+      253.12,
+      252.49,
+      252.94
      ]
     ],
-    "checked": 1793633416.612443,
+    "checked": 1793633711.436372,
     "entered": true,
     "events": [
      {
@@ -7708,7 +7713,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 252.765,
+    "last": 252.94,
     "orh": 251.085,
     "orl": 242.36,
     "pair": "AMZN",
@@ -7820,9 +7825,16 @@
       523.68,
       523.21,
       523.21
+     ],
+     [
+      "10:30",
+      523.19,
+      523.19,
+      522.89,
+      522.92
      ]
     ],
-    "checked": 1793633416.612443,
+    "checked": 1793633711.436372,
     "entered": true,
     "events": [
      {
@@ -7836,19 +7848,26 @@
       "mins": 625,
       "t": "10:25",
       "txt": "LONG at 523.21, stop 523.02, target 523.50"
+     },
+     {
+      "kind": "sl",
+      "mins": 630,
+      "t": "10:30",
+      "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 523.21,
+    "last": 522.92,
     "orh": 522.88,
     "orl": 520.745,
     "pair": "DIA",
     "paper_only": true,
-    "phase": "long",
+    "phase": "done",
     "sent": [
      "range",
-     "620:pend"
+     "620:pend",
+     "exit:630"
     ],
-    "status": "LONG trade open",
+    "status": "Trade finished: -1.0R",
     "trade": {
      "be": false,
      "dir": 1,
@@ -7856,9 +7875,9 @@
      "entry_label": "10:25",
      "entry_mins": 625,
      "entry_t": "2026-11-02T15:25:00",
-     "exit_mins": null,
+     "exit_mins": 630,
      "one_r": 0.19000000000005457,
-     "result": null,
+     "result": -1.0,
      "stop": 523.02,
      "stop0": 523.02,
      "target": 523.4950000000001
@@ -7949,9 +7968,16 @@
       763.84,
       763.26,
       763.63
+     ],
+     [
+      "10:30",
+      763.64,
+      763.64,
+      762.64,
+      762.7
      ]
     ],
-    "checked": 1793633416.612443,
+    "checked": 1793633711.436372,
     "entered": true,
     "events": [
      {
@@ -7967,7 +7993,7 @@
       "txt": "LONG at 762.38, stop 760.55, target 765.12"
      }
     ],
-    "last": 763.63,
+    "last": 762.7,
     "orh": 760.55,
     "orl": 758.74,
     "pair": "SPY",
@@ -8057,7 +8083,7 @@
    "prec": 2,
    "ready": {
     "dir": -1,
-    "in_trade": true,
+    "in_trade": false,
     "of": 6,
     "passed": 3,
     "session": true,
@@ -8713,7 +8739,7 @@
     "target": 765.125
    },
    "pair": "SPY",
-   "price": 2.32,
+   "price": 1.91,
    "qty": 1,
    "qty0": 1,
    "risk": 74.0,
@@ -8724,7 +8750,7 @@
    "tp": 999.0,
    "tp_on": false,
    "units": 1,
-   "upl": 47.0,
+   "upl": 6.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
