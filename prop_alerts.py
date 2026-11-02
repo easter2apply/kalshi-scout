@@ -275,8 +275,10 @@ def main():
             s = signal(h1, m5)
         except Exception as ex:
             print(sym, "failed:", ex)
+            st.setdefault("status", {})[sym] = f"failed: {str(ex)[:120]}"
             continue
         print(sym, "signal" if s else "no signal", f"{m5[-1]['c'] if m5 else ''}")
+        st.setdefault("status", {})[sym] = f"{'signal' if s else 'no signal'} · {len(h1)} 1h / {len(m5)} 5m candles · last {m5[-1]['c'] if m5 else '-'}"
         if not s:
             continue
         key = f"{sym}:{s['d']}:{int(s['t'])}"
