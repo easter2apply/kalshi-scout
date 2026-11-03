@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 775.0,
-  "broker_equity": 99705.51,
-  "nav": 775.0,
+  "broker_equity": 99741.48,
+  "nav": 814.0,
   "options_level": 3,
-  "unrealized": 0,
-  "updated": 1793721311.370157
+  "unrealized": 39.0,
+  "updated": 1793721630.54409
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -5123,16 +5123,6 @@
  ],
  "feed": [
   {
-   "kind": "event",
-   "lines": [],
-   "ok": null,
-   "t": 1793024419.1769717,
-   "text": "\ud83d\udc40 AMZN 10:15 ET: Strong close above the range high. Waiting for the next candle to hold above and make a new high.",
-   "title": "AMZN breakout watch",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
    "kind": "vote",
    "lines": [
     {
@@ -6355,6 +6345,16 @@
    "title": "DIA breakout watch",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": true,
+   "t": 1793721636.7336063,
+   "text": "\ud83d\udd12 SPY 10:55 ET: 1R reached. Stop moves to breakeven at 755.42 (SPY level). The trade can't lose on SPY's move now.",
+   "title": "SPY stop to breakeven",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -6987,9 +6987,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-02",
- "last_deploy": 1793721317.360574,
- "last_full_run": 1793721311.370157,
- "last_run": 1793721311.370157,
+ "last_deploy": 1793721637.8107824,
+ "last_full_run": 1793721630.54409,
+ "last_run": 1793721630.54409,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -8158,12 +8158,19 @@
       246.57,
       246.07,
       246.44
+     ],
+     [
+      "10:55",
+      246.44,
+      247.45,
+      246.44,
+      247.41
      ]
     ],
-    "checked": 1793721311.370157,
+    "checked": 1793721630.54409,
     "entered": false,
     "events": [],
-    "last": 246.445,
+    "last": 247.41,
     "orh": 249.8,
     "orl": 245.95,
     "pair": "AMZN",
@@ -8296,7 +8303,7 @@
       518.12
      ]
     ],
-    "checked": 1793721311.370157,
+    "checked": 1793721630.54409,
     "entered": false,
     "events": [
      {
@@ -8438,9 +8445,16 @@
       755.62,
       755.18,
       755.42
+     ],
+     [
+      "10:55",
+      755.29,
+      756.28,
+      755.29,
+      756.24
      ]
     ],
-    "checked": 1793721311.370157,
+    "checked": 1793721630.54409,
     "entered": true,
     "events": [
      {
@@ -8454,20 +8468,27 @@
       "mins": 650,
       "t": "10:50",
       "txt": "LONG at 755.42, stop 754.63, target 756.60"
+     },
+     {
+      "kind": "be",
+      "mins": 655,
+      "t": "10:55",
+      "txt": "1R reached. Stop moves to breakeven at 755.42"
      }
     ],
-    "last": 755.42,
+    "last": 756.24,
     "orh": 754.635,
     "orl": 752.44,
     "pair": "SPY",
     "phase": "long",
     "sent": [
      "range",
-     "645:pend"
+     "645:pend",
+     "655:be"
     ],
-    "status": "LONG trade open",
+    "status": "LONG trade open, stop at breakeven",
     "trade": {
-     "be": false,
+     "be": true,
      "dir": 1,
      "entry": 755.42,
      "entry_label": "10:50",
@@ -8476,7 +8497,7 @@
      "exit_mins": null,
      "one_r": 0.7899999999999636,
      "result": null,
-     "stop": 754.63,
+     "stop": 755.42,
      "stop0": 754.63,
      "target": 756.6049999999999
     }
@@ -8537,11 +8558,11 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 17.56116974282133,
-   "atr_pips": 1.3254850479078553,
-   "bar": "2026-11-03T15:30:00",
-   "chg": 0.19125905428501622,
-   "close": 246.21,
+   "adx": 16.50605153136778,
+   "atr_pips": 1.336521829962884,
+   "bar": "2026-11-03T15:45:00",
+   "chg": 0.6795800439488839,
+   "close": 247.41,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -8553,21 +8574,21 @@
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
-     "ADX 18 (needs 18)"
+     "ADX 17 (needs 18)"
     ]
    },
-   "rsi": 42.29057498731391,
+   "rsi": 49.51572956029937,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
   },
   "DIA": {
-   "adx": 33.18501362290503,
-   "atr_pips": 0.9507938142104481,
-   "bar": "2026-11-03T15:30:00",
-   "chg": -0.42365129646923844,
-   "close": 517.095,
+   "adx": 32.580109896545665,
+   "atr_pips": 0.9578799702859745,
+   "bar": "2026-11-03T15:45:00",
+   "chg": -0.22626830606879608,
+   "close": 518.12,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
@@ -8582,7 +8603,7 @@
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 35.29891318702008,
+   "rsi": 42.729345691444685,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -8744,26 +8765,27 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 31.96624291431728,
-   "atr_pips": 1.5923653018767525,
-   "bar": "2026-11-03T15:30:00",
-   "chg": 0.3856177862879755,
-   "close": 754.94,
+   "adx": 30.604755124107843,
+   "atr_pips": 1.5964820657324295,
+   "bar": "2026-11-03T15:45:00",
+   "chg": 0.5584809318653324,
+   "close": 756.24,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": -1,
-    "in_trade": false,
+    "in_trade": true,
     "of": 6,
-    "passed": 5,
+    "passed": 4,
     "session": true,
     "tf": "M15",
     "waiting": [
+     "a pullback to the trend line or a fresh crossover",
      "MACD against us (down)"
     ]
    },
-   "rsi": 45.1379535319259,
-   "setup": "pullback 15m",
+   "rsi": 51.17085473822406,
+   "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
@@ -9172,18 +9194,18 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.39,
-   "p": "754.94",
+   "c": 0.56,
+   "p": "756.24",
    "s": "SPY"
   },
   {
-   "c": -0.42,
-   "p": "517.10",
+   "c": -0.23,
+   "p": "518.12",
    "s": "DIA"
   },
   {
-   "c": 0.19,
-   "p": "246.21",
+   "c": 0.68,
+   "p": "247.41",
    "s": "AMZN"
   }
  ],
@@ -9194,14 +9216,14 @@
    "exp": "2026-11-03",
    "opened": "2026-11-03T15:55:11",
    "orb5": {
-    "be": false,
+    "be": true,
     "date": "2026-11-03",
     "entry": 755.42,
     "stop": 754.63,
     "target": 756.6049999999999
    },
    "pair": "SPY",
-   "price": 1.42,
+   "price": 1.81,
    "qty": 1,
    "qty0": 1,
    "risk": 56.8,
@@ -9212,7 +9234,7 @@
    "tp": 999.0,
    "tp_on": false,
    "units": 1,
-   "upl": 0.0,
+   "upl": 39.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
