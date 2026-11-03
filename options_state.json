@@ -2,10 +2,10 @@
  "account": {
   "balance": 775.0,
   "broker_equity": 99730.48,
-  "nav": 802.0,
+  "nav": 798.0,
   "options_level": 3,
-  "unrealized": 27.0,
-  "updated": 1793721912.540014
+  "unrealized": 23.0,
+  "updated": 1793722212.743347
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -6992,8 +6992,8 @@
  },
  "last_daily": "2026-11-02",
  "last_deploy": 1793721637.8107824,
- "last_full_run": 1793721912.540014,
- "last_run": 1793721912.540014,
+ "last_full_run": 1793722212.743347,
+ "last_run": 1793722212.743347,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -8177,12 +8177,19 @@
       247.52,
       247.22,
       247.47
+     ],
+     [
+      "11:05",
+      247.47,
+      248.08,
+      247.45,
+      248.0
      ]
     ],
-    "checked": 1793721912.540014,
+    "checked": 1793722212.743347,
     "entered": false,
     "events": [],
-    "last": 247.475,
+    "last": 247.995,
     "orh": 249.8,
     "orl": 245.95,
     "pair": "AMZN",
@@ -8320,9 +8327,16 @@
       518.21,
       517.92,
       517.92
+     ],
+     [
+      "11:05",
+      517.92,
+      517.92,
+      517.87,
+      517.9
      ]
     ],
-    "checked": 1793721912.540014,
+    "checked": 1793722212.743347,
     "entered": true,
     "events": [
      {
@@ -8338,7 +8352,7 @@
       "txt": "LONG at 517.92, stop 517.85, target 518.02"
      }
     ],
-    "last": 517.92,
+    "last": 517.9,
     "orh": 517.5,
     "orl": 515.34,
     "pair": "DIA",
@@ -8498,9 +8512,16 @@
       756.33,
       755.93,
       756.11
+     ],
+     [
+      "11:05",
+      756.11,
+      756.32,
+      755.94,
+      756.21
      ]
     ],
-    "checked": 1793721912.540014,
+    "checked": 1793722212.743347,
     "entered": true,
     "events": [
      {
@@ -8522,7 +8543,7 @@
       "txt": "1R reached. Stop moves to breakeven at 755.42"
      }
     ],
-    "last": 756.11,
+    "last": 756.21,
     "orh": 754.635,
     "orl": 752.44,
     "pair": "SPY",
@@ -9269,7 +9290,7 @@
     "target": 756.6049999999999
    },
    "pair": "SPY",
-   "price": 1.69,
+   "price": 1.65,
    "qty": 1,
    "qty0": 1,
    "risk": 56.8,
@@ -9280,7 +9301,7 @@
    "tp": 999.0,
    "tp_on": false,
    "units": 1,
-   "upl": 27.0,
+   "upl": 23.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
