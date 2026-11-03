@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 775.0,
-  "broker_equity": 99734.48,
-  "nav": 809.0,
+  "broker_equity": 99708.48,
+  "nav": 777.0,
   "options_level": 3,
-  "unrealized": 34.0,
-  "updated": 1793722512.869041
+  "unrealized": 2.0,
+  "updated": 1793722812.338488
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -5041,6 +5041,10 @@
   [
    1793721913,
    802.0
+  ],
+  [
+   1793722812,
+   777.0
   ]
  ],
  "errors": [
@@ -6992,8 +6996,8 @@
  },
  "last_daily": "2026-11-02",
  "last_deploy": 1793722522.0532892,
- "last_full_run": 1793722512.869041,
- "last_run": 1793722512.869041,
+ "last_full_run": 1793722812.338488,
+ "last_run": 1793722812.338488,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -8191,12 +8195,19 @@
       248.34,
       247.67,
       248.28
+     ],
+     [
+      "11:15",
+      248.38,
+      248.43,
+      247.69,
+      247.89
      ]
     ],
-    "checked": 1793722512.869041,
+    "checked": 1793722812.338488,
     "entered": false,
     "events": [],
-    "last": 248.275,
+    "last": 247.89,
     "orh": 249.8,
     "orl": 245.95,
     "pair": "AMZN",
@@ -8350,7 +8361,7 @@
       518.17
      ]
     ],
-    "checked": 1793722512.869041,
+    "checked": 1793722812.338488,
     "entered": true,
     "events": [
      {
@@ -8554,9 +8565,16 @@
       756.39,
       755.93,
       756.19
+     ],
+     [
+      "11:15",
+      756.22,
+      756.5,
+      755.62,
+      755.83
      ]
     ],
-    "checked": 1793722512.869041,
+    "checked": 1793722812.338488,
     "entered": true,
     "events": [
      {
@@ -8578,7 +8596,7 @@
       "txt": "1R reached. Stop moves to breakeven at 755.42"
      }
     ],
-    "last": 756.19,
+    "last": 755.83,
     "orh": 754.635,
     "orl": 752.44,
     "pair": "SPY",
@@ -9325,7 +9343,7 @@
     "target": 756.6049999999999
    },
    "pair": "SPY",
-   "price": 1.76,
+   "price": 1.44,
    "qty": 1,
    "qty0": 1,
    "risk": 56.8,
@@ -9336,7 +9354,7 @@
    "tp": 999.0,
    "tp_on": false,
    "units": 1,
-   "upl": 34.0,
+   "upl": 2.0,
    "votes": {
     "Doubt": true,
     "Momentum": true,
