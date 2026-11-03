@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 775.0,
-  "broker_equity": 99705.62,
+  "broker_equity": 99705.51,
   "nav": 775.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793694311.917489
+  "updated": 1793694615.967538
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -6867,9 +6867,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-02",
- "last_deploy": 1793693715.9291523,
- "last_full_run": 1793694311.917489,
- "last_run": 1793694311.917489,
+ "last_deploy": 1793694617.5201979,
+ "last_full_run": 1793694615.967538,
+ "last_run": 1793694615.967538,
  "last_vote": {
   "approved": false,
   "ask": 0,
