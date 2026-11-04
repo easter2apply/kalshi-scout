@@ -5,7 +5,7 @@
   "nav": 761.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793807710.562713
+  "updated": 1793808017.920217
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -5541,16 +5541,6 @@
   {
    "kind": "event",
    "lines": [],
-   "ok": null,
-   "t": 1793111115.4706345,
-   "text": "\ud83d\udc40 DIA 10:20 ET: Strong close below the range low. Waiting for the next candle to hold below and make a new low.",
-   "title": "DIA breakout watch",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
-   "kind": "event",
-   "lines": [],
    "ok": false,
    "t": 1793111425.6078517,
    "text": "\u21a9\ufe0f DIA 10:25 ET: Breakdown failed: price came back to the range low. No trade, still watching.",
@@ -6771,6 +6761,16 @@
    "title": "AMZN range set: 263.90\u2013270.76",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1793808042.7236698,
+   "text": "\ud83d\udc40 DIA 10:55 ET: Strong close above the range high. Waiting for the next candle to hold above and make a new high.",
+   "title": "DIA breakout watch",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -7409,9 +7409,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-03",
- "last_deploy": 1793807437.8479936,
- "last_full_run": 1793807710.562713,
- "last_run": 1793807710.562713,
+ "last_deploy": 1793808043.5739515,
+ "last_full_run": 1793808017.920217,
+ "last_run": 1793808017.920217,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -8589,12 +8589,19 @@
       267.77,
       267.0,
       267.49
+     ],
+     [
+      "10:55",
+      267.46,
+      267.75,
+      266.75,
+      266.77
      ]
     ],
-    "checked": 1793807710.562713,
+    "checked": 1793808017.920217,
     "entered": false,
     "events": [],
-    "last": 267.49,
+    "last": 266.77,
     "orh": 270.76,
     "orl": 263.9,
     "pair": "AMZN",
@@ -8725,20 +8732,35 @@
       530.25,
       529.66,
       530.25
+     ],
+     [
+      "10:55",
+      530.18,
+      530.8,
+      530.14,
+      530.78
      ]
     ],
-    "checked": 1793807710.562713,
+    "checked": 1793808017.920217,
     "entered": false,
-    "events": [],
-    "last": 530.25,
+    "events": [
+     {
+      "kind": "pend",
+      "mins": 655,
+      "t": "10:55",
+      "txt": "Strong close above the range high. Waiting for the next candle to hold above and make a new high"
+     }
+    ],
+    "last": 530.785,
     "orh": 529.72,
     "orl": 527.09,
     "pair": "DIA",
-    "phase": "wait",
+    "phase": "pending",
     "sent": [
-     "range"
+     "range",
+     "655:pend"
     ],
-    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
+    "status": "Strong close above the range high. Waiting for the next candle to hold above and make a new high",
     "trade": null
    },
    "SPY": {
@@ -8861,12 +8883,19 @@
       765.92,
       764.5,
       765.63
+     ],
+     [
+      "10:55",
+      765.66,
+      766.42,
+      765.04,
+      766.01
      ]
     ],
-    "checked": 1793807710.562713,
+    "checked": 1793808017.920217,
     "entered": false,
     "events": [],
-    "last": 765.63,
+    "last": 766.01,
     "orh": 768.11,
     "orl": 762.71,
     "pair": "SPY",
@@ -8933,11 +8962,11 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 44.74602876978178,
-   "atr_pips": 2.2870414719644674,
-   "bar": "2026-11-04T15:30:00",
-   "chg": 6.620931716656028,
-   "close": 267.32,
+   "adx": 45.80476847940224,
+   "atr_pips": 2.215824224378493,
+   "bar": "2026-11-04T15:45:00",
+   "chg": 6.401563497128264,
+   "close": 266.77,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -8949,36 +8978,36 @@
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
-     "RSI 77 (stretched)"
+     "RSI 75 (stretched)"
     ]
    },
-   "rsi": 77.26568104239027,
+   "rsi": 75.28807040056374,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
   },
   "DIA": {
-   "adx": 35.36810764792459,
-   "atr_pips": 1.470973147387013,
-   "bar": "2026-11-04T15:30:00",
-   "chg": 2.437043054427299,
-   "close": 529.62,
+   "adx": 37.52413765736076,
+   "atr_pips": 1.4501893514618576,
+   "bar": "2026-11-04T15:45:00",
+   "chg": 2.6623728289041018,
+   "close": 530.785,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 3,
+    "passed": 4,
     "session": true,
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
-     "RSI 78 (stretched)"
+     "RSI 79 (stretched)"
     ]
    },
-   "rsi": 77.71860035135673,
+   "rsi": 79.28828588386827,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -9140,11 +9169,11 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 33.43064625630594,
-   "atr_pips": 2.0418302942539976,
-   "bar": "2026-11-04T15:30:00",
-   "chg": 1.5840822927437164,
-   "close": 766.33,
+   "adx": 33.83444181126866,
+   "atr_pips": 2.0327709879301663,
+   "bar": "2026-11-04T15:45:00",
+   "chg": 1.541663352686974,
+   "close": 766.01,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -9159,7 +9188,7 @@
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 71.92808291950044,
+   "rsi": 70.58060830629343,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -9569,18 +9598,18 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 1.58,
-   "p": "766.33",
+   "c": 1.54,
+   "p": "766.01",
    "s": "SPY"
   },
   {
-   "c": 2.44,
-   "p": "529.62",
+   "c": 2.66,
+   "p": "530.78",
    "s": "DIA"
   },
   {
-   "c": 6.62,
-   "p": "267.32",
+   "c": 6.4,
+   "p": "266.77",
    "s": "AMZN"
   }
  ],
