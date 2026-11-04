@@ -5,7 +5,7 @@
   "nav": 761.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793808017.920217
+  "updated": 1793808310.927494
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -918,12 +918,12 @@
    "start_nav": 775.0
   },
   "2026-11-04": {
-   "approved": 0,
+   "approved": 1,
    "benched": 0,
    "news": 0,
-   "opened": 0,
+   "opened": 1,
    "rejected": 0,
-   "setups": 0,
+   "setups": 1,
    "start_nav": 761.0
   }
  },
@@ -5453,6 +5453,10 @@
   [
    1793807414,
    761.0
+  ],
+  [
+   1793808311,
+   761.0
   ]
  ],
  "errors": [
@@ -5538,16 +5542,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": false,
-   "t": 1793111425.6078517,
-   "text": "\u21a9\ufe0f DIA 10:25 ET: Breakdown failed: price came back to the range low. No trade, still watching.",
-   "title": "DIA breakout failed",
-   "verdict": null,
-   "who": "The Quant"
-  },
   {
    "kind": "event",
    "lines": [],
@@ -6771,6 +6765,47 @@
    "title": "DIA breakout watch",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "vote",
+   "lines": [
+    {
+     "say": "Clean read: Opening range is $2.63 (0.50% of the price).",
+     "vote": true,
+     "who": "The Quant"
+    },
+    {
+     "say": "Exposure's fine. DIA $533 Call \u00b7 Nov 6 at $1.81, spread 5%.",
+     "vote": true,
+     "who": "Risk"
+    },
+    {
+     "say": "Feel that push? Strong green 5-min close outside the range, then the next candle held and made a new high.",
+     "vote": true,
+     "who": "Momentum"
+    },
+    {
+     "say": "Timing's right. Entry at 11:00 ET, inside the 10:00\u201312:00 window.",
+     "vote": true,
+     "who": "Time"
+    },
+    {
+     "say": "...fine. Stop $0.24 away, target 1.5\u00d7 that. I'll allow it.",
+     "vote": true,
+     "who": "Doubt"
+    },
+    {
+     "say": "Sources say we're clear: 3 headlines today, none against us; StockTwits 4 bullish / 2 bearish.",
+     "vote": true,
+     "who": "The Reporter"
+    }
+   ],
+   "ok": true,
+   "t": 1793808319.2852027,
+   "text": null,
+   "title": "DIA CALL (opening range breakout)",
+   "verdict": "APPROVED 6\u20130. Bought 1 \u00d7 DIA $533 Call \u00b7 Nov 6 at $1.81.",
+   "who": null
   }
  ],
  "history": [
@@ -7410,39 +7445,40 @@
  },
  "last_daily": "2026-11-03",
  "last_deploy": 1793808043.5739515,
- "last_full_run": 1793808017.920217,
- "last_run": 1793808017.920217,
+ "last_full_run": 1793808310.927494,
+ "last_run": 1793808310.927494,
  "last_vote": {
   "approved": true,
   "ask": 0,
   "chart": {
    "closes": [
-    516.69,
-    516.19,
-    515.86,
-    515.515,
-    516.41,
-    516.26,
-    515.925,
-    516.04,
-    516.115,
-    516.19,
-    516.64,
-    516.405,
-    516.48,
-    516.72,
-    517.095,
-    517.19,
-    518.12,
-    517.92
+    528.88,
+    529.11,
+    529.47,
+    528.8,
+    528.68,
+    528.23,
+    528.715,
+    527.945,
+    527.92,
+    528.36,
+    527.855,
+    527.74,
+    528.48,
+    529.265,
+    529.62,
+    529.75,
+    530.25,
+    530.785,
+    530.38
    ],
-   "entry": 517.92,
+   "entry": 530.38,
    "prec": 2,
-   "sl": 517.85,
+   "sl": 530.145,
    "tf": "5m",
-   "tp": 518.0249999999999
+   "tp": 530.7325000000001
   },
-  "detail": "DIA $523 Call \u00b7 Nov 6 @ $1.92 \u00b7 stock stop 517.85 \u00b7 target 518.02",
+  "detail": "DIA $533 Call \u00b7 Nov 6 @ $1.81 \u00b7 stock stop 530.14 \u00b7 target 530.73",
   "edge": 0,
   "label": "DIA CALL (opening range breakout)",
   "side": "CALL",
@@ -7450,7 +7486,7 @@
   "votes": {
    "Doubt": [
     true,
-    "stop $0.07 away, target 1.5\u00d7 that"
+    "stop $0.24 away, target 1.5\u00d7 that"
    ],
    "Momentum": [
     true,
@@ -7458,22 +7494,22 @@
    ],
    "Risk": [
     true,
-    "DIA $523 Call \u00b7 Nov 6 at $1.92, spread 5%"
+    "DIA $533 Call \u00b7 Nov 6 at $1.81, spread 5%"
    ],
    "The Quant": [
     true,
-    "opening range is $2.16 (0.42% of the price)"
+    "opening range is $2.63 (0.50% of the price)"
    ],
    "The Reporter": [
     true,
-    "1 headline today, none against us; StockTwits 0 bullish / 4 bearish"
+    "3 headlines today, none against us; StockTwits 4 bullish / 2 bearish"
    ],
    "Time": [
     true,
     "entry at 11:00 ET, inside the 10:00\u201312:00 window"
    ]
   },
-  "when": 1793721912.540014
+  "when": 1793808310.927494
  },
  "last_weekly": "2026-10-30",
  "lb_done": {
@@ -8596,12 +8632,19 @@
       267.75,
       266.75,
       266.77
+     ],
+     [
+      "11:00",
+      266.73,
+      267.42,
+      266.63,
+      266.89
      ]
     ],
-    "checked": 1793808017.920217,
+    "checked": 1793808310.927494,
     "entered": false,
     "events": [],
-    "last": 266.77,
+    "last": 266.89,
     "orh": 270.76,
     "orl": 263.9,
     "pair": "AMZN",
@@ -8739,29 +8782,55 @@
       530.8,
       530.14,
       530.78
+     ],
+     [
+      "11:00",
+      530.73,
+      530.96,
+      530.38,
+      530.38
      ]
     ],
-    "checked": 1793808017.920217,
-    "entered": false,
+    "checked": 1793808310.927494,
+    "entered": true,
     "events": [
      {
       "kind": "pend",
       "mins": 655,
       "t": "10:55",
       "txt": "Strong close above the range high. Waiting for the next candle to hold above and make a new high"
+     },
+     {
+      "kind": "entry",
+      "mins": 660,
+      "t": "11:00",
+      "txt": "LONG at 530.38, stop 530.14, target 530.73"
      }
     ],
-    "last": 530.785,
+    "last": 530.38,
     "orh": 529.72,
     "orl": 527.09,
     "pair": "DIA",
-    "phase": "pending",
+    "phase": "long",
     "sent": [
      "range",
      "655:pend"
     ],
-    "status": "Strong close above the range high. Waiting for the next candle to hold above and make a new high",
-    "trade": null
+    "status": "LONG trade open",
+    "trade": {
+     "be": false,
+     "dir": 1,
+     "entry": 530.38,
+     "entry_label": "11:00",
+     "entry_mins": 660,
+     "entry_t": "2026-11-04T16:00:00",
+     "exit_mins": null,
+     "one_r": 0.23500000000001364,
+     "result": null,
+     "stop": 530.145,
+     "stop0": 530.145,
+     "target": 530.7325000000001
+    }
    },
    "SPY": {
     "candles": [
@@ -8890,12 +8959,19 @@
       766.42,
       765.04,
       766.01
+     ],
+     [
+      "11:00",
+      766.0,
+      766.77,
+      765.08,
+      765.23
      ]
     ],
-    "checked": 1793808017.920217,
+    "checked": 1793808310.927494,
     "entered": false,
     "events": [],
-    "last": 766.01,
+    "last": 765.225,
     "orh": 768.11,
     "orl": 762.71,
     "pair": "SPY",
@@ -9613,6 +9689,41 @@
    "s": "AMZN"
   }
  ],
- "trades": {},
+ "trades": {
+  "8d934a4f-1966-46d1-b190-1c4103613f1a": {
+   "dir": 1,
+   "entry": 1.81,
+   "exp": "2026-11-06",
+   "opened": "2026-11-04T16:05:10",
+   "orb5": {
+    "be": false,
+    "date": "2026-11-04",
+    "entry": 530.38,
+    "stop": 530.145,
+    "target": 530.7325000000001
+   },
+   "pair": "DIA",
+   "price": 1.81,
+   "qty": 1,
+   "qty0": 1,
+   "risk": 72.4,
+   "setup": "opening range breakout",
+   "sl": 0.54,
+   "sym": "DIA261106C00533000",
+   "tf": "5m",
+   "tp": 999.0,
+   "tp_on": false,
+   "units": 1,
+   "upl": 0.0,
+   "votes": {
+    "Doubt": true,
+    "Momentum": true,
+    "Risk": true,
+    "The Quant": true,
+    "The Reporter": true,
+    "Time": true
+   }
+  }
+ },
  "welcomed": true
 }
