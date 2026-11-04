@@ -1,6 +1,6 @@
 {
  "account": {
-  "nav": 1052.0
+  "nav": 1088.0
  },
  "closed": [],
  "day": {
@@ -107,7 +107,7 @@
    "prev_close": 279.83
   }
  },
- "last_run": 1793804746.369182,
+ "last_run": 1793805076.322167,
  "live": {
   "bars": [
    [
@@ -207,20 +207,22 @@
   "dir": -1,
   "entry": 2.23,
   "gap": 1.55,
+  "locked": true,
   "opened": "2026-11-04T15:00:41",
-  "peak": 2.75,
-  "price": 2.75,
+  "peak": 3.11,
+  "price": 3.11,
   "qty": 1,
   "qty0": 1,
-  "sl": 1.34,
+  "sl": 2.9,
   "sym": "IWM261104P00286000",
-  "tp": null
+  "tp": null,
+  "trail": true
  },
  "trades": {
   "open": {
    "dir": -1,
    "pair": "IWM",
-   "upl": 52.0
+   "upl": 88.0
   }
  }
 }
