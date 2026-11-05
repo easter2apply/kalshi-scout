@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793909414.039436
+  "updated": 1793909711.913663
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -7985,8 +7985,8 @@
  },
  "last_daily": "2026-11-04",
  "last_deploy": 1793909116.2732382,
- "last_full_run": 1793909414.039436,
- "last_run": 1793909414.039436,
+ "last_full_run": 1793909711.913663,
+ "last_run": 1793909711.913663,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -9036,7 +9036,7 @@
     "title": "Parliamentary Elections"
    }
   ],
-  "fetched": 1793888112.4791007
+  "fetched": 1793909712.6239226
  },
  "old_records": [
   {
@@ -9529,9 +9529,16 @@
       259.29,
       258.69,
       259.05
+     ],
+     [
+      "3:10",
+      259.04,
+      259.49,
+      258.75,
+      259.33
      ]
     ],
-    "checked": 1793909414.039436,
+    "checked": 1793909711.913663,
     "entered": true,
     "events": [
      {
@@ -9559,7 +9566,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 259.045,
+    "last": 259.33,
     "orh": 273.14,
     "orl": 262.455,
     "pair": "AMZN",
@@ -10064,9 +10071,16 @@
       516.42,
       515.34,
       515.34
+     ],
+     [
+      "3:10",
+      515.58,
+      515.77,
+      515.11,
+      515.77
      ]
     ],
-    "checked": 1793909414.039436,
+    "checked": 1793909711.913663,
     "entered": true,
     "events": [
      {
@@ -10094,7 +10108,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 515.34,
+    "last": 515.77,
     "orh": 536.6,
     "orl": 528.5,
     "pair": "DIA",
@@ -10599,9 +10613,16 @@
       737.46,
       735.36,
       735.47
+     ],
+     [
+      "3:10",
+      735.47,
+      736.13,
+      734.72,
+      735.89
      ]
     ],
-    "checked": 1793909414.039436,
+    "checked": 1793909711.913663,
     "entered": true,
     "events": [
      {
@@ -10641,7 +10662,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 735.47,
+    "last": 735.89,
     "orh": 765.955,
     "orl": 752.89,
     "pair": "SPY",
@@ -10727,37 +10748,37 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 17.920550805009725,
-   "atr_pips": 1.9403825997820143,
-   "bar": "2026-11-05T19:45:00",
-   "chg": -1.929471884569858,
-   "close": 261.0,
+   "adx": 17.986208350148345,
+   "atr_pips": 1.9671409855118702,
+   "bar": "2026-11-05T20:00:00",
+   "chg": -2.55697296484867,
+   "close": 259.33,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 4,
+    "passed": 3,
     "session": false,
     "tf": "M15",
     "waiting": [
-     "ADX 18 (needs 18)",
-     "RSI 49, outside trading hours"
+     "a pullback to the trend line or a fresh crossover",
+     "ADX 18 (needs 18)"
     ]
    },
-   "rsi": 49.43001018685375,
-   "setup": "pullback 15m",
+   "rsi": 43.923537024132834,
+   "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
   },
   "DIA": {
-   "adx": 43.77580469546887,
-   "atr_pips": 1.6462947464800484,
-   "bar": "2026-11-05T19:45:00",
-   "chg": -2.8768947921356602,
-   "close": 517.705,
+   "adx": 44.31302531289073,
+   "atr_pips": 1.7144165503029036,
+   "bar": "2026-11-05T20:00:00",
+   "chg": -3.239906948821849,
+   "close": 515.77,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
@@ -10772,7 +10793,7 @@
      "MACD against us (down)"
     ]
    },
-   "rsi": 35.86320448476239,
+   "rsi": 30.889769237538218,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -10934,26 +10955,26 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 59.00854515628771,
-   "atr_pips": 3.082556367411295,
-   "bar": "2026-11-05T19:45:00",
-   "chg": -3.4979719066685857,
-   "close": 739.91,
+   "adx": 58.47362153955489,
+   "atr_pips": 3.233088055453341,
+   "bar": "2026-11-05T20:00:00",
+   "chg": -4.022276420643516,
+   "close": 735.89,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": -1,
     "in_trade": false,
     "of": 6,
-    "passed": 3,
+    "passed": 4,
     "session": false,
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
-     "MACD against us (down)"
+     "RSI 32, outside trading hours"
     ]
    },
-   "rsi": 37.792985103696765,
+   "rsi": 31.794569128919207,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -11364,18 +11385,18 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": -3.5,
-   "p": "739.91",
+   "c": -4.02,
+   "p": "735.89",
    "s": "SPY"
   },
   {
-   "c": -2.88,
-   "p": "517.71",
+   "c": -3.24,
+   "p": "515.77",
    "s": "DIA"
   },
   {
-   "c": -1.93,
-   "p": "261.00",
+   "c": -2.56,
+   "p": "259.33",
    "s": "AMZN"
   }
  ],
