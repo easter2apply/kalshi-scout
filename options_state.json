@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793890820.257875
+  "updated": 1793891111.546892
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -5901,6 +5901,10 @@
   [
    1793890212,
    695.0
+  ],
+  [
+   1793891112,
+   695.0
   ]
  ],
  "errors": [
@@ -5986,36 +5990,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": true,
-   "t": 1793117717.2258713,
-   "text": "\ud83d\udd12 AMZN 12:10 ET: 1R reached. Stop moves to breakeven at 252.18 (AMZN level). The trade can't lose on AMZN's move now.",
-   "title": "AMZN stop to breakeven",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": true,
-   "t": 1793118018.161256,
-   "text": "\ud83c\udfaf AMZN ORB signal finished on AMZN: target +1.5R on AMZN (+1.5R). No option was held (signal only).",
-   "title": "AMZN ORB signal finished",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": null,
-   "t": 1793196023.2856395,
-   "text": "\ud83d\udccf SPY opening range is set (9:30\u201310:00 ET)\nHigh 771.65 \u00b7 Low 769.27 \u00b7 size $2.38\n\nWatching 5-min candles until 12:00. Signal = a strong candle closes outside the range, then the next one holds outside and makes a new high (calls) or low (puts).",
-   "title": "SPY range set: 769.27\u2013771.65",
-   "verdict": null,
-   "who": "The Quant"
-  },
   {
    "kind": "event",
    "lines": [],
@@ -7219,6 +7193,36 @@
    "title": "AMZN range set: 262.45\u2013273.14",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1793891118.112548,
+   "text": "\ud83d\udc40 SPY 10:00 ET: Strong close below the range low. Waiting for the next candle to hold below and make a new low.",
+   "title": "SPY breakout watch",
+   "verdict": null,
+   "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1793891118.1127589,
+   "text": "\ud83d\udc40 DIA 10:00 ET: Strong close below the range low. Waiting for the next candle to hold below and make a new low.",
+   "title": "DIA breakout watch",
+   "verdict": null,
+   "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1793891118.1129558,
+   "text": "\ud83d\udc40 AMZN 10:00 ET: Strong close below the range low. Waiting for the next candle to hold below and make a new low.",
+   "title": "AMZN breakout watch",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -7869,9 +7873,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-04",
- "last_deploy": 1793890833.491273,
- "last_full_run": 1793890820.257875,
- "last_run": 1793890820.257875,
+ "last_deploy": 1793891120.6065218,
+ "last_full_run": 1793891111.546892,
+ "last_run": 1793891111.546892,
  "last_vote": {
   "approved": true,
   "ask": 0,
@@ -9000,20 +9004,35 @@
       264.05,
       262.45,
       263.08
+     ],
+     [
+      "10:00",
+      263.04,
+      263.26,
+      260.91,
+      261.23
      ]
     ],
-    "checked": 1793890820.257875,
+    "checked": 1793891111.546892,
     "entered": false,
-    "events": [],
-    "last": 263.08,
+    "events": [
+     {
+      "kind": "pend",
+      "mins": 600,
+      "t": "10:00",
+      "txt": "Strong close below the range low. Waiting for the next candle to hold below and make a new low"
+     }
+    ],
+    "last": 261.23,
     "orh": 273.14,
     "orl": 262.455,
     "pair": "AMZN",
-    "phase": "wait",
+    "phase": "pending",
     "sent": [
-     "range"
+     "range",
+     "600:pend"
     ],
-    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
+    "status": "Strong close below the range low. Waiting for the next candle to hold below and make a new low",
     "trade": null
    },
    "DIA": {
@@ -9059,20 +9078,35 @@
       529.53,
       528.5,
       529.07
+     ],
+     [
+      "10:00",
+      529.0,
+      529.4,
+      527.99,
+      528.14
      ]
     ],
-    "checked": 1793890820.257875,
+    "checked": 1793891111.546892,
     "entered": false,
-    "events": [],
-    "last": 529.07,
+    "events": [
+     {
+      "kind": "pend",
+      "mins": 600,
+      "t": "10:00",
+      "txt": "Strong close below the range low. Waiting for the next candle to hold below and make a new low"
+     }
+    ],
+    "last": 528.14,
     "orh": 536.6,
     "orl": 528.5,
     "pair": "DIA",
-    "phase": "wait",
+    "phase": "pending",
     "sent": [
-     "range"
+     "range",
+     "600:pend"
     ],
-    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
+    "status": "Strong close below the range low. Waiting for the next candle to hold below and make a new low",
     "trade": null
    },
    "SPY": {
@@ -9118,20 +9152,35 @@
       754.6,
       752.89,
       754.19
+     ],
+     [
+      "10:00",
+      754.22,
+      754.92,
+      752.2,
+      752.5
      ]
     ],
-    "checked": 1793890820.257875,
+    "checked": 1793891111.546892,
     "entered": false,
-    "events": [],
-    "last": 754.19,
+    "events": [
+     {
+      "kind": "pend",
+      "mins": 600,
+      "t": "10:00",
+      "txt": "Strong close below the range low. Waiting for the next candle to hold below and make a new low"
+     }
+    ],
+    "last": 752.5,
     "orh": 765.955,
     "orl": 752.89,
     "pair": "SPY",
-    "phase": "wait",
+    "phase": "pending",
     "sent": [
-     "range"
+     "range",
+     "600:pend"
     ],
-    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
+    "status": "Strong close below the range low. Waiting for the next candle to hold below and make a new low",
     "trade": null
    }
   }
