@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793953212.623879
+  "updated": 1793953509.71814
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -8181,8 +8181,8 @@
  },
  "last_daily": "2026-11-05",
  "last_deploy": 1793953213.7705488,
- "last_full_run": 1793953212.623879,
- "last_run": 1793953212.623879,
+ "last_full_run": 1793953509.71814,
+ "last_run": 1793953509.71814,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -9232,7 +9232,7 @@
     "title": "Parliamentary Elections"
    }
   ],
-  "fetched": 1793931614.2294807
+  "fetched": 1793953510.4730678
  },
  "old_records": [
   {
