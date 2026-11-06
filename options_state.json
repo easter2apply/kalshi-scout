@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1793977813.337813
+  "updated": 1793978112.763394
  },
  "bot_username": "eJaaySignals_bot",
  "chat_id": "7590441188",
@@ -6377,16 +6377,6 @@
   {
    "kind": "event",
    "lines": [],
-   "ok": null,
-   "t": 1793282737.1434865,
-   "text": "\ud83d\udc40 SPY 10:00 ET: Strong close above the range high. Waiting for the next candle to hold above and make a new high.",
-   "title": "SPY breakout watch",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
-   "kind": "event",
-   "lines": [],
    "ok": false,
    "t": 1793283025.4053168,
    "text": "\u21a9\ufe0f SPY 10:05 ET: Breakout failed: price came back to the range high. No trade, still watching.",
@@ -7638,6 +7628,16 @@
    "title": "AMZN range set: 258.60\u2013263.49",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1793978124.8727787,
+   "text": "\ud83d\udc40 DIA 10:10 ET: Strong close above the range high. Waiting for the next candle to hold above and make a new high.",
+   "title": "DIA breakout watch",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -8288,9 +8288,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-05",
- "last_deploy": 1793977244.9930797,
- "last_full_run": 1793977813.337813,
- "last_run": 1793977813.337813,
+ "last_deploy": 1793978125.8503256,
+ "last_full_run": 1793978112.763394,
+ "last_run": 1793978112.763394,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -9413,12 +9413,19 @@
       262.85,
       261.99,
       262.44
+     ],
+     [
+      "10:10",
+      262.52,
+      263.38,
+      262.27,
+      263.18
      ]
     ],
-    "checked": 1793977813.337813,
+    "checked": 1793978112.763394,
     "entered": false,
     "events": [],
-    "last": 262.44,
+    "last": 263.18,
     "orh": 263.49,
     "orl": 258.6,
     "pair": "AMZN",
@@ -9486,20 +9493,35 @@
       513.42,
       512.51,
       513.22
+     ],
+     [
+      "10:10",
+      513.73,
+      514.9,
+      513.42,
+      514.77
      ]
     ],
-    "checked": 1793977813.337813,
+    "checked": 1793978112.763394,
     "entered": false,
-    "events": [],
-    "last": 513.215,
+    "events": [
+     {
+      "kind": "pend",
+      "mins": 610,
+      "t": "10:10",
+      "txt": "Strong close above the range high. Waiting for the next candle to hold above and make a new high"
+     }
+    ],
+    "last": 514.775,
     "orh": 514.38,
     "orl": 508.795,
     "pair": "DIA",
-    "phase": "wait",
+    "phase": "pending",
     "sent": [
-     "range"
+     "range",
+     "610:pend"
     ],
-    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
+    "status": "Strong close above the range high. Waiting for the next candle to hold above and make a new high",
     "trade": null
    },
    "SPY": {
@@ -9559,12 +9581,19 @@
       739.47,
       738.31,
       739.09
+     ],
+     [
+      "10:10",
+      739.23,
+      741.08,
+      738.88,
+      741.05
      ]
     ],
-    "checked": 1793977813.337813,
+    "checked": 1793978112.763394,
     "entered": false,
     "events": [],
-    "last": 739.085,
+    "last": 741.05,
     "orh": 742.11,
     "orl": 734.605,
     "pair": "SPY",
@@ -9631,40 +9660,15 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 16.54978409775435,
-   "atr_pips": 2.0672081698151916,
-   "bar": "2026-11-06T14:45:00",
-   "chg": 0.686771025168823,
-   "close": 262.43,
+   "adx": 15.983197032562373,
+   "atr_pips": 2.019193300435353,
+   "bar": "2026-11-06T15:00:00",
+   "chg": 0.9745242480049189,
+   "close": 263.18,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
     "dir": 1,
-    "in_trade": false,
-    "of": 6,
-    "passed": 5,
-    "session": true,
-    "tf": "M15",
-    "waiting": [
-     "ADX 17 (needs 18)"
-    ]
-   },
-   "rsi": 55.81034577702729,
-   "setup": "crossover 15m",
-   "spread_pips": 0,
-   "tradeable": true,
-   "trend": 1
-  },
-  "DIA": {
-   "adx": 47.928017120844174,
-   "atr_pips": 2.013080305135061,
-   "bar": "2026-11-06T14:45:00",
-   "chg": -0.21668998756216876,
-   "close": 513.445,
-   "h4_trend": 1,
-   "prec": 2,
-   "ready": {
-    "dir": -1,
     "in_trade": false,
     "of": 6,
     "passed": 4,
@@ -9672,10 +9676,36 @@
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
-     "1-hour trend disagrees"
+     "ADX 16 (needs 18)"
     ]
    },
-   "rsi": 30.712340158519837,
+   "rsi": 58.316581824298574,
+   "setup": null,
+   "spread_pips": 0,
+   "tradeable": true,
+   "trend": 1
+  },
+  "DIA": {
+   "adx": 47.457353704741514,
+   "atr_pips": 2.039645996947377,
+   "bar": "2026-11-06T15:00:00",
+   "chg": 0.041783271144284796,
+   "close": 514.775,
+   "h4_trend": 1,
+   "prec": 2,
+   "ready": {
+    "dir": -1,
+    "in_trade": false,
+    "of": 6,
+    "passed": 3,
+    "session": true,
+    "tf": "M15",
+    "waiting": [
+     "a pullback to the trend line or a fresh crossover",
+     "MACD against us (down)"
+    ]
+   },
+   "rsi": 36.96395660611157,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -9837,11 +9867,11 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 53.275594394787184,
-   "atr_pips": 3.338951844898222,
-   "bar": "2026-11-06T14:45:00",
-   "chg": 0.9476023615068986,
-   "close": 740.38,
+   "adx": 50.719735967501215,
+   "atr_pips": 3.3197409982079327,
+   "bar": "2026-11-06T15:00:00",
+   "chg": 1.0389539560694279,
+   "close": 741.05,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -9856,7 +9886,7 @@
      "MACD against us (down)"
     ]
    },
-   "rsi": 46.576486566905835,
+   "rsi": 48.01652618079768,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -10266,18 +10296,18 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.95,
-   "p": "740.38",
+   "c": 1.04,
+   "p": "741.05",
    "s": "SPY"
   },
   {
-   "c": -0.22,
-   "p": "513.45",
+   "c": 0.04,
+   "p": "514.77",
    "s": "DIA"
   },
   {
-   "c": 0.69,
-   "p": "262.43",
+   "c": 0.97,
+   "p": "263.18",
    "s": "AMZN"
   }
  ],
