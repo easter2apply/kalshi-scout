@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794084010.94223
+  "updated": 1794084311.559245
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -6758,6 +6758,10 @@
   [
    1794083414,
    695.0
+  ],
+  [
+   1794084312,
+   695.0
   ]
  ],
  "errors": [
@@ -8727,8 +8731,8 @@
  },
  "last_daily": "2026-11-06",
  "last_deploy": 1794084011.3486383,
- "last_full_run": 1794084010.94223,
- "last_run": 1794084010.94223,
+ "last_full_run": 1794084311.559245,
+ "last_run": 1794084311.559245,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -9778,7 +9782,7 @@
     "title": "Parliamentary Elections"
    }
   ],
-  "fetched": 1794062415.521637
+  "fetched": 1794084312.4673085
  },
  "old_records": [
   {
