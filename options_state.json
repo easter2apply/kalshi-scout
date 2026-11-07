@@ -10,7 +10,7 @@
  "alpaca_alerted": 1794056714.887094,
  "alpaca_error": {
   "keys": false,
-  "t": 1794056714.887094,
+  "t": 1794057011.630524,
   "text": "500: {\"code\":50010000,\"message\":\"internal server error occurred\"}"
  },
  "bot_username": "eJaaySignals_bot",
@@ -6647,10 +6647,6 @@
  ],
  "errors": [
   {
-   "t": 1792205115.819487,
-   "text": "Run failed: 'QQQ'"
-  },
-  {
    "t": 1792205414.1986597,
    "text": "Run failed: 'QQQ'"
   },
@@ -6724,6 +6720,10 @@
   },
   {
    "t": 1794056716.0579796,
+   "text": "ALPACA: couldn't open the account (500: {\"code\":50010000,\"message\":\"internal server error occurred\"})"
+  },
+  {
+   "t": 1794057012.007705,
    "text": "ALPACA: couldn't open the account (500: {\"code\":50010000,\"message\":\"internal server error occurred\"})"
   }
  ],
@@ -8611,9 +8611,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-06",
- "last_deploy": 1794056109.7553015,
- "last_full_run": 1794056714.887094,
- "last_run": 1794056714.887094,
+ "last_deploy": 1794057012.0210388,
+ "last_full_run": 1794057011.630524,
+ "last_run": 1794057011.630524,
  "last_vote": {
   "approved": false,
   "ask": 0,
