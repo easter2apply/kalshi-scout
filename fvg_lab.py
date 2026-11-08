@@ -138,21 +138,25 @@ def main():
     api = vo.Alpaca(os.environ["ALPACA_KEY_ID"].strip(), os.environ["ALPACA_SECRET_KEY"].strip())
     now = dt.datetime.now(dt.timezone.utc)
     rep = {"how": __doc__, "results": {}}
-    for name, sym, crypto, days in (("Bitcoin", "BTC/USD", True, 182), ("Nasdaq (QQQ)", "QQQ", False, 365), ("Gold (GLD)", "GLD", False, 365)):
-        start = now - dt.timedelta(days=days)
-        split = start.timestamp() + days * 86400 * 2 / 3
-        m1 = fetch(api, sym, start, crypto)
-        print(name, len(m1), flush=True)
-        for tf in (1, 5, 15):
-            b = agg(m1, tf, crypto)
-            for vn, v in VERSIONS.items():
-                key = f"{name} · {tf}m · {vn}"
-                s = summ(run(b, crypto, dict(v)), split, days / 7)
-                s.pop("tp1", None); s.pop("tp3", None)
-                rep["results"][key] = s
-                print(f"{key:62} n={s.get('n')} /day={s.get('per_day')} win={s.get('win')} avg={s.get('avg_r')} pre={s.get('before_cost')} "
-                      f"t={s.get('t')} train={s.get('train')} unseen={s.get('unseen')}", flush=True)
-                json.dump(rep, open("fvg_lab.json", "w"), indent=1)
+    days = 4 * 365
+    start = now - dt.timedelta(days=days)
+    m1 = fetch(api, "GLD", start, False)
+    print("GLD", len(m1), flush=True)
+    for tf in (15, 30):
+        b = agg(m1, tf, False)
+        for vn in ("Retrace to gap top · 2R", "Retrace · 2R · with 200 EMA trend", "Retrace · 2R · trend · 9:30-11:30 only", "Retrace · 1R", "Retrace · 3R"):
+            v = dict(VERSIONS[vn])
+            tr = run(b, False, v)
+            key = f"GLD 4yr · {tf}m · {vn}"
+            s = summ(tr, start.timestamp() + days * 86400 * 2 / 3, days / 7)
+            yrs = {}
+            for x in tr:
+                y = dt.datetime.fromtimestamp(x["ts"], dt.timezone.utc).year
+                yrs.setdefault(y, []).append(x["r"])
+            s["by_year"] = {y: [len(v), round(sum(v) / len(v), 3)] for y, v in sorted(yrs.items())}
+            rep["results"][key] = s
+            print(key, s, flush=True)
+            json.dump(rep, open("fvg_lab.json", "w"), indent=1)
 
 
 if __name__ == "__main__":
