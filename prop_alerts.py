@@ -8,6 +8,8 @@ Same rules as the Prop Desk page:
 Stop = past the level and the signal candle + 0.25 ATR (never closer than 1 ATR).
 TP1 = 1R (take half). TP2 = the next level, or 2R if that's closer than 1.5R.
 
+Plus the tested FVG strategy (gold GLD, silver SLV, Nasdaq QQQ, 15-minute, 9:30-11:30 AM ET): see fvg_sim().
+
 Data: Alpaca (QQQ for Nasdaq, BTC/USD) and Twelve Data for gold (XAU/USD) if TWELVEDATA_API_KEY is set.
 Runs every 5 minutes from .github/workflows/prop_alerts.yml. Remembers what it already sent in prop_alerts_state.json.
 """
@@ -56,7 +58,7 @@ def alpaca_bars(sym, tf, days, crypto):
         token = j.get("next_page_token")
         if not token:
             break
-    step = {"5Min": 300, "1Hour": 3600}[tf]
+    step = {"5Min": 300, "15Min": 900, "1Hour": 3600}[tf]
     now = time.time()
     bars = []
     for b in out:
@@ -197,6 +199,142 @@ def signal(h1, m5):
             "candle": cd[1], "rsi": r5[N], "level": lvl, "trend": trend, "t": m5[ci]["t"]}
 
 
+# ───────────── FVG strategy (tested: 4 years, 15-minute GLD/SLV/QQQ, about +0.09R a trade) ─────────────
+FVG_RR, FVG_BE, FVG_GAP, FVG_WAIT = 3.0, 1.5, 0.3, 20
+FVG_MARKETS = [("Gold", "GLD", "XAU"), ("Silver", "SLV", "XAG"), ("Nasdaq", "QQQ", "NQ")]
+
+
+def atr_wilder(b, n=14):
+    out, a = [None] * len(b), None
+    for i in range(1, len(b)):
+        tr = max(b[i]["h"] - b[i]["l"], abs(b[i]["h"] - b[i - 1]["c"]), abs(b[i]["l"] - b[i - 1]["c"]))
+        a = tr if a is None else (a * (n - 1) + tr) / n
+        out[i] = a if i >= n else None
+    return out
+
+
+def ema_seeded(a, n):
+    k, e, out = 2 / (n + 1), None, []
+    for i, x in enumerate(a):
+        e = x if e is None else x * k + e * (1 - k)
+        out.append(e if i >= n - 1 else None)
+    return out
+
+
+def fvg_sim(b):
+    """Replays the FVG rules over 15-minute bars (9:30-4:00 ET) and returns every event:
+    setup (limit order placed), fill, be (stop to entry), exit (tp / sl / be / close), cancel."""
+    for x in b:
+        e = dt.datetime.fromtimestamp(x["t"], ET); x["day"] = e.date().isoformat(); x["m"] = e.hour * 60 + e.minute
+    b = [x for x in b if 570 <= x["m"] < 960]
+    atr_l, e200 = atr_wilder(b), ema_seeded([x["c"] for x in b], 200)
+    ev, order, pos = [], None, None
+    for i in range(3, len(b)):
+        x = b[i]
+        if x["day"] != b[i - 1]["day"]:
+            order = None
+            if pos:
+                ev.append(dict(pos, kind="exit", how="close", r=pos["d"] * (b[i - 1]["c"] - pos["entry"]) / pos["R"], t=b[i - 1]["t"])); pos = None
+        if pos:
+            d = pos["d"]
+            if (x["l"] <= pos["stop"]) if d == 1 else (x["h"] >= pos["stop"]):
+                ev.append(dict(pos, kind="exit", how="be" if pos["be"] else "sl", r=d * (pos["stop"] - pos["entry"]) / pos["R"], t=x["t"])); pos = None
+            elif (x["h"] >= pos["tp"]) if d == 1 else (x["l"] <= pos["tp"]):
+                ev.append(dict(pos, kind="exit", how="tp", r=FVG_RR, t=x["t"])); pos = None
+            elif not pos["be"] and ((x["h"] >= pos["entry"] + FVG_BE * pos["R"]) if d == 1 else (x["l"] <= pos["entry"] - FVG_BE * pos["R"])):
+                pos["be"] = True; pos["stop"] = pos["entry"]; ev.append(dict(pos, kind="be", t=x["t"]))
+            if pos and x["m"] + 15 >= 960:
+                ev.append(dict(pos, kind="exit", how="close", r=d * (x["c"] - pos["entry"]) / pos["R"], t=x["t"])); pos = None
+        if order and not pos:
+            o, d = order, order["d"]
+            touched = (x["l"] <= o["entry"]) if d == 1 else (x["h"] >= o["entry"])
+            if i - o["born"] > FVG_WAIT:
+                ev.append(dict(o, kind="cancel", why="no fill in 20 candles", t=x["t"])); order = None
+            elif ((x["h"] >= o["tp"]) if d == 1 else (x["l"] <= o["tp"])):
+                ev.append(dict(o, kind="cancel", why="price ran to the target without filling", t=x["t"])); order = None
+            elif touched:
+                fill = min(x["o"], o["entry"]) if d == 1 else max(x["o"], o["entry"])
+                R = abs(fill - o["stop"])
+                pos = {"d": d, "entry": fill, "stop": o["stop"], "tp": fill + d * FVG_RR * R, "R": R, "be": False}
+                ev.append(dict(pos, kind="fill", t=x["t"])); order = None
+                if (x["l"] <= pos["stop"]) if d == 1 else (x["h"] >= pos["stop"]):
+                    ev.append(dict(pos, kind="exit", how="sl", r=-1.0, t=x["t"])); pos = None
+            elif (x["c"] < o["far"]) if d == 1 else (x["c"] > o["far"]):
+                ev.append(dict(o, kind="cancel", why="price closed back through the gap", t=x["t"])); order = None
+        a, c1 = atr_l[i], b[i - 2]
+        if a is None or e200[i] is None or pos or order or c1["day"] != x["day"] or not (570 <= x["m"] < 690):
+            continue
+        bull = x["l"] > c1["h"] and x["l"] - c1["h"] >= FVG_GAP * a and x["c"] > e200[i]
+        bear = x["h"] < c1["l"] and c1["l"] - x["h"] >= FVG_GAP * a and x["c"] < e200[i]
+        if bull or bear:
+            d = 1 if bull else -1
+            entry = x["l"] if d == 1 else x["h"]
+            stop = (c1["l"] - 0.1 * a) if d == 1 else (c1["h"] + 0.1 * a)
+            R = abs(entry - stop)
+            if R > 0:
+                order = {"d": d, "entry": entry, "stop": stop, "tp": entry + d * FVG_RR * R, "R": R, "far": c1["h"] if d == 1 else c1["l"], "born": i}
+                ev.append(dict(order, kind="setup", t=x["t"]))
+    return ev
+
+
+def fvg_message(name, sym, vest, e):
+    d, R = e["d"], e["R"]
+    units = RISK_USD / R
+    usd = lambda dist: units * abs(dist)
+    pct = lambda p: (p - e["entry"]) / e["entry"] * 100
+    side = "BUY" if d > 0 else "SELL"
+    k = e["kind"]
+    if k == "setup":
+        return "\n".join([
+            f"{'🟢' if d > 0 else '🔴'} FVG {side} LIMIT · {name} ({sym}, 15-min)",
+            f"Fair value gap with the trend, 9:30-11:30 window.",
+            "",
+            f"Limit {side.lower()} at {f(e['entry'])}",
+            f"Stop loss {f(e['stop'])} ({pct(e['stop']):+.2f}%) → −${usd(e['entry'] - e['stop']):,.2f}",
+            f"Take profit {f(e['tp'])} ({pct(e['tp']):+.2f}%, 3R) → +${usd(e['tp'] - e['entry']):,.2f}",
+            f"Move stop to entry at {f(e['entry'] + d * FVG_BE * R)} (+1.5R)",
+            f"Size for ${RISK_USD:,.0f} risk: {units:.4g} shares",
+            "",
+            f"Order is good for 20 candles (5 hours). Cancel if a 15-min candle closes back through {f(e['far'])}. Close by 4 PM.",
+            f"On {vest}: use the same % distances from your entry, or open the Prop Desk for exact {vest} prices."])
+    if k == "fill":
+        return f"✅ FVG {side} FILLED · {name} at {f(e['entry'])}. Stop {f(e['stop'])}, target {f(e['tp'])}."
+    if k == "be":
+        return f"🔒 {name} FVG is up 1.5R. Move your stop to entry ({f(e['entry'])}). This trade can't lose now."
+    if k == "cancel":
+        return f"✖️ {name} FVG {side.lower()} limit cancelled: {e['why']}."
+    if k == "exit":
+        word = {"tp": "🎯 Target hit", "sl": "🛑 Stopped out", "be": "🔒 Out at entry", "close": "🔔 Closed at 4 PM"}[e["how"]]
+        return f"{word} · {name} FVG {side.lower()}: {e['r']:+.1f}R (≈ {'+' if e['r'] >= 0 else '−'}${abs(e['r']) * RISK_USD:,.2f} at ${RISK_USD:,.0f} risk)."
+    return ""
+
+
+def fvg_check(st, now):
+    e = now.astimezone(ET)
+    if e.weekday() >= 5 or not (570 <= e.hour * 60 + e.minute <= 975):
+        return
+    sent = st.setdefault("fvg_sent", [])
+    for name, sym, vest in FVG_MARKETS:
+        try:
+            bars = alpaca_bars(sym, "15Min", 25, False)
+            evs = fvg_sim(bars)
+        except Exception as ex:
+            st.setdefault("status", {})[sym + " FVG"] = f"failed: {str(ex)[:120]}"
+            continue
+        st.setdefault("status", {})[sym + " FVG"] = f"{len(bars)} candles · last event: {evs[-1]['kind'] if evs else 'none'}"
+        for ev in evs:
+            done_at = ev["t"] + 900
+            key = f"{sym}:{ev['kind']}:{int(ev['t'])}"
+            if key in sent or now.timestamp() - done_at > 25 * 60:
+                continue
+            sent.append(key)
+            msg = fvg_message(name, sym, vest, ev)
+            if ev["kind"] == "setup" and news_block(now):
+                msg += f"\n⚠️ {news_block(now)} is in the news window. Consider skipping."
+            say(msg)
+    st["fvg_sent"] = sent[-300:]
+
+
 # ───────────── telegram ─────────────
 def chat_id():
     cid = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
@@ -292,6 +430,7 @@ def main():
             say(message(name, sym, s) + "\n\n🌙 Weekend Bitcoin is thin. Half size or skip.")
         else:
             say(message(name, sym, s))
+    fvg_check(st, now)
     st["sent"] = sent[-200:]
     st["last_run"] = now.timestamp()
     json.dump(st, open(STATE, "w", encoding="utf-8"))
