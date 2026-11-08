@@ -189,25 +189,13 @@ VERSIONS = {
 
 BASE = {"kind": "retrace", "trend": True, "ny": True}
 TESTS = {
-    "0 Base (current indicator)": {},
-    "1 Sweep first (last 20 candles)": {"sweep": 20},
-    "1 Sweep first (last 40 candles)": {"sweep": 40},
-    "2 Bigger gap 0.5 ATR": {"gap": 0.5},
-    "2 Bigger gap 0.8 ATR": {"gap": 0.8},
-    "2 Strong candle 2 (70% body)": {"body": 0.7},
-    "3 1-hour 200 EMA trend": {"htf": True},
-    "3 1-hour 50 EMA trend": {"htf": True, "htf_n": 50},
-    "4 Breakeven at 1R": {"be": 1.0},
-    "4 Tighter stop (gap edge)": {"stop": "gap"},
-    "4 Wider stop (10-candle swing)": {"stop": "swing"},
-    "4 Target prior day high/low": {"pd_target": True},
-    "4 Target 3R": {"rr": 3.0},
-    "5 Window 9:30-10:30": {"win": (570, 630)},
-    "5 Window 9:30-12:00": {"win": (570, 720)},
-    "6 Sweep 20 + 1h trend": {"sweep": 20, "htf": True},
-    "6 Sweep 20 + breakeven": {"sweep": 20, "be": 1.0},
+    "A Base": {},
+    "B Target 3R": {"rr": 3.0},
+    "C Target 3R + swing stop": {"rr": 3.0, "stop": "swing"},
+    "D Target 3R + breakeven 1.5R": {"rr": 3.0, "be": 1.5},
+    "E Target 4R": {"rr": 4.0},
 }
-MARKETS = ["GLD", "SLV", "SPY", "QQQ", "IWM", "DIA"]
+MARKETS = ["GLD", "SLV", "QQQ"]
 
 
 def main():
