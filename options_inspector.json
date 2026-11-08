@@ -1,326 +1,62 @@
 {
- "when": 1793562252.6601162,
+ "when": 1794167067.732356,
  "grade": {
   "months": 6.0,
   "budget": 250.0,
-  "setups": 1606,
-  "no_contract": 167,
-  "approved": 1421,
+  "setups": 1609,
+  "no_contract": 165,
+  "approved": 1428,
   "plans": {
    "now": {
     "label": "Current rules (hold weeklies + take profit early)",
     "r": {
-     "n": 426,
-     "win": 0.44366197183098594,
-     "avg": -0.20092018779342724,
-     "total": -85.592
+     "n": 433,
+     "win": 0.4503464203233256,
+     "avg": -0.18893071593533486,
+     "total": -81.807
     },
-    "dollars": -7965.08,
-    "max_dd": 8006.48,
-    "per_month": 71.0
+    "dollars": -7463.17,
+    "max_dd": 7998.23,
+    "per_month": 72.16666666666667
    },
    "day_plain": {
     "label": "Old rules (sell everything by 3:40, fixed +60% target)",
     "r": {
-     "n": 435,
-     "win": 0.3264367816091954,
-     "avg": -0.1234735632183908,
-     "total": -53.711
+     "n": 442,
+     "win": 0.33031674208144796,
+     "avg": -0.11650452488687782,
+     "total": -51.495
     },
-    "dollars": -4846.5,
-    "max_dd": 5441.35,
-    "per_month": 72.5
+    "dollars": -4524.49,
+    "max_dd": 5617.15,
+    "per_month": 73.66666666666667
    },
    "hold_plain": {
     "label": "Hold weeklies, fixed +60% target",
     "r": {
-     "n": 401,
-     "win": 0.2967581047381546,
-     "avg": -0.2227930174563591,
-     "total": -89.34
+     "n": 409,
+     "win": 0.30317848410757947,
+     "avg": -0.20931784841075796,
+     "total": -85.611
     },
-    "dollars": -8077.77,
-    "max_dd": 8232.97,
-    "per_month": 66.83333333333333
+    "dollars": -7633.76,
+    "max_dd": 8186.89,
+    "per_month": 68.16666666666667
    },
    "day_partial": {
     "label": "Sell by 3:40 daily, take profit early",
     "r": {
-     "n": 447,
-     "win": 0.43847874720357943,
-     "avg": -0.1031565995525727,
-     "total": -46.111
+     "n": 453,
+     "win": 0.44370860927152317,
+     "avg": -0.10438189845474614,
+     "total": -47.285000000000004
     },
-    "dollars": -4219.47,
-    "max_dd": 4697.42,
-    "per_month": 74.5
+    "dollars": -4157.76,
+    "max_dd": 4992.72,
+    "per_month": 75.5
    }
   },
   "taken": [
-   {
-    "sym": "SPY",
-    "t": "2026-10-16T14:15:00",
-    "setup": "pullback 15m",
-    "dir": -1,
-    "pl": -98.4,
-    "r": -1.0,
-    "how": "stop",
-    "zero": true,
-    "ask": 1.23,
-    "qty": 2
-   },
-   {
-    "sym": "DIA",
-    "t": "2026-10-19T14:30:00",
-    "setup": "pullback 15m",
-    "dir": -1,
-    "pl": -84.4,
-    "r": -1.0,
-    "how": "stop",
-    "zero": false,
-    "ask": 2.11,
-    "qty": 1
-   },
-   {
-    "sym": "AMZN",
-    "t": "2026-10-19T14:30:00",
-    "setup": "crossover 15m",
-    "dir": 1,
-    "pl": 40.06,
-    "r": 0.731,
-    "how": "trailing stop",
-    "zero": false,
-    "ask": 1.37,
-    "qty": 1
-   },
-   {
-    "sym": "SPY",
-    "t": "2026-10-19T17:00:00",
-    "setup": "pullback 15m",
-    "dir": -1,
-    "pl": -84.62,
-    "r": -1.137,
-    "how": "stop",
-    "zero": true,
-    "ask": 0.62,
-    "qty": 3
-   },
-   {
-    "sym": "SPY",
-    "t": "2026-10-19T18:15:00",
-    "setup": "pullback 15m",
-    "dir": -1,
-    "pl": -96.8,
-    "r": -1.0,
-    "how": "stop",
-    "zero": false,
-    "ask": 2.42,
-    "qty": 1
-   },
-   {
-    "sym": "DIA",
-    "t": "2026-10-20T13:30:00",
-    "setup": "pullback 15m",
-    "dir": 1,
-    "pl": 136.46,
-    "r": 1.416,
-    "how": "trailing stop",
-    "zero": false,
-    "ask": 2.41,
-    "qty": 1
-   },
-   {
-    "sym": "AMZN",
-    "t": "2026-10-20T13:45:00",
-    "setup": "pullback 15m",
-    "dir": 1,
-    "pl": 19.6,
-    "r": 0.25,
-    "how": "trailing stop",
-    "zero": false,
-    "ask": 1.96,
-    "qty": 1
-   },
-   {
-    "sym": "SPY",
-    "t": "2026-10-20T14:45:00",
-    "setup": "crossover 15m",
-    "dir": 1,
-    "pl": -81.6,
-    "r": -1.0,
-    "how": "stop",
-    "zero": true,
-    "ask": 1.02,
-    "qty": 2
-   },
-   {
-    "sym": "SPY",
-    "t": "2026-10-20T15:00:00",
-    "setup": "pullback 15m",
-    "dir": 1,
-    "pl": 40.11,
-    "r": 0.469,
-    "how": "trailing stop",
-    "zero": true,
-    "ask": 1.07,
-    "qty": 2
-   },
-   {
-    "sym": "SPY",
-    "t": "2026-10-20T15:30:00",
-    "setup": "pullback 15m",
-    "dir": 1,
-    "pl": -98.4,
-    "r": -1.0,
-    "how": "stop",
-    "zero": true,
-    "ask": 0.82,
-    "qty": 3
-   },
-   {
-    "sym": "SPY",
-    "t": "2026-10-20T16:15:00",
-    "setup": "pullback 15m",
-    "dir": 1,
-    "pl": -84.0,
-    "r": -1.0,
-    "how": "stop",
-    "zero": true,
-    "ask": 1.05,
-    "qty": 2
-   },
-   {
-    "sym": "SPY",
-    "t": "2026-10-21T13:30:00",
-    "setup": "pullback 15m",
-    "dir": 1,
-    "pl": 13.2,
-    "r": 0.25,
-    "how": "trailing stop",
-    "zero": true,
-    "ask": 1.32,
-    "qty": 1
-   },
-   {
-    "sym": "DIA",
-    "t": "2026-10-21T13:30:00",
-    "setup": "pullback 15m",
-    "dir": 1,
-    "pl": 37.02,
-    "r": 0.37,
-    "how": "trailing stop",
-    "zero": false,
-    "ask": 2.5,
-    "qty": 1
-   },
-   {
-    "sym": "SPY",
-    "t": "2026-10-21T14:15:00",
-    "setup": "pullback 15m",
-    "dir": 1,
-    "pl": 133.5,
-    "r": 1.875,
-    "how": "target",
-    "zero": true,
-    "ask": 0.89,
-    "qty": 2
-   },
-   {
-    "sym": "AMZN",
-    "t": "2026-10-21T15:15:00",
-    "setup": "pullback 15m",
-    "dir": 1,
-    "pl": 54.35,
-    "r": 0.571,
-    "how": "trailing stop",
-    "zero": false,
-    "ask": 1.19,
-    "qty": 2
-   },
-   {
-    "sym": "DIA",
-    "t": "2026-10-22T13:30:00",
-    "setup": "pullback 15m",
-    "dir": 1,
-    "pl": -149.17,
-    "r": -1.58,
-    "how": "stop",
-    "zero": false,
-    "ask": 2.36,
-    "qty": 1
-   },
-   {
-    "sym": "SPY",
-    "t": "2026-10-22T14:15:00",
-    "setup": "crossover 15m",
-    "dir": -1,
-    "pl": 48.12,
-    "r": 0.614,
-    "how": "trailing stop",
-    "zero": true,
-    "ask": 0.98,
-    "qty": 2
-   },
-   {
-    "sym": "SPY",
-    "t": "2026-10-22T14:45:00",
-    "setup": "crossover 15m",
-    "dir": -1,
-    "pl": 34.61,
-    "r": 0.465,
-    "how": "trailing stop",
-    "zero": true,
-    "ask": 0.93,
-    "qty": 2
-   },
-   {
-    "sym": "SPY",
-    "t": "2026-10-23T13:30:00",
-    "setup": "pullback 15m",
-    "dir": -1,
-    "pl": 87.0,
-    "r": 1.5,
-    "how": "target",
-    "zero": true,
-    "ask": 1.45,
-    "qty": 1
-   },
-   {
-    "sym": "DIA",
-    "t": "2026-10-23T14:15:00",
-    "setup": "crossover 15m",
-    "dir": -1,
-    "pl": -92.8,
-    "r": -1.0,
-    "how": "stop",
-    "zero": false,
-    "ask": 2.32,
-    "qty": 1
-   },
-   {
-    "sym": "DIA",
-    "t": "2026-10-23T14:45:00",
-    "setup": "crossover 15m",
-    "dir": -1,
-    "pl": 23.97,
-    "r": 0.288,
-    "how": "end of day",
-    "zero": false,
-    "ask": 2.08,
-    "qty": 1
-   },
-   {
-    "sym": "SPY",
-    "t": "2026-10-23T15:00:00",
-    "setup": "pullback 15m",
-    "dir": -1,
-    "pl": -74.4,
-    "r": -1.0,
-    "how": "stop",
-    "zero": true,
-    "ask": 0.93,
-    "qty": 2
-   },
    {
     "sym": "SPY",
     "t": "2026-10-23T15:30:00",
@@ -536,44 +272,308 @@
     "zero": true,
     "ask": 1.14,
     "qty": 2
+   },
+   {
+    "sym": "AMZN",
+    "t": "2026-11-02T15:30:00",
+    "setup": "crossover 15m",
+    "dir": 1,
+    "pl": -78.0,
+    "r": -1.0,
+    "how": "stop",
+    "zero": false,
+    "ask": 1.95,
+    "qty": 1
+   },
+   {
+    "sym": "DIA",
+    "t": "2026-11-02T16:30:00",
+    "setup": "crossover 15m",
+    "dir": 1,
+    "pl": -88.4,
+    "r": -1.0,
+    "how": "stop",
+    "zero": false,
+    "ask": 2.21,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-02T17:15:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": 108.0,
+    "r": 1.5,
+    "how": "target",
+    "zero": true,
+    "ask": 0.9,
+    "qty": 2
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-02T17:30:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": -69.6,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.58,
+    "qty": 3
+   },
+   {
+    "sym": "DIA",
+    "t": "2026-11-03T14:30:00",
+    "setup": "crossover 15m",
+    "dir": -1,
+    "pl": -99.2,
+    "r": -1.0,
+    "how": "stop",
+    "zero": false,
+    "ask": 2.48,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-03T15:30:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": -92.0,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 1.15,
+    "qty": 2
+   },
+   {
+    "sym": "AMZN",
+    "t": "2026-11-03T16:00:00",
+    "setup": "pullback 15m",
+    "dir": 1,
+    "pl": 259.2,
+    "r": 3.0,
+    "how": "target",
+    "zero": false,
+    "ask": 2.16,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-03T16:30:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": -94.4,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 1.18,
+    "qty": 2
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-04T14:45:00",
+    "setup": "crossover 15m",
+    "dir": 1,
+    "pl": 13.8,
+    "r": 0.25,
+    "how": "trailing stop",
+    "zero": true,
+    "ask": 1.38,
+    "qty": 1
+   },
+   {
+    "sym": "DIA",
+    "t": "2026-11-04T14:45:00",
+    "setup": "crossover 15m",
+    "dir": 1,
+    "pl": 39.48,
+    "r": 0.41,
+    "how": "trailing stop",
+    "zero": false,
+    "ask": 2.41,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-04T15:15:00",
+    "setup": "crossover 15m",
+    "dir": 1,
+    "pl": 8.19,
+    "r": 0.106,
+    "how": "trailing stop",
+    "zero": true,
+    "ask": 0.97,
+    "qty": 2
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-05T15:15:00",
+    "setup": "crossover 15m",
+    "dir": -1,
+    "pl": -77.6,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 0.97,
+    "qty": 2
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-05T15:30:00",
+    "setup": "crossover 15m",
+    "dir": -1,
+    "pl": 140.4,
+    "r": 1.5,
+    "how": "target",
+    "zero": true,
+    "ask": 1.17,
+    "qty": 2
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-05T15:45:00",
+    "setup": "crossover 15m",
+    "dir": -1,
+    "pl": -93.6,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 1.17,
+    "qty": 2
+   },
+   {
+    "sym": "DIA",
+    "t": "2026-11-05T17:00:00",
+    "setup": "crossover 15m",
+    "dir": -1,
+    "pl": 65.32,
+    "r": 0.683,
+    "how": "trailing stop",
+    "zero": false,
+    "ask": 2.39,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-06T15:15:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": 148.8,
+    "r": 1.5,
+    "how": "target",
+    "zero": true,
+    "ask": 1.24,
+    "qty": 2
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-06T15:30:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": -54.4,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 1.36,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-06T16:00:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": -50.8,
+    "r": -1.0,
+    "how": "stop",
+    "zero": true,
+    "ask": 1.27,
+    "qty": 1
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-06T17:00:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": 7.95,
+    "r": 0.105,
+    "how": "trailing stop",
+    "zero": true,
+    "ask": 0.95,
+    "qty": 2
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-06T17:30:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": 149.4,
+    "r": 1.5,
+    "how": "target",
+    "zero": true,
+    "ask": 0.83,
+    "qty": 3
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-06T17:45:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": 3.83,
+    "r": 0.053,
+    "how": "trailing stop",
+    "zero": true,
+    "ask": 0.9,
+    "qty": 2
+   },
+   {
+    "sym": "SPY",
+    "t": "2026-11-06T18:45:00",
+    "setup": "pullback 15m",
+    "dir": -1,
+    "pl": 41.89,
+    "r": 0.429,
+    "how": "end of day",
+    "zero": false,
+    "ask": 2.44,
+    "qty": 1
    }
   ],
-  "split_label": "Aug 31",
+  "split_label": "Sep 07",
   "first": {
-   "n": 289,
-   "win": 0.4463667820069204,
-   "avg": -0.2031107266435986,
-   "total": -58.699
+   "n": 281,
+   "win": 0.4412811387900356,
+   "avg": -0.21341637010676157,
+   "total": -59.97
   },
   "last": {
-   "n": 137,
-   "win": 0.43795620437956206,
-   "avg": -0.1962992700729927,
-   "total": -26.893
+   "n": 152,
+   "win": 0.46710526315789475,
+   "avg": -0.14366447368421054,
+   "total": -21.837
   },
   "officers": {
    "The Quant": {
     "yes": {
-     "n": 1001,
-     "win": 0.36863136863136864,
-     "avg": -0.41652547452547456,
-     "total": -416.942
+     "n": 1011,
+     "win": 0.3778437190900099,
+     "avg": -0.40509297725024723,
+     "total": -409.549
     },
     "no": {
-     "n": 438,
-     "win": 0.3721461187214612,
-     "avg": -0.3496187214611872,
-     "total": -153.133
+     "n": 433,
+     "win": 0.3810623556581986,
+     "avg": -0.3047505773672055,
+     "total": -131.957
     },
-    "diff": -0.06690675306428734,
-    "verdict": "no real effect"
+    "diff": -0.10034239988304172,
+    "verdict": "hurts"
    },
    "Risk": {
     "yes": {
-     "n": 1439,
-     "win": 0.36970118137595553,
-     "avg": -0.39616052814454483,
-     "total": -570.075
+     "n": 1444,
+     "win": 0.37880886426592797,
+     "avg": -0.37500415512465374,
+     "total": -541.506
     },
     "no": {
      "n": 0,
@@ -586,50 +586,50 @@
    },
    "Momentum": {
     "yes": {
-     "n": 1185,
-     "win": 0.3822784810126582,
-     "avg": -0.35783881856540084,
-     "total": -424.039
+     "n": 1194,
+     "win": 0.39195979899497485,
+     "avg": -0.3358458961474037,
+     "total": -401.0
     },
     "no": {
-     "n": 254,
-     "win": 0.3110236220472441,
-     "avg": -0.5749448818897638,
-     "total": -146.036
+     "n": 250,
+     "win": 0.316,
+     "avg": -0.562024,
+     "total": -140.506
     },
-    "diff": 0.21710606332436294,
+    "diff": 0.2261781038525963,
     "verdict": "helps"
    },
    "Time": {
     "yes": {
-     "n": 1369,
-     "win": 0.36523009495982467,
-     "avg": -0.40443097151205265,
-     "total": -553.666
+     "n": 1361,
+     "win": 0.3747244673034533,
+     "avg": -0.380921381337252,
+     "total": -518.434
     },
     "no": {
-     "n": 70,
-     "win": 0.45714285714285713,
-     "avg": -0.2344142857142857,
-     "total": -16.409
+     "n": 83,
+     "win": 0.4457831325301205,
+     "avg": -0.27797590361445784,
+     "total": -23.072
     },
-    "diff": -0.17001668579776696,
+    "diff": -0.10294547772279417,
     "verdict": "hurts"
    },
    "Doubt": {
     "yes": {
-     "n": 674,
-     "win": 0.34124629080118696,
-     "avg": -0.49760682492581604,
-     "total": -335.387
+     "n": 689,
+     "win": 0.3483309143686502,
+     "avg": -0.48798113207547167,
+     "total": -336.219
     },
     "no": {
-     "n": 765,
-     "win": 0.39477124183006534,
-     "avg": -0.3067816993464052,
-     "total": -234.688
+     "n": 755,
+     "win": 0.4066225165562914,
+     "avg": -0.27190331125827816,
+     "total": -205.287
     },
-    "diff": -0.19082512557941084,
+    "diff": -0.2160778208171935,
     "verdict": "hurts"
    },
    "The Reporter": {
@@ -650,122 +650,124 @@
    }
   },
   "take_all": {
-   "n": 1439,
-   "win": 0.36970118137595553,
-   "avg": -0.39616052814454483,
-   "total": -570.075
+   "n": 1444,
+   "win": 0.37880886426592797,
+   "avg": -0.37500415512465374,
+   "total": -541.506
   },
   "council": {
-   "n": 1421,
-   "win": 0.36875439831104856,
-   "avg": -0.400615763546798,
-   "total": -569.275
+   "n": 1428,
+   "win": 0.37815126050420167,
+   "avg": -0.3786022408963585,
+   "total": -540.644
   },
   "rejected": {
-   "n": 18,
-   "win": 0.4444444444444444,
-   "avg": -0.04444444444444444,
-   "total": -0.7999999999999999
+   "n": 16,
+   "win": 0.4375,
+   "avg": -0.05387499999999999,
+   "total": -0.8619999999999999
   },
   "groups": {
    "setup": {
     "pullback 15m": {
-     "n": 298,
-     "win": 0.412751677852349,
-     "avg": -0.23521140939597315,
-     "total": -70.093
+     "n": 301,
+     "win": 0.4219269102990033,
+     "avg": -0.22144850498338872,
+     "total": -66.656
     },
     "crossover 15m": {
-     "n": 128,
-     "win": 0.515625,
-     "avg": -0.1210859375,
-     "total": -15.499
+     "n": 132,
+     "win": 0.5151515151515151,
+     "avg": -0.11478030303030302,
+     "total": -15.151
     }
    },
    "sym": {
     "SPY": {
-     "n": 216,
-     "win": 0.4444444444444444,
-     "avg": -0.13215277777777779,
-     "total": -28.545
+     "n": 225,
+     "win": 0.4488888888888889,
+     "avg": -0.13548888888888888,
+     "total": -30.485
     },
     "DIA": {
      "n": 125,
-     "win": 0.456,
-     "avg": -0.204088,
-     "total": -25.511
+     "win": 0.464,
+     "avg": -0.195432,
+     "total": -24.429
     },
     "AMZN": {
-     "n": 85,
-     "win": 0.4235294117647059,
-     "avg": -0.3710117647058824,
-     "total": -31.536
+     "n": 83,
+     "win": 0.43373493975903615,
+     "avg": -0.3240120481927711,
+     "total": -26.893
     }
    },
    "kind": {
     "same-day (0DTE)": {
-     "n": 182,
-     "win": 0.44505494505494503,
-     "avg": -0.07203296703296704,
-     "total": -13.11
+     "n": 190,
+     "win": 0.4473684210526316,
+     "avg": -0.08146842105263158,
+     "total": -15.479
     },
     "weeklies": {
-     "n": 244,
-     "win": 0.4426229508196721,
-     "avg": -0.29705737704918034,
-     "total": -72.482
+     "n": 243,
+     "win": 0.45267489711934156,
+     "avg": -0.27295473251028807,
+     "total": -66.328
     }
    },
    "exit": {
-    "stop": {
-     "n": 214,
-     "win": 0.0,
-     "avg": -1.0748504672897197,
-     "total": -230.018
-    },
-    "trailing stop": {
-     "n": 133,
-     "win": 0.9022556390977443,
-     "avg": 0.3895263157894737,
-     "total": 51.807
-    },
-    "target": {
-     "n": 54,
-     "win": 1.0,
-     "avg": 1.6597222222222223,
-     "total": 89.625
-    },
-    "end of day": {
-     "n": 21,
-     "win": 0.5238095238095238,
-     "avg": 0.07661904761904761,
-     "total": 1.609
-    },
     "breakeven": {
      "n": 4,
      "win": 1.0,
      "avg": 0.34625,
      "total": 1.385
+    },
+    "stop": {
+     "n": 216,
+     "win": 0.0,
+     "avg": -1.0724027777777778,
+     "total": -231.639
+    },
+    "target": {
+     "n": 57,
+     "win": 1.0,
+     "avg": 1.6513157894736843,
+     "total": 94.125
+    },
+    "trailing stop": {
+     "n": 135,
+     "win": 0.9037037037037037,
+     "avg": 0.38651851851851854,
+     "total": 52.18
+    },
+    "end of day": {
+     "n": 21,
+     "win": 0.5714285714285714,
+     "avg": 0.102,
+     "total": 2.142
     }
    }
   },
   "monthly": {
-   "2026-05": -1623.06,
+   "2026-05": -1309.41,
    "2026-06": -876.16,
    "2026-07": -1200.38,
    "2026-08": -1826.95,
    "2026-09": -1083.38,
-   "2026-10": -1355.15
+   "2026-10": -1355.15,
+   "2026-11": 188.26
   },
   "no_contract_by_sym": {
-   "AMZN": 167
+   "AMZN": 165
   },
   "advice": [
-   "The options council lost money in the replay (-0.20R a trade over 426 trades). Don't put real money on it as-is.",
-   "\"Sell by 3:40 daily, take profit early\" did better than the current rules (-0.10R vs -0.20R).",
-   "The council is NOT picking better setups than it skips (-0.40R approved vs -0.04R rejected).",
-   "Time hurts: his YES setups did 0.17R worse than his NO setups.",
-   "Doubt hurts: his YES setups did 0.19R worse than his NO setups."
+   "The options council lost money in the replay (-0.19R a trade over 433 trades). Don't put real money on it as-is.",
+   "\"Sell by 3:40 daily, take profit early\" did better than the current rules (-0.10R vs -0.19R).",
+   "The council is NOT picking better setups than it skips (-0.38R approved vs -0.05R rejected).",
+   "The Quant hurts: his YES setups did 0.10R worse than his NO setups.",
+   "Time hurts: his YES setups did 0.10R worse than his NO setups.",
+   "Doubt hurts: his YES setups did 0.22R worse than his NO setups."
   ]
  }
 }
