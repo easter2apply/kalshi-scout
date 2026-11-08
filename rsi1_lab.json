@@ -1,0 +1,86 @@
+{
+ "how": "RSI(1) Lab: backtest of the Vault RSI(1) Signals indicator (same rules as the Pine script).\n\nOscillator: RSI(1) of close (Pine math: 100 if no down move, 0 if no up move), fast = EMA20 of it, slow = EMA30.\nBUY when fast crosses back above 8. SELL when fast crosses back below 91. (Option: fast must also be past slow.)\nEntry at the signal candle's close. Stop = lowest low (highest high) of the last 10 candles -/+ 0.25 ATR(14),\nnever closer than 1 ATR. A third off at TP1 (1R), TP2 (2R), TP3 (3R); stop to entry after TP1.\nAn opposite signal closes the trade at that close and flips. Stop is checked before targets inside a candle.\nCosts: crypto 0.04% of price per round trip; QQQ/GLD 2 cents per share.\nData: Alpaca 1-minute bars (BTC/USD 24/7 last 6 months; QQQ and GLD 9:30-4:00 ET last 12 months), built up to 5m/15m.\n",
+ "results": {
+  "Bitcoin \u00b7 1m \u00b7 As built (8/91, EMA 20/30)": {
+   "n": 0
+  },
+  "Bitcoin \u00b7 1m \u00b7 + fast must cross slow": {
+   "n": 0
+  },
+  "Bitcoin \u00b7 1m \u00b7 All out at TP1 (1R)": {
+   "n": 0
+  },
+  "Bitcoin \u00b7 1m \u00b7 No breakeven move": {
+   "n": 0
+  },
+  "Bitcoin \u00b7 1m \u00b7 Tighter zones 5/95": {
+   "n": 0
+  },
+  "Bitcoin \u00b7 5m \u00b7 As built (8/91, EMA 20/30)": {
+   "n": 0
+  },
+  "Bitcoin \u00b7 5m \u00b7 All out at TP1 (1R)": {
+   "n": 0
+  },
+  "Bitcoin \u00b7 15m \u00b7 As built (8/91, EMA 20/30)": {
+   "n": 0
+  },
+  "Bitcoin \u00b7 15m \u00b7 All out at TP1 (1R)": {
+   "n": 0
+  },
+  "Nasdaq (QQQ) \u00b7 1m \u00b7 As built (8/91, EMA 20/30)": {
+   "n": 0
+  },
+  "Nasdaq (QQQ) \u00b7 1m \u00b7 + fast must cross slow": {
+   "n": 0
+  },
+  "Nasdaq (QQQ) \u00b7 1m \u00b7 All out at TP1 (1R)": {
+   "n": 0
+  },
+  "Nasdaq (QQQ) \u00b7 1m \u00b7 No breakeven move": {
+   "n": 0
+  },
+  "Nasdaq (QQQ) \u00b7 1m \u00b7 Tighter zones 5/95": {
+   "n": 0
+  },
+  "Nasdaq (QQQ) \u00b7 5m \u00b7 As built (8/91, EMA 20/30)": {
+   "n": 0
+  },
+  "Nasdaq (QQQ) \u00b7 5m \u00b7 All out at TP1 (1R)": {
+   "n": 0
+  },
+  "Nasdaq (QQQ) \u00b7 15m \u00b7 As built (8/91, EMA 20/30)": {
+   "n": 0
+  },
+  "Nasdaq (QQQ) \u00b7 15m \u00b7 All out at TP1 (1R)": {
+   "n": 0
+  },
+  "Gold (GLD) \u00b7 1m \u00b7 As built (8/91, EMA 20/30)": {
+   "n": 0
+  },
+  "Gold (GLD) \u00b7 1m \u00b7 + fast must cross slow": {
+   "n": 0
+  },
+  "Gold (GLD) \u00b7 1m \u00b7 All out at TP1 (1R)": {
+   "n": 0
+  },
+  "Gold (GLD) \u00b7 1m \u00b7 No breakeven move": {
+   "n": 0
+  },
+  "Gold (GLD) \u00b7 1m \u00b7 Tighter zones 5/95": {
+   "n": 0
+  },
+  "Gold (GLD) \u00b7 5m \u00b7 As built (8/91, EMA 20/30)": {
+   "n": 0
+  },
+  "Gold (GLD) \u00b7 5m \u00b7 All out at TP1 (1R)": {
+   "n": 0
+  },
+  "Gold (GLD) \u00b7 15m \u00b7 As built (8/91, EMA 20/30)": {
+   "n": 0
+  },
+  "Gold (GLD) \u00b7 15m \u00b7 All out at TP1 (1R)": {
+   "n": 0
+  }
+ }
+}
