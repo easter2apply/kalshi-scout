@@ -6966,10 +6966,6 @@
  ],
  "errors": [
   {
-   "t": 1792205414.1986597,
-   "text": "Run failed: 'QQQ'"
-  },
-  {
    "t": 1792205715.0592587,
    "text": "Run failed: 'QQQ'"
   },
@@ -7044,6 +7040,10 @@
   {
    "t": 1794057012.007705,
    "text": "ALPACA: couldn't open the account (500: {\"code\":50010000,\"message\":\"internal server error occurred\"})"
+  },
+  {
+   "t": 1794129637.5518906,
+   "text": "Run failed: The read operation timed out"
   }
  ],
  "feed": [
