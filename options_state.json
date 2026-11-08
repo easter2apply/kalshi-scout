@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794127810.490867
+  "updated": 1794128112.475848
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -8922,9 +8922,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-06",
- "last_deploy": 1794127212.622942,
- "last_full_run": 1794127810.490867,
- "last_run": 1794127810.490867,
+ "last_deploy": 1794128113.9474247,
+ "last_full_run": 1794128112.475848,
+ "last_run": 1794128112.475848,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -9879,102 +9879,32 @@
  "news": {
   "events": [
    {
-    "cur": "AUD",
-    "t": 1793676600.0,
-    "title": "Cash Rate"
-   },
-   {
-    "cur": "AUD",
-    "t": 1793676600.0,
-    "title": "RBA Monetary Policy Statement"
-   },
-   {
-    "cur": "AUD",
-    "t": 1793676600.0,
-    "title": "RBA Rate Statement"
-   },
-   {
-    "cur": "AUD",
-    "t": 1793680200.0,
-    "title": "RBA Press Conference"
+    "cur": "USD",
+    "t": 1794317400.0,
+    "title": "Core CPI m/m"
    },
    {
     "cur": "USD",
-    "t": 1793718960.0,
-    "title": "Congressional Elections"
-   },
-   {
-    "cur": "NZD",
-    "t": 1793742300.0,
-    "title": "Employment Change q/q"
-   },
-   {
-    "cur": "NZD",
-    "t": 1793742300.0,
-    "title": "Unemployment Rate"
+    "t": 1794317400.0,
+    "title": "CPI m/m"
    },
    {
     "cur": "GBP",
-    "t": 1793880000.0,
-    "title": "BOE Monetary Policy Report"
-   },
-   {
-    "cur": "GBP",
-    "t": 1793880000.0,
-    "title": "Monetary Policy Summary"
-   },
-   {
-    "cur": "GBP",
-    "t": 1793880000.0,
-    "title": "MPC Official Bank Rate Votes"
-   },
-   {
-    "cur": "GBP",
-    "t": 1793880000.0,
-    "title": "Official Bank Rate"
-   },
-   {
-    "cur": "GBP",
-    "t": 1793881800.0,
-    "title": "BOE Gov Bailey Speaks"
-   },
-   {
-    "cur": "CAD",
-    "t": 1793971800.0,
-    "title": "Employment Change"
-   },
-   {
-    "cur": "CAD",
-    "t": 1793971800.0,
-    "title": "Unemployment Rate"
+    "t": 1794466800.0,
+    "title": "GDP m/m"
    },
    {
     "cur": "USD",
-    "t": 1793971800.0,
-    "title": "Average Hourly Earnings m/m"
+    "t": 1794576600.0,
+    "title": "Core PPI m/m"
    },
    {
     "cur": "USD",
-    "t": 1793971800.0,
-    "title": "Non-Farm Employment Change"
-   },
-   {
-    "cur": "USD",
-    "t": 1793971800.0,
-    "title": "Unemployment Rate"
-   },
-   {
-    "cur": "JPY",
-    "t": 1793980800.0,
-    "title": "BOJ Gov Ueda Speaks"
-   },
-   {
-    "cur": "NZD",
-    "t": 1794001500.0,
-    "title": "Parliamentary Elections"
+    "t": 1794576600.0,
+    "title": "PPI m/m"
    }
   ],
-  "fetched": 1794106211.3289661
+  "fetched": 1794128113.873821
  },
  "old_records": [
   {
