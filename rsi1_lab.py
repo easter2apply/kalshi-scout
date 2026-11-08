@@ -148,10 +148,11 @@ def summ(tr, split, weeks):
 
 VERSIONS = {
     "As built (8/91, EMA 20/30)": {},
-    "+ fast must cross slow": {"x": True},
-    "All out at TP1 (1R)": {"tps": (1,)},
-    "No breakeven move": {"be": False},
-    "Tighter zones 5/95": {"buy": 5, "sell": 95},
+    "EMA 3/5 (8/91)": {"fast": 3, "slow": 5},
+    "EMA 5/8 (8/91)": {"fast": 5, "slow": 8},
+    "EMA 8/13 (8/91)": {"fast": 8, "slow": 13},
+    "EMA 5/8 + cross": {"fast": 5, "slow": 8, "x": True},
+    "EMA 5/8 · all out TP1": {"fast": 5, "slow": 8, "tps": (1,)},
 }
 
 
@@ -168,8 +169,6 @@ def main():
         for tf in (1, 5, 15):
             b = agg(m1, tf, crypto)
             for vn, v in VERSIONS.items():
-                if tf != 1 and vn not in ("As built (8/91, EMA 20/30)", "All out at TP1 (1R)"):
-                    continue
                 key = f"{name} · {tf}m · {vn}"
                 s = summ(run(b, crypto, v), split, weeks)
                 rep["results"][key] = s
