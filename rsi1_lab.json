@@ -4,83 +4,659 @@
   "Bitcoin \u00b7 1m \u00b7 As built (8/91, EMA 20/30)": {
    "n": 0
   },
-  "Bitcoin \u00b7 1m \u00b7 + fast must cross slow": {
-   "n": 0
+  "Bitcoin \u00b7 1m \u00b7 EMA 3/5 (8/91)": {
+   "n": 18084,
+   "per_day": 139.1,
+   "win": 0.318,
+   "tp1": 0.44,
+   "tp3": 0.072,
+   "avg_r": -0.59,
+   "before_cost": -0.02,
+   "total_r": -10667.3,
+   "t": -72.18,
+   "worst_streak": 35,
+   "train": -0.543,
+   "unseen": -0.673
   },
-  "Bitcoin \u00b7 1m \u00b7 All out at TP1 (1R)": {
-   "n": 0
+  "Bitcoin \u00b7 1m \u00b7 EMA 5/8 (8/91)": {
+   "n": 5142,
+   "per_day": 39.6,
+   "win": 0.307,
+   "tp1": 0.493,
+   "tp3": 0.134,
+   "avg_r": -0.576,
+   "before_cost": -0.002,
+   "total_r": -2960.3,
+   "t": -35.22,
+   "worst_streak": 30,
+   "train": -0.519,
+   "unseen": -0.662
   },
-  "Bitcoin \u00b7 1m \u00b7 No breakeven move": {
-   "n": 0
+  "Bitcoin \u00b7 1m \u00b7 EMA 8/13 (8/91)": {
+   "n": 766,
+   "per_day": 5.9,
+   "win": 0.305,
+   "tp1": 0.5,
+   "tp3": 0.134,
+   "avg_r": -0.59,
+   "before_cost": -0.036,
+   "total_r": -452.1,
+   "t": -14.2,
+   "worst_streak": 14,
+   "train": -0.488,
+   "unseen": -0.727
   },
-  "Bitcoin \u00b7 1m \u00b7 Tighter zones 5/95": {
-   "n": 0
+  "Bitcoin \u00b7 1m \u00b7 EMA 5/8 + cross": {
+   "n": 5142,
+   "per_day": 39.6,
+   "win": 0.307,
+   "tp1": 0.493,
+   "tp3": 0.134,
+   "avg_r": -0.576,
+   "before_cost": -0.002,
+   "total_r": -2960.3,
+   "t": -35.22,
+   "worst_streak": 30,
+   "train": -0.519,
+   "unseen": -0.662
+  },
+  "Bitcoin \u00b7 1m \u00b7 EMA 5/8 \u00b7 all out TP1": {
+   "n": 5207,
+   "per_day": 40.1,
+   "win": 0.454,
+   "tp1": 0.492,
+   "tp3": 0.0,
+   "avg_r": -0.574,
+   "before_cost": -0.0,
+   "total_r": -2991.0,
+   "t": -38.86,
+   "worst_streak": 29,
+   "train": -0.498,
+   "unseen": -0.692
   },
   "Bitcoin \u00b7 5m \u00b7 As built (8/91, EMA 20/30)": {
    "n": 0
   },
-  "Bitcoin \u00b7 5m \u00b7 All out at TP1 (1R)": {
-   "n": 0
+  "Bitcoin \u00b7 5m \u00b7 EMA 3/5 (8/91)": {
+   "n": 3760,
+   "per_day": 28.9,
+   "win": 0.443,
+   "tp1": 0.424,
+   "tp3": 0.067,
+   "avg_r": -0.272,
+   "before_cost": -0.023,
+   "total_r": -1021.2,
+   "t": -16.07,
+   "worst_streak": 21,
+   "train": -0.274,
+   "unseen": -0.266
+  },
+  "Bitcoin \u00b7 5m \u00b7 EMA 5/8 (8/91)": {
+   "n": 1019,
+   "per_day": 7.8,
+   "win": 0.45,
+   "tp1": 0.5,
+   "tp3": 0.123,
+   "avg_r": -0.242,
+   "before_cost": 0.003,
+   "total_r": -246.8,
+   "t": -6.96,
+   "worst_streak": 10,
+   "train": -0.245,
+   "unseen": -0.236
+  },
+  "Bitcoin \u00b7 5m \u00b7 EMA 8/13 (8/91)": {
+   "n": 140,
+   "per_day": 1.1,
+   "win": 0.493,
+   "tp1": 0.543,
+   "tp3": 0.157,
+   "avg_r": -0.156,
+   "before_cost": 0.082,
+   "total_r": -21.9,
+   "t": -1.65,
+   "worst_streak": 5,
+   "train": -0.188,
+   "unseen": -0.079
+  },
+  "Bitcoin \u00b7 5m \u00b7 EMA 5/8 + cross": {
+   "n": 1019,
+   "per_day": 7.8,
+   "win": 0.45,
+   "tp1": 0.5,
+   "tp3": 0.123,
+   "avg_r": -0.242,
+   "before_cost": 0.003,
+   "total_r": -246.8,
+   "t": -6.96,
+   "worst_streak": 10,
+   "train": -0.245,
+   "unseen": -0.236
+  },
+  "Bitcoin \u00b7 5m \u00b7 EMA 5/8 \u00b7 all out TP1": {
+   "n": 1031,
+   "per_day": 7.9,
+   "win": 0.516,
+   "tp1": 0.502,
+   "tp3": 0.0,
+   "avg_r": -0.216,
+   "before_cost": 0.029,
+   "total_r": -223.2,
+   "t": -6.9,
+   "worst_streak": 10,
+   "train": -0.207,
+   "unseen": -0.234
   },
   "Bitcoin \u00b7 15m \u00b7 As built (8/91, EMA 20/30)": {
    "n": 0
   },
-  "Bitcoin \u00b7 15m \u00b7 All out at TP1 (1R)": {
-   "n": 0
+  "Bitcoin \u00b7 15m \u00b7 EMA 3/5 (8/91)": {
+   "n": 1243,
+   "per_day": 9.6,
+   "win": 0.488,
+   "tp1": 0.42,
+   "tp3": 0.072,
+   "avg_r": -0.158,
+   "before_cost": -0.02,
+   "total_r": -195.8,
+   "t": -5.39,
+   "worst_streak": 9,
+   "train": -0.159,
+   "unseen": -0.154
+  },
+  "Bitcoin \u00b7 15m \u00b7 EMA 5/8 (8/91)": {
+   "n": 302,
+   "per_day": 2.3,
+   "win": 0.513,
+   "tp1": 0.517,
+   "tp3": 0.142,
+   "avg_r": -0.086,
+   "before_cost": 0.052,
+   "total_r": -25.9,
+   "t": -1.34,
+   "worst_streak": 8,
+   "train": -0.107,
+   "unseen": -0.043
+  },
+  "Bitcoin \u00b7 15m \u00b7 EMA 8/13 (8/91)": {
+   "n": 42,
+   "per_day": 0.3,
+   "win": 0.381,
+   "tp1": 0.405,
+   "tp3": 0.19,
+   "avg_r": -0.262,
+   "before_cost": -0.127,
+   "total_r": -11.0,
+   "t": -1.46,
+   "worst_streak": 4,
+   "train": -0.224,
+   "unseen": -0.308
+  },
+  "Bitcoin \u00b7 15m \u00b7 EMA 5/8 + cross": {
+   "n": 302,
+   "per_day": 2.3,
+   "win": 0.513,
+   "tp1": 0.517,
+   "tp3": 0.142,
+   "avg_r": -0.086,
+   "before_cost": 0.052,
+   "total_r": -25.9,
+   "t": -1.34,
+   "worst_streak": 8,
+   "train": -0.107,
+   "unseen": -0.043
+  },
+  "Bitcoin \u00b7 15m \u00b7 EMA 5/8 \u00b7 all out TP1": {
+   "n": 308,
+   "per_day": 2.4,
+   "win": 0.532,
+   "tp1": 0.519,
+   "tp3": 0.0,
+   "avg_r": -0.078,
+   "before_cost": 0.06,
+   "total_r": -24.0,
+   "t": -1.38,
+   "worst_streak": 8,
+   "train": -0.095,
+   "unseen": -0.044
   },
   "Nasdaq (QQQ) \u00b7 1m \u00b7 As built (8/91, EMA 20/30)": {
    "n": 0
   },
-  "Nasdaq (QQQ) \u00b7 1m \u00b7 + fast must cross slow": {
-   "n": 0
+  "Nasdaq (QQQ) \u00b7 1m \u00b7 EMA 3/5 (8/91)": {
+   "n": 7374,
+   "per_day": 28.3,
+   "win": 0.519,
+   "tp1": 0.465,
+   "tp3": 0.078,
+   "avg_r": -0.024,
+   "before_cost": 0.026,
+   "total_r": -174.9,
+   "t": -1.91,
+   "worst_streak": 17,
+   "train": -0.026,
+   "unseen": -0.019
   },
-  "Nasdaq (QQQ) \u00b7 1m \u00b7 All out at TP1 (1R)": {
-   "n": 0
+  "Nasdaq (QQQ) \u00b7 1m \u00b7 EMA 5/8 (8/91)": {
+   "n": 2201,
+   "per_day": 8.4,
+   "win": 0.51,
+   "tp1": 0.506,
+   "tp3": 0.141,
+   "avg_r": -0.035,
+   "before_cost": 0.016,
+   "total_r": -76.8,
+   "t": -1.46,
+   "worst_streak": 12,
+   "train": -0.028,
+   "unseen": -0.049
   },
-  "Nasdaq (QQQ) \u00b7 1m \u00b7 No breakeven move": {
-   "n": 0
+  "Nasdaq (QQQ) \u00b7 1m \u00b7 EMA 8/13 (8/91)": {
+   "n": 416,
+   "per_day": 1.6,
+   "win": 0.452,
+   "tp1": 0.45,
+   "tp3": 0.144,
+   "avg_r": -0.136,
+   "before_cost": -0.09,
+   "total_r": -56.8,
+   "t": -2.5,
+   "worst_streak": 8,
+   "train": -0.141,
+   "unseen": -0.125
   },
-  "Nasdaq (QQQ) \u00b7 1m \u00b7 Tighter zones 5/95": {
-   "n": 0
+  "Nasdaq (QQQ) \u00b7 1m \u00b7 EMA 5/8 + cross": {
+   "n": 2201,
+   "per_day": 8.4,
+   "win": 0.51,
+   "tp1": 0.506,
+   "tp3": 0.141,
+   "avg_r": -0.035,
+   "before_cost": 0.016,
+   "total_r": -76.8,
+   "t": -1.46,
+   "worst_streak": 12,
+   "train": -0.028,
+   "unseen": -0.049
+  },
+  "Nasdaq (QQQ) \u00b7 1m \u00b7 EMA 5/8 \u00b7 all out TP1": {
+   "n": 2227,
+   "per_day": 8.5,
+   "win": 0.511,
+   "tp1": 0.507,
+   "tp3": 0.0,
+   "avg_r": -0.029,
+   "before_cost": 0.021,
+   "total_r": -65.5,
+   "t": -1.39,
+   "worst_streak": 12,
+   "train": -0.03,
+   "unseen": -0.029
   },
   "Nasdaq (QQQ) \u00b7 5m \u00b7 As built (8/91, EMA 20/30)": {
    "n": 0
   },
-  "Nasdaq (QQQ) \u00b7 5m \u00b7 All out at TP1 (1R)": {
-   "n": 0
+  "Nasdaq (QQQ) \u00b7 5m \u00b7 EMA 3/5 (8/91)": {
+   "n": 1431,
+   "per_day": 5.5,
+   "win": 0.505,
+   "tp1": 0.42,
+   "tp3": 0.057,
+   "avg_r": -0.025,
+   "before_cost": -0.006,
+   "total_r": -36.1,
+   "t": -0.93,
+   "worst_streak": 14,
+   "train": -0.009,
+   "unseen": -0.058
+  },
+  "Nasdaq (QQQ) \u00b7 5m \u00b7 EMA 5/8 (8/91)": {
+   "n": 450,
+   "per_day": 1.7,
+   "win": 0.527,
+   "tp1": 0.507,
+   "tp3": 0.118,
+   "avg_r": 0.032,
+   "before_cost": 0.052,
+   "total_r": 14.3,
+   "t": 0.62,
+   "worst_streak": 11,
+   "train": 0.043,
+   "unseen": 0.008
+  },
+  "Nasdaq (QQQ) \u00b7 5m \u00b7 EMA 8/13 (8/91)": {
+   "n": 85,
+   "per_day": 0.3,
+   "win": 0.471,
+   "tp1": 0.459,
+   "tp3": 0.165,
+   "avg_r": -0.032,
+   "before_cost": -0.011,
+   "total_r": -2.7,
+   "t": -0.26,
+   "worst_streak": 6,
+   "train": 0.053,
+   "unseen": -0.206
+  },
+  "Nasdaq (QQQ) \u00b7 5m \u00b7 EMA 5/8 + cross": {
+   "n": 450,
+   "per_day": 1.7,
+   "win": 0.527,
+   "tp1": 0.507,
+   "tp3": 0.118,
+   "avg_r": 0.032,
+   "before_cost": 0.052,
+   "total_r": 14.3,
+   "t": 0.62,
+   "worst_streak": 11,
+   "train": 0.043,
+   "unseen": 0.008
+  },
+  "Nasdaq (QQQ) \u00b7 5m \u00b7 EMA 5/8 \u00b7 all out TP1": {
+   "n": 455,
+   "per_day": 1.7,
+   "win": 0.53,
+   "tp1": 0.51,
+   "tp3": 0.0,
+   "avg_r": 0.041,
+   "before_cost": 0.061,
+   "total_r": 18.7,
+   "t": 0.89,
+   "worst_streak": 11,
+   "train": 0.086,
+   "unseen": -0.056
   },
   "Nasdaq (QQQ) \u00b7 15m \u00b7 As built (8/91, EMA 20/30)": {
    "n": 0
   },
-  "Nasdaq (QQQ) \u00b7 15m \u00b7 All out at TP1 (1R)": {
-   "n": 0
+  "Nasdaq (QQQ) \u00b7 15m \u00b7 EMA 3/5 (8/91)": {
+   "n": 480,
+   "per_day": 1.8,
+   "win": 0.473,
+   "tp1": 0.302,
+   "tp3": 0.019,
+   "avg_r": -0.05,
+   "before_cost": -0.04,
+   "total_r": -24.0,
+   "t": -1.26,
+   "worst_streak": 7,
+   "train": -0.021,
+   "unseen": -0.105
+  },
+  "Nasdaq (QQQ) \u00b7 15m \u00b7 EMA 5/8 (8/91)": {
+   "n": 150,
+   "per_day": 0.6,
+   "win": 0.453,
+   "tp1": 0.387,
+   "tp3": 0.04,
+   "avg_r": -0.018,
+   "before_cost": -0.007,
+   "total_r": -2.7,
+   "t": -0.23,
+   "worst_streak": 10,
+   "train": -0.034,
+   "unseen": 0.01
+  },
+  "Nasdaq (QQQ) \u00b7 15m \u00b7 EMA 8/13 (8/91)": {
+   "n": 25,
+   "per_day": 0.1,
+   "win": 0.36,
+   "tp1": 0.2,
+   "tp3": 0.04,
+   "avg_r": -0.234,
+   "before_cost": -0.223,
+   "total_r": -5.9,
+   "t": -1.39,
+   "worst_streak": 6,
+   "train": -0.149,
+   "unseen": -0.454
+  },
+  "Nasdaq (QQQ) \u00b7 15m \u00b7 EMA 5/8 + cross": {
+   "n": 150,
+   "per_day": 0.6,
+   "win": 0.453,
+   "tp1": 0.387,
+   "tp3": 0.04,
+   "avg_r": -0.018,
+   "before_cost": -0.007,
+   "total_r": -2.7,
+   "t": -0.23,
+   "worst_streak": 10,
+   "train": -0.034,
+   "unseen": 0.01
+  },
+  "Nasdaq (QQQ) \u00b7 15m \u00b7 EMA 5/8 \u00b7 all out TP1": {
+   "n": 150,
+   "per_day": 0.6,
+   "win": 0.453,
+   "tp1": 0.387,
+   "tp3": 0.0,
+   "avg_r": -0.012,
+   "before_cost": -0.002,
+   "total_r": -1.9,
+   "t": -0.17,
+   "worst_streak": 10,
+   "train": -0.027,
+   "unseen": 0.013
   },
   "Gold (GLD) \u00b7 1m \u00b7 As built (8/91, EMA 20/30)": {
    "n": 0
   },
-  "Gold (GLD) \u00b7 1m \u00b7 + fast must cross slow": {
-   "n": 0
+  "Gold (GLD) \u00b7 1m \u00b7 EMA 3/5 (8/91)": {
+   "n": 7082,
+   "per_day": 27.2,
+   "win": 0.506,
+   "tp1": 0.452,
+   "tp3": 0.082,
+   "avg_r": -0.066,
+   "before_cost": 0.015,
+   "total_r": -464.7,
+   "t": -5.17,
+   "worst_streak": 10,
+   "train": -0.073,
+   "unseen": -0.051
   },
-  "Gold (GLD) \u00b7 1m \u00b7 All out at TP1 (1R)": {
-   "n": 0
+  "Gold (GLD) \u00b7 1m \u00b7 EMA 5/8 (8/91)": {
+   "n": 1988,
+   "per_day": 7.6,
+   "win": 0.499,
+   "tp1": 0.489,
+   "tp3": 0.138,
+   "avg_r": -0.081,
+   "before_cost": -0.0,
+   "total_r": -161.4,
+   "t": -3.23,
+   "worst_streak": 12,
+   "train": -0.07,
+   "unseen": -0.102
   },
-  "Gold (GLD) \u00b7 1m \u00b7 No breakeven move": {
-   "n": 0
+  "Gold (GLD) \u00b7 1m \u00b7 EMA 8/13 (8/91)": {
+   "n": 331,
+   "per_day": 1.3,
+   "win": 0.498,
+   "tp1": 0.492,
+   "tp3": 0.148,
+   "avg_r": -0.077,
+   "before_cost": 0.0,
+   "total_r": -25.6,
+   "t": -1.24,
+   "worst_streak": 6,
+   "train": -0.016,
+   "unseen": -0.203
   },
-  "Gold (GLD) \u00b7 1m \u00b7 Tighter zones 5/95": {
-   "n": 0
+  "Gold (GLD) \u00b7 1m \u00b7 EMA 5/8 + cross": {
+   "n": 1988,
+   "per_day": 7.6,
+   "win": 0.499,
+   "tp1": 0.489,
+   "tp3": 0.138,
+   "avg_r": -0.081,
+   "before_cost": -0.0,
+   "total_r": -161.4,
+   "t": -3.23,
+   "worst_streak": 12,
+   "train": -0.07,
+   "unseen": -0.102
+  },
+  "Gold (GLD) \u00b7 1m \u00b7 EMA 5/8 \u00b7 all out TP1": {
+   "n": 2012,
+   "per_day": 7.7,
+   "win": 0.499,
+   "tp1": 0.49,
+   "tp3": 0.0,
+   "avg_r": -0.088,
+   "before_cost": -0.007,
+   "total_r": -177.5,
+   "t": -3.97,
+   "worst_streak": 12,
+   "train": -0.07,
+   "unseen": -0.123
   },
   "Gold (GLD) \u00b7 5m \u00b7 As built (8/91, EMA 20/30)": {
    "n": 0
   },
-  "Gold (GLD) \u00b7 5m \u00b7 All out at TP1 (1R)": {
-   "n": 0
+  "Gold (GLD) \u00b7 5m \u00b7 EMA 3/5 (8/91)": {
+   "n": 1385,
+   "per_day": 5.3,
+   "win": 0.535,
+   "tp1": 0.422,
+   "tp3": 0.053,
+   "avg_r": 0.004,
+   "before_cost": 0.035,
+   "total_r": 6.2,
+   "t": 0.17,
+   "worst_streak": 9,
+   "train": -0.004,
+   "unseen": 0.022
+  },
+  "Gold (GLD) \u00b7 5m \u00b7 EMA 5/8 (8/91)": {
+   "n": 379,
+   "per_day": 1.5,
+   "win": 0.485,
+   "tp1": 0.454,
+   "tp3": 0.1,
+   "avg_r": -0.069,
+   "before_cost": -0.037,
+   "total_r": -26.3,
+   "t": -1.26,
+   "worst_streak": 9,
+   "train": -0.092,
+   "unseen": -0.035
+  },
+  "Gold (GLD) \u00b7 5m \u00b7 EMA 8/13 (8/91)": {
+   "n": 63,
+   "per_day": 0.2,
+   "win": 0.46,
+   "tp1": 0.413,
+   "tp3": 0.048,
+   "avg_r": -0.157,
+   "before_cost": -0.126,
+   "total_r": -9.9,
+   "t": -1.23,
+   "worst_streak": 5,
+   "train": -0.145,
+   "unseen": -0.173
+  },
+  "Gold (GLD) \u00b7 5m \u00b7 EMA 5/8 + cross": {
+   "n": 379,
+   "per_day": 1.5,
+   "win": 0.485,
+   "tp1": 0.454,
+   "tp3": 0.1,
+   "avg_r": -0.069,
+   "before_cost": -0.037,
+   "total_r": -26.3,
+   "t": -1.26,
+   "worst_streak": 9,
+   "train": -0.092,
+   "unseen": -0.035
+  },
+  "Gold (GLD) \u00b7 5m \u00b7 EMA 5/8 \u00b7 all out TP1": {
+   "n": 381,
+   "per_day": 1.5,
+   "win": 0.488,
+   "tp1": 0.457,
+   "tp3": 0.0,
+   "avg_r": -0.054,
+   "before_cost": -0.021,
+   "total_r": -20.5,
+   "t": -1.08,
+   "worst_streak": 9,
+   "train": -0.08,
+   "unseen": -0.014
   },
   "Gold (GLD) \u00b7 15m \u00b7 As built (8/91, EMA 20/30)": {
    "n": 0
   },
-  "Gold (GLD) \u00b7 15m \u00b7 All out at TP1 (1R)": {
-   "n": 0
+  "Gold (GLD) \u00b7 15m \u00b7 EMA 3/5 (8/91)": {
+   "n": 468,
+   "per_day": 1.8,
+   "win": 0.506,
+   "tp1": 0.288,
+   "tp3": 0.028,
+   "avg_r": 0.019,
+   "before_cost": 0.034,
+   "total_r": 8.7,
+   "t": 0.49,
+   "worst_streak": 7,
+   "train": -0.015,
+   "unseen": 0.082
+  },
+  "Gold (GLD) \u00b7 15m \u00b7 EMA 5/8 (8/91)": {
+   "n": 131,
+   "per_day": 0.5,
+   "win": 0.427,
+   "tp1": 0.305,
+   "tp3": 0.015,
+   "avg_r": -0.097,
+   "before_cost": -0.082,
+   "total_r": -12.8,
+   "t": -1.4,
+   "worst_streak": 7,
+   "train": -0.18,
+   "unseen": 0.065
+  },
+  "Gold (GLD) \u00b7 15m \u00b7 EMA 8/13 (8/91)": {
+   "n": 23,
+   "per_day": 0.1,
+   "win": 0.391,
+   "tp1": 0.348,
+   "tp3": 0.043,
+   "avg_r": 0.019,
+   "before_cost": 0.035,
+   "total_r": 0.4,
+   "t": 0.1,
+   "worst_streak": 4,
+   "train": -0.029,
+   "unseen": 0.249
+  },
+  "Gold (GLD) \u00b7 15m \u00b7 EMA 5/8 + cross": {
+   "n": 131,
+   "per_day": 0.5,
+   "win": 0.427,
+   "tp1": 0.305,
+   "tp3": 0.015,
+   "avg_r": -0.097,
+   "before_cost": -0.082,
+   "total_r": -12.8,
+   "t": -1.4,
+   "worst_streak": 7,
+   "train": -0.18,
+   "unseen": 0.065
+  },
+  "Gold (GLD) \u00b7 15m \u00b7 EMA 5/8 \u00b7 all out TP1": {
+   "n": 132,
+   "per_day": 0.5,
+   "win": 0.424,
+   "tp1": 0.303,
+   "tp3": 0.0,
+   "avg_r": -0.055,
+   "before_cost": -0.04,
+   "total_r": -7.3,
+   "t": -0.79,
+   "worst_streak": 7,
+   "train": -0.115,
+   "unseen": 0.06
   }
  }
 }
