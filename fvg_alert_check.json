@@ -1,0 +1,128 @@
+{
+ "GLD": {
+  "bars": 2334,
+  "events": 92,
+  "trades": 25,
+  "avg_r": 0.212,
+  "last": [
+   {
+    "kind": "fill",
+    "t": "11-04 11:15",
+    "r": 0
+   },
+   {
+    "kind": "be",
+    "t": "11-04 12:30",
+    "r": 0
+   },
+   {
+    "kind": "exit",
+    "t": "11-04 15:45",
+    "r": 1.25
+   },
+   {
+    "kind": "setup",
+    "t": "11-06 11:15",
+    "r": 0
+   },
+   {
+    "kind": "fill",
+    "t": "11-06 11:30",
+    "r": 0
+   },
+   {
+    "kind": "exit",
+    "t": "11-06 15:45",
+    "r": 0.42
+   }
+  ],
+  "sample": [
+   "\ud83d\udfe2 FVG BUY LIMIT \u00b7 Gold (GLD, 15-min)\nFair value gap with the trend, 9:30-11:30 window.\n\nLimit buy at 372.02\nStop loss 370.79 (-0.33%) \u2192 \u2212$25.00\nTake profit 375.73 (+1.00%, 3R) \u2192 +$75.00\nMove stop to entry at 373.88 (+1.5R)\nSize for $25 risk: 20.22 shares\n\nOrder is good for 20 candles (5 hours). Cancel if a 15-min candle closes back through 371.69. Close by 4 PM.\nOn XAU: use the same % distances from your entry, or open the Prop Desk for exact XAU prices.",
+   "\ud83d\udd14 Closed at 4 PM \u00b7 Gold FVG buy: +0.4R (\u2248 +$10.61 at $25 risk)."
+  ]
+ },
+ "SLV": {
+  "bars": 2458,
+  "events": 74,
+  "trades": 20,
+  "avg_r": -0.221,
+  "last": [
+   {
+    "kind": "fill",
+    "t": "10-28 11:00",
+    "r": 0
+   },
+   {
+    "kind": "exit",
+    "t": "10-28 12:45",
+    "r": -1.0
+   },
+   {
+    "kind": "setup",
+    "t": "10-30 11:15",
+    "r": 0
+   },
+   {
+    "kind": "setup",
+    "t": "11-04 10:30",
+    "r": 0
+   },
+   {
+    "kind": "fill",
+    "t": "11-04 10:45",
+    "r": 0
+   },
+   {
+    "kind": "exit",
+    "t": "11-04 11:00",
+    "r": -1.0
+   }
+  ],
+  "sample": [
+   "\ud83d\udd34 FVG SELL LIMIT \u00b7 Silver (SLV, 15-min)\nFair value gap with the trend, 9:30-11:30 window.\n\nLimit sell at 46.87\nStop loss 47.10 (+0.51%) \u2192 \u2212$25.00\nTake profit 46.15 (-1.53%, 3R) \u2192 +$75.00\nMove stop to entry at 46.51 (+1.5R)\nSize for $25 risk: 104.4 shares\n\nOrder is good for 20 candles (5 hours). Cancel if a 15-min candle closes back through 46.94. Close by 4 PM.\nOn XAG: use the same % distances from your entry, or open the Prop Desk for exact XAG prices.",
+   "\ud83d\uded1 Stopped out \u00b7 Silver FVG sell: -1.0R (\u2248 \u2212$25.00 at $25 risk)."
+  ]
+ },
+ "QQQ": {
+  "bars": 2775,
+  "events": 71,
+  "trades": 18,
+  "avg_r": -0.207,
+  "last": [
+   {
+    "kind": "cancel",
+    "t": "11-02 14:15",
+    "r": 0
+   },
+   {
+    "kind": "setup",
+    "t": "11-04 10:45",
+    "r": 0
+   },
+   {
+    "kind": "fill",
+    "t": "11-04 11:45",
+    "r": 0
+   },
+   {
+    "kind": "exit",
+    "t": "11-04 15:45",
+    "r": 0.42
+   },
+   {
+    "kind": "setup",
+    "t": "11-05 10:00",
+    "r": 0
+   },
+   {
+    "kind": "cancel",
+    "t": "11-05 15:15",
+    "r": 0
+   }
+  ],
+  "sample": [
+   "\ud83d\udd14 Closed at 4 PM \u00b7 Nasdaq FVG sell: +0.4R (\u2248 +$10.62 at $25 risk).",
+   "\ud83d\udd34 FVG SELL LIMIT \u00b7 Nasdaq (QQQ, 15-min)\nFair value gap with the trend, 9:30-11:30 window.\n\nLimit sell at 668.01\nStop loss 684.03 (+2.40%) \u2192 \u2212$25.00\nTake profit 619.96 (-7.19%, 3R) \u2192 +$75.00\nMove stop to entry at 643.99 (+1.5R)\nSize for $25 risk: 1.561 shares\n\nOrder is good for 20 candles (5 hours). Cancel if a 15-min candle closes back through 670.91. Close by 4 PM.\nOn NQ: use the same % distances from your entry, or open the Prop Desk for exact NQ prices."
+  ]
+ }
+}
