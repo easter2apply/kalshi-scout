@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 695.0,
-  "broker_equity": 99652.05,
+  "broker_equity": 99639.05,
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794237311.277192
+  "updated": 1794237612.301185
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -7104,47 +7104,6 @@
  ],
  "feed": [
   {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "Clean read: Opening range is $1.95 (0.26% of the price).",
-     "vote": true,
-     "who": "The Quant"
-    },
-    {
-     "say": "Exposure's fine. SPY $759 Put \u00b7 Oct 30 at $2.18, spread 0%.",
-     "vote": true,
-     "who": "Risk"
-    },
-    {
-     "say": "Feel that push? Strong red 5-min close outside the range, then the next candle held and made a new low.",
-     "vote": true,
-     "who": "Momentum"
-    },
-    {
-     "say": "Timing's right. Entry at 10:15 ET, inside the 10:00\u201312:00 window.",
-     "vote": true,
-     "who": "Time"
-    },
-    {
-     "say": "...fine. Stop $1.38 away, target 1.5\u00d7 that. I'll allow it.",
-     "vote": true,
-     "who": "Doubt"
-    },
-    {
-     "say": "Sources say we're clear: 8 headlines today, 1 on our side; StockTwits 4 bullish / 10 bearish.",
-     "vote": true,
-     "who": "The Reporter"
-    }
-   ],
-   "ok": true,
-   "t": 1793370018.8937538,
-   "text": null,
-   "title": "SPY PUT (opening range breakout)",
-   "verdict": "APPROVED 6\u20130. Bought 1 \u00d7 SPY $759 Put \u00b7 Oct 30 at $2.17.",
-   "who": null
-  },
-  {
    "kind": "event",
    "lines": [],
    "ok": false,
@@ -8305,6 +8264,16 @@
    "title": "SPY breakout failed",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1794237615.0982094,
+   "text": "\ud83d\udc40 SPY 10:15 ET: Strong close above the range high. Waiting for the next candle to hold above and make a new high.",
+   "title": "SPY breakout watch",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -8955,9 +8924,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-08",
- "last_deploy": 1794237016.5093722,
- "last_full_run": 1794237311.277192,
- "last_run": 1794237311.277192,
+ "last_deploy": 1794237615.9702094,
+ "last_full_run": 1794237612.301185,
+ "last_run": 1794237612.301185,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -10017,12 +9986,19 @@
       271.8,
       270.74,
       270.74
+     ],
+     [
+      "10:15",
+      270.75,
+      270.92,
+      270.19,
+      270.46
      ]
     ],
-    "checked": 1794237311.277192,
+    "checked": 1794237612.301185,
     "entered": false,
     "events": [],
-    "last": 270.74,
+    "last": 270.465,
     "orh": 275.23,
     "orl": 269.32,
     "pair": "AMZN",
@@ -10097,9 +10073,16 @@
       520.0,
       519.69,
       519.79
+     ],
+     [
+      "10:15",
+      519.88,
+      520.34,
+      519.88,
+      520.18
      ]
     ],
-    "checked": 1794237311.277192,
+    "checked": 1794237612.301185,
     "entered": false,
     "events": [
      {
@@ -10109,7 +10092,7 @@
       "txt": "Strong close above the range high. Waiting for the next candle to hold above and make a new high"
      }
     ],
-    "last": 519.795,
+    "last": 520.18,
     "orh": 519.605,
     "orl": 517.335,
     "pair": "DIA",
@@ -10185,9 +10168,16 @@
       748.95,
       748.39,
       748.7
+     ],
+     [
+      "10:15",
+      748.71,
+      749.12,
+      748.62,
+      749.02
      ]
     ],
-    "checked": 1794237311.277192,
+    "checked": 1794237612.301185,
     "entered": false,
     "events": [
      {
@@ -10201,19 +10191,26 @@
       "mins": 605,
       "t": "10:05",
       "txt": "Breakout failed: price came back to the range high"
+     },
+     {
+      "kind": "pend",
+      "mins": 615,
+      "t": "10:15",
+      "txt": "Strong close above the range high. Waiting for the next candle to hold above and make a new high"
      }
     ],
-    "last": 748.695,
+    "last": 749.02,
     "orh": 747.95,
     "orl": 741.18,
     "pair": "SPY",
-    "phase": "wait",
+    "phase": "pending",
     "sent": [
      "range",
      "600:pend",
-     "605:fail"
+     "605:fail",
+     "615:pend"
     ],
-    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
+    "status": "Strong close above the range high. Waiting for the next candle to hold above and make a new high",
     "trade": null
    }
   }
