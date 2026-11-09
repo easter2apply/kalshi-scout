@@ -1,6 +1,6 @@
 {
  "account": {
-  "nav": 992.0
+  "nav": 984.0
  },
  "closed": [
   {
@@ -21,6 +21,23 @@
    "tp": null,
    "trail": true,
    "why": "locked profit"
+  },
+  {
+   "closed": "2026-11-09T15:35:15",
+   "dir": -1,
+   "entry": 2.35,
+   "exit": 1.38,
+   "gap": 1.41,
+   "opened": "2026-11-09T15:00:31",
+   "peak": 2.35,
+   "pl": -97.0,
+   "price": 1.36,
+   "qty": 1,
+   "qty0": 1,
+   "sl": 1.41,
+   "sym": "IWM261109P00281000",
+   "tp": null,
+   "why": "stop"
   }
  ],
  "day": {
@@ -148,7 +165,7 @@
    "prev_close": 273.59
   }
  },
- "last_run": 1794238229.353283,
+ "last_run": 1794238518.334985,
  "live": {
   "bars": [
    [
@@ -256,28 +273,10 @@
   ]
  },
  "record": {
-  "losses": 0,
-  "pl": 81.0,
+  "losses": 1,
+  "pl": -16.0,
   "wins": 1
  },
- "trade": {
-  "dir": -1,
-  "entry": 2.35,
-  "gap": 1.41,
-  "opened": "2026-11-09T15:00:31",
-  "peak": 2.35,
-  "price": 1.46,
-  "qty": 1,
-  "qty0": 1,
-  "sl": 1.41,
-  "sym": "IWM261109P00281000",
-  "tp": null
- },
- "trades": {
-  "open": {
-   "dir": -1,
-   "pair": "IWM",
-   "upl": -89.0
-  }
- }
+ "trade": null,
+ "trades": {}
 }
