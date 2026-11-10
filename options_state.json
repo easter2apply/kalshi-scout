@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 695.0,
-  "broker_equity": 99561.93,
+  "broker_equity": 99570.93,
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794323714.11797
+  "updated": 1794324011.879113
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -7106,16 +7106,6 @@
   {
    "kind": "event",
    "lines": [],
-   "ok": false,
-   "t": 1793636121.7975664,
-   "text": "SPY $762 Call \u00b7 Nov 2 sold at $0.89 (stop on SPY): \u2212$96.00 (-1.30R). Record 2W\u20136L.",
-   "title": "SPY closed",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
-   "kind": "event",
-   "lines": [],
    "ok": null,
    "t": 1793718029.426272,
    "text": "\ud83d\udccf SPY opening range is set (9:30\u201310:00 ET)\nHigh 754.63 \u00b7 Low 752.44 \u00b7 size $2.19\n\nWatching 5-min candles until 12:00. Signal = a strong candle closes outside the range, then the next one holds outside and makes a new high (calls) or low (puts).",
@@ -8274,6 +8264,16 @@
    "title": "AMZN breakout failed",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": false,
+   "t": 1794324018.0555334,
+   "text": "\ud83d\uded1 SPY ORB signal finished on SPY: stop on SPY (-1.0R). No option was held (signal only).",
+   "title": "SPY ORB signal finished",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -8924,9 +8924,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-09",
- "last_deploy": 1794323417.9911866,
- "last_full_run": 1794323714.11797,
- "last_run": 1794323714.11797,
+ "last_deploy": 1794324018.9004366,
+ "last_full_run": 1794324011.879113,
+ "last_run": 1794324011.879113,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -9984,9 +9984,16 @@
       272.42,
       271.81,
       271.89
+     ],
+     [
+      "10:15",
+      271.86,
+      272.39,
+      271.39,
+      272.35
      ]
     ],
-    "checked": 1794323714.11797,
+    "checked": 1794324011.879113,
     "entered": false,
     "events": [
      {
@@ -10002,7 +10009,7 @@
       "txt": "Breakout failed: price came back to the range high"
      }
     ],
-    "last": 271.89,
+    "last": 272.35,
     "orh": 271.93,
     "orl": 266.32,
     "pair": "AMZN",
@@ -10079,12 +10086,19 @@
       521.78,
       521.67,
       521.68
+     ],
+     [
+      "10:15",
+      521.26,
+      521.61,
+      521.17,
+      521.57
      ]
     ],
-    "checked": 1794323714.11797,
+    "checked": 1794324011.879113,
     "entered": false,
     "events": [],
-    "last": 521.68,
+    "last": 521.57,
     "orh": 522.39,
     "orl": 519.64,
     "pair": "DIA",
@@ -10159,9 +10173,16 @@
       751.97,
       750.94,
       750.98
+     ],
+     [
+      "10:15",
+      751.11,
+      751.11,
+      750.18,
+      750.63
      ]
     ],
-    "checked": 1794323714.11797,
+    "checked": 1794324011.879113,
     "entered": true,
     "events": [
      {
@@ -10175,19 +10196,26 @@
       "mins": 605,
       "t": "10:05",
       "txt": "LONG at 751.80, stop 750.64, target 753.54"
+     },
+     {
+      "kind": "sl",
+      "mins": 615,
+      "t": "10:15",
+      "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 750.98,
+    "last": 750.63,
     "orh": 750.74,
     "orl": 747.06,
     "pair": "SPY",
     "paper_only": true,
-    "phase": "long",
+    "phase": "done",
     "sent": [
      "range",
-     "600:pend"
+     "600:pend",
+     "exit:615"
     ],
-    "status": "LONG trade open",
+    "status": "Trade finished: -1.0R",
     "trade": {
      "be": false,
      "dir": 1,
@@ -10195,9 +10223,9 @@
      "entry_label": "10:05",
      "entry_mins": 605,
      "entry_t": "2026-11-10T15:05:00",
-     "exit_mins": null,
+     "exit_mins": 615,
      "one_r": 1.1599999999999682,
-     "result": null,
+     "result": -1.0,
      "stop": 750.64,
      "stop0": 750.64,
      "target": 753.54
