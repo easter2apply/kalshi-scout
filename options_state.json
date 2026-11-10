@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794340211.224691
+  "updated": 1794340512.078396
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -7022,50 +7022,6 @@
  ],
  "errors": [
   {
-   "t": 1792206022.1199212,
-   "text": "Run failed: 'QQQ'"
-  },
-  {
-   "t": 1792206314.3905656,
-   "text": "Run failed: 'QQQ'"
-  },
-  {
-   "t": 1792206614.96876,
-   "text": "Run failed: 'QQQ'"
-  },
-  {
-   "t": 1792206916.1568942,
-   "text": "Run failed: 'QQQ'"
-  },
-  {
-   "t": 1792207216.4917881,
-   "text": "Run failed: 'QQQ'"
-  },
-  {
-   "t": 1792207519.3496814,
-   "text": "Run failed: 'QQQ'"
-  },
-  {
-   "t": 1792207817.7630208,
-   "text": "Run failed: 'QQQ'"
-  },
-  {
-   "t": 1792208117.7053545,
-   "text": "Run failed: 'QQQ'"
-  },
-  {
-   "t": 1792208415.3885674,
-   "text": "Run failed: 'QQQ'"
-  },
-  {
-   "t": 1792208715.2252827,
-   "text": "Run failed: 'QQQ'"
-  },
-  {
-   "t": 1792209013.8540976,
-   "text": "Run failed: 'QQQ'"
-  },
-  {
    "t": 1792209314.7242515,
    "text": "Run failed: 'QQQ'"
   },
@@ -7100,6 +7056,50 @@
   {
    "t": 1794228935.8309143,
    "text": "Run failed: The read operation timed out"
+  },
+  {
+   "t": 1794340517.357895,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-10 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794340517.3579004,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-11 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794340517.3579025,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-12 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794340517.357904,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794340517.3579051,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-16 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794340517.3579066,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-17 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794340517.357908,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-18 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794340517.357909,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-19 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794340517.3579102,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-20 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794340517.3579113,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-23 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794340517.3579128,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-24 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
   }
  ],
  "feed": [
@@ -8894,8 +8894,8 @@
  },
  "last_daily": "2026-11-09",
  "last_deploy": 1794340220.6352658,
- "last_full_run": 1794340211.224691,
- "last_run": 1794340211.224691,
+ "last_full_run": 1794340512.078396,
+ "last_run": 1794340512.078396,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -10338,9 +10338,16 @@
       271.59,
       271.02,
       271.57
+     ],
+     [
+      "2:50",
+      271.62,
+      271.92,
+      271.57,
+      271.82
      ]
     ],
-    "checked": 1794340211.224691,
+    "checked": 1794340512.078396,
     "entered": false,
     "events": [
      {
@@ -10374,7 +10381,7 @@
       "txt": "No setup by 12:00 ET. Done for the day"
      }
     ],
-    "last": 271.57,
+    "last": 271.82,
     "orh": 271.93,
     "orl": 266.32,
     "pair": "AMZN",
@@ -10813,7 +10820,7 @@
       521.59
      ]
     ],
-    "checked": 1794340211.224691,
+    "checked": 1794340512.078396,
     "entered": false,
     "events": [
      {
@@ -11298,9 +11305,16 @@
       749.55,
       748.62,
       749.5
+     ],
+     [
+      "2:50",
+      749.55,
+      749.72,
+      748.93,
+      749.01
      ]
     ],
-    "checked": 1794340211.224691,
+    "checked": 1794340512.078396,
     "entered": true,
     "events": [
      {
@@ -11322,7 +11336,7 @@
       "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 749.5,
+    "last": 749.01,
     "orh": 750.74,
     "orl": 747.06,
     "pair": "SPY",
