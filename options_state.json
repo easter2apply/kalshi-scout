@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 695.0,
-  "broker_equity": 99609.03,
+  "broker_equity": 99608.96,
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794299112.200284
+  "updated": 1794299414.3272
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -1019,10 +1019,6 @@
   "fetched": 1794297016.2116709
  },
  "equity": [
-  [
-   1792946412,
-   1000.0
-  ],
   [
    1792947326,
    1000.0
@@ -7018,6 +7014,10 @@
   [
    1794298517,
    695.0
+  ],
+  [
+   1794299414,
+   695.0
   ]
  ],
  "errors": [
@@ -8987,8 +8987,8 @@
  },
  "last_daily": "2026-11-09",
  "last_deploy": 1794299112.977234,
- "last_full_run": 1794299112.200284,
- "last_run": 1794299112.200284,
+ "last_full_run": 1794299414.3272,
+ "last_run": 1794299414.3272,
  "last_vote": {
   "approved": false,
   "ask": 0,
