@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794342013.808526
+  "updated": 1794342310.324788
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -7022,50 +7022,6 @@
  ],
  "errors": [
   {
-   "t": 1794341717.6402266,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-12 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794341717.6402278,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794341717.6402292,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-16 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794341717.6402302,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-17 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794341717.6402311,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-18 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794341717.6402328,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-19 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794341717.640234,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-20 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794341717.6402352,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-23 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794341717.6402366,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-24 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794342016.2618647,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-10 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794342016.26187,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-11 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
    "t": 1794342016.2618718,
    "text": "Reporter: earnings calendar unavailable for 2026-11-12 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
   },
@@ -7099,6 +7055,50 @@
   },
   {
    "t": 1794342016.2618828,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-24 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794342313.2069817,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-10 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794342313.2069874,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-11 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794342313.2069895,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-12 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794342313.2069912,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794342313.2069926,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-16 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794342313.2069938,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-17 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794342313.2069952,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-18 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794342313.2069962,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-19 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794342313.2069974,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-20 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794342313.2069986,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-23 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794342313.207,
    "text": "Reporter: earnings calendar unavailable for 2026-11-24 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
   }
  ],
@@ -8894,8 +8894,8 @@
  },
  "last_daily": "2026-11-09",
  "last_deploy": 1794342016.2867799,
- "last_full_run": 1794342013.808526,
- "last_run": 1794342013.808526,
+ "last_full_run": 1794342310.324788,
+ "last_run": 1794342310.324788,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -10380,9 +10380,16 @@
       271.8,
       271.56,
       271.77
+     ],
+     [
+      "3:20",
+      271.81,
+      271.95,
+      271.64,
+      271.75
      ]
     ],
-    "checked": 1794342013.808526,
+    "checked": 1794342310.324788,
     "entered": false,
     "events": [
      {
@@ -10416,7 +10423,7 @@
       "txt": "No setup by 12:00 ET. Done for the day"
      }
     ],
-    "last": 271.775,
+    "last": 271.75,
     "orh": 271.93,
     "orl": 266.32,
     "pair": "AMZN",
@@ -10888,9 +10895,16 @@
       521.46,
       521.46,
       521.46
+     ],
+     [
+      "3:20",
+      521.47,
+      521.55,
+      521.47,
+      521.55
      ]
     ],
-    "checked": 1794342013.808526,
+    "checked": 1794342310.324788,
     "entered": false,
     "events": [
      {
@@ -10912,7 +10926,7 @@
       "txt": "No setup by 12:00 ET. Done for the day"
      }
     ],
-    "last": 521.455,
+    "last": 521.555,
     "orh": 522.39,
     "orl": 519.64,
     "pair": "DIA",
@@ -11417,9 +11431,16 @@
       749.11,
       748.71,
       749.09
+     ],
+     [
+      "3:20",
+      749.11,
+      749.68,
+      749.03,
+      749.35
      ]
     ],
-    "checked": 1794342013.808526,
+    "checked": 1794342310.324788,
     "entered": true,
     "events": [
      {
@@ -11441,7 +11462,7 @@
       "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 749.085,
+    "last": 749.35,
     "orh": 750.74,
     "orl": 747.06,
     "pair": "SPY",
