@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 695.0,
-  "broker_equity": 99570.93,
+  "broker_equity": 99520.93,
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794324011.879113
+  "updated": 1794324310.192417
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -8925,8 +8925,8 @@
  },
  "last_daily": "2026-11-09",
  "last_deploy": 1794324018.9004366,
- "last_full_run": 1794324011.879113,
- "last_run": 1794324011.879113,
+ "last_full_run": 1794324310.192417,
+ "last_run": 1794324310.192417,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -9904,7 +9904,7 @@
     "title": "PPI m/m"
    }
   ],
-  "fetched": 1794302414.6150188
+  "fetched": 1794324311.0322037
  },
  "old_records": [
   {
@@ -9991,9 +9991,16 @@
       272.39,
       271.39,
       272.35
+     ],
+     [
+      "10:20",
+      272.32,
+      272.45,
+      271.86,
+      271.88
      ]
     ],
-    "checked": 1794324011.879113,
+    "checked": 1794324310.192417,
     "entered": false,
     "events": [
      {
@@ -10009,7 +10016,7 @@
       "txt": "Breakout failed: price came back to the range high"
      }
     ],
-    "last": 272.35,
+    "last": 271.88,
     "orh": 271.93,
     "orl": 266.32,
     "pair": "AMZN",
@@ -10093,12 +10100,19 @@
       521.61,
       521.17,
       521.57
+     ],
+     [
+      "10:20",
+      521.29,
+      521.29,
+      521.27,
+      521.27
      ]
     ],
-    "checked": 1794324011.879113,
+    "checked": 1794324310.192417,
     "entered": false,
     "events": [],
-    "last": 521.57,
+    "last": 521.275,
     "orh": 522.39,
     "orl": 519.64,
     "pair": "DIA",
@@ -10180,9 +10194,16 @@
       751.11,
       750.18,
       750.63
+     ],
+     [
+      "10:20",
+      750.54,
+      750.79,
+      749.37,
+      749.49
      ]
     ],
-    "checked": 1794324011.879113,
+    "checked": 1794324310.192417,
     "entered": true,
     "events": [
      {
@@ -10204,7 +10225,7 @@
       "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 750.63,
+    "last": 749.49,
     "orh": 750.74,
     "orl": 747.06,
     "pair": "SPY",
