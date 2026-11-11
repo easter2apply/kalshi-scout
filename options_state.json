@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794426910.345675
+  "updated": 1794427218.251113
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -1019,10 +1019,6 @@
   "fetched": 1794297016.2116709
  },
  "equity": [
-  [
-   1793074214,
-   908.0
-  ],
   [
    1793075110,
    908.0
@@ -7018,53 +7014,13 @@
   [
    1794426314,
    695.0
+  ],
+  [
+   1794427218,
+   695.0
   ]
  ],
  "errors": [
-  {
-   "t": 1794426622.940533,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794426622.940534,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-16 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794426622.940535,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-17 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794426622.9405363,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-18 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794426622.9405375,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-19 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794426622.9405384,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-20 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794426622.9405391,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-23 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794426622.94054,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-24 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794426622.9405415,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-25 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794426914.2172675,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-11 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794426914.217272,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-12 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
   {
    "t": 1794426914.217274,
    "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
@@ -7099,6 +7055,50 @@
   },
   {
    "t": 1794426914.2172847,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-25 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794427230.4014382,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-11 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794427230.401445,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-12 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794427230.4014466,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794427230.4014482,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-16 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794427230.4014494,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-17 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794427230.4014506,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-18 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794427230.401452,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-19 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794427230.401453,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-20 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794427230.4014544,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-23 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794427230.4014556,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-24 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794427230.401457,
    "text": "Reporter: earnings calendar unavailable for 2026-11-25 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
   }
  ],
@@ -8925,8 +8925,8 @@
  },
  "last_daily": "2026-11-10",
  "last_deploy": 1794426622.959561,
- "last_full_run": 1794426910.345675,
- "last_run": 1794426910.345675,
+ "last_full_run": 1794427218.251113,
+ "last_run": 1794427218.251113,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -10386,9 +10386,16 @@
       266.87,
       266.45,
       266.45
+     ],
+     [
+      "2:55",
+      266.46,
+      266.46,
+      266.25,
+      266.27
      ]
     ],
-    "checked": 1794426910.345675,
+    "checked": 1794427218.251113,
     "entered": true,
     "events": [
      {
@@ -10404,7 +10411,7 @@
       "txt": "SHORT at 266.49, stop 268.48, target 263.51"
      }
     ],
-    "last": 266.455,
+    "last": 266.27,
     "orh": 274.86,
     "orl": 268.22,
     "pair": "AMZN",
@@ -10886,9 +10893,16 @@
       524.34,
       524.34,
       524.34
+     ],
+     [
+      "2:55",
+      524.3,
+      524.3,
+      524.27,
+      524.29
      ]
     ],
-    "checked": 1794426910.345675,
+    "checked": 1794427218.251113,
     "entered": true,
     "events": [
      {
@@ -10916,7 +10930,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 524.335,
+    "last": 524.29,
     "orh": 523.115,
     "orl": 520.82,
     "pair": "DIA",
@@ -11400,9 +11414,16 @@
       760.9,
       760.58,
       760.88
+     ],
+     [
+      "2:55",
+      760.69,
+      760.69,
+      760.42,
+      760.43
      ]
     ],
-    "checked": 1794426910.345675,
+    "checked": 1794427218.251113,
     "entered": true,
     "events": [
      {
@@ -11430,7 +11451,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 760.88,
+    "last": 760.43,
     "orh": 757.9,
     "orl": 754.92,
     "pair": "SPY",
@@ -11514,51 +11535,52 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 11.542413039080456,
-   "atr_pips": 1.0182500828722685,
-   "bar": "2026-11-11T19:30:00",
-   "chg": -1.600221483942407,
-   "close": 266.565,
+   "adx": 11.138340910868497,
+   "atr_pips": 0.9912322198099626,
+   "bar": "2026-11-11T19:45:00",
+   "chg": -1.709117755629382,
+   "close": 266.27,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
     "dir": -1,
     "in_trade": false,
     "of": 6,
-    "passed": 2,
-    "session": true,
+    "passed": 1,
+    "session": false,
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
-     "ADX 12 (needs 18)"
+     "ADX 11 (needs 18)"
     ]
    },
-   "rsi": 43.28300646134756,
+   "rsi": 41.298803391482764,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
   },
   "DIA": {
-   "adx": 26.009876566799086,
-   "atr_pips": 0.5806517593347676,
-   "bar": "2026-11-11T19:30:00",
-   "chg": 0.4609045611345509,
-   "close": 524.205,
+   "adx": 26.139015756950254,
+   "atr_pips": 0.5484623479537124,
+   "bar": "2026-11-11T19:45:00",
+   "chg": 0.4771943273284801,
+   "close": 524.29,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 5,
-    "session": true,
+    "passed": 4,
+    "session": false,
     "tf": "M15",
     "waiting": [
-     "a pullback to the trend line or a fresh crossover"
+     "a pullback to the trend line or a fresh crossover",
+     "RSI 68, outside trading hours"
     ]
    },
-   "rsi": 67.21376845423327,
+   "rsi": 67.87029853447376,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -11720,26 +11742,26 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 45.494943736702545,
-   "atr_pips": 1.1803532350199943,
-   "bar": "2026-11-11T19:30:00",
-   "chg": 1.4207992745989741,
-   "close": 760.585,
+   "adx": 44.399069880723424,
+   "atr_pips": 1.1303280039471388,
+   "bar": "2026-11-11T19:45:00",
+   "chg": 1.4001306788633605,
+   "close": 760.43,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 3,
-    "session": true,
+    "passed": 2,
+    "session": false,
     "tf": "M15",
     "waiting": [
      "a pullback to the trend line or a fresh crossover",
      "MACD against us (up)"
     ]
    },
-   "rsi": 67.57474351192786,
+   "rsi": 66.28852451554037,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -11748,6 +11770,7 @@
  },
  "paused": "drawdown over 35%",
  "peak": 1133.0,
+ "recess": "resumes Thu 9:45 AM ET",
  "record": {
   "losses": 9,
   "pl": -305.0,
@@ -12149,18 +12172,18 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 1.42,
-   "p": "760.59",
+   "c": 1.4,
+   "p": "760.43",
    "s": "SPY"
   },
   {
-   "c": 0.46,
-   "p": "524.21",
+   "c": 0.48,
+   "p": "524.29",
    "s": "DIA"
   },
   {
-   "c": -1.6,
-   "p": "266.56",
+   "c": -1.71,
+   "p": "266.27",
    "s": "AMZN"
   }
  ],
