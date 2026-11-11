@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794388513.14519
+  "updated": 1794388812.45214
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -7022,50 +7022,6 @@
  ],
  "errors": [
   {
-   "t": 1794388213.263158,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794388213.2631598,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-16 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794388213.263161,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-17 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794388213.263162,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-18 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794388213.263163,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-19 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794388213.2631638,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-20 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794388213.263165,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-23 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794388213.263166,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-24 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794388213.263167,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-25 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794388514.277663,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-11 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794388514.2776675,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-12 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
    "t": 1794388514.2776697,
    "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
   },
@@ -7099,6 +7055,50 @@
   },
   {
    "t": 1794388514.277678,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-25 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794388813.5920966,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-11 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794388813.5921013,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-12 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794388813.5921035,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794388813.592105,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-16 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794388813.5921063,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-17 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794388813.592108,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-18 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794388813.5921092,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-19 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794388813.5921106,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-20 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794388813.5921116,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-23 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794388813.5921128,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-24 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794388813.5921142,
    "text": "Reporter: earnings calendar unavailable for 2026-11-25 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
   }
  ],
@@ -8893,9 +8893,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-10",
- "last_deploy": 1794387911.1636338,
- "last_full_run": 1794388513.14519,
- "last_run": 1794388513.14519,
+ "last_deploy": 1794388813.6229584,
+ "last_full_run": 1794388812.45214,
+ "last_run": 1794388812.45214,
  "last_vote": {
   "approved": false,
   "ask": 0,
