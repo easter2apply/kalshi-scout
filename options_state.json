@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 695.0,
-  "broker_equity": 99539.81,
+  "broker_equity": 99532.81,
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794410112.827685
+  "updated": 1794410412.728901
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -1003,8 +1003,8 @@
    "benched": 0,
    "news": 0,
    "opened": 0,
-   "rejected": 0,
-   "setups": 0,
+   "rejected": 1,
+   "setups": 1,
    "start_nav": 695.0
   }
  },
@@ -7022,50 +7022,6 @@
  ],
  "errors": [
   {
-   "t": 1794409817.6085625,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794409817.6085634,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-16 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794409817.6085644,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-17 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794409817.6085658,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-18 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794409817.6085668,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-19 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794409817.608568,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-20 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794409817.6085691,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-23 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794409817.6085703,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-24 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794409817.608572,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-25 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794410122.524061,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-11 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794410122.524066,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-12 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
    "t": 1794410122.5240679,
    "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
   },
@@ -7100,19 +7056,53 @@
   {
    "t": 1794410122.5240786,
    "text": "Reporter: earnings calendar unavailable for 2026-11-25 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794410422.5792458,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-11 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794410422.579251,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-12 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794410422.579253,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794410422.5792546,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-16 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794410422.5792558,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-17 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794410422.5792572,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-18 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794410422.5792587,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-19 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794410422.5792599,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-20 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794410422.5792608,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-23 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794410422.5792623,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-24 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794410422.5792632,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-25 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
   }
  ],
  "feed": [
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": false,
-   "t": 1793723125.2777488,
-   "text": "SPY $756 Call \u00b7 Nov 3 sold at $1.28 (breakeven on SPY): \u2212$14.00 (-0.25R). Record 2W\u20137L.",
-   "title": "SPY closed",
-   "verdict": null,
-   "who": "The Quant"
-  },
   {
    "kind": "event",
    "lines": [],
@@ -8212,6 +8202,47 @@
    "title": "DIA breakout watch",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "vote",
+   "lines": [
+    {
+     "say": "Clean read: Opening range is $2.29 (0.44% of the price).",
+     "vote": true,
+     "who": "The Quant"
+    },
+    {
+     "say": "Not on my watch: Paused (drawdown over 35%).",
+     "vote": false,
+     "who": "Risk"
+    },
+    {
+     "say": "Feel that push? Strong red 5-min close outside the range, then the next candle held and made a new low.",
+     "vote": true,
+     "who": "Momentum"
+    },
+    {
+     "say": "Timing's right. Entry at 10:15 ET, inside the 10:00\u201312:00 window.",
+     "vote": true,
+     "who": "Time"
+    },
+    {
+     "say": "...fine. Stop $0.11 away, target 1.5\u00d7 that. I'll allow it.",
+     "vote": true,
+     "who": "Doubt"
+    },
+    {
+     "say": "Sources say we're clear: 1 headline today, 1 on our side; StockTwits 6 bullish / 5 bearish.",
+     "vote": true,
+     "who": "The Reporter"
+    }
+   ],
+   "ok": false,
+   "t": 1794410421.7388997,
+   "text": null,
+   "title": "DIA PUT (opening range breakout)",
+   "verdict": "SIGNAL ONLY 5\u20131: paused (drawdown over 35%). Tracked on DIA's levels.",
+   "who": null
   }
  ],
  "history": [
@@ -8863,41 +8894,43 @@
  },
  "last_daily": "2026-11-10",
  "last_deploy": 1794410122.5471394,
- "last_full_run": 1794410112.827685,
- "last_run": 1794410112.827685,
+ "last_full_run": 1794410412.728901,
+ "last_run": 1794410412.728901,
  "last_vote": {
   "approved": false,
   "ask": 0,
   "chart": {
    "closes": [
-    749.0,
-    749.115,
-    749.25,
-    748.49,
-    748.27,
-    750.74,
-    751.71,
-    751.8
+    521.21,
+    521.125,
+    521.665,
+    521.135,
+    521.35,
+    521.555,
+    521.18,
+    520.91,
+    520.565,
+    520.715
    ],
-   "entry": 751.8,
+   "entry": 520.715,
    "prec": 2,
-   "sl": 750.64,
+   "sl": 520.825,
    "tf": "5m",
-   "tp": 753.54
+   "tp": 520.55
   },
-  "detail": "SPY $751.80 \u00b7 stock stop 750.64 \u00b7 target 753.54",
+  "detail": "DIA $520.72 \u00b7 stock stop 520.83 \u00b7 target 520.55",
   "edge": 0,
-  "label": "SPY CALL (opening range breakout)",
-  "side": "CALL",
+  "label": "DIA PUT (opening range breakout)",
+  "side": "PUT",
   "url": "https://app.alpaca.markets/",
   "votes": {
    "Doubt": [
     true,
-    "stop $1.16 away, target 1.5\u00d7 that"
+    "stop $0.11 away, target 1.5\u00d7 that"
    ],
    "Momentum": [
     true,
-    "strong green 5-min close outside the range, then the next candle held and made a new high"
+    "strong red 5-min close outside the range, then the next candle held and made a new low"
    ],
    "Risk": [
     false,
@@ -8905,18 +8938,18 @@
    ],
    "The Quant": [
     true,
-    "opening range is $3.68 (0.49% of the price)"
+    "opening range is $2.29 (0.44% of the price)"
    ],
    "The Reporter": [
     true,
-    "19 headlines today, 1 on our side; StockTwits 8 bullish / 5 bearish"
+    "1 headline today, 1 on our side; StockTwits 6 bullish / 5 bearish"
    ],
    "Time": [
     true,
-    "entry at 10:05 ET, inside the 10:00\u201312:00 window"
+    "entry at 10:15 ET, inside the 10:00\u201312:00 window"
    ]
   },
-  "when": 1794323411.965746
+  "when": 1794410412.728901
  },
  "last_weekly": "2026-11-06",
  "lb_done": {
@@ -9922,12 +9955,19 @@
       269.18,
       268.45,
       268.48
+     ],
+     [
+      "10:15",
+      268.54,
+      269.28,
+      268.3,
+      268.46
      ]
     ],
-    "checked": 1794410112.827685,
+    "checked": 1794410412.728901,
     "entered": false,
     "events": [],
-    "last": 268.475,
+    "last": 268.46,
     "orh": 274.86,
     "orl": 268.22,
     "pair": "AMZN",
@@ -10002,29 +10042,56 @@
       520.83,
       520.53,
       520.57
+     ],
+     [
+      "10:15",
+      520.52,
+      520.72,
+      520.52,
+      520.72
      ]
     ],
-    "checked": 1794410112.827685,
-    "entered": false,
+    "checked": 1794410412.728901,
+    "entered": true,
     "events": [
      {
       "kind": "pend",
       "mins": 610,
       "t": "10:10",
       "txt": "Strong close below the range low. Waiting for the next candle to hold below and make a new low"
+     },
+     {
+      "kind": "entry",
+      "mins": 615,
+      "t": "10:15",
+      "txt": "SHORT at 520.72, stop 520.83, target 520.55"
      }
     ],
-    "last": 520.565,
+    "last": 520.715,
     "orh": 523.115,
     "orl": 520.82,
     "pair": "DIA",
-    "phase": "pending",
+    "paper_only": true,
+    "phase": "short",
     "sent": [
      "range",
      "610:pend"
     ],
-    "status": "Strong close below the range low. Waiting for the next candle to hold below and make a new low",
-    "trade": null
+    "status": "SHORT trade open",
+    "trade": {
+     "be": false,
+     "dir": -1,
+     "entry": 520.715,
+     "entry_label": "10:15",
+     "entry_mins": 615,
+     "entry_t": "2026-11-11T15:15:00",
+     "exit_mins": null,
+     "one_r": 0.11000000000001364,
+     "result": null,
+     "stop": 520.825,
+     "stop0": 520.825,
+     "target": 520.55
+    }
    },
    "SPY": {
     "candles": [
@@ -10090,12 +10157,19 @@
       756.1,
       755.29,
       755.39
+     ],
+     [
+      "10:15",
+      755.49,
+      756.36,
+      755.35,
+      756.18
      ]
     ],
-    "checked": 1794410112.827685,
+    "checked": 1794410412.728901,
     "entered": false,
     "events": [],
-    "last": 755.395,
+    "last": 756.18,
     "orh": 757.9,
     "orl": 754.92,
     "pair": "SPY",
