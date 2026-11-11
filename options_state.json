@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 695.0,
-  "broker_equity": 99543.81,
+  "broker_equity": 99522.81,
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794410710.856975
+  "updated": 1794411015.786194
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -1003,8 +1003,8 @@
    "benched": 0,
    "news": 0,
    "opened": 0,
-   "rejected": 1,
-   "setups": 1,
+   "rejected": 2,
+   "setups": 2,
    "start_nav": 695.0
   }
  },
@@ -1019,10 +1019,6 @@
   "fetched": 1794297016.2116709
  },
  "equity": [
-  [
-   1793058011,
-   908.0
-  ],
   [
    1793058911,
    908.0
@@ -7018,53 +7014,13 @@
   [
    1794410113,
    695.0
+  ],
+  [
+   1794411016,
+   695.0
   ]
  ],
  "errors": [
-  {
-   "t": 1794410422.579253,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794410422.5792546,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-16 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794410422.5792558,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-17 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794410422.5792572,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-18 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794410422.5792587,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-19 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794410422.5792599,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-20 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794410422.5792608,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-23 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794410422.5792623,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-24 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794410422.5792632,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-25 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794410722.7436867,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-11 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
-   "t": 1794410722.7436907,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-12 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
   {
    "t": 1794410722.743692,
    "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
@@ -7100,19 +7056,53 @@
   {
    "t": 1794410722.7436986,
    "text": "Reporter: earnings calendar unavailable for 2026-11-25 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794411029.842871,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-11 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794411029.842876,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-12 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794411029.8428776,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-13 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794411029.842879,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-16 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794411029.84288,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-17 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794411029.842881,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-18 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794411029.8428824,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-19 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794411029.8428838,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-20 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794411029.8428848,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-23 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794411029.8428864,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-24 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
+  },
+  {
+   "t": 1794411029.8428876,
+   "text": "Reporter: earnings calendar unavailable for 2026-11-25 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
   }
  ],
  "feed": [
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": null,
-   "t": 1793804438.6942263,
-   "text": "\ud83d\udccf AMZN opening range is set (9:30\u201310:00 ET)\nHigh 270.76 \u00b7 Low 263.90 \u00b7 size $6.86\n\nWatching 5-min candles until 12:00. Signal = a strong candle closes outside the range, then the next one holds outside and makes a new high (calls) or low (puts).",
-   "title": "AMZN range set: 263.90\u2013270.76",
-   "verdict": null,
-   "who": "The Quant"
-  },
   {
    "kind": "event",
    "lines": [],
@@ -8243,6 +8233,47 @@
    "title": "AMZN breakout watch",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "vote",
+   "lines": [
+    {
+     "say": "Clean read: Opening range is $6.64 (2.49% of the price).",
+     "vote": true,
+     "who": "The Quant"
+    },
+    {
+     "say": "Not on my watch: Paused (drawdown over 35%).",
+     "vote": false,
+     "who": "Risk"
+    },
+    {
+     "say": "Feel that push? Strong red 5-min close outside the range, then the next candle held and made a new low.",
+     "vote": true,
+     "who": "Momentum"
+    },
+    {
+     "say": "Timing's right. Entry at 10:25 ET, inside the 10:00\u201312:00 window.",
+     "vote": true,
+     "who": "Time"
+    },
+    {
+     "say": "...fine. Stop $1.99 away, target 1.5\u00d7 that. I'll allow it.",
+     "vote": true,
+     "who": "Doubt"
+    },
+    {
+     "say": "Sources say we're clear: No earnings before we'd sell; 1 headline today, none against us; StockTwits 6 bullish / 6 bearish.",
+     "vote": true,
+     "who": "The Reporter"
+    }
+   ],
+   "ok": false,
+   "t": 1794411028.9555542,
+   "text": null,
+   "title": "AMZN PUT (opening range breakout)",
+   "verdict": "SIGNAL ONLY 5\u20131: paused (drawdown over 35%). Tracked on AMZN's levels.",
+   "who": null
   }
  ],
  "history": [
@@ -8894,39 +8925,41 @@
  },
  "last_daily": "2026-11-10",
  "last_deploy": 1794410722.7575903,
- "last_full_run": 1794410710.856975,
- "last_run": 1794410710.856975,
+ "last_full_run": 1794411015.786194,
+ "last_run": 1794411015.786194,
  "last_vote": {
   "approved": false,
   "ask": 0,
   "chart": {
    "closes": [
-    521.21,
-    521.125,
-    521.665,
-    521.135,
-    521.35,
-    521.555,
-    521.18,
-    520.91,
-    520.565,
-    520.715
+    273.505,
+    271.52,
+    269.3,
+    269.14,
+    268.925,
+    268.57,
+    269.13,
+    269.01,
+    268.475,
+    268.46,
+    267.34,
+    266.49
    ],
-   "entry": 520.715,
+   "entry": 266.49,
    "prec": 2,
-   "sl": 520.825,
+   "sl": 268.475,
    "tf": "5m",
-   "tp": 520.55
+   "tp": 263.5125
   },
-  "detail": "DIA $520.72 \u00b7 stock stop 520.83 \u00b7 target 520.55",
+  "detail": "AMZN $266.49 \u00b7 stock stop 268.48 \u00b7 target 263.51",
   "edge": 0,
-  "label": "DIA PUT (opening range breakout)",
+  "label": "AMZN PUT (opening range breakout)",
   "side": "PUT",
   "url": "https://app.alpaca.markets/",
   "votes": {
    "Doubt": [
     true,
-    "stop $0.11 away, target 1.5\u00d7 that"
+    "stop $1.99 away, target 1.5\u00d7 that"
    ],
    "Momentum": [
     true,
@@ -8938,18 +8971,18 @@
    ],
    "The Quant": [
     true,
-    "opening range is $2.29 (0.44% of the price)"
+    "opening range is $6.64 (2.49% of the price)"
    ],
    "The Reporter": [
     true,
-    "1 headline today, 1 on our side; StockTwits 6 bullish / 5 bearish"
+    "no earnings before we'd sell; 1 headline today, none against us; StockTwits 6 bullish / 6 bearish"
    ],
    "Time": [
     true,
-    "entry at 10:15 ET, inside the 10:00\u201312:00 window"
+    "entry at 10:25 ET, inside the 10:00\u201312:00 window"
    ]
   },
-  "when": 1794410412.728901
+  "when": 1794411015.786194
  },
  "last_weekly": "2026-11-06",
  "lb_done": {
@@ -9969,29 +10002,56 @@
       268.48,
       267.23,
       267.34
+     ],
+     [
+      "10:25",
+      267.34,
+      267.58,
+      266.47,
+      266.49
      ]
     ],
-    "checked": 1794410710.856975,
-    "entered": false,
+    "checked": 1794411015.786194,
+    "entered": true,
     "events": [
      {
       "kind": "pend",
       "mins": 620,
       "t": "10:20",
       "txt": "Strong close below the range low. Waiting for the next candle to hold below and make a new low"
+     },
+     {
+      "kind": "entry",
+      "mins": 625,
+      "t": "10:25",
+      "txt": "SHORT at 266.49, stop 268.48, target 263.51"
      }
     ],
-    "last": 267.34,
+    "last": 266.49,
     "orh": 274.86,
     "orl": 268.22,
     "pair": "AMZN",
-    "phase": "pending",
+    "paper_only": true,
+    "phase": "short",
     "sent": [
      "range",
      "620:pend"
     ],
-    "status": "Strong close below the range low. Waiting for the next candle to hold below and make a new low",
-    "trade": null
+    "status": "SHORT trade open",
+    "trade": {
+     "be": false,
+     "dir": -1,
+     "entry": 266.49,
+     "entry_label": "10:25",
+     "entry_mins": 625,
+     "entry_t": "2026-11-11T15:25:00",
+     "exit_mins": null,
+     "one_r": 1.9850000000000136,
+     "result": null,
+     "stop": 268.475,
+     "stop0": 268.475,
+     "target": 263.5125
+    }
    },
    "DIA": {
     "candles": [
@@ -10071,9 +10131,16 @@
       520.54,
       520.07,
       520.43
+     ],
+     [
+      "10:25",
+      520.41,
+      520.58,
+      520.26,
+      520.42
      ]
     ],
-    "checked": 1794410710.856975,
+    "checked": 1794411015.786194,
     "entered": true,
     "events": [
      {
@@ -10101,7 +10168,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 520.43,
+    "last": 520.42,
     "orh": 523.115,
     "orl": 520.82,
     "pair": "DIA",
@@ -10207,12 +10274,19 @@
       756.11,
       755.46,
       755.75
+     ],
+     [
+      "10:25",
+      755.88,
+      756.92,
+      755.88,
+      756.54
      ]
     ],
-    "checked": 1794410710.856975,
+    "checked": 1794411015.786194,
     "entered": false,
     "events": [],
-    "last": 755.75,
+    "last": 756.54,
     "orh": 757.9,
     "orl": 754.92,
     "pair": "SPY",
@@ -10279,18 +10353,18 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 28.15081360585594,
-   "atr_pips": 1.3873135077080043,
-   "bar": "2026-11-11T15:00:00",
-   "chg": -0.8951642672572738,
-   "close": 268.475,
+   "adx": 27.324928036564412,
+   "atr_pips": 1.4889339717448997,
+   "bar": "2026-11-11T15:15:00",
+   "chg": -1.6279069767441745,
+   "close": 266.49,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 4,
+    "passed": 3,
     "session": true,
     "tf": "M15",
     "waiting": [
@@ -10298,25 +10372,25 @@
      "MACD against us (up)"
     ]
    },
-   "rsi": 42.00329393585786,
+   "rsi": 33.133639302881065,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": 1
   },
   "DIA": {
-   "adx": 15.048350801885357,
-   "atr_pips": 0.7696733335642632,
-   "bar": "2026-11-11T15:00:00",
-   "chg": -0.23668072058257955,
-   "close": 520.565,
+   "adx": 14.918131840091442,
+   "atr_pips": 0.760768095857315,
+   "bar": "2026-11-11T15:15:00",
+   "chg": -0.26446914526638476,
+   "close": 520.42,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
     "dir": 1,
     "in_trade": false,
     "of": 6,
-    "passed": 4,
+    "passed": 3,
     "session": true,
     "tf": "M15",
     "waiting": [
@@ -10324,7 +10398,7 @@
      "ADX 15 (needs 18)"
     ]
    },
-   "rsi": 43.750501057485465,
+   "rsi": 42.48320220724246,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -10486,11 +10560,11 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 25.45727102957818,
-   "atr_pips": 1.8580439581944488,
-   "bar": "2026-11-11T15:00:00",
-   "chg": 0.7287346819036487,
-   "close": 755.395,
+   "adx": 27.091712249863868,
+   "atr_pips": 1.8374693905677386,
+   "bar": "2026-11-11T15:15:00",
+   "chg": 0.8814155987892222,
+   "close": 756.54,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -10505,7 +10579,7 @@
      "1-hour trend disagrees"
     ]
    },
-   "rsi": 71.73467584966588,
+   "rsi": 74.1325874726765,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -10915,18 +10989,18 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 0.73,
-   "p": "755.39",
+   "c": 0.88,
+   "p": "756.54",
    "s": "SPY"
   },
   {
-   "c": -0.24,
-   "p": "520.57",
+   "c": -0.26,
+   "p": "520.42",
    "s": "DIA"
   },
   {
-   "c": -0.9,
-   "p": "268.48",
+   "c": -1.63,
+   "p": "266.49",
    "s": "AMZN"
   }
  ],
