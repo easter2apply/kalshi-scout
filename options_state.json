@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794502817.879341
+  "updated": 1794503111.443261
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -7104,47 +7104,6 @@
  ],
  "feed": [
   {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "Data's too weak: Opening range is $10.69 (4.11% of the price), too wild.",
-     "vote": false,
-     "who": "The Quant"
-    },
-    {
-     "say": "Blocked. Paused (drawdown over 35%).",
-     "vote": false,
-     "who": "Risk"
-    },
-    {
-     "say": "Engine's running: Strong red 5-min close outside the range, then the next candle held and made a new low.",
-     "vote": true,
-     "who": "Momentum"
-    },
-    {
-     "say": "Good window. Entry at 10:05 ET, inside the 10:00\u201312:00 window.",
-     "vote": true,
-     "who": "Time"
-    },
-    {
-     "say": "Hm. Stop $3.38 away, target 1.5\u00d7 that. I can't argue.",
-     "vote": true,
-     "who": "Doubt"
-    },
-    {
-     "say": "Hold the presses. StockTwits crowd is 14 to 2 bullish.",
-     "vote": false,
-     "who": "The Reporter"
-    }
-   ],
-   "ok": false,
-   "t": 1793891419.031544,
-   "text": null,
-   "title": "AMZN PUT (opening range breakout)",
-   "verdict": "SIGNAL ONLY 3\u20133: paused (drawdown over 35%). Tracked on AMZN's levels.",
-   "who": null
-  },
-  {
    "kind": "event",
    "lines": [],
    "ok": null,
@@ -8274,6 +8233,16 @@
    "title": "DIA ORB signal finished",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1794503115.7406037,
+   "text": "\ud83d\ude34 AMZN: No setup by 12:00 ET. Done for the day.",
+   "title": "AMZN: no setup today",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -8924,9 +8893,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-11",
- "last_deploy": 1794502524.4853785,
- "last_full_run": 1794502817.879341,
- "last_run": 1794502817.879341,
+ "last_deploy": 1794503116.6309562,
+ "last_full_run": 1794503111.443261,
+ "last_run": 1794503111.443261,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -10142,20 +10111,35 @@
       269.98,
       269.66,
       269.98
+     ],
+     [
+      "12:00",
+      269.9,
+      270.29,
+      269.9,
+      269.93
      ]
     ],
-    "checked": 1794502817.879341,
+    "checked": 1794503111.443261,
     "entered": false,
-    "events": [],
-    "last": 269.98,
+    "events": [
+     {
+      "kind": "none",
+      "mins": 720,
+      "t": "12:00",
+      "txt": "No setup by 12:00 ET. Done for the day"
+     }
+    ],
+    "last": 269.93,
     "orh": 273.58,
     "orl": 267.86,
     "pair": "AMZN",
-    "phase": "wait",
+    "phase": "none",
     "sent": [
-     "range"
+     "range",
+     "720:none"
     ],
-    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
+    "status": "No setup today",
     "trade": null
    },
    "DIA": {
@@ -10369,9 +10353,16 @@
       525.95,
       525.85,
       525.85
+     ],
+     [
+      "12:00",
+      525.75,
+      526.03,
+      525.75,
+      526.0
      ]
     ],
-    "checked": 1794502817.879341,
+    "checked": 1794503111.443261,
     "entered": true,
     "events": [
      {
@@ -10411,7 +10402,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 525.845,
+    "last": 526.005,
     "orh": 525.34,
     "orl": 524.03,
     "pair": "DIA",
@@ -10652,9 +10643,16 @@
       761.34,
       760.92,
       761.15
+     ],
+     [
+      "12:00",
+      761.2,
+      761.44,
+      760.72,
+      761.01
      ]
     ],
-    "checked": 1794502817.879341,
+    "checked": 1794503111.443261,
     "entered": true,
     "events": [
      {
@@ -10670,7 +10668,7 @@
       "txt": "LONG at 760.81, stop 757.85, target 765.25"
      }
     ],
-    "last": 761.15,
+    "last": 761.01,
     "orh": 758.84,
     "orl": 753.735,
     "pair": "SPY",
