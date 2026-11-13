@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794582019.041899
+  "updated": 1794582323.823083
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -7107,16 +7107,6 @@
    "kind": "event",
    "lines": [],
    "ok": true,
-   "t": 1793892625.5144942,
-   "text": "\ud83d\udd12 SPY 10:25 ET: 1R reached. Stop moves to breakeven at 748.88 (SPY level). The trade can't lose on SPY's move now.",
-   "title": "SPY stop to breakeven",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": true,
    "t": 1793892625.514998,
    "text": "\ud83d\udd12 AMZN 10:25 ET: 1R reached. Stop moves to breakeven at 259.88 (AMZN level). The trade can't lose on AMZN's move now.",
    "title": "AMZN stop to breakeven",
@@ -8212,6 +8202,16 @@
    "title": "AMZN range set: 267.11\u2013269.83",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1794582329.2172487,
+   "text": "\ud83d\udc40 SPY 10:00 ET: Strong close below the range low. Waiting for the next candle to hold below and make a new low.",
+   "title": "SPY breakout watch",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -8862,9 +8862,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-12",
- "last_deploy": 1794582028.2588766,
- "last_full_run": 1794582019.041899,
- "last_run": 1794582019.041899,
+ "last_deploy": 1794582330.2539327,
+ "last_full_run": 1794582323.823083,
+ "last_run": 1794582323.823083,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -9912,12 +9912,19 @@
       269.06,
       268.2,
       268.96
+     ],
+     [
+      "10:00",
+      268.96,
+      268.96,
+      268.0,
+      268.0
      ]
     ],
-    "checked": 1794582019.041899,
+    "checked": 1794582323.823083,
     "entered": false,
     "events": [],
-    "last": 268.96,
+    "last": 268.0,
     "orh": 269.83,
     "orl": 267.11,
     "pair": "AMZN",
@@ -9971,12 +9978,19 @@
       522.73,
       522.73,
       522.73
+     ],
+     [
+      "10:00",
+      522.66,
+      522.66,
+      522.33,
+      522.54
      ]
     ],
-    "checked": 1794582019.041899,
+    "checked": 1794582323.823083,
     "entered": false,
     "events": [],
-    "last": 522.73,
+    "last": 522.54,
     "orh": 524.83,
     "orl": 522.73,
     "pair": "DIA",
@@ -10030,20 +10044,35 @@
       755.26,
       753.95,
       754.42
+     ],
+     [
+      "10:00",
+      754.4,
+      754.42,
+      752.08,
+      752.28
      ]
     ],
-    "checked": 1794582019.041899,
+    "checked": 1794582323.823083,
     "entered": false,
-    "events": [],
-    "last": 754.42,
+    "events": [
+     {
+      "kind": "pend",
+      "mins": 600,
+      "t": "10:00",
+      "txt": "Strong close below the range low. Waiting for the next candle to hold below and make a new low"
+     }
+    ],
+    "last": 752.28,
     "orh": 760.07,
     "orl": 753.95,
     "pair": "SPY",
-    "phase": "wait",
+    "phase": "pending",
     "sent": [
-     "range"
+     "range",
+     "600:pend"
     ],
-    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
+    "status": "Strong close below the range low. Waiting for the next candle to hold below and make a new low",
     "trade": null
    }
   }
