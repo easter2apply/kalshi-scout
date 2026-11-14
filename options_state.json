@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794632110.486027
+  "updated": 1794632422.335875
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -876,7 +876,7 @@
   "total": 104
  },
  "day": {
-  "date": "2026-11-13",
+  "date": "2026-11-14",
   "halted": false,
   "start_nav": 695.0
  },
@@ -1006,6 +1006,15 @@
    "rejected": 3,
    "setups": 3,
    "start_nav": 695.0
+  },
+  "2026-11-14": {
+   "approved": 0,
+   "benched": 0,
+   "news": 0,
+   "opened": 0,
+   "rejected": 0,
+   "setups": 0,
+   "start_nav": 695.0
   }
  },
  "dirs_today": {
@@ -1019,10 +1028,6 @@
   "fetched": 1794618022.0277994
  },
  "equity": [
-  [
-   1793278211,
-   1003.0
-  ],
   [
    1793279112,
    1003.0
@@ -7018,6 +7023,10 @@
   [
    1794631512,
    695.0
+  ],
+  [
+   1794632422,
+   695.0
   ]
  ],
  "errors": [
@@ -8925,8 +8934,8 @@
  },
  "last_daily": "2026-11-13",
  "last_deploy": 1794631814.1213202,
- "last_full_run": 1794632110.486027,
- "last_run": 1794632110.486027,
+ "last_full_run": 1794632422.335875,
+ "last_run": 1794632422.335875,
  "last_vote": {
   "approved": false,
   "ask": 0,
