@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794675012.606561
+  "updated": 1794675310.32375
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -8925,8 +8925,8 @@
  },
  "last_daily": "2026-11-13",
  "last_deploy": 1794675013.8240747,
- "last_full_run": 1794675012.606561,
- "last_run": 1794675012.606561,
+ "last_full_run": 1794675310.32375,
+ "last_run": 1794675310.32375,
  "last_vote": {
   "approved": false,
   "ask": 0,
