@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794803709.437816
+  "updated": 1794804012.949938
  },
  "alpaca_alerted": 1794056714.887094,
  "bot_username": "eJaaySignals_bot",
@@ -8925,8 +8925,8 @@
  },
  "last_daily": "2026-11-15",
  "last_deploy": 1794803709.877999,
- "last_full_run": 1794803709.437816,
- "last_run": 1794803709.437816,
+ "last_full_run": 1794804012.949938,
+ "last_run": 1794804012.949938,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -9927,11 +9927,6 @@
    },
    {
     "cur": "GBP",
-    "t": 1794987000.0,
-    "title": "BOE Gov Bailey Speaks"
-   },
-   {
-    "cur": "GBP",
     "t": 1795014000.0,
     "title": "BOE Gov Bailey Speaks"
    },
@@ -9951,7 +9946,7 @@
     "title": "Unemployment Rate"
    }
   ],
-  "fetched": 1794782110.831456
+  "fetched": 1794804014.0642333
  },
  "old_records": [
   {
