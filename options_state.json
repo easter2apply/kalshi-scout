@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1794956418.566184
+  "updated": 1794956711.989333
  },
  "alpaca_alerted": 1794820214.199567,
  "bot_username": "eJaaySignals_bot",
@@ -9018,8 +9018,8 @@
  },
  "last_daily": "2026-11-17",
  "last_deploy": 1794956112.8077652,
- "last_full_run": 1794956418.566184,
- "last_run": 1794956418.566184,
+ "last_full_run": 1794956711.989333,
+ "last_run": 1794956711.989333,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -10045,7 +10045,7 @@
     "title": "Unemployment Rate"
    }
   ],
-  "fetched": 1794934829.1468365
+  "fetched": 1794956712.9619796
  },
  "old_records": [
   {
