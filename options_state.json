@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1795021219.27293
+  "updated": 1795021513.852006
  },
  "alpaca_alerted": 1794820214.199567,
  "bot_username": "eJaaySignals_bot",
@@ -7107,16 +7107,6 @@
    "kind": "event",
    "lines": [],
    "ok": null,
-   "t": 1794409248.0210488,
-   "text": "\ud83d\udccf AMZN opening range is set (9:30\u201310:00 ET)\nHigh 274.86 \u00b7 Low 268.22 \u00b7 size $6.64\n\nWatching 5-min candles until 12:00. Signal = a strong candle closes outside the range, then the next one holds outside and makes a new high (calls) or low (puts).",
-   "title": "AMZN range set: 268.22\u2013274.86",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": null,
    "t": 1794410121.5832915,
    "text": "\ud83d\udc40 DIA 10:10 ET: Strong close below the range low. Waiting for the next candle to hold below and make a new low.",
    "title": "DIA breakout watch",
@@ -8429,6 +8419,16 @@
    "title": "SPY PUT (opening range breakout)",
    "verdict": "SIGNAL ONLY 5\u20131: paused (drawdown over 35%). Tracked on SPY's levels.",
    "who": null
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": false,
+   "t": 1795021520.2471197,
+   "text": "\ud83d\uded1 SPY ORB signal finished on SPY: stop on SPY (-1.0R). No option was held (signal only).",
+   "title": "SPY ORB signal finished",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -9079,9 +9079,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-17",
- "last_deploy": 1795020912.1126971,
- "last_full_run": 1795021219.27293,
- "last_run": 1795021219.27293,
+ "last_deploy": 1795021521.3531008,
+ "last_full_run": 1795021513.852006,
+ "last_run": 1795021513.852006,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -10345,9 +10345,16 @@
       264.42,
       263.21,
       264.42
+     ],
+     [
+      "12:00",
+      264.37,
+      265.08,
+      264.25,
+      265.08
      ]
     ],
-    "checked": 1795021219.27293,
+    "checked": 1795021513.852006,
     "entered": true,
     "events": [
      {
@@ -10369,7 +10376,7 @@
       "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 264.42,
+    "last": 265.08,
     "orh": 263.28,
     "orl": 259.65,
     "pair": "AMZN",
@@ -10607,9 +10614,16 @@
       502.01,
       501.35,
       502.01
+     ],
+     [
+      "12:00",
+      502.2,
+      502.5,
+      502.19,
+      502.41
      ]
     ],
-    "checked": 1795021219.27293,
+    "checked": 1795021513.852006,
     "entered": true,
     "events": [
      {
@@ -10631,7 +10645,7 @@
       "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 502.01,
+    "last": 502.41,
     "orh": 506.13,
     "orl": 501.99,
     "pair": "DIA",
@@ -10869,9 +10883,16 @@
       729.35,
       727.17,
       729.34
+     ],
+     [
+      "12:00",
+      729.28,
+      730.37,
+      729.27,
+      730.36
      ]
     ],
-    "checked": 1795021219.27293,
+    "checked": 1795021513.852006,
     "entered": true,
     "events": [
      {
@@ -10897,21 +10918,28 @@
       "mins": 700,
       "t": "11:40",
       "txt": "SHORT at 728.04, stop 729.37, target 726.04"
+     },
+     {
+      "kind": "sl",
+      "mins": 720,
+      "t": "12:00",
+      "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 729.34,
+    "last": 730.36,
     "orh": 735.01,
     "orl": 728.72,
     "pair": "SPY",
     "paper_only": true,
-    "phase": "short",
+    "phase": "done",
     "sent": [
      "range",
      "645:pend",
      "650:fail",
-     "695:pend"
+     "695:pend",
+     "exit:720"
     ],
-    "status": "SHORT trade open",
+    "status": "Trade finished: -1.0R",
     "trade": {
      "be": false,
      "dir": -1,
@@ -10919,9 +10947,9 @@
      "entry_label": "11:40",
      "entry_mins": 700,
      "entry_t": "2026-11-18T16:40:00",
-     "exit_mins": null,
+     "exit_mins": 720,
      "one_r": 1.330000000000041,
-     "result": null,
+     "result": -1.0,
      "stop": 729.37,
      "stop0": 729.37,
      "target": 726.0449999999998
