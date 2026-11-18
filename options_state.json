@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1795013719.63488
+  "updated": 1795014021.797232
  },
  "alpaca_alerted": 1794820214.199567,
  "bot_username": "eJaaySignals_bot",
@@ -1019,10 +1019,6 @@
   "fetched": 1795009523.2837527
  },
  "equity": [
-  [
-   1793658920,
-   775.0
-  ],
   [
    1793659813,
    775.0
@@ -7018,6 +7014,10 @@
   [
    1795013113,
    695.0
+  ],
+  [
+   1795014022,
+   695.0
   ]
  ],
  "errors": [
@@ -7103,67 +7103,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": null,
-   "t": 1794323119.1435227,
-   "text": "\ud83d\udc40 SPY 10:00 ET: Strong close above the range high. Waiting for the next candle to hold above and make a new high.",
-   "title": "SPY breakout watch",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": null,
-   "t": 1794323119.1439068,
-   "text": "\ud83d\udc40 AMZN 10:00 ET: Strong close above the range high. Waiting for the next candle to hold above and make a new high.",
-   "title": "AMZN breakout watch",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "The data says go. Opening range is $3.68 (0.49% of the price).",
-     "vote": true,
-     "who": "The Quant"
-    },
-    {
-     "say": "Hard no. Paused (drawdown over 35%).",
-     "vote": false,
-     "who": "Risk"
-    },
-    {
-     "say": "It's moving our way. Strong green 5-min close outside the range, then the next candle held and made a new high.",
-     "vote": true,
-     "who": "Momentum"
-    },
-    {
-     "say": "Clock agrees: Entry at 10:05 ET, inside the 10:00\u201312:00 window.",
-     "vote": true,
-     "who": "Time"
-    },
-    {
-     "say": "Begrudgingly yes: Stop $1.16 away, target 1.5\u00d7 that.",
-     "vote": true,
-     "who": "Doubt"
-    },
-    {
-     "say": "Nothing in the press to scare me. 19 headlines today, 1 on our side; StockTwits 8 bullish / 5 bearish.",
-     "vote": true,
-     "who": "The Reporter"
-    }
-   ],
-   "ok": false,
-   "t": 1794323416.3463662,
-   "text": null,
-   "title": "SPY CALL (opening range breakout)",
-   "verdict": "SIGNAL ONLY 5\u20131: paused (drawdown over 35%). Tracked on SPY's levels.",
-   "who": null
-  },
   {
    "kind": "event",
    "lines": [],
@@ -8367,6 +8306,36 @@
    "title": "AMZN ORB signal finished",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1795014027.882992,
+   "text": "\ud83d\udccf SPY opening range is set (9:30\u201310:00 ET)\nHigh 735.01 \u00b7 Low 728.72 \u00b7 size $6.29\n\nWatching 5-min candles until 12:00. Signal = a strong candle closes outside the range, then the next one holds outside and makes a new high (calls) or low (puts).",
+   "title": "SPY range set: 728.72\u2013735.01",
+   "verdict": null,
+   "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1795014027.8831108,
+   "text": "\ud83d\udccf DIA opening range is set (9:30\u201310:00 ET)\nHigh 506.13 \u00b7 Low 501.99 \u00b7 size $4.14\n\nWatching 5-min candles until 12:00. Signal = a strong candle closes outside the range, then the next one holds outside and makes a new high (calls) or low (puts).",
+   "title": "DIA range set: 501.99\u2013506.13",
+   "verdict": null,
+   "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1795014027.8832161,
+   "text": "\ud83d\udccf AMZN opening range is set (9:30\u201310:00 ET)\nHigh 263.28 \u00b7 Low 259.65 \u00b7 size $3.63\n\nWatching 5-min candles until 12:00. Signal = a strong candle closes outside the range, then the next one holds outside and makes a new high (calls) or low (puts).",
+   "title": "AMZN range set: 259.65\u2013263.28",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -9017,9 +8986,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-17",
- "last_deploy": 1795013724.318666,
- "last_full_run": 1795013719.63488,
- "last_run": 1795013719.63488,
+ "last_deploy": 1795014030.6032119,
+ "last_full_run": 1795014021.797232,
+ "last_run": 1795014021.797232,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -10097,18 +10066,27 @@
       262.7,
       261.61,
       262.25
+     ],
+     [
+      "9:55",
+      262.29,
+      263.28,
+      261.83,
+      263.28
      ]
     ],
-    "checked": 1795013719.63488,
+    "checked": 1795014021.797232,
     "entered": false,
     "events": [],
-    "last": 262.25,
-    "orh": 263.06,
+    "last": 263.28,
+    "orh": 263.28,
     "orl": 259.65,
     "pair": "AMZN",
-    "phase": "building",
-    "sent": [],
-    "status": "Building the opening range until 10:00 ET",
+    "phase": "wait",
+    "sent": [
+     "range"
+    ],
+    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
     "trade": null
    },
    "DIA": {
@@ -10147,18 +10125,27 @@
       503.65,
       501.99,
       503.19
+     ],
+     [
+      "9:55",
+      503.04,
+      504.76,
+      502.96,
+      504.61
      ]
     ],
-    "checked": 1795013719.63488,
+    "checked": 1795014021.797232,
     "entered": false,
     "events": [],
-    "last": 503.19,
+    "last": 504.605,
     "orh": 506.13,
     "orl": 501.99,
     "pair": "DIA",
-    "phase": "building",
-    "sent": [],
-    "status": "Building the opening range until 10:00 ET",
+    "phase": "wait",
+    "sent": [
+     "range"
+    ],
+    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
     "trade": null
    },
    "SPY": {
@@ -10197,18 +10184,27 @@
       731.95,
       728.72,
       731.27
+     ],
+     [
+      "9:55",
+      731.1,
+      733.73,
+      730.6,
+      733.65
      ]
     ],
-    "checked": 1795013719.63488,
+    "checked": 1795014021.797232,
     "entered": false,
     "events": [],
-    "last": 731.27,
+    "last": 733.655,
     "orh": 735.01,
     "orl": 728.72,
     "pair": "SPY",
-    "phase": "building",
-    "sent": [],
-    "status": "Building the opening range until 10:00 ET",
+    "phase": "wait",
+    "sent": [
+     "range"
+    ],
+    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
     "trade": null
    }
   }
@@ -10267,11 +10263,11 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 22.572710064107834,
-   "atr_pips": 1.3420321170768414,
-   "bar": "2026-11-18T14:30:00",
-   "chg": 1.3648701046917562,
-   "close": 261.42,
+   "adx": 24.226588379907273,
+   "atr_pips": 1.3936726794196495,
+   "bar": "2026-11-18T14:45:00",
+   "chg": 2.086079875920898,
+   "close": 263.28,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
@@ -10286,18 +10282,18 @@
      "MACD against us (down)"
     ]
    },
-   "rsi": 70.52524836100577,
+   "rsi": 75.42143170951671,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
   },
   "DIA": {
-   "adx": 46.515101844744514,
-   "atr_pips": 1.1702514794642542,
-   "bar": "2026-11-18T14:30:00",
-   "chg": -0.6858899816701851,
-   "close": 503.89,
+   "adx": 47.43326001707408,
+   "atr_pips": 1.2848763736626438,
+   "bar": "2026-11-18T14:45:00",
+   "chg": -0.5449671837120812,
+   "close": 504.605,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -10311,7 +10307,7 @@
      "a pullback to the trend line or a fresh crossover"
     ]
    },
-   "rsi": 25.04411176144336,
+   "rsi": 30.004182518355037,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -10473,24 +10469,27 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 34.534417505449255,
-   "atr_pips": 2.286790309140845,
-   "bar": "2026-11-18T14:30:00",
-   "chg": -0.24781201785884147,
-   "close": 730.595,
+   "adx": 32.82587733540918,
+   "atr_pips": 2.481305285770886,
+   "bar": "2026-11-18T14:45:00",
+   "chg": 0.16998675605193875,
+   "close": 733.655,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
     "dir": -1,
     "in_trade": false,
     "of": 6,
-    "passed": 6,
+    "passed": 4,
     "session": true,
     "tf": "M15",
-    "waiting": []
+    "waiting": [
+     "a pullback to the trend line or a fresh crossover",
+     "MACD against us (down)"
+    ]
    },
-   "rsi": 42.12846623284284,
-   "setup": "pullback 15m",
+   "rsi": 51.536072606085014,
+   "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
@@ -10899,18 +10898,18 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": -0.25,
-   "p": "730.60",
+   "c": 0.17,
+   "p": "733.65",
    "s": "SPY"
   },
   {
-   "c": -0.69,
-   "p": "503.89",
+   "c": -0.54,
+   "p": "504.61",
    "s": "DIA"
   },
   {
-   "c": 1.36,
-   "p": "261.42",
+   "c": 2.09,
+   "p": "263.28",
    "s": "AMZN"
   }
  ],
