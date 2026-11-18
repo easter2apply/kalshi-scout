@@ -7022,10 +7022,6 @@
  ],
  "errors": [
   {
-   "t": 1794486912.9550285,
-   "text": "Reporter: earnings calendar unavailable for 2026-11-18 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
-  },
-  {
    "t": 1794486912.9550302,
    "text": "Reporter: earnings calendar unavailable for 2026-11-19 (403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>)"
   },
@@ -7100,6 +7096,10 @@
   {
    "t": 1794820314.003297,
    "text": "ALPACA: couldn't open the account (500: <html>\r\n<head><title>500 Internal Server Error</title></head>\r\n<body>\r\n<center><h1>500 Internal Server Error</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n)"
+  },
+  {
+   "t": 1794964836.3322597,
+   "text": "Run failed: The read operation timed out"
   }
  ],
  "feed": [
