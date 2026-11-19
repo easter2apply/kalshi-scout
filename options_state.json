@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1795060817.169355
+  "updated": 1795061123.171774
  },
  "alpaca_alerted": 1794820214.199567,
  "bot_username": "eJaaySignals_bot",
@@ -9079,9 +9079,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-18",
- "last_deploy": 1795060211.4759686,
- "last_full_run": 1795060817.169355,
- "last_run": 1795060817.169355,
+ "last_deploy": 1795061124.1818452,
+ "last_full_run": 1795061123.171774,
+ "last_run": 1795061123.171774,
  "last_vote": {
   "approved": false,
   "ask": 0,
