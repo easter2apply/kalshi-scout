@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1795101313.16562
+  "updated": 1795101621.655492
  },
  "alpaca_alerted": 1794820214.199567,
  "bot_username": "eJaaySignals_bot",
@@ -1003,8 +1003,8 @@
    "benched": 0,
    "news": 0,
    "opened": 0,
-   "rejected": 0,
-   "setups": 0,
+   "rejected": 3,
+   "setups": 3,
    "start_nav": 695.0
   }
  },
@@ -7106,67 +7106,6 @@
   {
    "kind": "event",
    "lines": [],
-   "ok": null,
-   "t": 1794412516.5454814,
-   "text": "\ud83d\udc40 SPY 10:50 ET: Strong close above the range high. Waiting for the next candle to hold above and make a new high.",
-   "title": "SPY breakout watch",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "The data says go. Opening range is $2.98 (0.39% of the price).",
-     "vote": true,
-     "who": "The Quant"
-    },
-    {
-     "say": "Hard no. Paused (drawdown over 35%).",
-     "vote": false,
-     "who": "Risk"
-    },
-    {
-     "say": "It's moving our way. Strong green 5-min close outside the range, then the next candle held and made a new high.",
-     "vote": true,
-     "who": "Momentum"
-    },
-    {
-     "say": "Clock agrees: Entry at 10:55 ET, inside the 10:00\u201312:00 window.",
-     "vote": true,
-     "who": "Time"
-    },
-    {
-     "say": "Begrudgingly yes: Stop $1.12 away, target 1.5\u00d7 that.",
-     "vote": true,
-     "who": "Doubt"
-    },
-    {
-     "say": "Nothing in the press to scare me. 4 headlines today, 1 on our side; StockTwits 6 bullish / 3 bearish.",
-     "vote": true,
-     "who": "The Reporter"
-    }
-   ],
-   "ok": false,
-   "t": 1794412829.846282,
-   "text": null,
-   "title": "SPY CALL (opening range breakout)",
-   "verdict": "SIGNAL ONLY 5\u20131: paused (drawdown over 35%). Tracked on SPY's levels.",
-   "who": null
-  },
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": true,
-   "t": 1794416434.6054182,
-   "text": "\ud83d\udd12 SPY 11:55 ET: 1R reached. Stop moves to breakeven at 758.69 (SPY level). The trade can't lose on SPY's move now.",
-   "title": "SPY stop to breakeven",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
-   "kind": "event",
-   "lines": [],
    "ok": true,
    "t": 1794416721.8768692,
    "text": "\ud83c\udfaf SPY ORB signal finished on SPY: target +1.5R on SPY (+1.5R). No option was held (signal only).",
@@ -8367,6 +8306,129 @@
    "title": "AMZN breakout watch",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "vote",
+   "lines": [
+    {
+     "say": "Clean read: Opening range is $4.30 (0.59% of the price).",
+     "vote": true,
+     "who": "The Quant"
+    },
+    {
+     "say": "Not on my watch: Paused (drawdown over 35%).",
+     "vote": false,
+     "who": "Risk"
+    },
+    {
+     "say": "Feel that push? Strong red 5-min close outside the range, then the next candle held and made a new low.",
+     "vote": true,
+     "who": "Momentum"
+    },
+    {
+     "say": "Timing's right. Entry at 10:15 ET, inside the 10:00\u201312:00 window.",
+     "vote": true,
+     "who": "Time"
+    },
+    {
+     "say": "...fine. Stop $3.65 away, target 1.5\u00d7 that. I'll allow it.",
+     "vote": true,
+     "who": "Doubt"
+    },
+    {
+     "say": "Sources say we're clear: No headlines today; StockTwits 1 bullish / 11 bearish.",
+     "vote": true,
+     "who": "The Reporter"
+    }
+   ],
+   "ok": false,
+   "t": 1795101625.8245084,
+   "text": null,
+   "title": "SPY PUT (opening range breakout)",
+   "verdict": "SIGNAL ONLY 5\u20131: paused (drawdown over 35%). Tracked on SPY's levels.",
+   "who": null
+  },
+  {
+   "kind": "vote",
+   "lines": [
+    {
+     "say": "The data says go. Opening range is $3.09 (0.62% of the price).",
+     "vote": true,
+     "who": "The Quant"
+    },
+    {
+     "say": "Hard no. Paused (drawdown over 35%).",
+     "vote": false,
+     "who": "Risk"
+    },
+    {
+     "say": "It's moving our way. Strong red 5-min close outside the range, then the next candle held and made a new low.",
+     "vote": true,
+     "who": "Momentum"
+    },
+    {
+     "say": "Clock agrees: Entry at 10:15 ET, inside the 10:00\u201312:00 window.",
+     "vote": true,
+     "who": "Time"
+    },
+    {
+     "say": "Begrudgingly yes: Stop $1.84 away, target 1.5\u00d7 that.",
+     "vote": true,
+     "who": "Doubt"
+    },
+    {
+     "say": "Nothing in the press to scare me. No headlines today; StockTwits 0 bullish / 7 bearish.",
+     "vote": true,
+     "who": "The Reporter"
+    }
+   ],
+   "ok": false,
+   "t": 1795101626.219648,
+   "text": null,
+   "title": "DIA PUT (opening range breakout)",
+   "verdict": "SIGNAL ONLY 5\u20131: paused (drawdown over 35%). Tracked on DIA's levels.",
+   "who": null
+  },
+  {
+   "kind": "vote",
+   "lines": [
+    {
+     "say": "Numbers check out: Opening range is $3.19 (1.18% of the price).",
+     "vote": true,
+     "who": "The Quant"
+    },
+    {
+     "say": "Blocked. Paused (drawdown over 35%).",
+     "vote": false,
+     "who": "Risk"
+    },
+    {
+     "say": "Engine's running: Strong red 5-min close outside the range, then the next candle held and made a new low.",
+     "vote": true,
+     "who": "Momentum"
+    },
+    {
+     "say": "Good window. Entry at 10:15 ET, inside the 10:00\u201312:00 window.",
+     "vote": true,
+     "who": "Time"
+    },
+    {
+     "say": "Hm. Stop $1.59 away, target 1.5\u00d7 that. I can't argue.",
+     "vote": true,
+     "who": "Doubt"
+    },
+    {
+     "say": "Hold the presses. StockTwits crowd is 10 to 2 bullish.",
+     "vote": false,
+     "who": "The Reporter"
+    }
+   ],
+   "ok": false,
+   "t": 1795101626.5390954,
+   "text": null,
+   "title": "AMZN PUT (opening range breakout)",
+   "verdict": "SIGNAL ONLY 4\u20132: paused (drawdown over 35%). Tracked on AMZN's levels.",
+   "who": null
   }
  ],
  "history": [
@@ -9018,56 +9080,39 @@
  },
  "last_daily": "2026-11-18",
  "last_deploy": 1795101321.040773,
- "last_full_run": 1795101313.16562,
- "last_run": 1795101313.16562,
+ "last_full_run": 1795101621.655492,
+ "last_run": 1795101621.655492,
  "last_vote": {
   "approved": false,
   "ask": 0,
   "chart": {
    "closes": [
-    733.49,
-    732.13,
-    730.595,
-    729.7,
-    731.27,
-    733.655,
-    732.39,
-    731.365,
-    732.16,
-    732.22,
-    730.98,
-    731.78,
-    731.1,
-    730.12,
-    729.62,
-    728.66,
-    729.32,
-    730.71,
-    730.07,
-    730.29,
-    729.17,
-    728.29,
-    729.825,
-    728.64,
-    729.15,
-    727.94,
-    728.04
+    272.33,
+    271.21,
+    272.63,
+    273.5,
+    272.04,
+    271.84,
+    271.39,
+    271.215,
+    270.53,
+    269.74
    ],
-   "entry": 728.04,
+   "entry": 269.74,
    "prec": 2,
-   "sl": 729.37,
+   "sl": 271.33,
    "tf": "5m",
-   "tp": 726.0449999999998
+   "tp": 267.355
   },
-  "detail": "SPY $728.04 \u00b7 stock stop 729.37 \u00b7 target 726.04",
+  "detail": "AMZN $269.74 \u00b7 stock stop 271.33 \u00b7 target 267.36",
   "edge": 0,
-  "label": "SPY PUT (opening range breakout)",
+  "label": "AMZN PUT (opening range breakout)",
   "side": "PUT",
   "url": "https://app.alpaca.markets/",
   "votes": {
    "Doubt": [
     true,
-    "stop $1.33 away, target 1.5\u00d7 that"
+    "stop $1.59 away, target 1.5\u00d7 that"
    ],
    "Momentum": [
     true,
@@ -9079,18 +9124,18 @@
    ],
    "The Quant": [
     true,
-    "opening range is $6.29 (0.86% of the price)"
+    "opening range is $3.19 (1.18% of the price)"
    ],
    "The Reporter": [
-    true,
-    "no headlines today; StockTwits 1 bullish / 7 bearish"
+    false,
+    "StockTwits crowd is 10 to 2 bullish"
    ],
    "Time": [
     true,
-    "entry at 11:40 ET, inside the 10:00\u201312:00 window"
+    "entry at 10:15 ET, inside the 10:00\u201312:00 window"
    ]
   },
-  "when": 1795020312.50618
+  "when": 1795101621.655492
  },
  "last_weekly": "2026-11-13",
  "lb_done": {
@@ -10136,29 +10181,56 @@
       271.33,
       270.53,
       270.53
+     ],
+     [
+      "10:15",
+      270.52,
+      270.52,
+      269.7,
+      269.74
      ]
     ],
-    "checked": 1795101313.16562,
-    "entered": false,
+    "checked": 1795101621.655492,
+    "entered": true,
     "events": [
      {
       "kind": "pend",
       "mins": 610,
       "t": "10:10",
       "txt": "Strong close below the range low. Waiting for the next candle to hold below and make a new low"
+     },
+     {
+      "kind": "entry",
+      "mins": 615,
+      "t": "10:15",
+      "txt": "SHORT at 269.74, stop 271.33, target 267.36"
      }
     ],
-    "last": 270.53,
+    "last": 269.74,
     "orh": 274.0,
     "orl": 270.815,
     "pair": "AMZN",
-    "phase": "pending",
+    "paper_only": true,
+    "phase": "short",
     "sent": [
      "range",
      "610:pend"
     ],
-    "status": "Strong close below the range low. Waiting for the next candle to hold below and make a new low",
-    "trade": null
+    "status": "SHORT trade open",
+    "trade": {
+     "be": false,
+     "dir": -1,
+     "entry": 269.74,
+     "entry_label": "10:15",
+     "entry_mins": 615,
+     "entry_t": "2026-11-19T15:15:00",
+     "exit_mins": null,
+     "one_r": 1.589999999999975,
+     "result": null,
+     "stop": 271.33,
+     "stop0": 271.33,
+     "target": 267.355
+    }
    },
    "DIA": {
     "candles": [
@@ -10224,29 +10296,56 @@
       501.72,
       500.8,
       500.8
+     ],
+     [
+      "10:15",
+      500.4,
+      500.76,
+      499.88,
+      499.88
      ]
     ],
-    "checked": 1795101313.16562,
-    "entered": false,
+    "checked": 1795101621.655492,
+    "entered": true,
     "events": [
      {
       "kind": "pend",
       "mins": 610,
       "t": "10:10",
       "txt": "Strong close below the range low. Waiting for the next candle to hold below and make a new low"
+     },
+     {
+      "kind": "entry",
+      "mins": 615,
+      "t": "10:15",
+      "txt": "SHORT at 499.88, stop 501.72, target 497.12"
      }
     ],
-    "last": 500.795,
+    "last": 499.88,
     "orh": 504.39,
     "orl": 501.295,
     "pair": "DIA",
-    "phase": "pending",
+    "paper_only": true,
+    "phase": "short",
     "sent": [
      "range",
      "610:pend"
     ],
-    "status": "Strong close below the range low. Waiting for the next candle to hold below and make a new low",
-    "trade": null
+    "status": "SHORT trade open",
+    "trade": {
+     "be": false,
+     "dir": -1,
+     "entry": 499.88,
+     "entry_label": "10:15",
+     "entry_mins": 615,
+     "entry_t": "2026-11-19T15:15:00",
+     "exit_mins": null,
+     "one_r": 1.8400000000000318,
+     "result": null,
+     "stop": 501.72,
+     "stop0": 501.72,
+     "target": 497.11999999999995
+    }
    },
    "SPY": {
     "candles": [
@@ -10312,29 +10411,56 @@
       736.39,
       734.14,
       734.14
+     ],
+     [
+      "10:15",
+      734.17,
+      734.25,
+      732.66,
+      732.74
      ]
     ],
-    "checked": 1795101313.16562,
-    "entered": false,
+    "checked": 1795101621.655492,
+    "entered": true,
     "events": [
      {
       "kind": "pend",
       "mins": 610,
       "t": "10:10",
       "txt": "Strong close below the range low. Waiting for the next candle to hold below and make a new low"
+     },
+     {
+      "kind": "entry",
+      "mins": 615,
+      "t": "10:15",
+      "txt": "SHORT at 732.74, stop 736.39, target 727.26"
      }
     ],
-    "last": 734.14,
+    "last": 732.74,
     "orh": 739.77,
     "orl": 735.465,
     "pair": "SPY",
-    "phase": "pending",
+    "paper_only": true,
+    "phase": "short",
     "sent": [
      "range",
      "610:pend"
     ],
-    "status": "Strong close below the range low. Waiting for the next candle to hold below and make a new low",
-    "trade": null
+    "status": "SHORT trade open",
+    "trade": {
+     "be": false,
+     "dir": -1,
+     "entry": 732.74,
+     "entry_label": "10:15",
+     "entry_mins": 615,
+     "entry_t": "2026-11-19T15:15:00",
+     "exit_mins": null,
+     "one_r": 3.6549999999999727,
+     "result": null,
+     "stop": 736.395,
+     "stop0": 736.395,
+     "target": 727.2575
+    }
    }
   }
  },
