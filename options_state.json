@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1795192217.320576
+  "updated": 1795192513.710631
  },
  "alpaca_alerted": 1794820214.199567,
  "bot_username": "eJaaySignals_bot",
@@ -7104,16 +7104,6 @@
  ],
  "feed": [
   {
-   "kind": "event",
-   "lines": [],
-   "ok": null,
-   "t": 1794582329.2172487,
-   "text": "\ud83d\udc40 SPY 10:00 ET: Strong close below the range low. Waiting for the next candle to hold below and make a new low.",
-   "title": "SPY breakout watch",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
    "kind": "vote",
    "lines": [
     {
@@ -8398,6 +8388,16 @@
    "title": "DIA breakout failed",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1795192515.0207434,
+   "text": "\ud83d\udc40 DIA 11:30 ET: Strong close below the range low. Waiting for the next candle to hold below and make a new low.",
+   "title": "DIA breakout watch",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -9048,9 +9048,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-19",
- "last_deploy": 1795191918.488271,
- "last_full_run": 1795192217.320576,
- "last_run": 1795192217.320576,
+ "last_deploy": 1795192515.8734622,
+ "last_full_run": 1795192513.710631,
+ "last_run": 1795192513.710631,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -10261,12 +10261,19 @@
       253.39,
       252.44,
       252.88
+     ],
+     [
+      "11:30",
+      252.88,
+      252.94,
+      252.32,
+      252.33
      ]
     ],
-    "checked": 1795192217.320576,
+    "checked": 1795192513.710631,
     "entered": false,
     "events": [],
-    "last": 252.875,
+    "last": 252.33,
     "orh": 259.45,
     "orl": 251.17,
     "pair": "AMZN",
@@ -10446,9 +10453,16 @@
       489.97,
       489.96,
       489.96
+     ],
+     [
+      "11:30",
+      489.74,
+      489.76,
+      489.25,
+      489.25
      ]
     ],
-    "checked": 1795192217.320576,
+    "checked": 1795192513.710631,
     "entered": false,
     "events": [
      {
@@ -10462,19 +10476,26 @@
       "mins": 665,
       "t": "11:05",
       "txt": "Breakdown failed: price came back to the range low"
+     },
+     {
+      "kind": "pend",
+      "mins": 690,
+      "t": "11:30",
+      "txt": "Strong close below the range low. Waiting for the next candle to hold below and make a new low"
      }
     ],
-    "last": 489.965,
+    "last": 489.25,
     "orh": 494.57,
     "orl": 489.89,
     "pair": "DIA",
-    "phase": "wait",
+    "phase": "pending",
     "sent": [
      "range",
      "660:pend",
-     "665:fail"
+     "665:fail",
+     "690:pend"
     ],
-    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
+    "status": "Strong close below the range low. Waiting for the next candle to hold below and make a new low",
     "trade": null
    },
    "SPY": {
@@ -10646,9 +10667,16 @@
       705.87,
       705.13,
       705.58
+     ],
+     [
+      "11:30",
+      705.51,
+      705.51,
+      704.1,
+      704.1
      ]
     ],
-    "checked": 1795192217.320576,
+    "checked": 1795192513.710631,
     "entered": true,
     "events": [
      {
@@ -10688,7 +10716,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 705.58,
+    "last": 704.1,
     "orh": 717.24,
     "orl": 711.75,
     "pair": "SPY",
