@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 695.0,
-  "broker_equity": 99324.69,
+  "broker_equity": 99322.67,
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1795447512.155628
+  "updated": 1795447818.494975
  },
  "alpaca_alerted": 1794820214.199567,
  "bot_username": "eJaaySignals_bot",
@@ -1003,8 +1003,8 @@
    "benched": 0,
    "news": 0,
    "opened": 0,
-   "rejected": 1,
-   "setups": 1,
+   "rejected": 2,
+   "setups": 2,
    "start_nav": 695.0
   }
  },
@@ -1019,10 +1019,6 @@
   "fetched": 1795443916.690878
  },
  "equity": [
-  [
-   1794095111,
-   695.0
-  ],
   [
    1794096017,
    695.0
@@ -7018,6 +7014,10 @@
   [
    1795446923,
    695.0
+  ],
+  [
+   1795447818,
+   695.0
   ]
  ],
  "errors": [
@@ -7103,26 +7103,6 @@
   }
  ],
  "feed": [
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": null,
-   "t": 1794841222.4636793,
-   "text": "\ud83d\udccf AMZN opening range is set (9:30\u201310:00 ET)\nHigh 262.84 \u00b7 Low 260.22 \u00b7 size $2.62\n\nWatching 5-min candles until 12:00. Signal = a strong candle closes outside the range, then the next one holds outside and makes a new high (calls) or low (puts).",
-   "title": "AMZN range set: 260.22\u2013262.84",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": null,
-   "t": 1794841516.2830641,
-   "text": "\ud83d\udc40 SPY 10:00 ET: Strong close below the range low. Waiting for the next candle to hold below and make a new low.",
-   "title": "SPY breakout watch",
-   "verdict": null,
-   "who": "The Quant"
-  },
   {
    "kind": "vote",
    "lines": [
@@ -8367,6 +8347,57 @@
    "title": "DIA CALL (opening range breakout)",
    "verdict": "SIGNAL ONLY 5\u20131: paused (drawdown over 35%). Tracked on DIA's levels.",
    "who": null
+  },
+  {
+   "kind": "vote",
+   "lines": [
+    {
+     "say": "The data says go. Opening range is $11.19 (1.54% of the price).",
+     "vote": true,
+     "who": "The Quant"
+    },
+    {
+     "say": "Hard no. Paused (drawdown over 35%).",
+     "vote": false,
+     "who": "Risk"
+    },
+    {
+     "say": "It's moving our way. Strong green 5-min close outside the range, then the next candle held and made a new high.",
+     "vote": true,
+     "who": "Momentum"
+    },
+    {
+     "say": "Clock agrees: Entry at 10:25 ET, inside the 10:00\u201312:00 window.",
+     "vote": true,
+     "who": "Time"
+    },
+    {
+     "say": "Begrudgingly yes: Stop $1.90 away, target 1.5\u00d7 that.",
+     "vote": true,
+     "who": "Doubt"
+    },
+    {
+     "say": "Nothing in the press to scare me. No headlines today; StockTwits 7 bullish / 0 bearish.",
+     "vote": true,
+     "who": "The Reporter"
+    }
+   ],
+   "ok": false,
+   "t": 1795447821.0025382,
+   "text": null,
+   "title": "SPY CALL (opening range breakout)",
+   "verdict": "SIGNAL ONLY 5\u20131: paused (drawdown over 35%). Tracked on SPY's levels.",
+   "who": null
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": true,
+   "t": 1795447821.0027466,
+   "text": "\ud83d\udd12 DIA 10:25 ET: 1R reached. Stop moves to breakeven at 495.56 (DIA level). The trade can't lose on DIA's move now.",
+   "title": "DIA stop to breakeven",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -9017,41 +9048,42 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-22",
- "last_deploy": 1795447516.8204525,
- "last_full_run": 1795447512.155628,
- "last_run": 1795447512.155628,
+ "last_deploy": 1795447822.7610488,
+ "last_full_run": 1795447818.494975,
+ "last_run": 1795447818.494975,
  "last_vote": {
   "approved": false,
   "ask": 0,
   "chart": {
    "closes": [
-    491.67,
-    490.595,
-    492.0,
-    492.68,
-    492.68,
-    493.42,
-    494.385,
-    493.73,
-    494.29,
-    495.02,
-    495.56
+    718.75,
+    715.62,
+    717.22,
+    718.915,
+    719.32,
+    721.155,
+    721.75,
+    720.23,
+    722.63,
+    724.22,
+    726.23,
+    726.04
    ],
-   "entry": 495.56,
+   "entry": 726.04,
    "prec": 2,
-   "sl": 494.79,
+   "sl": 724.14,
    "tf": "5m",
-   "tp": 496.715
+   "tp": 728.8899999999999
   },
-  "detail": "DIA $495.56 \u00b7 stock stop 494.79 \u00b7 target 496.71",
+  "detail": "SPY $726.04 \u00b7 stock stop 724.14 \u00b7 target 728.89",
   "edge": 0,
-  "label": "DIA CALL (opening range breakout)",
+  "label": "SPY CALL (opening range breakout)",
   "side": "CALL",
   "url": "https://app.alpaca.markets/",
   "votes": {
    "Doubt": [
     true,
-    "stop $0.77 away, target 1.5\u00d7 that"
+    "stop $1.90 away, target 1.5\u00d7 that"
    ],
    "Momentum": [
     true,
@@ -9063,18 +9095,18 @@
    ],
    "The Quant": [
     true,
-    "opening range is $4.50 (0.91% of the price)"
+    "opening range is $11.19 (1.54% of the price)"
    ],
    "The Reporter": [
     true,
-    "1 headline today, none against us; StockTwits 1 bullish / 5 bearish"
+    "no headlines today; StockTwits 7 bullish / 0 bearish"
    ],
    "Time": [
     true,
-    "entry at 10:20 ET, inside the 10:00\u201312:00 window"
+    "entry at 10:25 ET, inside the 10:00\u201312:00 window"
    ]
   },
-  "when": 1795447512.155628
+  "when": 1795447818.494975
  },
  "last_weekly": "2026-11-20",
  "lb_done": {
@@ -10094,12 +10126,19 @@
       257.77,
       256.99,
       257.62
+     ],
+     [
+      "10:25",
+      257.69,
+      258.07,
+      256.74,
+      256.86
      ]
     ],
-    "checked": 1795447512.155628,
+    "checked": 1795447818.494975,
     "entered": false,
     "events": [],
-    "last": 257.62,
+    "last": 256.86,
     "orh": 262.35,
     "orl": 251.34,
     "pair": "AMZN",
@@ -10188,9 +10227,16 @@
       495.87,
       495.56,
       495.56
+     ],
+     [
+      "10:25",
+      496.09,
+      496.42,
+      495.65,
+      496.14
      ]
     ],
-    "checked": 1795447512.155628,
+    "checked": 1795447818.494975,
     "entered": true,
     "events": [
      {
@@ -10216,9 +10262,15 @@
       "mins": 620,
       "t": "10:20",
       "txt": "LONG at 495.56, stop 494.79, target 496.71"
+     },
+     {
+      "kind": "be",
+      "mins": 625,
+      "t": "10:25",
+      "txt": "1R reached. Stop moves to breakeven at 495.56"
      }
     ],
-    "last": 495.56,
+    "last": 496.14,
     "orh": 494.375,
     "orl": 489.87,
     "pair": "DIA",
@@ -10228,11 +10280,12 @@
      "range",
      "600:pend",
      "605:fail",
-     "615:pend"
+     "615:pend",
+     "625:be"
     ],
-    "status": "LONG trade open",
+    "status": "LONG trade open, stop at breakeven",
     "trade": {
-     "be": false,
+     "be": true,
      "dir": 1,
      "entry": 495.56,
      "entry_label": "10:20",
@@ -10241,7 +10294,7 @@
      "exit_mins": null,
      "one_r": 0.7699999999999818,
      "result": null,
-     "stop": 494.79,
+     "stop": 495.56,
      "stop0": 494.79,
      "target": 496.715
     }
@@ -10324,29 +10377,56 @@
       726.34,
       724.14,
       726.23
+     ],
+     [
+      "10:25",
+      726.58,
+      727.17,
+      725.22,
+      726.04
      ]
     ],
-    "checked": 1795447512.155628,
-    "entered": false,
+    "checked": 1795447818.494975,
+    "entered": true,
     "events": [
      {
       "kind": "pend",
       "mins": 620,
       "t": "10:20",
       "txt": "Strong close above the range high. Waiting for the next candle to hold above and make a new high"
+     },
+     {
+      "kind": "entry",
+      "mins": 625,
+      "t": "10:25",
+      "txt": "LONG at 726.04, stop 724.14, target 728.89"
      }
     ],
-    "last": 726.23,
+    "last": 726.04,
     "orh": 724.76,
     "orl": 713.57,
     "pair": "SPY",
-    "phase": "pending",
+    "paper_only": true,
+    "phase": "long",
     "sent": [
      "range",
      "620:pend"
     ],
-    "status": "Strong close above the range high. Waiting for the next candle to hold above and make a new high",
-    "trade": null
+    "status": "LONG trade open",
+    "trade": {
+     "be": false,
+     "dir": 1,
+     "entry": 726.04,
+     "entry_label": "10:25",
+     "entry_mins": 625,
+     "entry_t": "2026-11-23T15:25:00",
+     "exit_mins": null,
+     "one_r": 1.8999999999999773,
+     "result": null,
+     "stop": 724.14,
+     "stop0": 724.14,
+     "target": 728.8899999999999
+    }
    }
   }
  },
@@ -10404,11 +10484,11 @@
    "trend": -1
   },
   "AMZN": {
-   "adx": 48.63038459321599,
-   "atr_pips": 2.6481313573257976,
-   "bar": "2026-11-23T15:00:00",
-   "chg": 3.7270096918438704,
-   "close": 256.325,
+   "adx": 48.54143865927343,
+   "atr_pips": 2.604693402909429,
+   "bar": "2026-11-23T15:15:00",
+   "chg": 3.943508083281065,
+   "close": 256.86,
    "h4_trend": 1,
    "prec": 2,
    "ready": {
@@ -10423,18 +10503,18 @@
      "MACD against us (down)"
     ]
    },
-   "rsi": 62.55372092033363,
+   "rsi": 63.69760833917776,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
    "trend": -1
   },
   "DIA": {
-   "adx": 39.21224383346346,
-   "atr_pips": 2.4410966462432695,
-   "bar": "2026-11-23T15:00:00",
-   "chg": 2.713879018348815,
-   "close": 494.29,
+   "adx": 38.46636326657275,
+   "atr_pips": 2.4188754567092166,
+   "bar": "2026-11-23T15:15:00",
+   "chg": 3.0983105791409447,
+   "close": 496.14,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -10449,7 +10529,7 @@
      "MACD against us (down)"
     ]
    },
-   "rsi": 64.61798525296537,
+   "rsi": 67.62677123714566,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -10611,11 +10691,11 @@
    "trend": -1
   },
   "SPY": {
-   "adx": 30.30261716698416,
-   "atr_pips": 5.539672071391489,
-   "bar": "2026-11-23T15:00:00",
-   "chg": 4.625875948340773,
-   "close": 722.63,
+   "adx": 31.347466536447833,
+   "atr_pips": 5.493624065020084,
+   "bar": "2026-11-23T15:15:00",
+   "chg": 5.1195922858632095,
+   "close": 726.04,
    "h4_trend": -1,
    "prec": 2,
    "ready": {
@@ -10630,7 +10710,7 @@
      "MACD against us (down)"
     ]
    },
-   "rsi": 69.74534828160415,
+   "rsi": 71.95874048733594,
    "setup": null,
    "spread_pips": 0,
    "tradeable": true,
@@ -11040,18 +11120,18 @@
  "tg_offset": 225750261,
  "ticker": [
   {
-   "c": 4.63,
-   "p": "722.63",
+   "c": 5.12,
+   "p": "726.04",
    "s": "SPY"
   },
   {
-   "c": 2.71,
-   "p": "494.29",
+   "c": 3.1,
+   "p": "496.14",
    "s": "DIA"
   },
   {
-   "c": 3.73,
-   "p": "256.32",
+   "c": 3.94,
+   "p": "256.86",
    "s": "AMZN"
   }
  ],
