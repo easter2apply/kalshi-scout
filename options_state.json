@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 695.0,
-  "broker_equity": 99389.69,
+  "broker_equity": 99419.69,
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1795446332.043334
+  "updated": 1795446615.01891
  },
  "alpaca_alerted": 1794820214.199567,
  "bot_username": "eJaaySignals_bot",
@@ -7107,16 +7107,6 @@
    "kind": "event",
    "lines": [],
    "ok": true,
-   "t": 1794584419.5301707,
-   "text": "\ud83d\udd12 AMZN 10:35 ET: 1R reached. Stop moves to breakeven at 266.12 (AMZN level). The trade can't lose on AMZN's move now.",
-   "title": "AMZN stop to breakeven",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
-   "kind": "event",
-   "lines": [],
-   "ok": true,
    "t": 1794588622.2147865,
    "text": "\ud83c\udfaf AMZN ORB signal finished on AMZN: target +1.5R on AMZN (+1.5R). No option was held (signal only).",
    "title": "AMZN ORB signal finished",
@@ -8336,6 +8326,16 @@
    "title": "DIA breakout watch",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": false,
+   "t": 1795446618.0708575,
+   "text": "\u21a9\ufe0f DIA 10:05 ET: Breakout failed: price came back to the range high. No trade, still watching.",
+   "title": "DIA breakout failed",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -8986,9 +8986,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-22",
- "last_deploy": 1795446336.8026588,
- "last_full_run": 1795446332.043334,
- "last_run": 1795446332.043334,
+ "last_deploy": 1795446618.9552221,
+ "last_full_run": 1795446615.01891,
+ "last_run": 1795446615.01891,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -10050,12 +10050,19 @@
       255.61,
       254.85,
       255.25
+     ],
+     [
+      "10:05",
+      255.22,
+      255.94,
+      254.95,
+      255.11
      ]
     ],
-    "checked": 1795446332.043334,
+    "checked": 1795446615.01891,
     "entered": false,
     "events": [],
-    "last": 255.25,
+    "last": 255.11,
     "orh": 262.35,
     "orl": 251.34,
     "pair": "AMZN",
@@ -10116,9 +10123,16 @@
       494.4,
       493.6,
       494.38
+     ],
+     [
+      "10:05",
+      494.61,
+      494.91,
+      493.73,
+      493.73
      ]
     ],
-    "checked": 1795446332.043334,
+    "checked": 1795446615.01891,
     "entered": false,
     "events": [
      {
@@ -10126,18 +10140,25 @@
       "mins": 600,
       "t": "10:00",
       "txt": "Strong close above the range high. Waiting for the next candle to hold above and make a new high"
+     },
+     {
+      "kind": "fail",
+      "mins": 605,
+      "t": "10:05",
+      "txt": "Breakout failed: price came back to the range high"
      }
     ],
-    "last": 494.385,
+    "last": 493.73,
     "orh": 494.375,
     "orl": 489.87,
     "pair": "DIA",
-    "phase": "pending",
+    "phase": "wait",
     "sent": [
      "range",
-     "600:pend"
+     "600:pend",
+     "605:fail"
     ],
-    "status": "Strong close above the range high. Waiting for the next candle to hold above and make a new high",
+    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
     "trade": null
    },
    "SPY": {
@@ -10190,12 +10211,19 @@
       722.22,
       720.59,
       721.75
+     ],
+     [
+      "10:05",
+      721.97,
+      722.7,
+      720.1,
+      720.23
      ]
     ],
-    "checked": 1795446332.043334,
+    "checked": 1795446615.01891,
     "entered": false,
     "events": [],
-    "last": 721.75,
+    "last": 720.23,
     "orh": 724.76,
     "orl": 713.57,
     "pair": "SPY",
