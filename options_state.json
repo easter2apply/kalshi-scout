@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1795453220.436187
+  "updated": 1795453513.310013
  },
  "alpaca_alerted": 1794820214.199567,
  "bot_username": "eJaaySignals_bot",
@@ -7106,16 +7106,6 @@
   {
    "kind": "event",
    "lines": [],
-   "ok": null,
-   "t": 1794842717.524262,
-   "text": "\ud83d\udc40 DIA 10:20 ET: Strong close below the range low. Waiting for the next candle to hold below and make a new low.",
-   "title": "DIA breakout watch",
-   "verdict": null,
-   "who": "The Quant"
-  },
-  {
-   "kind": "event",
-   "lines": [],
    "ok": true,
    "t": 1794843017.4976184,
    "text": "\ud83d\udd12 SPY 10:25 ET: 1R reached. Stop moves to breakeven at 744.93 (SPY level). The trade can't lose on SPY's move now.",
@@ -8336,6 +8326,16 @@
    "title": "SPY ORB signal finished",
    "verdict": null,
    "who": "The Quant"
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": null,
+   "t": 1795453516.9234617,
+   "text": "\ud83d\ude34 AMZN: No setup by 12:00 ET. Done for the day.",
+   "title": "AMZN: no setup today",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -8986,9 +8986,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-22",
- "last_deploy": 1795452917.6648107,
- "last_full_run": 1795453220.436187,
- "last_run": 1795453220.436187,
+ "last_deploy": 1795453517.9698405,
+ "last_full_run": 1795453513.310013,
+ "last_run": 1795453513.310013,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -10197,20 +10197,35 @@
       256.25,
       255.64,
       256.12
+     ],
+     [
+      "12:00",
+      256.05,
+      256.77,
+      255.93,
+      256.39
      ]
     ],
-    "checked": 1795453220.436187,
+    "checked": 1795453513.310013,
     "entered": false,
-    "events": [],
-    "last": 256.115,
+    "events": [
+     {
+      "kind": "none",
+      "mins": 720,
+      "t": "12:00",
+      "txt": "No setup by 12:00 ET. Done for the day"
+     }
+    ],
+    "last": 256.39,
     "orh": 262.35,
     "orl": 251.34,
     "pair": "AMZN",
-    "phase": "wait",
+    "phase": "none",
     "sent": [
-     "range"
+     "range",
+     "720:none"
     ],
-    "status": "Range set. Watching for a strong 5-min close outside it until 12:00 ET",
+    "status": "No setup today",
     "trade": null
    },
    "DIA": {
@@ -10424,9 +10439,16 @@
       496.25,
       495.64,
       496.12
+     ],
+     [
+      "12:00",
+      496.13,
+      496.25,
+      495.25,
+      495.38
      ]
     ],
-    "checked": 1795453220.436187,
+    "checked": 1795453513.310013,
     "entered": true,
     "events": [
      {
@@ -10466,7 +10488,7 @@
       "txt": "Target hit: +1.5R"
      }
     ],
-    "last": 496.12,
+    "last": 495.38,
     "orh": 494.375,
     "orl": 489.87,
     "pair": "DIA",
@@ -10707,9 +10729,16 @@
       723.61,
       721.96,
       723.61
+     ],
+     [
+      "12:00",
+      723.77,
+      723.77,
+      722.24,
+      722.69
      ]
     ],
-    "checked": 1795453220.436187,
+    "checked": 1795453513.310013,
     "entered": true,
     "events": [
      {
@@ -10737,7 +10766,7 @@
       "txt": "Stopped at breakeven: 0R"
      }
     ],
-    "last": 723.61,
+    "last": 722.69,
     "orh": 724.76,
     "orl": 713.57,
     "pair": "SPY",
