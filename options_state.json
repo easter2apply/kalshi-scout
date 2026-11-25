@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 695.0,
-  "broker_equity": 99309.57,
+  "broker_equity": 99270.57,
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1795619714.386146
+  "updated": 1795620016.446751
  },
  "alpaca_alerted": 1794820214.199567,
  "bot_username": "eJaaySignals_bot",
@@ -7104,47 +7104,6 @@
  ],
  "feed": [
   {
-   "kind": "vote",
-   "lines": [
-    {
-     "say": "Clean read: Opening range is $2.19 (0.30% of the price).",
-     "vote": true,
-     "who": "The Quant"
-    },
-    {
-     "say": "Not on my watch: Paused (drawdown over 35%).",
-     "vote": false,
-     "who": "Risk"
-    },
-    {
-     "say": "Feel that push? Strong red 5-min close outside the range, then the next candle held and made a new low.",
-     "vote": true,
-     "who": "Momentum"
-    },
-    {
-     "say": "Timing's right. Entry at 10:35 ET, inside the 10:00\u201312:00 window.",
-     "vote": true,
-     "who": "Time"
-    },
-    {
-     "say": "...fine. Stop $2.71 away, target 1.5\u00d7 that. I'll allow it.",
-     "vote": true,
-     "who": "Doubt"
-    },
-    {
-     "say": "Sources say we're clear: No headlines today; StockTwits 3 bullish / 12 bearish.",
-     "vote": true,
-     "who": "The Reporter"
-    }
-   ],
-   "ok": false,
-   "t": 1794930016.5937836,
-   "text": null,
-   "title": "SPY PUT (opening range breakout)",
-   "verdict": "SIGNAL ONLY 5\u20131: paused (drawdown over 35%). Tracked on SPY's levels.",
-   "who": null
-  },
-  {
    "kind": "event",
    "lines": [],
    "ok": true,
@@ -8336,6 +8295,16 @@
    "title": "DIA CALL (opening range breakout)",
    "verdict": "SIGNAL ONLY 5\u20131: paused (drawdown over 35%). Tracked on DIA's levels.",
    "who": null
+  },
+  {
+   "kind": "event",
+   "lines": [],
+   "ok": false,
+   "t": 1795620020.7065928,
+   "text": "\ud83d\uded1 DIA ORB signal finished on DIA: stop on DIA (-1.0R). No option was held (signal only).",
+   "title": "DIA ORB signal finished",
+   "verdict": null,
+   "who": "The Quant"
   }
  ],
  "history": [
@@ -8986,9 +8955,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-24",
- "last_deploy": 1795619122.0623322,
- "last_full_run": 1795619714.386146,
- "last_run": 1795619714.386146,
+ "last_deploy": 1795620021.7187254,
+ "last_full_run": 1795620016.446751,
+ "last_run": 1795620016.446751,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -10046,12 +10015,19 @@
       241.57,
       240.56,
       241.15
+     ],
+     [
+      "10:15",
+      241.04,
+      241.04,
+      239.77,
+      239.78
      ]
     ],
-    "checked": 1795619714.386146,
+    "checked": 1795620016.446751,
     "entered": false,
     "events": [],
-    "last": 241.145,
+    "last": 239.775,
     "orh": 243.28,
     "orl": 237.64,
     "pair": "AMZN",
@@ -10126,9 +10102,16 @@
       493.02,
       492.61,
       492.7
+     ],
+     [
+      "10:15",
+      491.5,
+      491.88,
+      491.34,
+      491.88
      ]
     ],
-    "checked": 1795619714.386146,
+    "checked": 1795620016.446751,
     "entered": true,
     "events": [
      {
@@ -10142,19 +10125,26 @@
       "mins": 605,
       "t": "10:05",
       "txt": "LONG at 493.76, stop 491.92, target 496.54"
+     },
+     {
+      "kind": "sl",
+      "mins": 615,
+      "t": "10:15",
+      "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 492.7,
+    "last": 491.88,
     "orh": 492.61,
     "orl": 488.68,
     "pair": "DIA",
     "paper_only": true,
-    "phase": "long",
+    "phase": "done",
     "sent": [
      "range",
-     "600:pend"
+     "600:pend",
+     "exit:615"
     ],
-    "status": "LONG trade open",
+    "status": "Trade finished: -1.0R",
     "trade": {
      "be": false,
      "dir": 1,
@@ -10162,9 +10152,9 @@
      "entry_label": "10:05",
      "entry_mins": 605,
      "entry_t": "2026-11-25T15:05:00",
-     "exit_mins": null,
+     "exit_mins": 615,
      "one_r": 1.849999999999966,
-     "result": null,
+     "result": -1.0,
      "stop": 491.915,
      "stop0": 491.915,
      "target": 496.53999999999996
@@ -10234,12 +10224,19 @@
       702.94,
       701.67,
       702.5
+     ],
+     [
+      "10:15",
+      702.13,
+      702.17,
+      699.02,
+      699.02
      ]
     ],
-    "checked": 1795619714.386146,
+    "checked": 1795620016.446751,
     "entered": false,
     "events": [],
-    "last": 702.495,
+    "last": 699.02,
     "orh": 703.73,
     "orl": 695.54,
     "pair": "SPY",
