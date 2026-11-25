@@ -1,11 +1,11 @@
 {
  "account": {
   "balance": 695.0,
-  "broker_equity": 99279.57,
+  "broker_equity": 99302.57,
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1795625114.687814
+  "updated": 1795625415.432623
  },
  "alpaca_alerted": 1794820214.199567,
  "bot_username": "eJaaySignals_bot",
@@ -8956,8 +8956,8 @@
  },
  "last_daily": "2026-11-24",
  "last_deploy": 1795624818.39509,
- "last_full_run": 1795625114.687814,
- "last_run": 1795625114.687814,
+ "last_full_run": 1795625415.432623,
+ "last_run": 1795625415.432623,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -10141,9 +10141,16 @@
       238.54,
       237.42,
       237.88
+     ],
+     [
+      "11:45",
+      237.84,
+      238.84,
+      237.79,
+      238.66
      ]
     ],
-    "checked": 1795625114.687814,
+    "checked": 1795625415.432623,
     "entered": false,
     "events": [
      {
@@ -10171,7 +10178,7 @@
       "txt": "Breakdown failed: price came back to the range low"
      }
     ],
-    "last": 237.88,
+    "last": 238.66,
     "orh": 243.28,
     "orl": 237.64,
     "pair": "AMZN",
@@ -10376,9 +10383,16 @@
       492.65,
       491.87,
       491.87
+     ],
+     [
+      "11:45",
+      491.87,
+      493.02,
+      491.87,
+      492.26
      ]
     ],
-    "checked": 1795625114.687814,
+    "checked": 1795625415.432623,
     "entered": true,
     "events": [
      {
@@ -10400,7 +10414,7 @@
       "txt": "Stop hit: \u22121R"
      }
     ],
-    "last": 491.865,
+    "last": 492.26,
     "orh": 492.61,
     "orl": 488.68,
     "pair": "DIA",
@@ -10617,12 +10631,19 @@
       699.44,
       697.68,
       698.05
+     ],
+     [
+      "11:45",
+      698.22,
+      699.69,
+      698.22,
+      698.94
      ]
     ],
-    "checked": 1795625114.687814,
+    "checked": 1795625415.432623,
     "entered": false,
     "events": [],
-    "last": 698.05,
+    "last": 698.94,
     "orh": 703.73,
     "orl": 695.54,
     "pair": "SPY",
