@@ -1,6 +1,6 @@
 {
  "account": {
-  "nav": 1192.0
+  "nav": 1206.0
  },
  "closed": [
   {
@@ -300,7 +300,7 @@
    "prev_close": 267.2
   }
  },
- "last_run": 1795630817.26184,
+ "last_run": 1795631116.831008,
  "live": {
   "bars": [
    [
@@ -506,11 +506,11 @@
   "gap": -1.49,
   "locked": true,
   "opened": "2026-11-25T15:00:32",
-  "peak": 7.08,
-  "price": 7.08,
+  "peak": 7.22,
+  "price": 7.22,
   "qty": 1,
   "qty0": 1,
-  "sl": 5.31,
+  "sl": 5.42,
   "sym": "IWM261125C00261000",
   "tp": null,
   "trail": true
@@ -519,7 +519,7 @@
   "open": {
    "dir": 1,
    "pair": "IWM",
-   "upl": 494.0
+   "upl": 508.0
   }
  }
 }
