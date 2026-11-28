@@ -5,7 +5,7 @@
   "nav": 695.0,
   "options_level": 3,
   "unrealized": 0,
-  "updated": 1795870214.01353
+  "updated": 1795870514.574829
  },
  "alpaca_alerted": 1794820214.199567,
  "bot_username": "eJaaySignals_bot",
@@ -8924,9 +8924,9 @@
   "SPY:ORB": "2026-10-15T14:30:00"
  },
  "last_daily": "2026-11-27",
- "last_deploy": 1795869615.564116,
- "last_full_run": 1795870214.01353,
- "last_run": 1795870214.01353,
+ "last_deploy": 1795870514.9266007,
+ "last_full_run": 1795870514.574829,
+ "last_run": 1795870514.574829,
  "last_vote": {
   "approved": false,
   "ask": 0,
@@ -9924,7 +9924,7 @@
     "title": "Prelim GDP q/q"
    }
   ],
-  "fetched": 1795848912.2075307
+  "fetched": 1795870514.9056675
  },
  "old_records": [
   {
